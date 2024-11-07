@@ -147,10 +147,11 @@ public class UilRequestService extends RequestService<UilRequestEntity> {
         final UILQuery uilQuery = new UILQuery();
         final UIL uil = new UIL();
         uil.setDatasetId(controlDto.getEftiDataUuid());
-        uil.setPlatformId(requestDto.getControl().getEftiPlatformUrl());
-        uil.setGateId(requestDto.getGateUrlDest());
+        uil.setPlatformId(requestDto.getControl().getPlatformId());
+        uil.setGateId(requestDto.getGateIdDest());
         uilQuery.setUil(uil);
         uilQuery.setRequestId(requestDto.getControl().getRequestId());
+        uilQuery.setSubsetId(controlDto.getSubsetId());
 
         final JAXBElement<UILQuery> jaxBResponse = getObjectFactory().createUilQuery(uilQuery);
         return getSerializeUtils().mapJaxbObjectToXmlString(jaxBResponse, UILQuery.class);
@@ -202,7 +203,7 @@ public class UilRequestService extends RequestService<UilRequestEntity> {
     private ControlDto manageResponseFromOtherGate(final UilRequestDto requestDto, final UILResponse uilResponse) {
         final ControlDto controlDto = requestDto.getControl();
         final Optional<EDeliveryStatus> responseStatus = EDeliveryStatus.fromCode(uilResponse.getStatus());
-        if(responseStatus.isEmpty()) {
+        if (responseStatus.isEmpty()) {
             throw new TechnicalException("status " + uilResponse.getStatus() + " not found");
         }
         switch (responseStatus.get()) {
@@ -262,7 +263,7 @@ public class UilRequestService extends RequestService<UilRequestEntity> {
             return uilRequestDto.getControl();
         }
         this.updateStatus(uilRequestDto, RESPONSE_IN_PROGRESS);
-        uilRequestDto.setGateUrlDest(uilRequestDto.getControl().getFromGateUrl());
+        uilRequestDto.setGateIdDest(uilRequestDto.getControl().getFromGateId());
         final RequestDto savedUilRequestDto = this.save(uilRequestDto);
         savedUilRequestDto.setRequestType(RequestType.UIL);
         this.sendRequest(savedUilRequestDto);

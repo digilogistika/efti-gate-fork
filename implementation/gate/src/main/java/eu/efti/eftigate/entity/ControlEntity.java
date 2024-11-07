@@ -63,24 +63,21 @@ public class ControlEntity extends AbstractModel implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    @Column(name = "eftiplatformurl")
-    private String eftiPlatformUrl;
+    @Column(name = "platformid")
+    private String platformId;
 
-    @Column(name = "eftigateurl")
-    private String eftiGateUrl;
+    @Column(name = "gateid")
+    private String gateId;
 
-    @Column(name = "subseteurequested")
-    private String subsetEuRequested;
-
-    @Column(name = "subsetmsrequested")
-    private String subsetMsRequested;
+    @Column(name = "subsetid")
+    private String subsetId;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "transportidentifiers")
     private SearchParameter transportIdentifiers;
 
-    @Column(name = "fromgateurl")
-    private String fromGateUrl;
+    @Column(name = "fromgateid")
+    private String fromGateId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "control", fetch = FetchType.EAGER)
     @ToString.Exclude
