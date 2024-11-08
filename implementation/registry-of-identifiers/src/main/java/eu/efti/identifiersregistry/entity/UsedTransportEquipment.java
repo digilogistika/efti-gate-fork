@@ -2,7 +2,11 @@
 package eu.efti.identifiersregistry.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -39,10 +43,11 @@ public class UsedTransportEquipment {
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "consignment_id", referencedColumnName = "id", insertable = true, updatable = false)
+    @JoinColumn(name = "consignment_id", referencedColumnName = "id", updatable = false)
     private Consignment consignment;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "usedTransportEquipment", targetEntity = CarriedTransportEquipment.class)
+    @ToString.Exclude
     private List<CarriedTransportEquipment> carriedTransportEquipments = new ArrayList<>();
 
     public void setCarriedTransportEquipments(List<CarriedTransportEquipment> carriedTransportEquipments) {
