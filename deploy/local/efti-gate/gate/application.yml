@@ -66,6 +66,12 @@ batch:
 springdoc:
   swagger-ui:
     enabled: true
+    urls:
+      - name: eFTI Gate API
+        url: /v3/api-docs
+      - name: eFTI Platform API
+        url: /platform-openapi.yaml
+    path: /swagger-ui
   api-docs:
     enabled: true
 
