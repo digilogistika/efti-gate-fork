@@ -1,7 +1,9 @@
 openapi: 3.0.3
 info:
   title: eFTI Platform API
-  description: API that eFTI Platforms implement to communicate with the eFTI Gate
+  description: >
+    API that eFTI Platforms implement to communicate with the eFTI Gate.
+    Note that this is NOT an API in the gate, but an API that the gate calls.
   version: 0.5.0
 paths:
   /api/v0/consignments/{datasetId}:
@@ -25,3 +27,5 @@ paths:
               schema:
                 type: object
                 description: Consignment in XML format following the eFTI schema `http://efti.eu/v1/consignment/common`
+        '404':
+          description: Consignment not found
