@@ -45,23 +45,11 @@ paths:
       requestBody:
         required: true
         content:
-          application/xml:
+          text/plain:
             schema:
-              $ref: '#/components/schemas/PostFollowUpRequest'
+              type: string
       responses:
         '201':
           description: Follow-up communication created
         '404':
           description: Consignment not found
-
-components:
-  schemas:
-    PostFollowUpRequest:
-      type: object
-      xml:
-        name: postFollowUpRequest
-      properties:
-        message:
-          type: string
-      required:
-        - message
