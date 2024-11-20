@@ -29,3 +29,39 @@ paths:
                 description: Consignment in XML format following the eFTI schema `http://efti.eu/v1/consignment/common`
         '404':
           description: Consignment not found
+  /api/v0/consignments/{datasetId}/followUp:
+    post:
+      summary: Create a follow-up communication for the consignment with the given datasetId
+      description: >
+        Gate delegates requests from Competent Authorities to the appropriate Platform
+        and calls this endpoint to create a follow-up communication for the consignment with the given datasetId
+      parameters:
+        - name: datasetId
+          in: path
+          description: The datasetId of the consignment to create a follow-up communication for
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PostFollowUpRequest'
+      responses:
+        '201':
+          description: Follow-up communication created
+        '404':
+          description: Consignment not found
+
+components:
+  schemas:
+    PostFollowUpRequest:
+      type: object
+      xml:
+        name: postFollowUpRequest
+      properties:
+        message:
+          type: string
+      required:
+        - message
