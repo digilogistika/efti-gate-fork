@@ -29,6 +29,7 @@ paths:
                 description: Consignment in XML format following the eFTI schema `http://efti.eu/v1/consignment/common`
         '404':
           description: Consignment not found
+  ## Follow-up is WIP since the eDelivery schema does not yet define how to add attachments
   /v0/consignments/{datasetId}/follow-up:
     post:
       summary: Create a follow-up communication for the consignment with the given datasetId
