@@ -6,7 +6,7 @@ info:
     Note that this is NOT an API in the gate, but an API that the gate calls.
   version: 0.5.0
 paths:
-  /api/v0/consignments/{datasetId}:
+  /v0/consignments/{datasetId}:
     get:
       summary: Return the consignment with the given datasetId
       description: >
@@ -29,7 +29,7 @@ paths:
                 description: Consignment in XML format following the eFTI schema `http://efti.eu/v1/consignment/common`
         '404':
           description: Consignment not found
-  /api/v0/consignments/{datasetId}/followUp:
+  /v0/consignments/{datasetId}/follow-up:
     post:
       summary: Create a follow-up communication for the consignment with the given datasetId
       description: >
