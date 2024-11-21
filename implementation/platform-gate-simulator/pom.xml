@@ -240,6 +240,35 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../../schema/api-schemas/platform-api-for-gate.yaml
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <configOptions>
+                                <interfaceOnly>true</interfaceOnly>
+                                <documentationProvider>none</documentationProvider>
+                                <useBeanValidation>false</useBeanValidation>
+                                <openApiNullable>false</openApiNullable>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <sourceFolder>${project.build.directory}/generated-sources/src/main/java</sourceFolder>
+                                <withXml>true</withXml>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                            </configOptions>
+                            <apiPackage>eu.efti.platformgatesimulator.controller.api</apiPackage>
+                            <modelPackage>eu.efti.platformgatesimulator.dto</modelPackage>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
