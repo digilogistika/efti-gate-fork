@@ -40,7 +40,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         //open url
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/ws/**").permitAll()
-                        .requestMatchers("/platform-openapi.yaml").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         //require login to everything else
                         .anyRequest().authenticated()
