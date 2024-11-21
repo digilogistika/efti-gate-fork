@@ -258,7 +258,6 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>7.10.0</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
