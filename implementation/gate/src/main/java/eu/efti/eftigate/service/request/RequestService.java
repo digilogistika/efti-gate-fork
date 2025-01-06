@@ -72,6 +72,8 @@ public abstract class RequestService<T extends RequestEntity> {
 
     public abstract RequestDto save(final RequestDto requestDto);
 
+    public abstract void saveRequest(final RequestDto requestDto);
+
     protected abstract void updateStatus(final T requestEntity, final RequestStatusEnum status);
 
     protected abstract T findRequestByMessageIdOrThrow(final String eDeliveryMessageId);
@@ -147,13 +149,13 @@ public abstract class RequestService<T extends RequestEntity> {
         log.info("Request has been registered with controlId : {}", requestDto.getControl().getId());
     }
 
-    public void updateSentRequestStatus(final RequestDto requestDto, final String edeliveryMessageId) {
+    public void updateRequestStatus(final RequestDto requestDto, final String edeliveryMessageId) {
         requestDto.setEdeliveryMessageId(edeliveryMessageId);
         final RequestStatusEnum requestStatus = requestDto.getStatus();
         if (!(RESPONSE_IN_PROGRESS.equals(requestStatus) || ERROR.equals(requestStatus) || TIMEOUT.equals(requestStatus))) {
             requestDto.setStatus(IN_PROGRESS);
         }
-        this.save(requestDto);
+        this.saveRequest(requestDto);
     }
 
     protected void markMessageAsDownloaded(final String eDeliveryMessageId) {
