@@ -62,6 +62,7 @@ import static eu.efti.edeliveryapconnector.constant.EDeliveryStatus.isNotFound;
 public class UilRequestService extends RequestService<UilRequestEntity> {
 
     private static final String UIL = "UIL";
+    public static final String UIL_REQUEST_DTO_NOT_FIND_IN_DB = "uilRequestDto not find in DB";
     private final UilRequestRepository uilRequestRepository;
     private final SerializeUtils serializeUtils;
     private final ObjectFactory objectFactory = new ObjectFactory();
@@ -91,25 +92,27 @@ public class UilRequestService extends RequestService<UilRequestEntity> {
     }
 
     public void manageQueryReceived(final NotificationDto notificationDto) {
-        NotificationContentDto content = notificationDto.getContent();
-        String body = content.getBody();
-        final UILQuery uilQuery = getSerializeUtils().mapXmlStringToJaxbObject(body);
-        if (!validationService.isRequestValid(uilQuery)) {
-            this.sendRequest(this.buildErrorRequestDto(notificationDto, EXTERNAL_ASK_UIL_SEARCH));
+        String body = notificationDto.getContent().getBody();
+        Optional<String> result = validationService.isXmlValid(body);
+        if (result.isPresent()) {
+            log.error("Received invalid UILQuery");
+            this.sendRequest(this.buildErrorRequestDto(notificationDto, EXTERNAL_ASK_UIL_SEARCH, result.get()));
             return;
         }
+        final UILQuery uilQuery = getSerializeUtils().mapXmlStringToJaxbObject(body);
         getControlService().createUilControl(ControlUtils
                 .fromGateToGateQuery(uilQuery, RequestTypeEnum.EXTERNAL_ASK_UIL_SEARCH, notificationDto, getGateProperties().getOwner()));
     }
 
     public void manageResponseReceived(final NotificationDto notificationDto) {
-        NotificationContentDto content = notificationDto.getContent();
-        String body = content.getBody();
-        final UILResponse uilResponse = getSerializeUtils().mapXmlStringToJaxbObject(body);
-        if (!validationService.isResponseValid(uilResponse)) {
-            this.sendRequest(this.buildErrorRequestDto(notificationDto, EXTERNAL_ASK_UIL_SEARCH));
+        String body = notificationDto.getContent().getBody();
+        Optional<String> result = validationService.isXmlValid(body);
+        if (result.isPresent()) {
+            log.error("Received invalid UILResponse");
+            this.sendRequest(this.buildErrorRequestDto(notificationDto, EXTERNAL_ASK_UIL_SEARCH, result.get()));
             return;
         }
+        final UILResponse uilResponse = getSerializeUtils().mapXmlStringToJaxbObject(body);
         final Optional<UilRequestDto> uilRequestDto = this.findByRequestId(uilResponse.getRequestId());
         if (uilRequestDto.isPresent()) {
             if (List.of(RequestTypeEnum.LOCAL_UIL_SEARCH, EXTERNAL_ASK_UIL_SEARCH).contains(uilRequestDto.get().getControl().getRequestType())) { //platform response
@@ -118,7 +121,7 @@ public class UilRequestService extends RequestService<UilRequestEntity> {
                 manageResponseFromOtherGate(uilRequestDto.get(), uilResponse, notificationDto.getContent());
             }
         } else {
-            log.error("uilRequestDto not find in DB");
+            log.error(UIL_REQUEST_DTO_NOT_FIND_IN_DB);
         }
     }
 
@@ -175,7 +178,7 @@ public class UilRequestService extends RequestService<UilRequestEntity> {
 
         final UILQuery uilQuery = new UILQuery();
         final UIL uil = new UIL();
-        uil.setDatasetId(controlDto.getEftiDataUuid());
+        uil.setDatasetId(controlDto.getDatasetId());
         uil.setPlatformId(requestDto.getControl().getPlatformId());
         uil.setGateId(requestDto.getGateIdDest());
         uilQuery.setUil(uil);

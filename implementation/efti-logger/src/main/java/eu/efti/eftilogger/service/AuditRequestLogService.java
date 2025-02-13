@@ -46,7 +46,7 @@ public class AuditRequestLogService implements LogService<LogRequestDto> {
                 .respondingComponentCountry(messagePartiesDto.getRespondingComponentCountry())
                 .requestId(control.getRequestId())
                 .subsetId(control.getSubsetId())
-                .eftidataId(control.getEftiDataUuid())
+                .eftidataId(control.getDatasetId())
                 .messageDate(DateTimeFormatter.ofPattern(DATE_FORMAT).format(LocalDateTime.now()))
                 .messageContent(body)
                 .statusMessage(status.name())
@@ -58,8 +58,6 @@ public class AuditRequestLogService implements LogService<LogRequestDto> {
                 .errorDescriptionMessage(control.getError() != null ? control.getError().getErrorDescription() : null)
                 .build();
         this.log(logRequestDto);
-
-
     }
 
     private String getRequestTypeFromControl(final ControlDto control, final boolean isAck) {

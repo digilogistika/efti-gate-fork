@@ -9,11 +9,13 @@ import eu.efti.v1.consignment.identifier.SupplyChainConsignment;
 import eu.efti.v1.consignment.identifier.TradeCountry;
 import eu.efti.v1.edelivery.IdentifierQuery;
 import eu.efti.v1.edelivery.IdentifierType;
+import eu.efti.v1.identifier_query_test_cases.Dataset;
 import eu.efti.v1.identifier_query_test_cases.IdentifierQueryTestCases;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,6 +37,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -99,13 +103,15 @@ class IdentifiersQueryTest {
     }
 
     private static String readXml() {
-        final String xml;
-        try {
-            xml = Files.readString(Paths.get(requireNonNull(IdentifiersQueryTest.class.getResource(IDENTIFIER_QUERY_TEST_CASES_RESOURCE_PATH)).getPath()));
+
+        try (final InputStream inputStream = IdentifiersQueryTest.class.getResourceAsStream(IDENTIFIER_QUERY_TEST_CASES_RESOURCE_PATH)) {
+            if(inputStream == null) {
+                throw new RuntimeException(String.format("file %s not found", IDENTIFIER_QUERY_TEST_CASES_RESOURCE_PATH));
+            }
+            return IOUtils.toString(inputStream, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return xml;
     }
 
     @ParameterizedTest
