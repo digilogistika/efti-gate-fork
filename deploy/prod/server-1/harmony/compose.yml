@@ -1,0 +1,40 @@
+services:
+  harmony-ap:
+    image: niis/harmony-ap:2.5.0
+    depends_on:
+      - harmony-db
+    environment:
+      - DB_HOST=harmony-db
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=borduria
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=harmony.borduria.efti.pikker.dev
+    volumes:
+      - ap_data:/var/opt/harmony-ap
+    ports:
+      - "8443:8443"
+    restart: on-failure
+    mem_limit: 1500m
+  harmony-db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: on-failure
+    mem_limit: 512m
+volumes:
+  ap_data:
+  db_data:
