@@ -7,10 +7,10 @@ cd $(dirname $0)
 projectPomFile=../../../../implementation/pom.xml
 
 echo "Cleaning up..."
-mvn -B clean --file $projectPomFile
+mvn -B clean --file $projectPomFile -DskipTests
 
 echo "Building..."
-mvn -B package --file $projectPomFile
+mvn -B package --file $projectPomFile -DskipTests
 
 echo "Copying apps..."
 cp -rf ../../../../implementation/gate/target/gate-*.jar ./gate/efti-gate.jar
