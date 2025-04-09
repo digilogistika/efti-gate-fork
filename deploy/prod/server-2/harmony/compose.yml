@@ -17,6 +17,9 @@ services:
       - SERVER_FQDN=harmony.listenbourg.efti.pikker.dev
     volumes:
       - ap_data:/var/opt/harmony-ap
+      - ./ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+      - ./ws-plugin.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
+      - ./ws-plugin.properties:/opt/harmony-ap/plugins/ws-plugin.properties
     ports:
       - "8443:8443"
     restart: on-failure
