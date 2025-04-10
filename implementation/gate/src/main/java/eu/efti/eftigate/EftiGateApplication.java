@@ -6,10 +6,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 
 @SpringBootApplication
 @EnableRabbit
@@ -17,27 +19,35 @@ import java.nio.file.StandardCopyOption;
 @EnableSchedulerLock(defaultLockAtMostFor = "PT30S")
 public class EftiGateApplication {
     public static void main(final String[] args) {
-        try {
-            // Load cacerts from resources and write to a temp file
-            File tempCacerts = File.createTempFile("temp-cacerts", ".jks");
-            try (InputStream in = EftiGateApplication.class.getClassLoader().getResourceAsStream("certs/cacerts")) {
-                if (in == null) {
-                    System.err.println("ERROR: 'certs/cacerts' not found in classpath.");
-                    System.exit(1);
-                }
-                Files.copy(in, tempCacerts.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            }
+        disableSslVerification();
 
-            // Set system properties to use custom truststore
-            System.setProperty("javax.net.ssl.trustStore", tempCacerts.getAbsolutePath());
-            System.setProperty("javax.net.ssl.trustStorePassword", "changeit"); // Replace with actual password
-
-        } catch (Exception e) {
-            System.err.println("Failed to initialize custom trust store:");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        
         SpringApplication.run(EftiGateApplication.class, args);
+    }
+
+    private static void disableSslVerification() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
+
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[0];
+                        }
+                    }
+            };
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+            // Disable hostname verification
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to disable SSL verification", e);
+        }
     }
 }
