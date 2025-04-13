@@ -25,6 +25,6 @@ gate:
   country: BO
   owner: borduria
   ap:
-    url: http://efti.gate.borduria.eu:81/domibus/services/wsplugin
+    url: https://harmony.borduria.efti.pikker.dev:8443/services/wsplugin
     username: borduria_service_account
     password: Azerty59*1234567

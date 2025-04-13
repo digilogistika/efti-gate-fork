@@ -9,10 +9,11 @@ In the `server-x` folder, there are two subfolders that are used to start these 
 
 Currently, both servers use the reference implementation, and the following imaginary countries are assigned:
 
-| Server   | Country     |
-|----------|-------------|
-| server-1 | borduria    |
-| server-2 | listenbourg |
+| Server   | Country                  |
+|----------|--------------------------|
+| server-1 | borduria                 |
+| server-2 | listenbourg              |
+| server-3 | acme (borduria platform) |
 
 ## Server Setup Instructions
 
