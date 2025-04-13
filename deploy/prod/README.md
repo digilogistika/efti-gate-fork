@@ -2,12 +2,14 @@
 
 ## Overview
 
-For production deployment, two servers are used to host the gates. Both servers run a Harmony access point paired with
-the related gate service.
+For production deployment (exposed to the public), two servers are used to host the gates. Both servers run a Harmony
+access point paired with
+the related gate service. To run tests between the gates 1 additional server is used to host platform. the platform
+server also has harmony setup for communication.
 
 In the `server-x` folder, there are two subfolders that are used to start these services.
 
-Currently, both servers use the reference implementation, and the following imaginary countries are assigned:
+Currently, servers use the reference implementation, and the following imaginary countries are assigned:
 
 | Server   | Country                  |
 |----------|--------------------------|
