@@ -54,7 +54,14 @@ Set OpenJDK 17 as the default JDK:
 update-java-alternatives --list  
 
 # Set the default JDK (replace path with the actual path to JDK 17)
-sudo update-alternatives --set path/to/jdk-17/
+sudo update-java-alternatives --set path/to/jdk-17/
+```
+
+> **Note** when encountering permission issues when starting harmony containers, you can try to change the folder
+> permissions of the harmony docker container volume. to do that form the host system:
+
+```bash
+chown -R 999:999 /var/lib/docker/volumes/harmony_ap_data/_data/etc/
 ```
 
 #### Install Maven and Nginx
