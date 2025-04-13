@@ -245,13 +245,19 @@
 									}
 								},
 								"url": {
-									"raw": "{{gate_bo_url}}/v1/getIdentifiers",
+									"raw": "http://borduria.efti.pikker.dev:8880/v1/control/identifiers",
+									"protocol": "http",
 									"host": [
-										"{{gate_bo_url}}"
+										"borduria",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8880",
 									"path": [
 										"v1",
-										"getIdentifiers"
+										"control",
+										"identifiers"
 									]
 								}
 							},
@@ -273,13 +279,19 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{gate_bo_url}}/v1/getIdentifiers?requestId={{requestId}}",
+									"raw": "http://borduria.efti.pikker.dev:8880/v1/control/identifiers?requestId={{requestId}}",
+									"protocol": "http",
 									"host": [
-										"{{gate_bo_url}}"
+										"borduria",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8880",
 									"path": [
 										"v1",
-										"getIdentifiers"
+										"control",
+										"identifiers"
 									],
 									"query": [
 										{
@@ -321,7 +333,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"gateId\": \"syldavia\",\r\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\r\n    \"platformId\": \"massivedynamic\",\r\n    \"subsetId\": \"full\"\r\n}",
+									"raw": "{\r\n    \"gateId\": \"listenbourg\",\r\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\r\n    \"platformId\": \"umbrellacorporation\",\r\n    \"subsetId\": \"full\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -329,10 +341,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{gate_bo_url}}/v1/control/uil",
+									"raw": "http://borduria.efti.pikker.dev:8880/v1/control/uil",
+									"protocol": "http",
 									"host": [
-										"{{gate_bo_url}}"
+										"borduria",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8880",
 									"path": [
 										"v1",
 										"control",
@@ -367,10 +384,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{gate_bo_url}}/v1/control/uil/follow-up",
+									"raw": "http://borduria.efti.pikker.dev:8880/v1/control/uil/follow-up",
+									"protocol": "http",
 									"host": [
-										"{{gate_bo_url}}"
+										"borduria",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8880",
 									"path": [
 										"v1",
 										"control",
@@ -395,7 +417,8 @@
 										"exec": [
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								},
 								{
@@ -406,7 +429,8 @@
 											"let responseData = pm.response.json();\r",
 											"pm.globals.set(\"access_token\", responseData.access_token);"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -446,9 +470,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{kc_bo_url}}/realms/eFTI_BO/protocol/openid-connect/token",
+									"raw": "http://keycloak.acme.efti.pikker.dev/realms/eFTI_BO/protocol/openid-connect/token",
+									"protocol": "http",
 									"host": [
-										"{{kc_bo_url}}"
+										"keycloak",
+										"acme",
+										"efti",
+										"pikker",
+										"dev"
 									],
 									"path": [
 										"realms",
@@ -499,10 +528,15 @@
 									]
 								},
 								"url": {
-									"raw": "{{simulator_bo_url}}/identifiers/upload/file",
+									"raw": "http://acme.efti.pikker.dev:8070/identifiers/upload/file",
+									"protocol": "http",
 									"host": [
-										"{{simulator_bo_url}}"
+										"acme",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8070",
 									"path": [
 										"identifiers",
 										"upload",
@@ -549,10 +583,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{simulator_bo_url}}/identifiers/upload",
+									"raw": "http://acme.efti.pikker.dev:8070/identifiers/upload",
+									"protocol": "http",
 									"host": [
-										"{{simulator_bo_url}}"
+										"acme",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8070",
 									"path": [
 										"identifiers",
 										"upload"
@@ -582,7 +621,8 @@
 											"let responseData = pm.response.json();\r",
 											"pm.globals.set(\"access_token\", responseData.access_token);"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -620,9 +660,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{kc_li_url}}/realms/eFTI_LI/protocol/openid-connect/token",
+									"raw": "http://keycloak.listenbourg.efti.pikker.dev/realms/eFTI_LI/protocol/openid-connect/token",
+									"protocol": "http",
 									"host": [
-										"{{kc_li_url}}"
+										"keycloak",
+										"listenbourg",
+										"efti",
+										"pikker",
+										"dev"
 									],
 									"path": [
 										"realms",
@@ -673,10 +718,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{gate_li_url}}/v1/control/uil",
+									"raw": "http://listenbourg.efti.pikker.dev:8881/v1/control/uil",
+									"protocol": "http",
 									"host": [
-										"{{gate_li_url}}"
+										"listenbourg",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8881",
 									"path": [
 										"v1",
 										"control",
@@ -721,10 +771,15 @@
 									}
 								],
 								"url": {
-									"raw": "{{gate_li_url}}/v1/control/uil?requestId={{requestId}}",
+									"raw": "http://listenbourg.efti.pikker.dev:8881/v1/control/uil?requestId={{requestId}}",
+									"protocol": "http",
 									"host": [
-										"{{gate_li_url}}"
+										"listenbourg",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8881",
 									"path": [
 										"v1",
 										"control",
@@ -795,10 +850,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{gate_li_url}}/v1/control/identifiers",
+									"raw": "http://listenbourg.efti.pikker.dev:8881/v1/control/identifiers",
+									"protocol": "http",
 									"host": [
-										"{{gate_li_url}}"
+										"listenbourg",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8881",
 									"path": [
 										"v1",
 										"control",
@@ -824,10 +884,15 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{gate_li_url}}/v1/getIdentifiers?requestId={{requestId}}",
+									"raw": "http://listenbourg.efti.pikker.dev:8881/v1/getIdentifiers?requestId={{requestId}}",
+									"protocol": "http",
 									"host": [
-										"{{gate_li_url}}"
+										"listenbourg",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8881",
 									"path": [
 										"v1",
 										"getIdentifiers"
@@ -872,7 +937,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"gateId\": \"syldavia\",\r\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\r\n    \"platformId\": \"massivedynamic\",\r\n    \"subsetId\": \"full\"\r\n}",
+									"raw": "{\r\n    \"gateId\": \"borduria\",\r\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789aaa\",\r\n    \"platformId\": \"acme\",\r\n    \"subsetId\": \"full\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -880,10 +945,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{gate_bo_url}}/v1/control/uil",
+									"raw": "http://listenbourg.efti.pikker.dev:8881/v1/control/uil",
+									"protocol": "http",
 									"host": [
-										"{{gate_bo_url}}"
+										"listenbourg",
+										"efti",
+										"pikker",
+										"dev"
 									],
+									"port": "8881",
 									"path": [
 										"v1",
 										"control",
