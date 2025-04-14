@@ -18,7 +18,7 @@ def print_status(step, success, message=""):
 def simulator_authentication():
     global simulator_token
     step = "Simulator Authentication"
-    url = KC_URL
+    url = KC_SIMULATOR_URL
     payload = {
         "grant_type": "client_credentials",
         "client_id": "simulator",
@@ -179,7 +179,7 @@ def simulator_upload_identifiers(
 def gate_authentication():
     global gate_token
     step = "Gate Authentication"
-    url = KC_URL
+    url = KC_GATE_URL
     payload = {
         "username": GATE_USER,
         "password": GATE_PASSWORD,

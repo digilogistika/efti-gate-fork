@@ -1,4 +1,7 @@
-KC_URL = (
+KC_GATE_URL = (
+    "http://auth.gate.borduria.eu:8080/realms/eFTI_BO/protocol/openid-connect/token"
+)
+KC_SIMULATOR_URL = (
     "http://auth.gate.borduria.eu:8080/realms/eFTI_BO/protocol/openid-connect/token"
 )
 GATE_ID = "borduria"

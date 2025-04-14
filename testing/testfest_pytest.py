@@ -6,7 +6,7 @@ from config import *
 
 
 def authenticate_simulator():
-    url = KC_URL
+    url = KC_SIMULATOR_URL
     payload = {
         "grant_type": "client_credentials",
         "client_id": "simulator",
@@ -103,7 +103,7 @@ def upload_identifiers_to_simulator(
 
 
 def authenticate_gate():
-    url = KC_URL
+    url = KC_GATE_URL
     payload = {
         "username": GATE_USER,
         "password": GATE_PASSWORD,
