@@ -1,0 +1,83 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: efti-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
+    networks:
+      efti:
+
+  efti-gate-LI:
+    env_file:
+      - ./gate/ENV/LI.env
+    image: openjdk:17
+    depends_on:
+      - keycloak
+      - psql
+    volumes:
+      - ./gate:/usr/src/myapp
+    working_dir: /usr/src/myapp
+    command: java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar -Dspring.config.location=/usr/src/myapp/ -Dspring.profiles.active=$${PROFILE} efti-gate.jar
+    ports:
+      - "8881:8881"
+      - "8891:5005"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      efti:
+
+  psql:
+    image: postgres:15.4
+    container_name: reference-gate-shared-db
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    ports:
+      - "9001:5432"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      efti:
+
+  psql-meta:
+    image: postgres:15.4
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    ports:
+      - "2345:5432"
+    volumes:
+      - ./sql-meta:/docker-entrypoint-initdb.d
+    networks:
+      efti:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.5
+    command: [ "start-dev", "--import-realm", "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=secret
+      - DEBUG=true
+      - DEBUG_PORT=*:8788
+    ports:
+      - "8080:8080"
+      - "8788:8788"
+    volumes:
+      - ./keycloak/bo-export.json:/opt/keycloak/data/import/bo-export.json
+      - ./keycloak/li-export.json:/opt/keycloak/data/import/li-export.json
+      - ./keycloak/sy-export.json:/opt/keycloak/data/import/sy-export.json
+    networks:
+      efti:
+        aliases:
+          - auth.gate.borduria.eu
+          - auth.gate.syldavia.eu
+          - auth.gate.listenbourg.eu
+
+networks:
+  efti:
+    name: efti-network
+    external: true
