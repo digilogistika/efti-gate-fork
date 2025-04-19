@@ -1,0 +1,6 @@
+services:
+  setup:
+    environment:
+
+    build:
+      dockerfile: Dockerfile
