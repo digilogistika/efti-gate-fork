@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth.gate.borduria.eu:8080/realms/eFTI_BO
+
+server:
+  port: 8070
+
+gate:
+  minSleep: 1000
+  maxSleep: 2000
+  owner: acme
+  cda_path: file:/usr/src/myapp/cda/
+  gate: borduria
+  ap:
+    url: https://harmony.acme.efti.pikker.dev:8443/services/wsplugin
+    username: acme_service_account
+    password: Azerty59*1234567
+
