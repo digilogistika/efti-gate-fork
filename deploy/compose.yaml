@@ -155,7 +155,7 @@ services:
   efti-rabbitmq:
     image: rabbitmq:3-management
     container_name: efti-rabbitmq
-    profiles: ["dev", "borduria", "listenbourg", "acme"]
+    profiles: ["dev", "borduria", "listenbourg"]
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -204,6 +204,22 @@ services:
       - "8891:5006"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - efti-network
+    restart: on-failure
+
+  efti-platform-acm:
+    build:
+      context: ../
+      dockerfile: ./deploy/platform/Dockerfile
+    container_name: efti-platform-acme-instance
+    profiles: ["acme", "dev"]
+    depends_on:
+      - efti-keycloak
+      - efti-psql
+    ports:
+      - "8070:8070"
+      - "8893:5005"
     networks:
       - efti-network
     restart: on-failure

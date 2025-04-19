@@ -8,7 +8,7 @@ COPY ./schema ./schema
 RUN mvn -B clean -f ./implementation/pom.xml -DskipTests
 RUN mvn -B package -f ./implementation/pom.xml -DskipTests
 
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 
 WORKDIR /usr/src/myapp
 
