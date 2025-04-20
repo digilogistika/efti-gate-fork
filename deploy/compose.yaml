@@ -200,7 +200,7 @@ services:
       - efti-psql
       - efti-rabbitmq
     ports:
-      - "8881:8880"
+      - "8881:8881"
       - "8891:5006"
     extra_hosts:
       - "host.docker.internal:host-gateway"
