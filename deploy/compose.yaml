@@ -2,7 +2,7 @@ services:
   harmony-borduria:
     image: niis/harmony-ap:2.5.0
     container_name: harmony-ap-borduria-instance
-    profiles: ["borduria", "dev"]
+    profiles: [ "borduria", "dev" ]
     depends_on:
       harmony-db-borduria:
         condition: service_started
@@ -34,7 +34,7 @@ services:
   harmony-listenbourg:
     image: niis/harmony-ap:2.5.0
     container_name: harmony-ap-listenbourg-instance
-    profiles: ["listenbourg", "dev"]
+    profiles: [ "listenbourg", "dev" ]
     depends_on:
       harmony-db-listenbourg:
         condition: service_started
@@ -66,7 +66,7 @@ services:
   harmony-acme:
     image: niis/harmony-ap:2.5.0
     container_name: harmony-ap-acme-instance
-    profiles: ["acme", "dev"]
+    profiles: [ "acme", "dev" ]
     depends_on:
       harmony-db-acme:
         condition: service_started
@@ -98,7 +98,7 @@ services:
   harmony-db-borduria:
     image: mysql:8
     container_name: harmony-db-borduria-instance
-    profiles: ["borduria", "dev"]
+    profiles: [ "borduria", "dev" ]
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
       - MYSQL_DATABASE=harmony_ap
@@ -117,7 +117,7 @@ services:
   harmony-db-listenbourg:
     image: mysql:8
     container_name: harmony-db-listenbourg-instance
-    profiles: ["listenbourg", "dev"]
+    profiles: [ "listenbourg", "dev" ]
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
       - MYSQL_DATABASE=harmony_ap
@@ -136,7 +136,7 @@ services:
   harmony-db-acme:
     image: mysql:8
     container_name: harmony-db-acme-instance
-    profiles: ["acme", "dev"]
+    profiles: [ "acme", "dev" ]
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
       - MYSQL_DATABASE=harmony_ap
@@ -155,7 +155,7 @@ services:
   efti-rabbitmq:
     image: rabbitmq:3-management
     container_name: efti-rabbitmq
-    profiles: ["dev", "borduria", "listenbourg"]
+    profiles: [ "dev", "borduria", "listenbourg" ]
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -171,7 +171,7 @@ services:
       context: ../
       dockerfile: ./deploy/gate/Dockerfile
     container_name: efti-gate-borduria-instance
-    profiles: ["borduria", "dev"]
+    profiles: [ "borduria", "dev" ]
     env_file:
       - ./gate/ENV/BO.env
     depends_on:
@@ -192,7 +192,7 @@ services:
       context: ../
       dockerfile: ./deploy/gate/Dockerfile
     container_name: efti-gate-listenbourg-instance
-    profiles: ["listenbourg", "dev"]
+    profiles: [ "listenbourg", "dev" ]
     env_file:
       - ./gate/ENV/LI.env
     depends_on:
@@ -200,7 +200,7 @@ services:
       - efti-psql
       - efti-rabbitmq
     ports:
-      - "8881:8880"
+      - "8881:8881"
       - "8891:5006"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -213,7 +213,7 @@ services:
       context: ../
       dockerfile: ./deploy/platform/Dockerfile
     container_name: efti-platform-acme-instance
-    profiles: ["acme", "dev"]
+    profiles: [ "acme", "dev" ]
     depends_on:
       - efti-keycloak
       - efti-psql
@@ -227,7 +227,7 @@ services:
   efti-psql:
     image: postgres:15.4
     container_name: reference-gate-shared-db
-    profiles: ["dev", "borduria", "listenbourg", "acme"]
+    profiles: [ "dev", "borduria", "listenbourg", "acme" ]
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
@@ -242,7 +242,7 @@ services:
   efti-psql-meta:
     image: postgres:15.4
     container_name: reference-gate-meta-db
-    profiles: ["dev", "borduria", "listenbourg", "acme"]
+    profiles: [ "dev", "borduria", "listenbourg", "acme" ]
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
@@ -257,7 +257,7 @@ services:
   efti-keycloak:
     image: quay.io/keycloak/keycloak:22.0.5
     container_name: efti-keycloak
-    profiles: ["dev", "borduria", "listenbourg", "acme"]
+    profiles: [ "dev", "borduria", "listenbourg", "acme" ]
     command: [ "start-dev", "--import-realm", "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
     environment:
       - KEYCLOAK_ADMIN=admin
@@ -276,6 +276,19 @@ services:
           - auth.gate.borduria.eu
           - auth.gate.listenbourg.eu
     restart: on-failure
+
+  dev-harmony-autoconfigure:
+    profiles: [ "dev" ]
+    environment:
+      - ACCESS_POINT_BORDURIA=https://harmony-borduria:8443
+      - ACCESS_POINT_LISTENBOURG=https://harmony-listenbourg:8443
+      - ACCESS_POINT_ACME=https://harmony-acme:8443
+    build:
+      dockerfile: Dockerfile
+      context: ../utils/harmony_scripts/
+    networks:
+      efti-network:
+
 
 volumes:
   ap_data_borduria:
