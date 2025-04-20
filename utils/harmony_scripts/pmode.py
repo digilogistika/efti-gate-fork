@@ -60,7 +60,7 @@ def update_pmode_config(parties_dict, xml_file_path="master_pmode.xml", output_f
     for party_name, party_endpoint in parties_dict.items():
         party = ET.SubElement(parties_elem, "party",
                               name=party_name,
-                              endpoint=f"{party_endpoint}/services/msh?{party_name}")
+                              endpoint=f"{party_endpoint}/services/msh?domain={party_name}")
         ET.SubElement(party, "identifier",
                       partyId=party_name,
                       partyIdType="partyTypeUrn")
