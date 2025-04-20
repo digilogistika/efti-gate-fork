@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth.gate.estonia.eu:8080/realms/eFTI_EE
+
+server:
+  port: 8071
+
+gate:
+  minSleep: 1000
+  maxSleep: 2000
+  owner: estplat
+  cda_path: file:/usr/src/myapp/cda/
+  gate: estonia
+  ap:
+    url: https://harmony.estplat.pikker.dev:8443/services/wsplugin
+    username: estplat_service_account
+    password: Azerty59*1234567
+
