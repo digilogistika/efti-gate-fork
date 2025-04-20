@@ -63,6 +63,38 @@ services:
     mem_limit: 1500m
     user: "root:root"
 
+  harmony-estonia:
+    image: niis/harmony-ap:2.5.0
+    container_name: harmony.estonia.pikker.dev
+    profiles: [ "gate-estonia", "estonia" ]
+    depends_on:
+      harmony-db-estonia:
+        condition: service_started
+    environment:
+      - DB_HOST=harmony-db-estonia
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=estonia
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=harmony.estonia.pikker.dev
+    volumes:
+      - ap_data_estonia:/var/opt/harmony-ap
+      - ./harmony/estonia/ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+      - ./harmony/estonia/ws-plugin.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
+      - ./harmony/estonia/ws-plugin.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    ports:
+      - "8444:8443"
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+
   harmony-acme:
     image: niis/harmony-ap:2.5.0
     container_name: harmony-ap-acme-instance
@@ -89,6 +121,38 @@ services:
       - ./harmony/acme/ws-plugin.properties:/opt/harmony-ap/plugins/ws-plugin.properties
     ports:
       - "8443:8443"
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+
+  harmony-estplat:
+    image: niis/harmony-ap:2.5.0
+    container_name: harmony.estplat.pikker.dev
+    profiles: [ "estplat", "estonia" ]
+    depends_on:
+      harmony-db-estplat:
+        condition: service_started
+    environment:
+      - DB_HOST=harmony-db-estplat
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=estplat
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=harmony.estplat.pikker.dev
+    volumes:
+      - ap_data_estplat:/var/opt/harmony-ap
+      - ./harmony/estplat/ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+      - ./harmony/estplat/ws-plugin.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
+      - ./harmony/estplat/ws-plugin.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    ports:
+      - "8445:8443"
     networks:
       - efti-network
     restart: on-failure
@@ -133,6 +197,25 @@ services:
     restart: on-failure
     mem_limit: 512m
 
+  harmony-db-estonia:
+    image: mysql:8
+    container_name: harmony-db-estonia-instance
+    profiles: [ "gate-estonia", "estonia" ]
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data_estonia:/var/lib/mysql
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 512m
+
   harmony-db-acme:
     image: mysql:8
     container_name: harmony-db-acme-instance
@@ -152,10 +235,29 @@ services:
     restart: on-failure
     mem_limit: 512m
 
+  harmony-db-estplat:
+    image: mysql:8
+    container_name: harmony-db-estplat-instance
+    profiles: [ "estplat", "estonia" ]
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data_estplat:/var/lib/mysql
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 512m
+
   efti-rabbitmq:
     image: rabbitmq:3-management
     container_name: efti-rabbitmq
-    profiles: [ "dev", "borduria", "listenbourg" ]
+    profiles: [ "dev", "borduria", "listenbourg", "estonia", "gate-estonia" ]
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -208,10 +310,34 @@ services:
       - efti-network
     restart: on-failure
 
+  efti-gate-estonia:
+    build:
+      context: ../
+      dockerfile: ./deploy/gate/Dockerfile
+    container_name: efti-gate-estonia-instance
+    profiles: [ "gate-estonia", "estonia" ]
+    env_file:
+      - ./gate/ENV/EE.env
+    depends_on:
+      - efti-keycloak
+      - efti-psql
+      - efti-rabbitmq
+    ports:
+      - "8882:8882"
+      - "8892:5006"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - efti-network
+    restart: on-failure
+
   efti-platform-acme:
     build:
       context: ../
       dockerfile: ./deploy/platform/Dockerfile
+    environment:
+      - PROFILE=ACME
+      - PORT=8070
     container_name: efti-platform-acme-instance
     profiles: [ "acme", "dev" ]
     depends_on:
@@ -224,13 +350,34 @@ services:
       - efti-network
     restart: on-failure
 
+  efti-platform-estplat:
+    build:
+      context: ../
+      dockerfile: ./deploy/platform/Dockerfile
+    environment:
+      - PROFILE=ESTPLAT
+      - PORT=8071
+    container_name: efti-platform-estplat-instance
+    profiles: [ "estplat", "estonia" ]
+    depends_on:
+      - efti-keycloak
+      - efti-psql
+    ports:
+      - "8071:8071"
+      - "8894:5005"
+    networks:
+      - efti-network
+    restart: on-failure
+
   efti-psql:
     image: postgres:15.4
     container_name: reference-gate-shared-db
-    profiles: [ "dev", "borduria", "listenbourg", "acme" ]
+    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia", "estplat" ]
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
     ports:
       - "9001:5432"
     volumes:
@@ -242,7 +389,7 @@ services:
   efti-psql-meta:
     image: postgres:15.4
     container_name: reference-gate-meta-db
-    profiles: [ "dev", "borduria", "listenbourg", "acme" ]
+    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia" ]
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
@@ -257,7 +404,7 @@ services:
   efti-keycloak:
     image: quay.io/keycloak/keycloak:22.0.5
     container_name: efti-keycloak
-    profiles: [ "dev", "borduria", "listenbourg", "acme" ]
+    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia", "estplat" ]
     command: [ "start-dev", "--import-realm", "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
     environment:
       - KEYCLOAK_ADMIN=admin
@@ -270,11 +417,13 @@ services:
     volumes:
       - ./keycloak/bo-export.json:/opt/keycloak/data/import/bo-export.json
       - ./keycloak/li-export.json:/opt/keycloak/data/import/li-export.json
+      - ./keycloak/ee-export.json:/opt/keycloak/data/import/ee-export.json
     networks:
       efti-network:
         aliases:
           - auth.gate.borduria.eu
           - auth.gate.listenbourg.eu
+          - auth.gate.estonia.eu
     restart: on-failure
 
   dev-harmony-autoconfigure:
@@ -289,14 +438,39 @@ services:
     networks:
       efti-network:
 
+  estonia-harmony-autoconfigure:
+    profiles: [ "estonia" ]
+    environment:
+      - ACCESS_POINT_ESTONIA=https://harmony.estonia.pikker.dev:8443
+      - ACCESS_POINT_ESTPLAT=https://harmony.estplat.pikker.dev:8443
+    build:
+      dockerfile: Dockerfile
+      context: ../utils/harmony_scripts/
+    networks:
+      efti-network:
+
+  setup-gate-indicators:
+    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia", "estplat" ]
+    depends_on:
+      efti-psql:
+        condition: service_healthy
+    build:
+      dockerfile: Dockerfile
+      context: ./gate-db
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   ap_data_borduria:
   ap_data_listenbourg:
   ap_data_acme:
+  ap_data_estonia:
+  ap_data_estplat:
   db_data_borduria:
   db_data_listenbourg:
   db_data_acme:
+  db_data_estonia:
+  db_data_estplat:
 
 networks:
   efti-network:

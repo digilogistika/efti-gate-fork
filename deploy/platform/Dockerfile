@@ -15,4 +15,4 @@ WORKDIR /usr/src/myapp
 COPY --from=builder /build/implementation/platform-gate-simulator/target/platform-gate-simulator-*.jar ./platform-simulator.jar
 COPY ./deploy/platform ./
 
-CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "-Dspring.config.location=file:application.yml", "-Dspring.profiles.active=ACME", "platform-simulator.jar", "--port=8070"]
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "-Dspring.config.location=file:application.yml", "-Dspring.profiles.active=${PROFILE}", "platform-simulator.jar", "--port=${PORT}"]
