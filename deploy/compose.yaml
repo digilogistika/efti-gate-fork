@@ -173,7 +173,7 @@ services:
     container_name: efti-gate-borduria-instance
     profiles: ["borduria", "dev"]
     env_file:
-      - ./gate/gate/ENV/BO.env
+      - ./gate/ENV/BO.env
     depends_on:
       - efti-keycloak
       - efti-psql
@@ -194,7 +194,7 @@ services:
     container_name: efti-gate-listenbourg-instance
     profiles: ["listenbourg", "dev"]
     env_file:
-      - ./gate/gate/ENV/LI.env
+      - ./gate/ENV/LI.env
     depends_on:
       - efti-keycloak
       - efti-psql
