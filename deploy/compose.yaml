@@ -274,6 +274,11 @@ services:
       dockerfile: ./deploy/gate/Dockerfile
     container_name: efti-gate-borduria-instance
     profiles: [ "borduria", "dev" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8880/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
     env_file:
       - ./gate/ENV/BO.env
     depends_on:
@@ -295,6 +300,11 @@ services:
       dockerfile: ./deploy/gate/Dockerfile
     container_name: efti-gate-listenbourg-instance
     profiles: [ "listenbourg", "dev" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8881/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
     env_file:
       - ./gate/ENV/LI.env
     depends_on:
@@ -316,6 +326,11 @@ services:
       dockerfile: ./deploy/gate/Dockerfile
     container_name: efti-gate-estonia-instance
     profiles: [ "gate-estonia", "estonia" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8882/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
     env_file:
       - ./gate/ENV/EE.env
     depends_on:
@@ -376,11 +391,6 @@ services:
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
     ports:
       - "9001:5432"
     volumes:
@@ -452,10 +462,23 @@ services:
     networks:
       efti-network:
 
-  setup-gate-indicators:
-    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia", "estplat" ]
+  setup-gate-indicators-dev:
+    profiles: [ "dev" ]
     depends_on:
-      efti-psql:
+      efti-gate-borduria:
+        condition: service_healthy
+      efti-gate-listenbourg:
+        condition: service_healthy
+    build:
+      dockerfile: Dockerfile
+      context: ./gate-db
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  setup-gate-indicators-estonia:
+    profiles: [ "estonia" ]
+    depends_on:
+      efti-gate-estonia:
         condition: service_healthy
     build:
       dockerfile: Dockerfile
