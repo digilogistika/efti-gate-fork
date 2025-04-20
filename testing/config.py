@@ -1,19 +1,25 @@
+# ---- Gate that does requests ----
 KC_GATE_URL = (
     "http://auth.gate.borduria.eu:8080/realms/eFTI_BO/protocol/openid-connect/token"
 )
+
+KC_GATE_SECRET = "4ce0hW2Zqjxa7FR4hz1OshuHwSPGWFGO"
+GATE_USER = "user_bo"
+GATE_PASSWORD = "Azerty59*123"
+
+# ---- Simulator where files are uploaded ----
 KC_SIMULATOR_URL = (
     "http://auth.gate.borduria.eu:8080/realms/eFTI_BO/protocol/openid-connect/token"
 )
-GATE_ID = "borduria"
-GATE_INDICATOR = "BO"
-GATE_DOMAIN = "http://efti.gate.borduria.eu"
-GATE_URL = f"{GATE_DOMAIN}:8880"
+KC_SIMULATOR_SECRET = "vr2J90y53Uhcuvb5jJJp7e3txxDhTvbc"
 SIMULATOR_ID = "acme"
 SIMULATOR_URL = "http://localhost:8070"
-KC_GATE_SECRET = "4ce0hW2Zqjxa7FR4hz1OshuHwSPGWFGO"
-KC_SIMULATOR_SECRET = "vr2J90y53Uhcuvb5jJJp7e3txxDhTvbc"
-GATE_USER = "user_bo"
-GATE_PASSWORD = "Azerty59*123"
+
+# ---- Gate that is connected with simulator ----
+GATE_ID = "borduria"
+GATE_INDICATOR = "BO"
+GATE_URL = "http://efti.gate.borduria.eu:8880"
+
 
 XML_FILE_PATH = "testdata/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915.xml"
 XML_FILE_2_PATH = "testdata/db27fa2b-d5f9-4e3b-93bd-aa466489dd80.xml"
@@ -51,4 +57,4 @@ DEFAULT_EQUIPMENT_COUNTRY = "EE"
 AUTH_TIMEOUT = 10
 UPLOAD_TIMEOUT = 20
 CONTROL_TIMEOUT = 15
-POLLING_INTERVAL = 5
+SLEEP_TIME = 5
