@@ -10,4 +10,8 @@ COPY . ./
 
 RUN pip install -r requirements.txt
 
+RUN apk update
+RUN apk add openjdk17
+
+
 ENTRYPOINT ["python3", "setup.py"]
