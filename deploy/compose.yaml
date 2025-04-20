@@ -372,7 +372,7 @@ services:
   efti-psql:
     image: postgres:15.4
     container_name: reference-gate-shared-db
-    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia" ]
+    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia", "estplat" ]
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
@@ -402,7 +402,7 @@ services:
   efti-keycloak:
     image: quay.io/keycloak/keycloak:22.0.5
     container_name: efti-keycloak
-    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia" ]
+    profiles: [ "dev", "borduria", "listenbourg", "acme", "estonia", "gate-estonia", "estplat" ]
     command: [ "start-dev", "--import-realm", "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
     environment:
       - KEYCLOAK_ADMIN=admin
