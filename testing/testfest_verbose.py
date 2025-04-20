@@ -274,8 +274,12 @@ def gate_get_uil_control():
     headers = {"Authorization": f"Bearer {gate_token}"}
     params = {"requestId": gate_uil_request_id}
     try:
-        status = "PENDING"
-        while status == "PENDING":
+        status = ""
+        while status in ["PENDING", ""]:
+            if status != "":
+                print("Waiting 5 sec before retry...")
+                time.sleep(SLEEP_TIME)
+
             response = requests.get(
                 url, headers=headers, params=params, timeout=CONTROL_TIMEOUT
             )
@@ -286,8 +290,6 @@ def gate_get_uil_control():
                 True,
                 f"Request successful. Status: {status}, Response:\n{response.text}",
             )
-            print("Waiting 5 sec before retry...")
-            time.sleep(SLEEP_TIME)
         return status
     except requests.exceptions.RequestException as e:
         print_status(
@@ -357,8 +359,11 @@ def gate_get_identifiers_control():
     headers = {"Authorization": f"Bearer {gate_token}"}
     params = {"requestId": gate_identifiers_request_id}
     try:
-        status = "PENDING"
-        while status == "PENDING":
+        status = ""
+        while status in ["PENDING", ""]:
+            if status != "":
+                print("Waiting 5 sec before retry...")
+                time.sleep(SLEEP_TIME)
             response = requests.get(
                 url, headers=headers, params=params, timeout=CONTROL_TIMEOUT
             )
@@ -372,8 +377,6 @@ def gate_get_identifiers_control():
                     json.dumps(json.loads(response.text), indent=2)
                 }",
             )
-            print("Waiting 5 sec before retry...")
-            time.sleep(SLEEP_TIME)
         return data
     except requests.exceptions.RequestException as e:
         print_status(
