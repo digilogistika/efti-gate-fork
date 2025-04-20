@@ -34,8 +34,7 @@ def simulator_authentication():
         simulator_token = data.get("access_token")
         if simulator_token:
             print_status(
-                step, True, f"Token obtained (masked): ...{
-                    simulator_token[-6:]}"
+                step, True, f"Token obtained (masked): ...{simulator_token[-6:]}"
             )
         else:
             print_status(step, False, "Access token not found in response.")
@@ -61,8 +60,7 @@ def simulator_upload_file(file_path):
     headers = {"Authorization": f"Bearer {simulator_token}"}
     try:
         with open(file_path, "rb") as f:
-            files = {"file": (os.path.basename(
-                file_path), f, "application/xml")}
+            files = {"file": (os.path.basename(file_path), f, "application/xml")}
             response = requests.post(
                 url, headers=headers, files=files, timeout=UPLOAD_TIMEOUT
             )
@@ -70,8 +68,7 @@ def simulator_upload_file(file_path):
         print_status(
             step,
             True,
-            f"File upload successful from {
-                file_path}. Status: {response.status_code}",
+            f"File upload successful from {file_path}. Status: {response.status_code}",
         )
     except requests.exceptions.RequestException as e:
         print_status(
@@ -196,8 +193,7 @@ def gate_authentication():
         data = response.json()
         gate_token = data.get("access_token")
         if gate_token:
-            print_status(step, True, f"Token obtained (masked): ...{
-                         gate_token[-6:]}")
+            print_status(step, True, f"Token obtained (masked): ...{gate_token[-6:]}")
         else:
             print_status(step, False, "Access token not found in response.")
     except requests.exceptions.RequestException as e:
@@ -278,19 +274,20 @@ def gate_get_uil_control():
     headers = {"Authorization": f"Bearer {gate_token}"}
     params = {"requestId": gate_uil_request_id}
     try:
-        time.sleep(POLLING_INTERVAL)
-        response = requests.get(
-            url, headers=headers, params=params, timeout=CONTROL_TIMEOUT
-        )
-        response.raise_for_status()
-        status = response.json().get("status")
-        print_status(
-            step,
-            True,
-            f"Request successful. Status: {status}, Response length: {
-                len(response.text)
-            }",
-        )
+        status = "PENDING"
+        while status == "PENDING":
+            response = requests.get(
+                url, headers=headers, params=params, timeout=CONTROL_TIMEOUT
+            )
+            response.raise_for_status()
+            status = response.json().get("status")
+            print_status(
+                step,
+                True,
+                f"Request successful. Status: {status}, Response:\n{response.text}",
+            )
+            print("Waiting 5 sec before retry...")
+            time.sleep(SLEEP_TIME)
         return status
     except requests.exceptions.RequestException as e:
         print_status(
@@ -320,13 +317,14 @@ def gate_post_identifiers_control(identifier):
         response.raise_for_status()
         data = response.json()
         gate_identifiers_request_id = data.get("requestId")
+        status = data.get("status")
         if gate_identifiers_request_id:
             print_status(
                 step,
                 True,
-                f"Request successful with identifier: {identifier}. requestId: {
-                    gate_identifiers_request_id
-                }",
+                f"Request successful with indentifier: {identifier}. Status: {
+                    status
+                }. requestId: {gate_uil_request_id}",
             )
         else:
             print_status(step, False, "requestId not found in response.")
@@ -352,28 +350,30 @@ def gate_get_identifiers_control():
         print_status(step, False, "Skipping - Gate token not available.")
         return
     if not gate_identifiers_request_id:
-        print_status(
-            step, False, "Skipping - Identifiers requestId not available.")
+        print_status(step, False, "Skipping - Identifiers requestId not available.")
         return
 
     url = f"{GATE_URL}/v1/control/identifiers"
     headers = {"Authorization": f"Bearer {gate_token}"}
     params = {"requestId": gate_identifiers_request_id}
     try:
-        time.sleep(POLLING_INTERVAL)
-        response = requests.get(
-            url, headers=headers, params=params, timeout=CONTROL_TIMEOUT
-        )
-        response.raise_for_status()
-        data = response.json()
-        status = data.get("status")
-        print_status(
-            step,
-            True,
-            f"Request successful. Status: {status}, Response:\n{
-                json.dumps(json.loads(response.text), indent=2)
-            }",
-        )
+        status = "PENDING"
+        while status == "PENDING":
+            response = requests.get(
+                url, headers=headers, params=params, timeout=CONTROL_TIMEOUT
+            )
+            response.raise_for_status()
+            data = response.json()
+            status = data.get("status")
+            print_status(
+                step,
+                True,
+                f"Request successful. Status: {status}, Response:\n{
+                    json.dumps(json.loads(response.text), indent=2)
+                }",
+            )
+            print("Waiting 5 sec before retry...")
+            time.sleep(SLEEP_TIME)
         return data
     except requests.exceptions.RequestException as e:
         print_status(
@@ -393,20 +393,13 @@ if __name__ == "__main__":
     simulator_upload_identifiers(FILE_2_DATASET_ID)
     simulator_upload_identifiers(LARGE_FILE_DATASET_ID)
     simulator_upload_identifiers(DATASET_ID_REGULAR)
-    simulator_upload_identifiers(
-        DATASET_ID_MMG418, identifier=IDENTIFIER_MMG418)
-    simulator_upload_identifiers(
-        DATASET_ID_CMF452_1, identifier=IDENTIFIER_CMF452)
-    simulator_upload_identifiers(
-        DATASET_ID_CMF452_2, identifier=IDENTIFIER_CMF452)
-    simulator_upload_identifiers(
-        DATASET_ID_RTB307, identifier=IDENTIFIER_RTB307)
-    simulator_upload_identifiers(
-        DATASET_ID_BDE471, identifier=IDENTIFIER_BDE471)
-    simulator_upload_identifiers(
-        DATASET_ID_LOADTEST, identifier=IDENTIFIER_LOADTEST)
-    simulator_upload_identifiers(
-        DATASET_ID_EEE100, identifier=IDENTIFIER_EEE100)
+    simulator_upload_identifiers(DATASET_ID_MMG418, identifier=IDENTIFIER_MMG418)
+    simulator_upload_identifiers(DATASET_ID_CMF452_1, identifier=IDENTIFIER_CMF452)
+    simulator_upload_identifiers(DATASET_ID_CMF452_2, identifier=IDENTIFIER_CMF452)
+    simulator_upload_identifiers(DATASET_ID_RTB307, identifier=IDENTIFIER_RTB307)
+    simulator_upload_identifiers(DATASET_ID_BDE471, identifier=IDENTIFIER_BDE471)
+    simulator_upload_identifiers(DATASET_ID_LOADTEST, identifier=IDENTIFIER_LOADTEST)
+    simulator_upload_identifiers(DATASET_ID_EEE100, identifier=IDENTIFIER_EEE100)
 
     gate_authentication()
 
@@ -488,19 +481,12 @@ if __name__ == "__main__":
     # Test case 40
     gate_post_uil_control(DATASET_ID_REGULAR)
     status = gate_get_uil_control()
-    while status not in ["TIMEOUT", "COMPLETE"]:
-        print("Waiting for time out...")
-        time.sleep(POLLING_INTERVAL)
-        status = gate_get_uil_control()
+    gate_get_uil_control()
 
     assert status == "TIMEOUT"
 
     # Test case 168 - currently timing out
     gate_post_uil_control(LARGE_FILE_DATASET_ID)
-    status = gate_get_uil_control()
-    while status not in ["TIMEOUT", "COMPLETE"]:
-        print("Waiting for answer...")
-        time.sleep(POLLING_INTERVAL)
-        status = gate_get_uil_control()
+    gate_get_uil_control()
 
     # assert status == "COMPLETE"
