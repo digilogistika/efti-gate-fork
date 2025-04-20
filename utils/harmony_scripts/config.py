@@ -18,8 +18,8 @@ for key in keys:
     ACCESS_POINT_HOSTS[key] = host
 
 ACCESS_POINTS = {
-    "borduria": "https://harmony.borduria.efti.pikker.dev:8443",
-    "listenbourg": "https://harmony.listenbourg.efti.pikker.dev:8443",
+    "borduria": "https://harmony-borduria:8443",
+    "listenbourg": "https://harmony-listenbourg:8443",
 } if not ACCESS_POINT_HOSTS else ACCESS_POINT_HOSTS
 
 PLUGIN_USER_PASSWORD = os.environ.get("PLUGIN_USER_PASSWORD", "Azerty59*1234567")
