@@ -15,7 +15,7 @@ gate:
   cda_path: file:/usr/src/myapp/cda/
   gate: borduria
   ap:
-    url: https://harmony.acme.efti.pikker.dev:8443/services/wsplugin
+    url: https://harmony-acme:8443/services/wsplugin
     username: acme_service_account
     password: Azerty59*1234567
 

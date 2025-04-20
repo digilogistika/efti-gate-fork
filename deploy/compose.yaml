@@ -160,8 +160,8 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     volumes:
-      - ./gate/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-      - ./gate/rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
     networks:
       - efti-network
     restart: on-failure
@@ -208,7 +208,7 @@ services:
       - efti-network
     restart: on-failure
 
-  efti-platform-acm:
+  efti-platform-acme:
     build:
       context: ../
       dockerfile: ./deploy/platform/Dockerfile
@@ -234,7 +234,7 @@ services:
     ports:
       - "9001:5432"
     volumes:
-      - ./gate/sql:/docker-entrypoint-initdb.d
+      - ./sql:/docker-entrypoint-initdb.d
     networks:
       - efti-network
     restart: on-failure
@@ -249,7 +249,7 @@ services:
     ports:
       - "2345:5432"
     volumes:
-      - ./gate/sql-meta:/docker-entrypoint-initdb.d
+      - ./sql-meta:/docker-entrypoint-initdb.d
     networks:
       - efti-network
     restart: on-failure
@@ -268,8 +268,8 @@ services:
       - "8080:8080"
       - "8788:8788"
     volumes:
-      - ./gate/keycloak/bo-export.json:/opt/keycloak/data/import/bo-export.json
-      - ./gate/keycloak/li-export.json:/opt/keycloak/data/import/li-export.json
+      - ./keycloak/bo-export.json:/opt/keycloak/data/import/bo-export.json
+      - ./keycloak/li-export.json:/opt/keycloak/data/import/li-export.json
     networks:
       efti-network:
         aliases:
