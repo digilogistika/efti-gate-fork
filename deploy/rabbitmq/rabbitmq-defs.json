@@ -12,23 +12,9 @@
       "limits": {
       }
     },
-    {
-      "name": "bo",
-      "password": "bo",
-      "tags": "administrator",
-      "limits": {
-      }
-    },
-    {
-      "name": "ee",
-      "password": "ee",
-      "tags": "administrator",
-      "limits": {
-      }
-    },
-    {
-      "name": "li",
-      "password": "li",
+   {
+      "name": "user",
+      "password": "pass",
       "tags": "administrator",
       "limits": {
       }
@@ -36,33 +22,13 @@
   ],
   "vhosts": [
     {
-      "name": "bo"
-    },
-    {
-      "name": "ee"
-    },
-    {
-      "name": "li"
+      "name": "host"
     }
   ],
   "permissions": [
     {
-      "user": "bo",
-      "vhost": "bo",
-      "configure": ".*",
-      "write": ".*",
-      "read": ".*"
-    },
-    {
-      "user": "ee",
-      "vhost": "ee",
-      "configure": ".*",
-      "write": ".*",
-      "read": ".*"
-    },
-    {
-      "user": "li",
-      "vhost": "li",
+      "user": "user",
+      "vhost": "host",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
@@ -83,27 +49,7 @@
   "queues": [
     {
       "name": "efti.receive-messages.q",
-      "vhost": "li",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic",
-        "x-dead-letter-exchange": "receive-message-dead-letter-exchange"
-      }
-    },
-    {
-      "name": "efti.receive-messages.q",
-      "vhost": "ee",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic",
-        "x-dead-letter-exchange": "receive-message-dead-letter-exchange"
-      }
-    },
-    {
-      "name": "efti.receive-messages.q",
-      "vhost": "bo",
+      "vhost": "host",
       "durable": true,
       "auto_delete": false,
       "arguments": {
@@ -113,27 +59,7 @@
     },
     {
       "name": "efti.send-messages.q",
-      "vhost": "li",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic",
-        "x-dead-letter-exchange": "send-message-dead-letter-exchange"
-      }
-    },
-    {
-      "name": "efti.send-messages.q",
-      "vhost": "ee",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic",
-        "x-dead-letter-exchange": "send-message-dead-letter-exchange"
-      }
-    },
-    {
-      "name": "efti.send-messages.q",
-      "vhost": "bo",
+      "vhost": "host",
       "durable": true,
       "auto_delete": false,
       "arguments": {
@@ -143,25 +69,7 @@
     },
     {
       "name": "message-receive-dead-letter-queue",
-      "vhost": "li",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic"
-      }
-    },
-    {
-      "name": "message-receive-dead-letter-queue",
-      "vhost": "ee",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic"
-      }
-    },
-    {
-      "name": "message-receive-dead-letter-queue",
-      "vhost": "bo",
+      "vhost": "host",
       "durable": true,
       "auto_delete": false,
       "arguments": {
@@ -170,25 +78,7 @@
     },
     {
       "name": "message-send-dead-letter-queue",
-      "vhost": "li",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic"
-      }
-    },
-    {
-      "name": "message-send-dead-letter-queue",
-      "vhost": "ee",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-        "x-queue-type": "classic"
-      }
-    },
-    {
-      "name": "message-send-dead-letter-queue",
-      "vhost": "bo",
+      "vhost": "host",
       "durable": true,
       "auto_delete": false,
       "arguments": {
@@ -199,25 +89,7 @@
   "exchanges": [
     {
       "name": "efti.receive-message.exchange",
-      "vhost": "li",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "efti.receive-message.exchange",
-      "vhost": "ee",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "efti.receive-message.exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "type": "direct",
       "durable": true,
       "auto_delete": false,
@@ -226,25 +98,7 @@
     },
     {
       "name": "efti.send-message.exchange",
-      "vhost": "li",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "efti.send-message.exchange",
-      "vhost": "ee",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "efti.send-message.exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "type": "direct",
       "durable": true,
       "auto_delete": false,
@@ -253,27 +107,7 @@
     },
     {
       "name": "receive-message-dead-letter-exchange",
-      "vhost": "li",
-      "type": "fanout",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "receive-message-dead-letter-exchange",
-      "vhost": "ee",
-      "type": "fanout",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "receive-message-dead-letter-exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "type": "fanout",
       "durable": true,
       "auto_delete": false,
@@ -283,27 +117,7 @@
     },
     {
       "name": "send-message-dead-letter-exchange",
-      "vhost": "ee",
-      "type": "fanout",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "send-message-dead-letter-exchange",
-      "vhost": "li",
-      "type": "fanout",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {
-      }
-    },
-    {
-      "name": "send-message-dead-letter-exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "type": "fanout",
       "durable": true,
       "auto_delete": false,
@@ -315,25 +129,7 @@
   "bindings": [
     {
       "source": "efti.receive-message.exchange",
-      "vhost": "ee",
-      "destination": "efti.receive-messages.q",
-      "destination_type": "queue",
-      "routing_key": "EFTI",
-      "arguments": {
-      }
-    },
-    {
-      "source": "efti.receive-message.exchange",
-      "vhost": "li",
-      "destination": "efti.receive-messages.q",
-      "destination_type": "queue",
-      "routing_key": "EFTI",
-      "arguments": {
-      }
-    },
-    {
-      "source": "efti.receive-message.exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "destination": "efti.receive-messages.q",
       "destination_type": "queue",
       "routing_key": "EFTI",
@@ -342,25 +138,7 @@
     },
     {
       "source": "efti.send-message.exchange",
-      "vhost": "ee",
-      "destination": "efti.send-messages.q",
-      "destination_type": "queue",
-      "routing_key": "EFTI",
-      "arguments": {
-      }
-    },
-    {
-      "source": "efti.send-message.exchange",
-      "vhost": "li",
-      "destination": "efti.send-messages.q",
-      "destination_type": "queue",
-      "routing_key": "EFTI",
-      "arguments": {
-      }
-    },
-    {
-      "source": "efti.send-message.exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "destination": "efti.send-messages.q",
       "destination_type": "queue",
       "routing_key": "EFTI",
@@ -369,23 +147,7 @@
     },
     {
       "source": "receive-message-dead-letter-exchange",
-      "vhost": "ee",
-      "destination": "message-receive-dead-letter-queue",
-      "destination_type": "queue",
-      "arguments": {
-      }
-    },
-    {
-      "source": "receive-message-dead-letter-exchange",
-      "vhost": "li",
-      "destination": "message-receive-dead-letter-queue",
-      "destination_type": "queue",
-      "arguments": {
-      }
-    },
-    {
-      "source": "receive-message-dead-letter-exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "destination": "message-receive-dead-letter-queue",
       "destination_type": "queue",
       "arguments": {
@@ -393,23 +155,7 @@
     },
     {
       "source": "send-message-dead-letter-exchange",
-      "vhost": "ee",
-      "destination": "message-send-dead-letter-queue",
-      "destination_type": "queue",
-      "arguments": {
-      }
-    },
-    {
-      "source": "send-message-dead-letter-exchange",
-      "vhost": "li",
-      "destination": "message-send-dead-letter-queue",
-      "destination_type": "queue",
-      "arguments": {
-      }
-    },
-    {
-      "source": "send-message-dead-letter-exchange",
-      "vhost": "bo",
+      "vhost": "host",
       "destination": "message-send-dead-letter-queue",
       "destination_type": "queue",
       "arguments": {

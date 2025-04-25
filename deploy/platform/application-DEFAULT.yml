@@ -3,7 +3,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://auth.gate.borduria.eu:8080/realms/eFTI_BO
+          issuer-uri: http://auth.gate.eu:8080/realms/eFTI
 
 server:
   port: 8070
@@ -11,11 +11,11 @@ server:
 gate:
   minSleep: 1000
   maxSleep: 2000
-  owner: acme
+  owner: platform
   cda_path: file:/usr/src/myapp/cda/
-  gate: borduria
+  gate: gate
   ap:
-    url: https://harmony-acme:8443/services/wsplugin
-    username: acme_service_account
+    url: https://harmony-platform:8443/services/wsplugin
+    username: service_account
     password: Azerty59*1234567
 

@@ -1,0 +1,30 @@
+spring:
+  rabbitmq:
+    password: pass
+    username: user
+    virtual-host: host
+  datasource:
+    control:
+      liquibase:
+        default-schema: efti_schema
+    identifiers:
+      liquibase:
+        default-schema: efti_schema
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth.gate.eu:8080/realms/eFTI
+  jpa:
+    properties:
+      hibernate:
+        control_schema: "efti_schema"
+        identifiers_schema: "efti_schema"
+
+gate:
+  owner: gate
+  country: DEFAULT
+  ap:
+    url: https://harmony-gate:8443/services/wsplugin
+    username: service_account
+    password: Azerty59*1234567

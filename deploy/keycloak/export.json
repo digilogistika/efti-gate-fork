@@ -1,6 +1,6 @@
 {
   "id": "5a1656b3-7848-4a9b-8c18-caf913c47aab",
-  "realm": "eFTI_EE",
+  "realm": "eFTI",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
@@ -65,7 +65,7 @@
       },
       {
         "id": "90f3ef8c-c17d-4a45-8ce8-54d1fafea3a6",
-        "name": "default-roles-efti_ee",
+        "name": "default-roles-efti",
         "description": "${role_default-roles}",
         "composite": true,
         "composites": {
@@ -415,7 +415,7 @@
   "groups": [],
   "defaultRole": {
     "id": "90f3ef8c-c17d-4a45-8ce8-54d1fafea3a6",
-    "name": "default-roles-efti_ee",
+    "name": "default-roles-efti",
     "description": "${role_default-roles}",
     "composite": true,
     "clientRole": false,
@@ -486,13 +486,13 @@
       "clientId": "account",
       "name": "${client_account}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/eFTI_EE/account/",
+      "baseUrl": "/realms/eFTI/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/eFTI_EE/account/*"
+        "/realms/eFTI/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -530,13 +530,13 @@
       "clientId": "account-console",
       "name": "${client_account-console}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/eFTI_EE/account/",
+      "baseUrl": "/realms/eFTI/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/realms/eFTI_EE/account/*"
+        "/realms/eFTI/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -851,13 +851,13 @@
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
       "rootUrl": "${authAdminUrl}",
-      "baseUrl": "/admin/eFTI_EE/console/",
+      "baseUrl": "/admin/eFTI/console/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/admin/eFTI_EE/console/*"
+        "/admin/eFTI/console/*"
       ],
       "webOrigins": [
         "+"
@@ -2262,7 +2262,7 @@
   },
   "users": [
     {
-      "username": "user_ee",
+      "username": "user",
       "emailVerified": true,
       "firstName": "",
       "lastName": "",
