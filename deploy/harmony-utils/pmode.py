@@ -180,3 +180,76 @@ def update_pmode_with_parties(
                 e}"""
         )
         return False
+
+
+def download_pmode(harmony_host: str, output_path: str):
+    session = get_session(harmony_host)
+    url = f"{harmony_host}/rest/pmode"
+    logger.info(f"Downloading PMode from {harmony_host}")
+
+    try:
+        response = session.get(url, verify=DEFAULT_VERIFY, timeout=30)
+        response.raise_for_status()
+
+        with open(output_path, "wb") as f:
+            f.write(response.content)
+
+        logger.info(f"PMode downloaded successfully from {harmony_host}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to download PMode from {harmony_host}: {e}")
+        if hasattr(e, "response") and e.response is not None:
+            logger.error(
+                f"""Response status: {e.response.status_code}, body: {
+                    e.response.text
+                }"""
+            )
+        return False
+
+
+def extract_party_endpoints_from_pmode(pmode_file_path: str):
+    parties_map = {}
+
+    try:
+        tree = ET.parse(pmode_file_path)
+        root = tree.getroot()
+        ns = {"db": PMODE_NAMESPACE}
+
+        for party_elem in root.findall(".//db:party", ns):
+            party_name = party_elem.get("name")
+            party_endpoint = party_elem.get("endpoint")
+
+            if party_name and party_endpoint:
+                parties_map[party_name] = party_endpoint
+                logger.debug(
+                    f"""Found party in PMode with namespace: {party_name} -> {
+                        party_endpoint
+                    }"""
+                )
+
+        if not parties_map:
+            for party_elem in root.findall(".//party"):
+                party_name = party_elem.get("name")
+                party_endpoint = party_elem.get("endpoint")
+
+                if party_name and party_endpoint:
+                    parties_map[party_name] = party_endpoint
+                    logger.debug(
+                        f"""Found party in PMode without namespace: {party_name} -> {
+                            party_endpoint
+                        }"""
+                    )
+
+        return parties_map
+    except Exception as e:
+        logger.error(f"Error extracting party endpoints from PMode: {e}")
+        return {}
+
+
+def get_existing_party_endpoints(harmony_host: str, temp_dir: str):
+    temp_pmode_path = os.path.join(temp_dir, "current_pmode.xml")
+
+    if download_pmode(harmony_host, temp_pmode_path):
+        return extract_party_endpoints_from_pmode(temp_pmode_path)
+    else:
+        return {}

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-set -e # Exit immediately if a command exits with a non-zero status.
+set -e
 
 # --- Configuration ---
-UTIL_CONTAINER_SERVICE_NAME="harmony-setup-util" # Base service name in compose
-CONNECT_PATH_INSIDE_CONTAINER="/tmp/connect" # Temporary path inside container
+UTIL_CONTAINER_SERVICE_NAME="harmony-setup-util"
+CONNECT_PATH_INSIDE_CONTAINER="/tmp/connect"
 
 # --- Helper Functions ---
 log_error() {
@@ -59,7 +59,6 @@ log_info "Preparing temporary directory inside container..."
 docker exec "$CONTAINER_ID" rm -rf "$CONNECT_PATH_INSIDE_CONTAINER"
 docker exec "$CONTAINER_ID" mkdir -p "$CONNECT_PATH_INSIDE_CONTAINER"
 
-# Define target paths inside the container
 PEER_TS_CERT_CONTAINER_PATH="$CONNECT_PATH_INSIDE_CONTAINER/peer_truststore.pem"
 PEER_TLS_CERT_CONTAINER_PATH="$CONNECT_PATH_INSIDE_CONTAINER/peer_tls.pem"
 
@@ -84,14 +83,12 @@ CMD_ARGS=(
     --peer-tls-cert "$PEER_TLS_CERT_CONTAINER_PATH"
 )
 
-# Use printf "%q " to handle potential special characters in arguments safely
 cmd_string=$(printf "%q " "${CMD_ARGS[@]}")
 log_info "Running: docker exec $CONTAINER_ID $cmd_string"
 
 if ! docker exec "$CONTAINER_ID" "${CMD_ARGS[@]}"; then
     log_error "Connect command failed inside the container. Check container logs:"
     log_error "docker logs $CONTAINER_ID"
-    # Attempt cleanup inside container?
     docker exec "$CONTAINER_ID" rm -rf "$CONNECT_PATH_INSIDE_CONTAINER" &> /dev/null || true
     exit 1
 fi
