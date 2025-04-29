@@ -149,6 +149,14 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>2.14.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>eu.efti</groupId>
+            <artifactId>test-support</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -165,6 +173,13 @@
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
+        </dependency>
+
+        <!-- Required by gate client generated with openapi-generator -->
+        <dependency>
+            <groupId>io.github.threeten-jaxb</groupId>
+            <artifactId>threeten-jaxb-core</artifactId>
+            <version>2.2.0</version>
         </dependency>
 
     </dependencies>
@@ -233,6 +248,20 @@
                             </sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>
+                                    ${project.build.directory}/generated-sources/openapi/src/test/java
+                                </source>
+                            </sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -240,6 +269,7 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>generate-api-for-gate</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
@@ -254,12 +284,29 @@
                                 <useBeanValidation>false</useBeanValidation>
                                 <openApiNullable>false</openApiNullable>
                                 <useSpringBoot3>true</useSpringBoot3>
-                                // Using ${project.build.directory} fails the build on Windows
-                                <sourceFolder>build/generated-sources/src/main/java</sourceFolder>
                                 <withXml>true</withXml>
                                 <skipDefaultInterface>true</skipDefaultInterface>
                             </configOptions>
                             <apiPackage>eu.efti.platformgatesimulator.controller.api</apiPackage>
+                            <modelPackage>eu.efti.platformgatesimulator.dto</modelPackage>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-client-for-gate</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../../schema/api-schemas/gate-api-for-platform.yaml</inputSpec>
+                            <generatorName>java</generatorName>
+                            <library>resttemplate</library>
+                            <configOptions>
+                                <openApiNullable>false</openApiNullable>
+                                <useJakartaEe>true</useJakartaEe>
+                                <withXml>true</withXml>
+                            </configOptions>
+                            <apiPackage>eu.efti.platformgatesimulator.service.client</apiPackage>
                             <modelPackage>eu.efti.platformgatesimulator.dto</modelPackage>
                         </configuration>
                     </execution>
