@@ -25,6 +25,6 @@ gate:
   country: LI
   owner: listenbourg
   ap:
-    url: http://efti.gate.listenbourg.eu:81/domibus/services/wsplugin
+    url: https://localhost:8442/services/wsplugin
     username: listenbourg_service_account
     password: Azerty59*1234567
