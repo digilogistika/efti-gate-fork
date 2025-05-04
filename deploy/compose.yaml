@@ -1,7 +1,6 @@
 services:
   harmony-gate:
     image: niis/harmony-ap:2.5.0
-    container_name: ${COMPOSE_PROJECT_NAME}-harmony-gate
     depends_on:
       harmony-gate-db:
         condition: service_started
@@ -16,7 +15,7 @@ services:
       - SECURITY_TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-gate
+      - SERVER_FQDN=harmony-gate
     volumes:
       - ap_data_gate:/var/opt/harmony-ap
       - ./harmony/gate-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -30,7 +29,6 @@ services:
 
   harmony-platform:
     image: niis/harmony-ap:2.5.0
-    container_name: ${COMPOSE_PROJECT_NAME}-harmony-platform
     profiles: [ "platform" ]
     depends_on:
       harmony-platform-db:
@@ -46,7 +44,7 @@ services:
       - SECURITY_TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-platform
+      - SERVER_FQDN=harmony-platform
     volumes:
       - ap_data_platform:/var/opt/harmony-ap
       - ./harmony/platform-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -60,7 +58,6 @@ services:
 
   harmony-gate-db:
     image: mysql:8
-    container_name: ${COMPOSE_PROJECT_NAME}-harmony-gate-db
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
       - MYSQL_DATABASE=harmony_ap
@@ -78,7 +75,6 @@ services:
 
   harmony-platform-db:
     image: mysql:8
-    container_name: ${COMPOSE_PROJECT_NAME}-harmony-platform-db
     profiles: [ "platform" ]
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
@@ -97,7 +93,6 @@ services:
 
   efti-rabbitmq:
     image: rabbitmq:3-management
-    container_name: ${COMPOSE_PROJECT_NAME}-efti-rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -112,7 +107,6 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/gate/Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME}-efti-gate-instance
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8882/actuator/health || exit 1" ]
       interval: 5s
@@ -132,7 +126,6 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/platform/Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME}-efti-platform-instance
     profiles: [ "platform" ]
     depends_on:
       - efti-keycloak
@@ -143,7 +136,6 @@ services:
 
   efti-psql:
     image: postgres:15.4
-    container_name: ${COMPOSE_PROJECT_NAME}-shared-db
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
@@ -155,7 +147,6 @@ services:
 
   efti-psql-meta:
     image: postgres:15.4
-    container_name: ${COMPOSE_PROJECT_NAME}-meta-db
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
@@ -167,7 +158,6 @@ services:
 
   efti-keycloak:
     image: quay.io/keycloak/keycloak:22.0.5
-    container_name: ${COMPOSE_PROJECT_NAME}-efti-keycloak
     command: [ "start-dev", "--import-realm", "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
     environment:
       - KEYCLOAK_ADMIN=admin
@@ -184,7 +174,6 @@ services:
 
   harmony-setup-util:
     build: ./harmony-utils
-    container_name: ${COMPOSE_PROJECT_NAME}-harmony-setup-util
     depends_on:
       harmony-gate:
         condition: service_started
@@ -196,8 +185,8 @@ services:
       - TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - HARMONY_GATE_SERVICE_NAME=${COMPOSE_PROJECT_NAME}-harmony-gate
-      - HARMONY_PLATFORM_SERVICE_NAME=${COMPOSE_PROJECT_NAME}-harmony-platform
+      - HARMONY_GATE_SERVICE_NAME=harmony-gate
+      - HARMONY_PLATFORM_SERVICE_NAME=harmony-platform
       - HARMONY_GATE_PARTY_NAME=${COMPOSE_PROJECT_NAME}
       - HARMONY_PLATFORM_PARTY_NAME=${COMPOSE_PROJECT_NAME}-platform
       - HARMONY_SERVICE_PORT=8443

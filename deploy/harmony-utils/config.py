@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 HARMONY_USERNAME = os.environ.get("HARMONY_USERNAME", "harmony")
 HARMONY_PASSWORD = os.environ.get("HARMONY_PASSWORD", "Secret")
 
-HARMONY_GATE_SERVICE_NAME = os.environ.get("HARMONY_GATE_SERVICE_NAME", "harmony-gate")
+HARMONY_GATE_SERVICE_NAME = os.environ.get(
+    "HARMONY_GATE_SERVICE_NAME", "harmony-gate")
 HARMONY_PLATFORM_SERVICE_NAME = os.environ.get(
     "HARMONY_PLATFORM_SERVICE_NAME", "harmony-platform"
 )
