@@ -19,14 +19,12 @@ def upload_pmode(
     session = get_session(harmony_host)
     url = f"{harmony_host}/rest/pmode"
     logger.info(
-        f"""Uploading generated PMode from {
-            pmode_file_path} to {harmony_host}"""
+        f"""Uploading generated PMode from {pmode_file_path} to {harmony_host}"""
     )
 
     if not os.path.exists(pmode_file_path):
         logger.error(f"PMode file to upload not found: {pmode_file_path}")
-        raise FileNotFoundError(
-            f"PMode file to upload not found: {pmode_file_path}")
+        raise FileNotFoundError(f"PMode file to upload not found: {pmode_file_path}")
 
     with open(pmode_file_path, "rb") as file_content:
         files = {"file": ("master_pmode.xml", file_content, "text/xml")}
@@ -62,8 +60,7 @@ def update_pmode_with_parties(
     logger.info(f"Replacing parties with: {list(parties_to_add.keys())}")
 
     if not os.path.exists(MASTER_PMODE_FILE_PATH):
-        logger.error(f"""Master PMode file not found at: {
-                     MASTER_PMODE_FILE_PATH}""")
+        logger.error(f"""Master PMode file not found at: {MASTER_PMODE_FILE_PATH}""")
         return False
 
     try:
@@ -78,36 +75,31 @@ def update_pmode_with_parties(
         if parties_elem is None:
             parties_elem = root.find(".//parties")
         if parties_elem is None:
-            logger.error(
-                "Could not find <parties> section in Master PMode XML.")
+            logger.error("Could not find <parties> section in Master PMode XML.")
             return False
 
         process_elem = root.find(".//db:process", ns)
         if process_elem is None:
             process_elem = root.find(".//process")
         if process_elem is None:
-            logger.error(
-                "Could not find <process> section in Master PMode XML.")
+            logger.error("Could not find <process> section in Master PMode XML.")
             return False
 
         initiator_parties_elem = process_elem.find("./db:initiatorParties", ns)
         if initiator_parties_elem is None:
             initiator_parties_elem = process_elem.find("./initiatorParties")
         if initiator_parties_elem is None:
-            initiator_parties_elem = ET.SubElement(
-                process_elem, "initiatorParties")
+            initiator_parties_elem = ET.SubElement(process_elem, "initiatorParties")
             logger.warning("Created missing <initiatorParties> element.")
 
         responder_parties_elem = process_elem.find("./db:responderParties", ns)
         if responder_parties_elem is None:
             responder_parties_elem = process_elem.find("./responderParties")
         if responder_parties_elem is None:
-            responder_parties_elem = ET.SubElement(
-                process_elem, "responderParties")
+            responder_parties_elem = ET.SubElement(process_elem, "responderParties")
             logger.warning("Created missing <responderParties> element.")
 
-        logger.debug(
-            "Removing existing <party> elements from <parties> section...")
+        logger.debug("Removing existing <party> elements from <parties> section...")
         for party in parties_elem.findall("./db:party", ns):
             parties_elem.remove(party)
         for party in parties_elem.findall("./party"):
@@ -144,14 +136,11 @@ def update_pmode_with_parties(
             ET.SubElement(
                 party_elem, "identifier", partyId=party_name, partyIdType=party_id_type
             )
-            ET.SubElement(initiator_parties_elem,
-                          "initiatorParty", name=party_name)
-            ET.SubElement(responder_parties_elem,
-                          "responderParty", name=party_name)
+            ET.SubElement(initiator_parties_elem, "initiatorParty", name=party_name)
+            ET.SubElement(responder_parties_elem, "responderParty", name=party_name)
 
         xml_buffer = BytesIO()
-        tree.write(xml_buffer, encoding="utf-8",
-                   xml_declaration=True, method="xml")
+        tree.write(xml_buffer, encoding="utf-8", xml_declaration=True, method="xml")
         xml_content = xml_buffer.getvalue().decode("utf-8")
         if "xmlns:db" not in xml_content[:200]:
             logger.warning(
@@ -170,21 +159,19 @@ def update_pmode_with_parties(
 
     except ET.ParseError as e:
         logger.error(
-            f"""Failed to parse Master PMode XML file {
-                MASTER_PMODE_FILE_PATH}: {e}"""
+            f"""Failed to parse Master PMode XML file {MASTER_PMODE_FILE_PATH}: {e}"""
         )
         return False
     except Exception as e:
         logger.error(
-            f"""An unexpected error occurred while generating PMode from master: {
-                e}"""
+            f"""An unexpected error occurred while generating PMode from master: {e}"""
         )
         return False
 
 
 def download_pmode(harmony_host: str, output_path: str):
     session = get_session(harmony_host)
-    url = f"{harmony_host}/rest/pmode"
+    url = f"{harmony_host}/rest/pmode/250505120000001000"
     logger.info(f"Downloading PMode from {harmony_host}")
 
     try:

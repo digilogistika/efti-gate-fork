@@ -1,9 +1,9 @@
 from config import TRUSTSTORE_PASSWORD, logger
 from session import get_session, DEFAULT_VERIFY
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.serialization import pkcs12
 import os
+import subprocess
+import tempfile
+import re
 
 
 def upload_truststore(harmony_host: str, p12_file_path: str):
@@ -57,21 +57,55 @@ def download_truststore(harmony_host: str, output_path: str):
         return None
 
 
-def extract_certificates_from_truststore(p12_data, output_dir, prefix="extracted_cert"):
+def extract_certificates_from_truststore(p12_data, output_dir):
     extracted_certs = {}
-
     try:
-        _, _, additional_certificates = pkcs12.load_key_and_certificates(
-            p12_data, TRUSTSTORE_PASSWORD.encode(), backend=default_backend()
-        )
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".p12") as temp_p12:
+            temp_p12.write(p12_data)
+            p12_path = temp_p12.name
 
-        for i, cert in enumerate(additional_certificates):
-            cert_name = f"{prefix}_{i}"
-            cert_path = os.path.join(output_dir, f"{cert_name}.pem")
-            with open(cert_path, "wb") as f:
-                f.write(cert.public_bytes(serialization.Encoding.PEM))
-            extracted_certs[cert_name] = cert_path
-            logger.debug(f"Extracted certificate: {cert_name}")
+        cmd = [
+            "keytool",
+            "-list",
+            "-keystore",
+            p12_path,
+            "-storepass",
+            TRUSTSTORE_PASSWORD,
+            "-storetype",
+            "PKCS12",
+            "-v",
+        ]
+
+        output = subprocess.check_output(
+            cmd, stderr=subprocess.STDOUT, text=True)
+
+        entries = re.split(r"Alias name: ", output)[1:]
+
+        for entry in entries:
+            alias = entry.split("\n")[0].strip()
+
+            cert_path = os.path.join(
+                output_dir, f"{alias}_truststore_cert.pem")
+            export_cmd = [
+                "keytool",
+                "-exportcert",
+                "-keystore",
+                p12_path,
+                "-storepass",
+                TRUSTSTORE_PASSWORD,
+                "-alias",
+                alias,
+                "-rfc",
+                "-file",
+                cert_path,
+            ]
+
+            subprocess.check_call(export_cmd, stderr=subprocess.STDOUT)
+
+            extracted_certs[alias] = cert_path
+            logger.debug(f"Extracted certificate with alias: {alias}")
+
+        os.unlink(p12_path)
 
         return extracted_certs
     except Exception as e:
@@ -79,12 +113,9 @@ def extract_certificates_from_truststore(p12_data, output_dir, prefix="extracted
         return {}
 
 
-def download_and_extract_truststore_certs(
-    harmony_host: str, output_dir: str, prefix="ts"
-):
+def download_and_extract_truststore_certs(harmony_host: str, output_dir: str):
     try:
-        temp_file_path = os.path.join(
-            output_dir, f"temp_truststore_{prefix}.p12")
+        temp_file_path = os.path.join(output_dir, "ts.p12")
 
         p12_data = download_truststore(harmony_host, temp_file_path)
         if not p12_data:
@@ -92,7 +123,7 @@ def download_and_extract_truststore_certs(
                 f"Failed to download truststore from {harmony_host}")
             return {}
 
-        return extract_certificates_from_truststore(p12_data, output_dir, prefix)
+        return extract_certificates_from_truststore(p12_data, output_dir)
     except Exception as e:
         logger.error(f"Error in download_and_extract_truststore_certs: {e}")
         return {}

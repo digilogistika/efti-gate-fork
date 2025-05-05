@@ -38,4 +38,5 @@ def get_session(harmony_host):
                     e.response.text
                 }"""
             )
-        raise ConnectionError(f"""Authentication failed for {harmony_host}""") from e
+        raise ConnectionError(f"""Authentication failed for {
+                              harmony_host}""") from e

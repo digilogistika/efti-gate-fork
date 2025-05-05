@@ -61,14 +61,16 @@ def create_combined_p12(
             )
             continue
 
-        logger.debug(f"""Importing certificate from {cert_path} with alias '{alias}'""")
+        logger.debug(f"""Importing certificate from {
+                     cert_path} with alias '{alias}'""")
         cmd = keytool_cmd_base + ["-alias", alias, "-file", cert_path]
 
         try:
             result = subprocess.run(
                 cmd, check=True, capture_output=True, text=True, timeout=15
             )
-            logger.debug(f"""Keytool output for alias '{alias}': {result.stdout}""")
+            logger.debug(f"""Keytool output for alias '{
+                         alias}': {result.stdout}""")
             if result.stderr:
                 logger.warning(
                     f"""Keytool stderr for alias '{alias}': {result.stderr}"""
@@ -104,5 +106,6 @@ def create_combined_p12(
         logger.error("No valid certificates were found or imported.")
         return False
 
-    logger.info(f"""Combined P12 store created successfully at: {output_p12_path}""")
+    logger.info(f"""Combined P12 store created successfully at: {
+                output_p12_path}""")
     return True
