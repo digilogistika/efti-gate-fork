@@ -1,22 +1,10 @@
 package eu.efti.eftigate.service;
 
 import eu.efti.commons.constant.EftiGateConstants;
-import eu.efti.commons.dto.ControlDto;
-import eu.efti.commons.dto.ErrorDto;
-import eu.efti.commons.dto.IdentifiersRequestDto;
-import eu.efti.commons.dto.IdentifiersResponseDto;
-import eu.efti.commons.dto.PostFollowUpRequestDto;
-import eu.efti.commons.dto.RequestDto;
-import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
-import eu.efti.commons.dto.UilDto;
-import eu.efti.commons.dto.ValidableDto;
+import eu.efti.commons.dto.*;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
-import eu.efti.commons.enums.ErrorCodesEnum;
-import eu.efti.commons.enums.RequestStatusEnum;
-import eu.efti.commons.enums.RequestType;
-import eu.efti.commons.enums.RequestTypeEnum;
-import eu.efti.commons.enums.StatusEnum;
+import eu.efti.commons.enums.*;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.NoteResponseDto;
@@ -30,6 +18,7 @@ import eu.efti.eftigate.repository.ControlRepository;
 import eu.efti.eftigate.service.gate.EftiGateIdResolver;
 import eu.efti.eftigate.service.request.RequestService;
 import eu.efti.eftigate.service.request.RequestServiceFactory;
+import eu.efti.eftigate.service.request.UilRequestService;
 import eu.efti.eftigate.utils.ControlUtils;
 import eu.efti.eftilogger.model.ComponentType;
 import eu.efti.identifiersregistry.service.IdentifiersService;
@@ -47,23 +36,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static eu.efti.commons.enums.ErrorCodesEnum.ID_NOT_FOUND;
-import static eu.efti.commons.enums.RequestStatusEnum.ERROR;
-import static eu.efti.commons.enums.RequestStatusEnum.IN_PROGRESS;
-import static eu.efti.commons.enums.RequestStatusEnum.RECEIVED;
-import static eu.efti.commons.enums.RequestStatusEnum.RESPONSE_IN_PROGRESS;
-import static eu.efti.commons.enums.RequestStatusEnum.SEND_ERROR;
+import static eu.efti.commons.enums.RequestStatusEnum.*;
 import static eu.efti.commons.enums.RequestTypeEnum.EXTERNAL_ASK_IDENTIFIERS_SEARCH;
 import static eu.efti.commons.enums.StatusEnum.COMPLETE;
 import static eu.efti.commons.enums.StatusEnum.PENDING;
@@ -86,6 +67,7 @@ public class ControlService {
     private final EftiAsyncCallsProcessor eftiAsyncCallsProcessor;
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;
+    private final UilRequestService uilRequestService;
     @Value("${efti.control.pending.timeout:60}")
     private Integer timeoutValue;
 
@@ -96,6 +78,12 @@ public class ControlService {
             controlDto.setRequestId(null);
         }
         log.error("{}, {}", error.getErrorDescription(), error.getErrorCode());
+    }
+
+    private static ErrorEntity buildErrorEntity(final String errorCode) {
+        return ErrorEntity.builder()
+                .errorCode(errorCode)
+                .errorDescription(ERROR_REQUEST_ID_NOT_FOUND).build();
     }
 
     public ControlEntity getById(final long id) {
@@ -267,12 +255,6 @@ public class ControlService {
                 .error(buildErrorEntity(ID_NOT_FOUND.name())).build());
     }
 
-    private static ErrorEntity buildErrorEntity(final String errorCode) {
-        return ErrorEntity.builder()
-                .errorCode(errorCode)
-                .errorDescription(ERROR_REQUEST_ID_NOT_FOUND).build();
-    }
-
     public ControlDto createControlFrom(final IdentifierQuery identifierQuery, final String fromGateId) {
         ControlDto controlDto = ControlUtils.fromExternalIdentifiersControl(identifierQuery, EXTERNAL_ASK_IDENTIFIERS_SEARCH, fromGateId, gateProperties.getOwner());
         return this.save(controlDto);
@@ -301,6 +283,29 @@ public class ControlService {
             //respond with the error
             if (controlDto.isExternalAsk()) {
                 getRequestService(controlDto.getRequestType()).createAndSendRequest(savedControl, controlDto.getFromGateId(), RequestStatusEnum.ERROR);
+            }
+        } else if (gateProperties.isCurrentGate(controlDto.getGateId()) && checkOnLocalRegistry(controlDto)) {
+            // gate has the UIL in some connected platform
+            final ControlDto saveControl = this.save(controlDto);
+            // http request the platform for the UIL
+            try {
+                RestClient restClient = RestClient
+                        .builder()
+                        .baseUrl("http://localhost:8070/gate-api")
+                        .build();
+                String response = restClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/consignments")
+                                .queryParam("datasetId", controlDto.getDatasetId())
+                                .queryParam("subsetId", controlDto.getSubsetIds())
+                                .build()
+                        )
+                        .retrieve()
+                        .body(String.class);
+                log.info(response);
+                uilRequestService.manageResponseReceived();
+            } catch (Exception e) {
+                log.error("error", e);
             }
         } else {
             final ControlDto saveControl = this.save(controlDto);
@@ -401,9 +406,9 @@ public class ControlService {
         final List<IdentifierRequestResultDto> identifierResultDtos = new LinkedList<>();
         requestDtos.forEach(requestDto -> identifierResultDtos.add(
                 IdentifierRequestResultDto.builder()
-                        .consignments(requestDto.getIdentifiersResults() != null ? mapperUtils.consignmentDtoToApiDto(requestDto.getIdentifiersResults().getConsignments()): Collections.emptyList())
-                        .errorCode(requestDto.getError() != null? requestDto.getError().getErrorCode() : null)
-                        .errorDescription(requestDto.getError() != null? requestDto.getError().getErrorDescription() : null)
+                        .consignments(requestDto.getIdentifiersResults() != null ? mapperUtils.consignmentDtoToApiDto(requestDto.getIdentifiersResults().getConsignments()) : Collections.emptyList())
+                        .errorCode(requestDto.getError() != null ? requestDto.getError().getErrorCode() : null)
+                        .errorDescription(requestDto.getError() != null ? requestDto.getError().getErrorDescription() : null)
                         .gateIndicator(eftiGateIdResolver.resolve(requestDto.getGateIdDest()))
                         .status(mapRequestStatus(requestDto.getStatus()))
                         .build())
@@ -440,11 +445,11 @@ public class ControlService {
     }
 
     private String mapRequestStatus(final RequestStatusEnum requestStatus) {
-        if( List.of(RECEIVED, IN_PROGRESS, RESPONSE_IN_PROGRESS).contains(requestStatus) ) {
+        if (List.of(RECEIVED, IN_PROGRESS, RESPONSE_IN_PROGRESS).contains(requestStatus)) {
             return PENDING.name();
-        } else if ( RequestStatusEnum.SUCCESS.equals(requestStatus)) {
+        } else if (RequestStatusEnum.SUCCESS.equals(requestStatus)) {
             return COMPLETE.name();
-        } else if ( List.of(SEND_ERROR, ERROR).contains(requestStatus)) {
+        } else if (List.of(SEND_ERROR, ERROR).contains(requestStatus)) {
             return StatusEnum.ERROR.name();
         }
         return requestStatus.name();

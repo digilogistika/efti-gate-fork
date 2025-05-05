@@ -1,8 +1,5 @@
 package eu.efti.eftigate.controller;
 
-import eu.efti.edeliveryapconnector.dto.NotificationContentDto;
-import eu.efti.edeliveryapconnector.dto.NotificationDto;
-import eu.efti.edeliveryapconnector.dto.NotificationType;
 import eu.efti.eftigate.dto.GetWhoami200Response;
 import eu.efti.eftigate.service.request.IdentifiersRequestService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.xml.sax.SAXException;
 
 @RestController
 @RequestMapping("/api/v1/platform")
@@ -31,28 +29,17 @@ public class PlatformApiController {
             consumes = MediaType.APPLICATION_XML_VALUE,
             produces = MediaType.APPLICATION_XML_VALUE,
             path = "identifiers")
-    public ResponseEntity<Void> putConsignmentIdentifiers(
+    public ResponseEntity<String> putConsignmentIdentifiers(
             // the xml content
             @RequestBody String body
     ) {
+        log.info("POST on /api/v1/platform/identifiers");
+        try {
+            identifiersRequestService.createOrUpdate(body, "acme");
+        } catch (SAXException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        log.info("Received identifier upload request");
-        NotificationDto notificationDto = NotificationDto
-                .builder()
-                .notificationType(NotificationType.RECEIVED)
-                .messageId("not-important-must-match")
-                .content(NotificationContentDto
-                        .builder()
-                        .messageId("not-important-must-match")
-                        .contentType("text/xml")
-                        .fromPartyId("estplat")
-                        .body(body)
-                        .conversationId("some-random-uuid")
-                        .build()
-                )
-                .build();
-        identifiersRequestService.createOrUpdate(notificationDto);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("OK");
     }
 }
