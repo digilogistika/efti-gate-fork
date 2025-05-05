@@ -293,19 +293,22 @@ public class ControlService {
                         .builder()
                         .baseUrl("http://localhost:8070/gate-api")
                         .build();
-                String response = restClient.get()
+                var request = restClient.get()
                         .uri(uriBuilder -> uriBuilder
                                 .path("/consignments")
-                                .queryParam("datasetId", controlDto.getDatasetId())
-                                .queryParam("subsetId", controlDto.getSubsetIds())
+                                .queryParam("datasetId", saveControl.getDatasetId())
+                                .queryParam("subsetId", saveControl.getSubsetIds())
+                                .queryParam("requestId", saveControl.getRequestId())
                                 .build()
-                        )
-                        .retrieve()
-                        .body(String.class);
-                log.info(response);
-                uilRequestService.manageResponseReceived();
+                        );
+
+                new Thread(request::retrieve).start();
+
+                getRequestService(controlDto.getRequestType()).createRequestOnly(saveControl, null, IN_PROGRESS);
+
+                log.info("Uil control with request id '{}' has been register", saveControl.getRequestId());
             } catch (Exception e) {
-                log.error("error", e);
+                log.error("Error occurred when sending UIL request to platform", e);
             }
         } else {
             final ControlDto saveControl = this.save(controlDto);
