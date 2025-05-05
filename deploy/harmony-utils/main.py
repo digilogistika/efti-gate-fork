@@ -23,6 +23,7 @@ from config import (
     HARMONY_PLATFORM_PARTY_NAME,
     TRUSTSTORE_PASSWORD,
     TLS_TRUSTSTORE_PASSWORD,
+    MASTER_PMODE_FILE_PATH,
 )
 
 
@@ -202,6 +203,7 @@ def do_initial_setup():
 
             party1_endpoint = f"{party1_url}/services/msh?domain={party1_name}"
             party2_endpoint = f"{party2_url}/services/msh?domain={party2_name}"
+
             parties_for_pmode = {
                 party1_name: party1_endpoint,
                 party2_name: party2_endpoint,
@@ -210,6 +212,10 @@ def do_initial_setup():
             p1_updated_pmode_path = os.path.join(
                 temp_dir, f"{p1_name_sanitized}_pmode.xml"
             )
+            p2_updated_pmode_path = os.path.join(
+                temp_dir, f"{p2_name_sanitized}_pmode.xml"
+            )
+
             logger.info(
                 f"""Generating updated PMode for {
                     party1_name} with all parties..."""
@@ -222,6 +228,7 @@ def do_initial_setup():
                         party1_name
                     } with all parties"""
                 )
+
             logger.info(f"Uploading generated PMode to {party1_name}...")
             upload_pmode(
                 party1_url,
@@ -229,22 +236,29 @@ def do_initial_setup():
                 f"Configured parties: {', '.join(parties_for_pmode.keys())}",
             )
 
-            p2_updated_pmode_path = os.path.join(
-                temp_dir, f"{p2_name_sanitized}_pmode.xml"
-            )
+            logger.info(
+                "Updating master PMode file with the initial configuration")
+            shutil.copy2(p1_updated_pmode_path, MASTER_PMODE_FILE_PATH)
+            logger.info(f"""Master PMode file updated at {
+                        MASTER_PMODE_FILE_PATH}""")
+
             logger.info(
                 f"""Generating updated PMode for {
                     party2_name} with all parties..."""
             )
 
             if not update_pmode_with_parties(
-                parties_for_pmode, party2_name, p2_updated_pmode_path
+                parties_for_pmode,
+                party2_name,
+                p2_updated_pmode_path,
+                master_pmode_path=p1_updated_pmode_path,
             ):
                 raise RuntimeError(
                     f"""Failed to generate PMode XML for {
                         party2_name
                     } with all parties"""
                 )
+
             logger.info(f"Uploading generated PMode to {party2_name}...")
             upload_pmode(
                 party2_url,
@@ -415,42 +429,55 @@ def do_connect(
 
             # ===== PMODE SETUP =====
             party2_endpoint = f"{party2_url}/services/msh?domain={party2_name}"
-            parties_for_pmode = {party2_name: party2_endpoint}
-
-            logger.info("Retrieving current PMode configuration...")
 
             existing_parties = get_existing_party_endpoints(
                 party1_url, temp_dir)
 
-            if existing_parties:
-                logger.info(
-                    f"""Found {len(existing_parties)}
-                                   existing parties in PMode"""
-                )
-                for name, endpoint in existing_parties.items():
-                    parties_for_pmode[name] = endpoint
+            party1_endpoint = f"{party1_url}/services/msh?domain={party1_name}"
+
+            all_parties = {}
+
+            all_parties.update(existing_parties)
+
+            all_parties[party1_name] = party1_endpoint
+
+            all_parties[party2_name] = party2_endpoint
+
+            logger.info(
+                f"""Final parties to include in PMode: {
+                    list(all_parties.keys())}"""
+            )
 
             p1_updated_pmode_path = os.path.join(
                 temp_dir, f"{p1_name_sanitized}_pmode.xml"
             )
+
             logger.info(
                 f"""Generating updated PMode for {
                     party1_name} with all parties..."""
             )
+
             if not update_pmode_with_parties(
-                parties_for_pmode, party1_name, p1_updated_pmode_path
+                all_parties, party1_name, p1_updated_pmode_path
             ):
                 raise RuntimeError(
                     f"""Failed to generate PMode XML for {
                         party1_name
                     } with all parties"""
                 )
+
             logger.info(f"Uploading generated PMode to {party1_name}...")
             upload_pmode(
                 party1_url,
                 p1_updated_pmode_path,
-                f"Configured parties: {', '.join(parties_for_pmode.keys())}",
+                f"Configured parties: {', '.join(all_parties.keys())}",
             )
+
+            logger.info(
+                "Updating master PMode file with the new configuration")
+            shutil.copy2(p1_updated_pmode_path, MASTER_PMODE_FILE_PATH)
+            logger.info(f"""Master PMode file updated at {
+                        MASTER_PMODE_FILE_PATH}""")
 
         except Exception as e:
             logger.error(f"Error during connection setup: {e}")

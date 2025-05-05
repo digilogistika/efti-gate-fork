@@ -19,12 +19,14 @@ def upload_pmode(
     session = get_session(harmony_host)
     url = f"{harmony_host}/rest/pmode"
     logger.info(
-        f"""Uploading generated PMode from {pmode_file_path} to {harmony_host}"""
+        f"""Uploading generated PMode from {
+            pmode_file_path} to {harmony_host}"""
     )
 
     if not os.path.exists(pmode_file_path):
         logger.error(f"PMode file to upload not found: {pmode_file_path}")
-        raise FileNotFoundError(f"PMode file to upload not found: {pmode_file_path}")
+        raise FileNotFoundError(
+            f"PMode file to upload not found: {pmode_file_path}")
 
     with open(pmode_file_path, "rb") as file_content:
         files = {"file": ("master_pmode.xml", file_content, "text/xml")}
@@ -36,6 +38,7 @@ def upload_pmode(
             )
             response.raise_for_status()
             logger.info(f"PMode uploaded successfully to {harmony_host}")
+            return True
         except Exception as e:
             logger.error(f"Failed to upload PMode to {harmony_host}: {e}")
             if hasattr(e, "response") and e.response is not None:
@@ -51,20 +54,23 @@ def update_pmode_with_parties(
     parties_to_add: dict[str, str],
     initiating_party_name: str,
     output_xml_path: str = UPDATED_PMODE_FILENAME,
+    master_pmode_path: str = MASTER_PMODE_FILE_PATH,
+    replace_existing: bool = True,
 ) -> bool:
     logger.info(
-        f"""Generating PMode from master ({
-            MASTER_PMODE_FILE_PATH
-        }) for initiating party {initiating_party_name}"""
+        f"""Generating PMode from master ({master_pmode_path}) for initiating party {
+            initiating_party_name
+        }"""
     )
-    logger.info(f"Replacing parties with: {list(parties_to_add.keys())}")
+    logger.info(f"Parties to include: {list(parties_to_add.keys())}")
 
-    if not os.path.exists(MASTER_PMODE_FILE_PATH):
-        logger.error(f"""Master PMode file not found at: {MASTER_PMODE_FILE_PATH}""")
+    if not os.path.exists(master_pmode_path):
+        logger.error(f"""Master PMode file not found at: {
+                     master_pmode_path}""")
         return False
 
     try:
-        tree = ET.parse(MASTER_PMODE_FILE_PATH)
+        tree = ET.parse(master_pmode_path)
         root = tree.getroot()
         ns = {"db": PMODE_NAMESPACE}
 
@@ -75,48 +81,89 @@ def update_pmode_with_parties(
         if parties_elem is None:
             parties_elem = root.find(".//parties")
         if parties_elem is None:
-            logger.error("Could not find <parties> section in Master PMode XML.")
+            logger.error(
+                "Could not find <parties> section in Master PMode XML.")
             return False
 
         process_elem = root.find(".//db:process", ns)
         if process_elem is None:
             process_elem = root.find(".//process")
         if process_elem is None:
-            logger.error("Could not find <process> section in Master PMode XML.")
+            logger.error(
+                "Could not find <process> section in Master PMode XML.")
             return False
 
         initiator_parties_elem = process_elem.find("./db:initiatorParties", ns)
         if initiator_parties_elem is None:
             initiator_parties_elem = process_elem.find("./initiatorParties")
         if initiator_parties_elem is None:
-            initiator_parties_elem = ET.SubElement(process_elem, "initiatorParties")
+            initiator_parties_elem = ET.SubElement(
+                process_elem, "initiatorParties")
             logger.warning("Created missing <initiatorParties> element.")
 
         responder_parties_elem = process_elem.find("./db:responderParties", ns)
         if responder_parties_elem is None:
             responder_parties_elem = process_elem.find("./responderParties")
         if responder_parties_elem is None:
-            responder_parties_elem = ET.SubElement(process_elem, "responderParties")
+            responder_parties_elem = ET.SubElement(
+                process_elem, "responderParties")
             logger.warning("Created missing <responderParties> element.")
 
-        logger.debug("Removing existing <party> elements from <parties> section...")
-        for party in parties_elem.findall("./db:party", ns):
-            parties_elem.remove(party)
-        for party in parties_elem.findall("./party"):
-            if party.tag != "partyIdTypes":
+        if replace_existing:
+            logger.debug(
+                "Removing existing <party> elements from <parties> section...")
+            for party in parties_elem.findall("./db:party", ns):
                 parties_elem.remove(party)
+            for party in parties_elem.findall("./party"):
+                if party.tag != "partyIdTypes":
+                    parties_elem.remove(party)
 
-        logger.debug("Removing existing <initiatorParty> elements...")
-        for iparty in initiator_parties_elem.findall("./db:initiatorParty", ns):
-            initiator_parties_elem.remove(iparty)
-        for iparty in initiator_parties_elem.findall("./initiatorParty"):
-            initiator_parties_elem.remove(iparty)
+            logger.debug("Removing existing <initiatorParty> elements...")
+            for iparty in initiator_parties_elem.findall("./db:initiatorParty", ns):
+                initiator_parties_elem.remove(iparty)
+            for iparty in initiator_parties_elem.findall("./initiatorParty"):
+                initiator_parties_elem.remove(iparty)
 
-        logger.debug("Removing existing <responderParty> elements...")
-        for rparty in responder_parties_elem.findall("./db:responderParty", ns):
-            responder_parties_elem.remove(rparty)
-        for rparty in responder_parties_elem.findall("./responderParty"):
-            responder_parties_elem.remove(rparty)
+            logger.debug("Removing existing <responderParty> elements...")
+            for rparty in responder_parties_elem.findall("./db:responderParty", ns):
+                responder_parties_elem.remove(rparty)
+            for rparty in responder_parties_elem.findall("./responderParty"):
+                responder_parties_elem.remove(rparty)
+        else:
+            existing_parties = set()
+            for party in parties_elem.findall("./db:party", ns):
+                existing_parties.add(party.get("name"))
+            for party in parties_elem.findall("./party"):
+                if party.get("name"):
+                    existing_parties.add(party.get("name"))
+
+            logger.debug(f"Existing parties found: {existing_parties}")
+
+            for party_name in parties_to_add.keys():
+                for party in parties_elem.findall(
+                    f"./db:party[@name='{party_name}']", ns
+                ):
+                    parties_elem.remove(party)
+                for party in parties_elem.findall(f"./party[@name='{party_name}']"):
+                    parties_elem.remove(party)
+
+                for iparty in initiator_parties_elem.findall(
+                    f"./db:initiatorParty[@name='{party_name}']", ns
+                ):
+                    initiator_parties_elem.remove(iparty)
+                for iparty in initiator_parties_elem.findall(
+                    f"./initiatorParty[@name='{party_name}']"
+                ):
+                    initiator_parties_elem.remove(iparty)
+
+                for rparty in responder_parties_elem.findall(
+                    f"./db:responderParty[@name='{party_name}']", ns
+                ):
+                    responder_parties_elem.remove(rparty)
+                for rparty in responder_parties_elem.findall(
+                    f"./responderParty[@name='{party_name}']"
+                ):
+                    responder_parties_elem.remove(rparty)
 
         party_id_type = "partyTypeUrn"
         try:
@@ -128,19 +175,23 @@ def update_pmode_with_parties(
                 "Could not dynamically find partyIdType name, using default 'partyTypeUrn'."
             )
 
-        logger.debug("Adding new party definitions...")
+        logger.debug("Adding parties definitions...")
         for party_name, endpoint_url in parties_to_add.items():
+            logger.debug(f"Adding party: {party_name} -> {endpoint_url}")
             party_elem = ET.SubElement(
                 parties_elem, "party", name=party_name, endpoint=endpoint_url
             )
             ET.SubElement(
                 party_elem, "identifier", partyId=party_name, partyIdType=party_id_type
             )
-            ET.SubElement(initiator_parties_elem, "initiatorParty", name=party_name)
-            ET.SubElement(responder_parties_elem, "responderParty", name=party_name)
+            ET.SubElement(initiator_parties_elem,
+                          "initiatorParty", name=party_name)
+            ET.SubElement(responder_parties_elem,
+                          "responderParty", name=party_name)
 
         xml_buffer = BytesIO()
-        tree.write(xml_buffer, encoding="utf-8", xml_declaration=True, method="xml")
+        tree.write(xml_buffer, encoding="utf-8",
+                   xml_declaration=True, method="xml")
         xml_content = xml_buffer.getvalue().decode("utf-8")
         if "xmlns:db" not in xml_content[:200]:
             logger.warning(
@@ -155,42 +206,28 @@ def update_pmode_with_parties(
                 output_xml_path
             }"""
         )
+
+        if output_xml_path != master_pmode_path:
+            logger.info(
+                f"Updating master PMode file with the generated configuration..."
+            )
+            with open(master_pmode_path, "w", encoding="utf-8") as f:
+                f.write(xml_content)
+            logger.info(f"Master PMode file updated at {master_pmode_path}")
+
         return True
 
     except ET.ParseError as e:
         logger.error(
-            f"""Failed to parse Master PMode XML file {MASTER_PMODE_FILE_PATH}: {e}"""
+            f"""Failed to parse Master PMode XML file {
+                master_pmode_path}: {e}"""
         )
         return False
     except Exception as e:
         logger.error(
-            f"""An unexpected error occurred while generating PMode from master: {e}"""
+            f"""An unexpected error occurred while generating PMode from master: {
+                e}"""
         )
-        return False
-
-
-def download_pmode(harmony_host: str, output_path: str):
-    session = get_session(harmony_host)
-    url = f"{harmony_host}/rest/pmode/250505120000001000"
-    logger.info(f"Downloading PMode from {harmony_host}")
-
-    try:
-        response = session.get(url, verify=DEFAULT_VERIFY, timeout=30)
-        response.raise_for_status()
-
-        with open(output_path, "wb") as f:
-            f.write(response.content)
-
-        logger.info(f"PMode downloaded successfully from {harmony_host}")
-        return True
-    except Exception as e:
-        logger.error(f"Failed to download PMode from {harmony_host}: {e}")
-        if hasattr(e, "response") and e.response is not None:
-            logger.error(
-                f"""Response status: {e.response.status_code}, body: {
-                    e.response.text
-                }"""
-            )
         return False
 
 
@@ -234,9 +271,17 @@ def extract_party_endpoints_from_pmode(pmode_file_path: str):
 
 
 def get_existing_party_endpoints(harmony_host: str, temp_dir: str):
-    temp_pmode_path = os.path.join(temp_dir, "current_pmode.xml")
-
-    if download_pmode(harmony_host, temp_pmode_path):
-        return extract_party_endpoints_from_pmode(temp_pmode_path)
+    logger.info(
+        f"""Getting existing party endpoints from master PMode file: {
+            MASTER_PMODE_FILE_PATH
+        }"""
+    )
+    if os.path.exists(MASTER_PMODE_FILE_PATH):
+        parties = extract_party_endpoints_from_pmode(MASTER_PMODE_FILE_PATH)
+        filtered_parties = {k: v for k, v in parties.items() if k != "acme"}
+        return filtered_parties
     else:
+        logger.warning(
+            "Master PMode file not found, no existing parties will be included"
+        )
         return {}

@@ -42,6 +42,8 @@ COMBINED_TLS_TRUSTSTORE_FILENAME = "combined_tls_truststore.p12"
 CURRENT_PMODE_FILENAME = "current_pmode.xml"
 UPDATED_PMODE_FILENAME = "updated_pmode.xml"
 
+MASTER_PMODE_FILE_PATH = "/app/master_pmode.xml"
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger.info(f"Harmony Gate URL (internal): {HARMONY_GATE_URL}")
