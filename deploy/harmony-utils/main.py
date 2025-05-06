@@ -39,8 +39,7 @@ def check_service_reachability(url: str, timeout: int = 5) -> bool:
             )
             return False
     except requests.exceptions.ConnectionError:
-        logger.warning(
-            f"Service at {url} is not reachable (connection error).")
+        logger.warning(f"Service at {url} is not reachable (connection error).")
         return False
     except requests.exceptions.Timeout:
         logger.warning(f"Service at {url} is not reachable (timeout).")
@@ -80,8 +79,7 @@ def do_initial_setup():
     platform_active = check_service_reachability(HARMONY_PLATFORM_URL)
 
     if platform_active:
-        logger.info(
-            "Harmony Platform appears active. Proceeding with Platform setup.")
+        logger.info("Harmony Platform appears active. Proceeding with Platform setup.")
         try:
             logger.info(
                 f"""Setting plugin user for Platform ({
@@ -94,8 +92,7 @@ def do_initial_setup():
             success = False
 
         try:
-            logger.info(
-                "Setting up mutual connection between Gate and Platform...")
+            logger.info("Setting up mutual connection between Gate and Platform...")
             party1_name = HARMONY_GATE_PARTY_NAME
             party1_url = HARMONY_GATE_URL
             party2_name = HARMONY_PLATFORM_PARTY_NAME
@@ -127,11 +124,9 @@ def do_initial_setup():
                 )
 
             logger.info(f"Fetching TLS cert for {party1_name}...")
-            p1_tls = download_and_extract_tls_truststore_certs(
-                party1_url, temp_dir)
+            p1_tls = download_and_extract_tls_truststore_certs(party1_url, temp_dir)
             if not p1_tls:
-                raise ConnectionError(
-                    f"Failed to get TLS cert for {party1_name}")
+                raise ConnectionError(f"Failed to get TLS cert for {party1_name}")
 
             logger.info(f"Fetching Truststore cert for {party2_name}...")
             if not download_keystore_extract_cert_pem(
@@ -142,11 +137,9 @@ def do_initial_setup():
                 )
 
             logger.info(f"Fetching TLS cert for {party2_name}...")
-            p2_tls = download_and_extract_tls_truststore_certs(
-                party2_url, temp_dir)
+            p2_tls = download_and_extract_tls_truststore_certs(party2_url, temp_dir)
             if not p2_tls:
-                raise ConnectionError(
-                    f"Failed to get TLS cert for {party2_name}")
+                raise ConnectionError(f"Failed to get TLS cert for {party2_name}")
 
             all_truststore_certs = {
                 party1_name: local_p1_ts_cert_path,
@@ -157,8 +150,7 @@ def do_initial_setup():
                 party2_name: p2_tls[party2_name],
             }
 
-            combined_truststore_path = os.path.join(
-                temp_dir, "combined_truststore.p12")
+            combined_truststore_path = os.path.join(temp_dir, "combined_truststore.p12")
             combined_tls_truststore_path = os.path.join(
                 temp_dir, "combined_tls_truststore.p12"
             )
@@ -181,8 +173,7 @@ def do_initial_setup():
             if not create_combined_p12(
                 all_tls_certs, combined_tls_truststore_path, TLS_TRUSTSTORE_PASSWORD
             ):
-                raise RuntimeError(
-                    "Failed to create combined TLS Truststore P12")
+                raise RuntimeError("Failed to create combined TLS Truststore P12")
 
             parties_to_upload_to = [
                 (party1_name, party1_url),
@@ -191,13 +182,11 @@ def do_initial_setup():
 
             for target_name, target_url in parties_to_upload_to:
                 logger.info(
-                    f"""Uploading Truststore to {
-                        target_name} ({target_url})..."""
+                    f"""Uploading Truststore to {target_name} ({target_url})..."""
                 )
                 upload_truststore(target_url, combined_truststore_path)
                 logger.info(
-                    f"""Uploading TLS Truststore to {
-                        target_name} ({target_url})..."""
+                    f"""Uploading TLS Truststore to {target_name} ({target_url})..."""
                 )
                 upload_tls_truststore(target_url, combined_tls_truststore_path)
 
@@ -217,8 +206,7 @@ def do_initial_setup():
             )
 
             logger.info(
-                f"""Generating updated PMode for {
-                    party1_name} with all parties..."""
+                f"""Generating updated PMode for {party1_name} with all parties..."""
             )
             if not update_pmode_with_parties(
                 parties_for_pmode, party1_name, p1_updated_pmode_path
@@ -236,15 +224,12 @@ def do_initial_setup():
                 f"Configured parties: {', '.join(parties_for_pmode.keys())}",
             )
 
-            logger.info(
-                "Updating master PMode file with the initial configuration")
+            logger.info("Updating master PMode file with the initial configuration")
             shutil.copy2(p1_updated_pmode_path, MASTER_PMODE_FILE_PATH)
-            logger.info(f"""Master PMode file updated at {
-                        MASTER_PMODE_FILE_PATH}""")
+            logger.info(f"""Master PMode file updated at {MASTER_PMODE_FILE_PATH}""")
 
             logger.info(
-                f"""Generating updated PMode for {
-                    party2_name} with all parties..."""
+                f"""Generating updated PMode for {party2_name} with all parties..."""
             )
 
             if not update_pmode_with_parties(
@@ -275,28 +260,106 @@ def do_initial_setup():
             success = False
     else:
         logger.info(
-            "Harmony Platform not detected or not reachable. Skipping Platform-specific setup."
+            "Harmony Platform not detected or not reachable. Setting up Gate with single party configuration."
         )
+        try:
+            temp_dir = f"""/tmp/harmony_setup_{
+                HARMONY_GATE_PARTY_NAME.replace("-", "_")
+            }_{int(time.time())}"""
+            os.makedirs(temp_dir, exist_ok=True)
+            logger.debug(f"Using temporary directory: {temp_dir}")
+
+            local_gate_cert_path = os.path.join(
+                temp_dir, f"{HARMONY_GATE_PARTY_NAME.replace('-', '_')}_cert.pem"
+            )
+            logger.info(
+                f"Extracting keystore certificate for {HARMONY_GATE_PARTY_NAME}..."
+            )
+            if not download_keystore_extract_cert_pem(
+                HARMONY_GATE_URL, local_gate_cert_path
+            ):
+                raise ConnectionError(
+                    f"""Failed to extract keystore certificate for {
+                        HARMONY_GATE_PARTY_NAME
+                    }"""
+                )
+
+            all_truststore_certs = {
+                HARMONY_GATE_PARTY_NAME: local_gate_cert_path,
+            }
+
+            combined_truststore_path = os.path.join(temp_dir, "truststore.p12")
+
+            logger.info(
+                f"""Creating truststore with certificate for party: {
+                    HARMONY_GATE_PARTY_NAME
+                }..."""
+            )
+            if not create_combined_p12(
+                all_truststore_certs, combined_truststore_path, TRUSTSTORE_PASSWORD
+            ):
+                raise RuntimeError("Failed to create Truststore P12")
+
+            logger.info(f"Uploading Truststore to {HARMONY_GATE_PARTY_NAME}...")
+            upload_truststore(HARMONY_GATE_URL, combined_truststore_path)
+
+            gate_endpoint = (
+                f"{HARMONY_GATE_URL}/services/msh?domain={HARMONY_GATE_PARTY_NAME}"
+            )
+            parties_for_pmode = {
+                HARMONY_GATE_PARTY_NAME: gate_endpoint,
+            }
+
+            gate_pmode_path = os.path.join(
+                temp_dir, f"{HARMONY_GATE_PARTY_NAME.replace('-', '_')}_pmode.xml"
+            )
+
+            logger.info(
+                f"Generating PMode for {HARMONY_GATE_PARTY_NAME} with single party..."
+            )
+            if not update_pmode_with_parties(
+                parties_for_pmode, HARMONY_GATE_PARTY_NAME, gate_pmode_path
+            ):
+                raise RuntimeError(
+                    f"Failed to generate PMode XML for {HARMONY_GATE_PARTY_NAME}"
+                )
+
+            logger.info(f"Uploading generated PMode to {HARMONY_GATE_PARTY_NAME}...")
+            upload_pmode(
+                HARMONY_GATE_URL,
+                gate_pmode_path,
+                f"Configured single party: {HARMONY_GATE_PARTY_NAME}",
+            )
+
+            logger.info(
+                "Updating master PMode file with the single-party configuration"
+            )
+            shutil.copy2(gate_pmode_path, MASTER_PMODE_FILE_PATH)
+            logger.info(f"Master PMode file updated at {MASTER_PMODE_FILE_PATH}")
+
+        except Exception as e:
+            logger.error(f"Failed during Gate-only setup: {e}")
+            success = False
+
+        finally:
+            if "temp_dir" in locals():
+                shutil.rmtree(temp_dir)
 
     logger.info(
-        f"""--- Initial Setup Finished {
-            "Successfully" if success else "with Errors"
-        } ---"""
+        f"--- Initial Setup Finished {'Successfully' if success else 'with Errors'} ---"
     )
     if not success:
         exit(1)
 
 
 def do_export(output_dir: str):
-    logger.info(
-        f"--- Starting Certificate Export for Gate ({HARMONY_GATE_URL}) ---")
+    logger.info(f"--- Starting Certificate Export for Gate ({HARMONY_GATE_URL}) ---")
     os.makedirs(output_dir, exist_ok=True)
 
     truststore_cert_path = os.path.join(
         output_dir, f"{HARMONY_GATE_PARTY_NAME}_truststore_cert.pem"
     )
-    tls_cert_path = os.path.join(
-        output_dir, f"{HARMONY_GATE_PARTY_NAME}_tls_cert.pem")
+    tls_cert_path = os.path.join(output_dir, f"{HARMONY_GATE_PARTY_NAME}_tls_cert.pem")
 
     logger.info("Exporting Gate Truststore certificate...")
     success_ts = download_keystore_extract_cert_pem(
@@ -304,8 +367,7 @@ def do_export(output_dir: str):
     )
 
     logger.info("Exporting Gate TLS certificate...")
-    success_tls = extract_tls_certificate_to_pem(
-        HARMONY_GATE_URL, tls_cert_path)
+    success_tls = extract_tls_certificate_to_pem(HARMONY_GATE_URL, tls_cert_path)
 
     if success_ts and success_tls:
         logger.info(
@@ -384,8 +446,7 @@ def do_connect(
                 } certificates from existing TLS truststore"""
             )
 
-            combined_truststore_path = os.path.join(
-                temp_dir, "combined_truststore.p12")
+            combined_truststore_path = os.path.join(temp_dir, "combined_truststore.p12")
             combined_tls_truststore_path = os.path.join(
                 temp_dir, "combined_tls_truststore.p12"
             )
@@ -418,8 +479,7 @@ def do_connect(
             if not create_combined_p12(
                 all_tls_certs, combined_tls_truststore_path, TLS_TRUSTSTORE_PASSWORD
             ):
-                raise RuntimeError(
-                    "Failed to create combined TLS Truststore P12")
+                raise RuntimeError("Failed to create combined TLS Truststore P12")
 
             # ===== UPLOADING CERTS =====
             logger.info(f"""Uploading Truststore to {party1_name}""")
@@ -430,8 +490,7 @@ def do_connect(
             # ===== PMODE SETUP =====
             party2_endpoint = f"{party2_url}/services/msh?domain={party2_name}"
 
-            existing_parties = get_existing_party_endpoints(
-                party1_url, temp_dir)
+            existing_parties = get_existing_party_endpoints(party1_url, temp_dir)
 
             party1_endpoint = f"{party1_url}/services/msh?domain={party1_name}"
 
@@ -444,8 +503,7 @@ def do_connect(
             all_parties[party2_name] = party2_endpoint
 
             logger.info(
-                f"""Final parties to include in PMode: {
-                    list(all_parties.keys())}"""
+                f"""Final parties to include in PMode: {list(all_parties.keys())}"""
             )
 
             p1_updated_pmode_path = os.path.join(
@@ -453,8 +511,7 @@ def do_connect(
             )
 
             logger.info(
-                f"""Generating updated PMode for {
-                    party1_name} with all parties..."""
+                f"""Generating updated PMode for {party1_name} with all parties..."""
             )
 
             if not update_pmode_with_parties(
@@ -473,11 +530,9 @@ def do_connect(
                 f"Configured parties: {', '.join(all_parties.keys())}",
             )
 
-            logger.info(
-                "Updating master PMode file with the new configuration")
+            logger.info("Updating master PMode file with the new configuration")
             shutil.copy2(p1_updated_pmode_path, MASTER_PMODE_FILE_PATH)
-            logger.info(f"""Master PMode file updated at {
-                        MASTER_PMODE_FILE_PATH}""")
+            logger.info(f"""Master PMode file updated at {MASTER_PMODE_FILE_PATH}""")
 
         except Exception as e:
             logger.error(f"Error during connection setup: {e}")
@@ -498,8 +553,7 @@ def do_connect(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Harmony AP Setup Utility Script")
+    parser = argparse.ArgumentParser(description="Harmony AP Setup Utility Script")
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
     )
@@ -509,8 +563,7 @@ if __name__ == "__main__":
         help="Run initial setup (plugin users, internal gate<->platform connection)",
     )
 
-    parser_export = subparsers.add_parser(
-        "export", help="Export Gate certificates")
+    parser_export = subparsers.add_parser("export", help="Export Gate certificates")
     parser_export.add_argument(
         "--output-dir",
         default="/export",
