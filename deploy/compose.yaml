@@ -15,7 +15,7 @@ services:
       - SECURITY_TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=harmony-gate
+      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-gate-1
     volumes:
       - ap_data_gate:/var/opt/harmony-ap
       - ./harmony/gate-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -44,7 +44,7 @@ services:
       - SECURITY_TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=harmony-platform
+      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-platform-1
     volumes:
       - ap_data_platform:/var/opt/harmony-ap
       - ./harmony/platform-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -185,8 +185,8 @@ services:
       - TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - HARMONY_GATE_SERVICE_NAME=harmony-gate
-      - HARMONY_PLATFORM_SERVICE_NAME=harmony-platform
+      - HARMONY_GATE_SERVICE_NAME=${COMPOSE_PROJECT_NAME}-harmony-gate-1
+      - HARMONY_PLATFORM_SERVICE_NAME=${COMPOSE_PROJECT_NAME}-harmony-platform-1
       - HARMONY_GATE_PARTY_NAME=${COMPOSE_PROJECT_NAME}
       - HARMONY_PLATFORM_PARTY_NAME=${COMPOSE_PROJECT_NAME}-platform
       - HARMONY_SERVICE_PORT=8443
