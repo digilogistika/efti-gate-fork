@@ -302,11 +302,13 @@ public class ControlService {
                                 .build()
                         );
 
-                new Thread(request::retrieve).start();
-
                 getRequestService(controlDto.getRequestType()).createRequestOnly(saveControl, null, IN_PROGRESS);
-
                 log.info("Uil control with request id '{}' has been register", saveControl.getRequestId());
+
+                // when thread is blocked the transaction will not be committed
+                // that means "request" table in database will not be updated when the UIL is received
+                new Thread(request::retrieve).start();
+                log.info("UIL request for dataset id {}, subset id {} and request id {} has been sent to platform", saveControl.getDatasetId(), saveControl.getSubsetIds(), saveControl.getRequestId());
             } catch (Exception e) {
                 log.error("Error occurred when sending UIL request to platform", e);
             }
