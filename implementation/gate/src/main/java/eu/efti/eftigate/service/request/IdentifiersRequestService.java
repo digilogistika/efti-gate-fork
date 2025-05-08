@@ -1,6 +1,12 @@
 package eu.efti.eftigate.service.request;
 
-import eu.efti.commons.dto.*;
+import eu.efti.commons.dto.ControlDto;
+import eu.efti.commons.dto.IdentifiersRequestDto;
+import eu.efti.commons.dto.IdentifiersResultsDto;
+import eu.efti.commons.dto.RequestDto;
+import eu.efti.commons.dto.SaveIdentifiersRequestWrapper;
+import eu.efti.commons.dto.SearchParameter;
+import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.enums.RequestStatusEnum;
 import eu.efti.commons.enums.RequestType;
@@ -38,7 +44,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static eu.efti.commons.constant.EftiGateConstants.IDENTIFIERS_TYPES;
-import static eu.efti.commons.enums.RequestStatusEnum.*;
+import static eu.efti.commons.enums.RequestStatusEnum.RECEIVED;
+import static eu.efti.commons.enums.RequestStatusEnum.RESPONSE_IN_PROGRESS;
+import static eu.efti.commons.enums.RequestStatusEnum.SUCCESS;
 import static eu.efti.commons.enums.RequestTypeEnum.EXTERNAL_ASK_IDENTIFIERS_SEARCH;
 import static eu.efti.eftilogger.model.ComponentType.GATE;
 import static eu.efti.eftilogger.model.ComponentType.REGISTRY;
