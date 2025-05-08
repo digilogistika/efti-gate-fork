@@ -1,10 +1,22 @@
 package eu.efti.eftigate.service;
 
 import eu.efti.commons.constant.EftiGateConstants;
-import eu.efti.commons.dto.*;
+import eu.efti.commons.dto.ControlDto;
+import eu.efti.commons.dto.ErrorDto;
+import eu.efti.commons.dto.IdentifiersRequestDto;
+import eu.efti.commons.dto.IdentifiersResponseDto;
+import eu.efti.commons.dto.PostFollowUpRequestDto;
+import eu.efti.commons.dto.RequestDto;
+import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
+import eu.efti.commons.dto.UilDto;
+import eu.efti.commons.dto.ValidableDto;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
-import eu.efti.commons.enums.*;
+import eu.efti.commons.enums.ErrorCodesEnum;
+import eu.efti.commons.enums.RequestStatusEnum;
+import eu.efti.commons.enums.RequestType;
+import eu.efti.commons.enums.RequestTypeEnum;
+import eu.efti.commons.enums.StatusEnum;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.NoteResponseDto;
@@ -18,19 +30,14 @@ import eu.efti.eftigate.repository.ControlRepository;
 import eu.efti.eftigate.service.gate.EftiGateIdResolver;
 import eu.efti.eftigate.service.request.RequestService;
 import eu.efti.eftigate.service.request.RequestServiceFactory;
-import eu.efti.eftigate.service.request.UilRequestService;
 import eu.efti.eftigate.utils.ControlUtils;
 import eu.efti.eftilogger.model.ComponentType;
 import eu.efti.identifiersregistry.service.IdentifiersService;
 import eu.efti.v1.edelivery.IdentifierQuery;
-import eu.efti.v1.edelivery.ObjectFactory;
-import eu.efti.v1.edelivery.PostFollowUpRequest;
-import eu.efti.v1.edelivery.UIL;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import jakarta.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -38,18 +45,24 @@ import org.apache.commons.lang3.StringUtils;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClient;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 import static eu.efti.commons.enums.ErrorCodesEnum.ID_NOT_FOUND;
-import static eu.efti.commons.enums.RequestStatusEnum.*;
+import static eu.efti.commons.enums.RequestStatusEnum.ERROR;
+import static eu.efti.commons.enums.RequestStatusEnum.IN_PROGRESS;
+import static eu.efti.commons.enums.RequestStatusEnum.RECEIVED;
+import static eu.efti.commons.enums.RequestStatusEnum.RESPONSE_IN_PROGRESS;
+import static eu.efti.commons.enums.RequestStatusEnum.SEND_ERROR;
 import static eu.efti.commons.enums.RequestTypeEnum.EXTERNAL_ASK_IDENTIFIERS_SEARCH;
 import static eu.efti.commons.enums.StatusEnum.COMPLETE;
 import static eu.efti.commons.enums.StatusEnum.PENDING;
@@ -72,8 +85,7 @@ public class ControlService {
     private final EftiAsyncCallsProcessor eftiAsyncCallsProcessor;
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;
-    private final UilRequestService uilRequestService;
-    private final ObjectFactory objectFactory = new ObjectFactory();
+    private final PlatformApiService platformApiService;
     @Value("${efti.control.pending.timeout:60}")
     private Integer timeoutValue;
 
@@ -137,40 +149,8 @@ public class ControlService {
             return new NoteResponseDto(NOTE_WAS_NOT_SENT, errorDto.getErrorCode(), errorDto.getErrorDescription());
         } else {
             controlDto.setNotes(notesDto.getMessage());
-            try {
-                final PostFollowUpRequest postFollowUpRequest = new PostFollowUpRequest();
-                final UIL uil = new UIL();
-
-                uil.setPlatformId(controlDto.getPlatformId());
-                uil.setGateId(controlDto.getGateId());
-                uil.setDatasetId(controlDto.getDatasetId());
-                postFollowUpRequest.setUil(uil);
-                postFollowUpRequest.setMessage(notesDto.getMessage());
-                postFollowUpRequest.setRequestId(controlDto.getRequestId());
-
-                final JAXBElement<PostFollowUpRequest> note = objectFactory.createPostFollowUpRequest(postFollowUpRequest);
-                String body = serializeUtils.mapJaxbObjectToXmlString(note, PostFollowUpRequest.class);
-                RestClient restClient = RestClient
-                        .builder()
-                        .baseUrl("http://localhost:8070/gate-api")
-                        .build();
-                var request = restClient.post()
-                        .uri(uriBuilder -> uriBuilder
-                                .path("/follow-up")
-                                .build()
-                        )
-                        .contentType(MediaType.APPLICATION_XML)
-                        .body(body);
-
-                getRequestService(RequestTypeEnum.NOTE_SEND).createRequestOnly(controlDto, null, IN_PROGRESS);
-
-                // when thread is blocked the transaction will not be committed
-                // that means "request" table in database will not be updated when the UIL is received
-                new Thread(request::retrieve).start();
-                log.info("Note request for dataset id {}, subset id {} and request id {} has been sent to platform", controlDto.getDatasetId(), controlDto.getSubsetIds(), controlDto.getRequestId());
-            } catch (Exception e) {
-                log.error("Error occurred when sending note request to platform", e);
-            }
+            getRequestService(RequestTypeEnum.NOTE_SEND).createRequestOnly(controlDto, null, IN_PROGRESS);
+            platformApiService.sendFollowUpRequest(notesDto, controlDto);
 
             //log fti025
             logManager.logNoteReceiveFromAapMessage(controlDto, serializeUtils.mapObjectToBase64String(notesDto), receiver, ComponentType.GATE, ComponentType.PLATFORM, true, isCurrentGate ? RequestTypeEnum.NOTE_SEND : RequestTypeEnum.EXTERNAL_NOTE_SEND, isCurrentGate ? LogManager.FTI_025 : LogManager.FTI_026);
@@ -327,31 +307,9 @@ public class ControlService {
         } else if (gateProperties.isCurrentGate(controlDto.getGateId()) && checkOnLocalRegistry(controlDto)) {
             // gate has the UIL in some connected platform
             final ControlDto saveControl = this.save(controlDto);
-            // http request the platform for the UIL
-            try {
-                RestClient restClient = RestClient
-                        .builder()
-                        .baseUrl("http://localhost:8070/gate-api")
-                        .build();
-                var request = restClient.get()
-                        .uri(uriBuilder -> uriBuilder
-                                .path("/consignments")
-                                .queryParam("datasetId", saveControl.getDatasetId())
-                                .queryParam("subsetId", saveControl.getSubsetIds())
-                                .queryParam("requestId", saveControl.getRequestId())
-                                .build()
-                        );
-
-                getRequestService(controlDto.getRequestType()).createRequestOnly(saveControl, null, IN_PROGRESS);
-                log.info("Uil control with request id '{}' has been register", saveControl.getRequestId());
-
-                // when thread is blocked the transaction will not be committed
-                // that means "request" table in database will not be updated when the UIL is received
-                new Thread(request::retrieve).start();
-                log.info("UIL request for dataset id {}, subset id {} and request id {} has been sent to platform", saveControl.getDatasetId(), saveControl.getSubsetIds(), saveControl.getRequestId());
-            } catch (Exception e) {
-                log.error("Error occurred when sending UIL request to platform", e);
-            }
+            getRequestService(controlDto.getRequestType()).createRequestOnly(saveControl, null, IN_PROGRESS);
+            platformApiService.sendUilRequest(controlDto);
+            log.info("Uil control with request id '{}' has been register", saveControl.getRequestId());
         } else {
             final ControlDto saveControl = this.save(controlDto);
             getRequestService(controlDto.getRequestType()).createAndSendRequest(saveControl, null);
