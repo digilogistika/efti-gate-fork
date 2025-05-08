@@ -23,10 +23,14 @@ import eu.efti.eftigate.utils.ControlUtils;
 import eu.efti.eftilogger.model.ComponentType;
 import eu.efti.identifiersregistry.service.IdentifiersService;
 import eu.efti.v1.edelivery.IdentifierQuery;
+import eu.efti.v1.edelivery.ObjectFactory;
+import eu.efti.v1.edelivery.PostFollowUpRequest;
+import eu.efti.v1.edelivery.UIL;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import jakarta.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -34,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
@@ -68,6 +73,7 @@ public class ControlService {
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;
     private final UilRequestService uilRequestService;
+    private final ObjectFactory objectFactory = new ObjectFactory();
     @Value("${efti.control.pending.timeout:60}")
     private Integer timeoutValue;
 
@@ -131,7 +137,41 @@ public class ControlService {
             return new NoteResponseDto(NOTE_WAS_NOT_SENT, errorDto.getErrorCode(), errorDto.getErrorDescription());
         } else {
             controlDto.setNotes(notesDto.getMessage());
-            getRequestService(RequestTypeEnum.NOTE_SEND).createAndSendRequest(controlDto, !gateProperties.isCurrentGate(controlDto.getGateId()) ? controlDto.getGateId() : null);
+            try {
+                final PostFollowUpRequest postFollowUpRequest = new PostFollowUpRequest();
+                final UIL uil = new UIL();
+
+                uil.setPlatformId(controlDto.getPlatformId());
+                uil.setGateId(controlDto.getGateId());
+                uil.setDatasetId(controlDto.getDatasetId());
+                postFollowUpRequest.setUil(uil);
+                postFollowUpRequest.setMessage(notesDto.getMessage());
+                postFollowUpRequest.setRequestId(controlDto.getRequestId());
+
+                final JAXBElement<PostFollowUpRequest> note = objectFactory.createPostFollowUpRequest(postFollowUpRequest);
+                String body = serializeUtils.mapJaxbObjectToXmlString(note, PostFollowUpRequest.class);
+                RestClient restClient = RestClient
+                        .builder()
+                        .baseUrl("http://localhost:8070/gate-api")
+                        .build();
+                var request = restClient.post()
+                        .uri(uriBuilder -> uriBuilder
+                                .path("/follow-up")
+                                .build()
+                        )
+                        .contentType(MediaType.APPLICATION_XML)
+                        .body(body);
+
+                getRequestService(RequestTypeEnum.NOTE_SEND).createRequestOnly(controlDto, null, IN_PROGRESS);
+
+                // when thread is blocked the transaction will not be committed
+                // that means "request" table in database will not be updated when the UIL is received
+                new Thread(request::retrieve).start();
+                log.info("Note request for dataset id {}, subset id {} and request id {} has been sent to platform", controlDto.getDatasetId(), controlDto.getSubsetIds(), controlDto.getRequestId());
+            } catch (Exception e) {
+                log.error("Error occurred when sending note request to platform", e);
+            }
+
             //log fti025
             logManager.logNoteReceiveFromAapMessage(controlDto, serializeUtils.mapObjectToBase64String(notesDto), receiver, ComponentType.GATE, ComponentType.PLATFORM, true, isCurrentGate ? RequestTypeEnum.NOTE_SEND : RequestTypeEnum.EXTERNAL_NOTE_SEND, isCurrentGate ? LogManager.FTI_025 : LogManager.FTI_026);
             log.info("Note has been registered for control with request uuid '{}'", controlDto.getRequestId());
