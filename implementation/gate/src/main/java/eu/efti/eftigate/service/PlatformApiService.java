@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 public class PlatformApiService {
     private final SerializeUtils serializeUtils;
     private final ObjectFactory objectFactory = new ObjectFactory();
-
+    private WebClient.Builder webClientBuilder;
 
     @Async
     public CompletableFuture<Void> sendFollowUpRequest(PostFollowUpRequestDto postFollowUpRequestDto, ControlDto controlDto) {
@@ -40,18 +40,22 @@ public class PlatformApiService {
             final JAXBElement<PostFollowUpRequest> note = objectFactory.createPostFollowUpRequest(postFollowUpRequest);
             String body = serializeUtils.mapJaxbObjectToXmlString(note, PostFollowUpRequest.class);
 
-            RestClient restClient = RestClient
-                    .builder()
-                    .baseUrl("http://localhost:8070/gate-api")
-                    .build();
-
             log.info("Sending follow up request to platform with id: {}", controlDto.getPlatformId());
-            restClient.post()
-                    .uri("/follow-up")
+            webClientBuilder
+                    .build()
+                    .post()
+                    .uri(uriBuilder -> uriBuilder
+                            .scheme("http")
+                            .host("localhost")
+                            .port("8070")
+                            .path("/gate-api/follow-up")
+                            .build()
+                    )
                     .contentType(MediaType.APPLICATION_XML)
-                    .body(body)
+                    .bodyValue(body)
                     .retrieve()
-                    .toBodilessEntity();
+                    .toBodilessEntity()
+                    .block();
 
             log.info("Successfully sent follow up request to platform with id: {}", controlDto.getPlatformId());
             return CompletableFuture.completedFuture(null);
@@ -66,22 +70,24 @@ public class PlatformApiService {
     @Async
     public CompletableFuture<Void> sendUilRequest(ControlDto controlDto) {
         try {
-            RestClient restClient = RestClient
-                    .builder()
-                    .baseUrl("http://localhost:8070/gate-api")
-                    .build();
-
             log.info("Sending UIL request to platform with id: {}", controlDto.getPlatformId());
-            restClient.get()
+
+            webClientBuilder
+                    .build()
+                    .get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/consignments")
+                            .scheme("http")
+                            .host("localhost")
+                            .port(8070)
+                            .path("/gate-api/consignments")
                             .queryParam("datasetId", controlDto.getDatasetId())
                             .queryParam("subsetId", controlDto.getSubsetIds())
                             .queryParam("requestId", controlDto.getRequestId())
                             .build()
                     )
                     .retrieve()
-                    .toBodilessEntity();
+                    .toBodilessEntity()
+                    .block();
 
             return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
