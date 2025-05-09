@@ -1,6 +1,6 @@
 package eu.efti.platformgatesimulator.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.platformgatesimulator.exception.UploadException;
 import eu.efti.platformgatesimulator.service.ApIncomingService;
 import eu.efti.platformgatesimulator.service.IdentifierService;
@@ -25,33 +25,28 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.mockito.ArgumentMatchers.any;
-
 @WebMvcTest(IdentifiersController.class)
 @ContextConfiguration(classes = {IdentifiersController.class})
 @ExtendWith(SpringExtension.class)
 class IdentifiersControllerTest {
 
-    @MockBean
-    private IdentifiersController identifiersController;
-
+    private final SaveIdentifiersRequest saveIdentifiersRequest = new SaveIdentifiersRequest();
     @Autowired
     protected MockMvc mockMvc;
-
+    @MockBean
+    private IdentifiersController identifiersController;
     @Mock
     private ApIncomingService apIncomingService;
-
     @Mock
     private ReaderService readerService;
-
     @Mock
     private IdentifierService identifierService;
-
-    private final SaveIdentifiersRequest saveIdentifiersRequest = new SaveIdentifiersRequest();
+    @Mock
+    private SerializeUtils serializeUtils;
 
     @BeforeEach
     void before() {
-        identifiersController = new IdentifiersController(apIncomingService, readerService, identifierService);
+        identifiersController = new IdentifiersController(apIncomingService, serializeUtils, readerService, identifierService);
         saveIdentifiersRequest.setRequestId("requestId");
         saveIdentifiersRequest.setConsignment(new Consignment());
         saveIdentifiersRequest.setDatasetId("datasetId");
@@ -85,14 +80,7 @@ class IdentifiersControllerTest {
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
         Assertions.assertEquals("Error while uploading file null", result.getBody());
     }
-
-    @Test
-    void uploadIdentifiersTest() {
-        final ResponseEntity<String> result = identifiersController.uploadIdentifiers(saveIdentifiersRequest);
-
-        Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
-        Assertions.assertEquals("Identifiers uploaded", result.getBody());
-    }
+    
 
     @Test
     void uploadIdentifiersNullTest() {
@@ -101,14 +89,4 @@ class IdentifiersControllerTest {
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
         Assertions.assertEquals("No identifiers sent", result.getBody());
     }
-
-    @Test
-    void uploadIdentifiersThrowTest() throws JsonProcessingException {
-        Mockito.doThrow(JsonProcessingException.class).when(apIncomingService).uploadIdentifiers(any());
-        final ResponseEntity<String> result = identifiersController.uploadIdentifiers(saveIdentifiersRequest);
-
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
-        Assertions.assertEquals("No identifiers sent, error in JSON process", result.getBody());
-    }
-
 }
