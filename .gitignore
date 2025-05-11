@@ -12,3 +12,6 @@ target/
 
 #API key files
 api-key-*.txt
+
+#Env viles
+.env

@@ -13,9 +13,12 @@ gate:
   maxSleep: 2000
   owner: estplat
   cda_path: file:/usr/src/myapp/cda/
-  gate: estonia
+  gate: EU-EE11
+  gateBaseUrl: http://efti-gate-eu-ee11-instance:8882
+  platformBaseUrl: http://efti-platform-estplat-instance:${server.port}
+  gateSuperApiKey: ${ADMIN_API_KEY}
   ap:
-    url: https://harmony.estplat.pikker.dev:8443/services/wsplugin
+    url: http://harmony-ap-eu-ee11:8080/services/wsplugin
     username: estplat_service_account
     password: Azerty59*1234567
 

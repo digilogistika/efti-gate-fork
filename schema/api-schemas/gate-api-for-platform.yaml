@@ -1,0 +1,46 @@
+openapi: 3.0.1
+info:
+  title: Platform API in Gate
+  description: This API is provided by the gate for platform applications
+  version: 0.1.0
+
+paths:
+
+  /v0/whoami:
+    get:
+      operationId: "getWhoami"
+      responses:
+        "200":
+          description: Get information on the authenticated client
+          content:
+            application/xml:
+              schema:
+                type: object
+                xml:
+                  name: whoamiResponse
+                required: [ appId, role ]
+                properties:
+                  appId:
+                    type: string
+                  role:
+                    type: string
+
+  /v0/consignments/{datasetId}:
+    parameters:
+      - in: path
+        name: datasetId
+        schema:
+          type: string
+        required: true
+    put:
+      operationId: "putConsignmentIdentifiers"
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: object
+              description: consignment element of type SupplyChainConsignment as defined by schema consignment-identifiers.xsd
+      responses:
+        "200":
+          description: Add or update consignment identifiers
