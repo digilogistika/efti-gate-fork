@@ -1,5 +1,5 @@
 // 2) a One-liner filter bean
-package eu.efti.platformgatesimulator.config.security;
+package eu.efti.eftigate.config.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 @Component
 public class ApiKeyFilter extends OncePerRequestFilter {
 
-    @Value("${gate.gateSuperApiKey}")
+    @Value("${gate.apikey}")
     private String validApiKey;
 
     @Override
@@ -28,7 +28,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         if (path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.startsWith("/actuator")
-                || path.startsWith("/gate-api")) {
+                || path.startsWith("/api/v1/platform")) {
             chain.doFilter(req, res);
             return;
         }
