@@ -63,7 +63,7 @@ services:
     container_name: reference-gate-shared-db
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: efti'
+      POSTGRES_DB: efti
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
     networks:
