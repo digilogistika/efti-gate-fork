@@ -4,6 +4,7 @@ set -e
 
 # --- Configuration ---
 UTIL_CONTAINER_SERVICE_NAME="harmony-setup-util"
+HARMONY_CONTAINER_SERVICE_NAME="harmony-gate"
 CONNECT_PATH_INSIDE_CONTAINER="/tmp/connect"
 
 # --- Helper Functions ---
@@ -53,6 +54,27 @@ if [ $(echo "$CONTAINER_ID" | wc -l) -ne 1 ]; then
 fi
 log_info "Found utility container: $CONTAINER_ID"
 
+# --- Find is the peer is on the same machine ---
+PEER_CONTAINER_ID=$(docker compose -p "$PEER_NAME" ps -q "$UTIL_CONTAINER_SERVICE_NAME" 2>/dev/null)
+PEER_ON_SAME_HOST=false
+if [ -z "$CONTAINER_ID" ]; then
+    log_info "Did not find the peer on the same host."
+else
+    log_info "Found the peer on the same host. Connectig with docker network..."
+    PEER_ON_SAME_HOST=true
+fi
+
+if [ $PEER_ON_SAME_HOST ]; then
+    SELF_NETWORK_NAME=$(docker network ls -f name=$PROJECT_NAME -q)
+    PEER_HARMONY_SERVICE_ID=$(docker compose -p "$PEER_NAME" ps -q "$HARMONY_CONTAINER_SERVICE_NAME" 2>/dev/null)
+    docker network connect "$SELF_NETWORK_NAME" "$PEER_HARMONY_SERVICE_ID"
+    if [ $? -eq 0 ]; then
+        log_info "Successfully added $PEER_NAME to $SELF_NETWORK_NAME"
+    else
+        log_error "Failed to add $PEER_NAME to $SELF_NETWORK_NAME"
+        exit 1
+    fi
+fi
 
 # --- Prepare Container for File Transfer ---
 log_info "Preparing temporary directory inside container..."
