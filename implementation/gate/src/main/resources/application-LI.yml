@@ -24,7 +24,10 @@ spring:
 gate:
   country: LI
   owner: listenbourg
+  apikey: SuperSecretSecret123
   ap:
     url: https://localhost:8442/services/wsplugin
     username: listenbourg_service_account
     password: Azerty59*1234567
+server:
+  port: 8881
