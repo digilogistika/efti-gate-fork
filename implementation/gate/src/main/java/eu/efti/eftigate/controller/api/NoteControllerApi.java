@@ -1,19 +1,17 @@
 package eu.efti.eftigate.controller.api;
 
 import eu.efti.commons.dto.PostFollowUpRequestDto;
-import eu.efti.eftigate.config.security.Roles;
 import eu.efti.eftigate.dto.NoteResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Follow up communication" , description = "Interface to send a follow up communication to a platform ")
+@Tag(name = "Follow up communication", description = "Interface to send a follow up communication to a platform ")
 @RequestMapping("/v1")
 public interface NoteControllerApi {
 
@@ -26,6 +24,5 @@ public interface NoteControllerApi {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/control/uil/follow-up")
-    @Secured(Roles.ROLE_ROAD_CONTROLER)
     ResponseEntity<NoteResponseDto> createNote(final @RequestBody PostFollowUpRequestDto notesDto);
 }

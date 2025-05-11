@@ -2,6 +2,7 @@ package eu.efti.platformgatesimulator.controller;
 
 import eu.efti.platformgatesimulator.config.GateProperties;
 import eu.efti.platformgatesimulator.controller.api.GateApi;
+import eu.efti.platformgatesimulator.service.ApiKeyService;
 import eu.efti.platformgatesimulator.service.IdentifierService;
 import eu.efti.platformgatesimulator.service.ReaderService;
 import eu.efti.v1.consignment.common.SupplyChainConsignment;
@@ -26,6 +27,7 @@ public class GateApiController implements GateApi {
     private final ReaderService readerService;
     private final GateProperties gateProperties;
     private final IdentifierService identifierService;
+    private final ApiKeyService apiKeyService;
 
 
     public ResponseEntity<Object> getConsignmentSubsets(
@@ -40,13 +42,14 @@ public class GateApiController implements GateApi {
 
             RestClient restClient = RestClient
                     .builder()
-                    .baseUrl("http://localhost:8880/api/v1/platform")
+                    .baseUrl(gateProperties.getGateBaseUrl() + "/api/v1/platform")
                     .build();
             String response = restClient.post()
                     .uri(uriBuilder -> uriBuilder
                             .path("/uil")
                             .build()
                     )
+                    .header("X-API-Key", apiKeyService.getApiKey())
                     .contentType(MediaType.APPLICATION_XML)
                     .body(uilResponse)
                     .retrieve()

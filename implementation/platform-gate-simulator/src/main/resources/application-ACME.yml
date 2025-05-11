@@ -11,6 +11,9 @@ server:
 gate:
   minSleep: 1000
   maxSleep: 2000
+  gateBaseUrl: http://localhost:8880
+  platformBaseUrl: http://localhost:${server.port}
+  gateSuperApiKey: SuperSecretSecret123
   owner: acme
   cda_path: classpath:cda/
   gate: borduria

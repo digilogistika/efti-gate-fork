@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "Platform API", description = "REST API for platforms. This API is implemented by the gate for platforms to request")
@@ -36,7 +37,8 @@ public interface PlatformApiV1 {
             path = "identifiers")
     ResponseEntity<String> postConsignmentIdentifiers(
             @Parameter(description = "Consignment identifiers following the schema `http://efti.eu/v1/consignment/identifier`", required = true)
-            @org.springframework.web.bind.annotation.RequestBody String body
+            @org.springframework.web.bind.annotation.RequestBody String body,
+            @RequestHeader(name = "X-API-Key", required = true) String apiKey
     );
 
 
@@ -58,6 +60,7 @@ public interface PlatformApiV1 {
     )
     ResponseEntity<String> consignmentResponse(
             @Parameter(description = "Consignment identifiers following the schema `http://efti.eu/v1/consignment/common`", required = true)
-            @org.springframework.web.bind.annotation.RequestBody String body
+            @org.springframework.web.bind.annotation.RequestBody String body,
+            @RequestHeader(name = "X-API-Key", required = true) String apiKey
     );
 }

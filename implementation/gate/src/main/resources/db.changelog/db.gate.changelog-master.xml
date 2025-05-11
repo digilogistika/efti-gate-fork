@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
     <changeSet author="dfourmaux (generated)" id="1707315732219-1">
         <createTable tableName="contactinformation">
@@ -222,6 +222,26 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="1707315732219-27" author="rig">
+        <createTable tableName="platform">
+            <column autoIncrement="true" name="id" startWith="56" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="platform_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="followuprequesturl" type="VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uilrequesturl" type="VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secret" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
     <include file="/db.changelog/db.gate.changelog-1-rename.xml"/>
     <include file="/db.changelog/db.gate.changelog-2-subsetIds.xml"/>

@@ -1,9 +1,11 @@
 package eu.efti.platformgatesimulator.controller;
 
 import eu.efti.commons.utils.SerializeUtils;
+import eu.efti.platformgatesimulator.config.GateProperties;
 import eu.efti.platformgatesimulator.exception.UploadException;
 import eu.efti.platformgatesimulator.mapper.MapperUtils;
 import eu.efti.platformgatesimulator.service.ApIncomingService;
+import eu.efti.platformgatesimulator.service.ApiKeyService;
 import eu.efti.platformgatesimulator.service.IdentifierService;
 import eu.efti.platformgatesimulator.service.ReaderService;
 import eu.efti.v1.edelivery.ObjectFactory;
@@ -14,7 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +35,8 @@ public class IdentifiersController {
     private final ObjectFactory objectFactory = new ObjectFactory();
     private final SerializeUtils serializeUtils;
     private final ReaderService readerService;
+    private final GateProperties gateProperties;
+    private final ApiKeyService apiKeyService;
 
     private final IdentifierService identifierService;
 
@@ -61,13 +69,14 @@ public class IdentifiersController {
 
             RestClient restClient = RestClient
                     .builder()
-                    .baseUrl("http://localhost:8880/api/v1/platform")
+                    .baseUrl(gateProperties.getGateBaseUrl() + "/api/v1/platform")
                     .build();
             String response = restClient.post()
                     .uri(uriBuilder -> uriBuilder
                             .path("/identifiers")
                             .build()
                     )
+                    .header("X-API-Key", apiKeyService.getApiKey())
                     .contentType(MediaType.APPLICATION_XML)
                     .body(requestBody)
                     .retrieve()

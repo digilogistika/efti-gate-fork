@@ -22,7 +22,8 @@ import java.util.concurrent.CompletableFuture;
 public class PlatformApiService {
     private final SerializeUtils serializeUtils;
     private final ObjectFactory objectFactory = new ObjectFactory();
-    private WebClient.Builder webClientBuilder;
+    private final WebClient.Builder webClientBuilder;
+    private final PlatformIdentityService platformIdentityService;
 
     @Async
     public CompletableFuture<Void> sendFollowUpRequest(PostFollowUpRequestDto postFollowUpRequestDto, ControlDto controlDto) {
@@ -44,13 +45,7 @@ public class PlatformApiService {
             webClientBuilder
                     .build()
                     .post()
-                    .uri(uriBuilder -> uriBuilder
-                            .scheme("http")
-                            .host("localhost")
-                            .port("8070")
-                            .path("/gate-api/follow-up")
-                            .build()
-                    )
+                    .uri(platformIdentityService.getFollowUpRequestUrl(controlDto.getPlatformId()))
                     .contentType(MediaType.APPLICATION_XML)
                     .bodyValue(body)
                     .retrieve()
@@ -72,19 +67,15 @@ public class PlatformApiService {
         try {
             log.info("Sending UIL request to platform with id: {}", controlDto.getPlatformId());
 
+            String uri = platformIdentityService.getUilRequestUrl(controlDto.getPlatformId()) +
+                    "?datasetId=" + controlDto.getDatasetId() +
+                    "&subsetId=" + "full" + // TODO: add reals subsets
+                    "&requestId=" + controlDto.getRequestId();
+
             webClientBuilder
                     .build()
                     .get()
-                    .uri(uriBuilder -> uriBuilder
-                            .scheme("http")
-                            .host("localhost")
-                            .port(8070)
-                            .path("/gate-api/consignments")
-                            .queryParam("datasetId", controlDto.getDatasetId())
-                            .queryParam("subsetId", controlDto.getSubsetIds())
-                            .queryParam("requestId", controlDto.getRequestId())
-                            .build()
-                    )
+                    .uri(uri)
                     .retrieve()
                     .toBodilessEntity()
                     .block();
