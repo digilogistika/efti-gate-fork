@@ -1,10 +1,3 @@
-spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://auth.gate.eu:8080/realms/eFTI
-
 server:
   port: 8070
 
@@ -14,8 +7,7 @@ gate:
   owner: ${GATE}-platform
   cda_path: file:/usr/src/myapp/cda/
   gate: ${GATE}
-  ap:
-    url: https://${GATE}-harmony-platform-1:8443/services/wsplugin
-    username: service_account
-    password: Azerty59*1234567
+  gateBaseUrl: http://${GATE}-efti-gate:8880
+  platformBaseUrl: http://${GATE}-efti-platform:${server.port}
+  gateSuperApiKey: ${ADMIN_API_KEY}
 
