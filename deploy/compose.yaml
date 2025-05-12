@@ -2,10 +2,10 @@ services:
   harmony:
     image: niis/harmony-ap:2.5.0
     depends_on:
-      harmony-gate-db:
+      harmony-db:
         condition: service_started
     environment:
-      - DB_HOST=harmony-gate-db
+      - DB_HOST=harmony-db
       - DB_SCHEMA=harmony_ap
       - DB_PASSWORD=dbpassword
       - ADMIN_PASSWORD=Secret
@@ -15,7 +15,7 @@ services:
       - SECURITY_TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-gate-1
+      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-1
     volumes:
       - ap_data_gate:/var/opt/harmony-ap
       - ./harmony/gate-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -103,7 +103,7 @@ services:
   harmony-setup-util:
     build: ./harmony-utils
     depends_on:
-      harmony-gate:
+      harmony:
         condition: service_started
     environment:
       - HARMONY_USERNAME=harmony
