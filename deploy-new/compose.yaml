@@ -1,0 +1,211 @@
+services:
+  harmony-gate:
+    image: niis/harmony-ap:2.5.0
+    depends_on:
+      harmony-gate-db:
+        condition: service_started
+    environment:
+      - DB_HOST=harmony-gate-db
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=${COMPOSE_PROJECT_NAME}
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-gate-1
+    volumes:
+      - ap_data_gate:/var/opt/harmony-ap
+      - ./harmony/gate-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+      - ./harmony/gate-ws-plugin.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
+      - ./harmony/gate-ws-plugin.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    networks:
+      - efti_network
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+
+  harmony-platform:
+    image: niis/harmony-ap:2.5.0
+    profiles: [ "platform" ]
+    depends_on:
+      harmony-platform-db:
+        condition: service_started
+    environment:
+      - DB_HOST=harmony-platform-db
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=${COMPOSE_PROJECT_NAME}-platform
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-platform-1
+    volumes:
+      - ap_data_platform:/var/opt/harmony-ap
+      - ./harmony/platform-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+      - ./harmony/platform-ws-plugin.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
+      - ./harmony/platform-ws-plugin.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    networks:
+      - efti_network
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+
+  harmony-gate-db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data_gate:/var/lib/mysql
+    networks:
+      - efti_network
+    restart: on-failure
+    mem_limit: 512m
+
+  harmony-platform-db:
+    image: mysql:8
+    profiles: [ "platform" ]
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data_platform:/var/lib/mysql
+    networks:
+      - efti_network
+    restart: on-failure
+    mem_limit: 512m
+
+  efti-rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
+    networks:
+      - efti_network
+    restart: on-failure
+
+  efti-gate:
+    build:
+      context: ../
+      dockerfile: ./deploy/gate/Dockerfile
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8882/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
+    depends_on:
+      - efti-keycloak
+      - efti-psql
+      - efti-rabbitmq
+    environment:
+      - OWNER=${COMPOSE_PROJECT_NAME}
+      - COUNTRY=${COMPOSE_PROJECT_NAME}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - efti_network
+    restart: on-failure
+
+  efti-platform:
+    build:
+      context: ../
+      dockerfile: ./deploy/platform/Dockerfile
+    profiles: [ "platform" ]
+    depends_on:
+      - efti-keycloak
+      - efti-psql
+    environment:
+      - GATE=${COMPOSE_PROJECT_NAME}
+    networks:
+      - efti_network
+    restart: on-failure
+
+  efti-psql:
+    image: postgres:15.4
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - efti_network
+    restart: on-failure
+
+  efti-psql-meta:
+    image: postgres:15.4
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    volumes:
+      - ./sql-meta:/docker-entrypoint-initdb.d
+    networks:
+      - efti_network
+    restart: on-failure
+
+  efti-keycloak:
+    image: quay.io/keycloak/keycloak:22.0.5
+    command: [ "start-dev", "--import-realm", "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=secret
+      - DEBUG=true
+      - DEBUG_PORT=*:8788
+    volumes:
+      - ./keycloak/export.json:/opt/keycloak/data/import/export.json
+    networks:
+      efti_network:
+        aliases:
+          - auth.gate.eu
+    restart: on-failure
+
+  harmony-setup-util:
+    build: ./harmony-utils
+    depends_on:
+      harmony-gate:
+        condition: service_started
+    environment:
+      - HARMONY_USERNAME=harmony
+      - HARMONY_PASSWORD=Secret
+      - PLUGIN_USER_PASSWORD=Azerty59*1234567
+      - KEYSTORE_PASSWORD=changeit
+      - TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - HARMONY_GATE_SERVICE_NAME=${COMPOSE_PROJECT_NAME}-harmony-gate-1
+      - HARMONY_PLATFORM_SERVICE_NAME=${COMPOSE_PROJECT_NAME}-harmony-platform-1
+      - HARMONY_GATE_PARTY_NAME=${COMPOSE_PROJECT_NAME}
+      - HARMONY_PLATFORM_PARTY_NAME=${COMPOSE_PROJECT_NAME}-platform
+      - HARMONY_SERVICE_PORT=8443
+      - PYTHONUNBUFFERED=1
+    networks:
+      - efti_network
+
+
+volumes:
+  ap_data_gate:
+  ap_data_platform:
+  db_data_gate:
+  db_data_platform:
+
+networks:
+  efti_network:
+    driver: bridge

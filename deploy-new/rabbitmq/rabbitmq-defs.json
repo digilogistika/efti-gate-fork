@@ -1,0 +1,165 @@
+{
+  "rabbit_version": "3.13.0",
+  "rabbitmq_version": "3.13.0",
+  "product_name": "RabbitMQ",
+  "product_version": "3.13.0",
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "YEWv0x5Lp/uPBMXjPzoZzygQ+kwUrCWlQnVuoV1Qu7BUvpcc",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator",
+      "limits": {
+      }
+    },
+   {
+      "name": "user",
+      "password": "pass",
+      "tags": "administrator",
+      "limits": {
+      }
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "host"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "user",
+      "vhost": "host",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [
+  ],
+  "parameters": [
+  ],
+  "global_parameters": [
+    {
+      "name": "internal_cluster_id",
+      "value": "rabbitmq-cluster-id-p1JTri5oPHLM99q6XcGq3g"
+    }
+  ],
+  "policies": [
+  ],
+  "queues": [
+    {
+      "name": "efti.receive-messages.q",
+      "vhost": "host",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic",
+        "x-dead-letter-exchange": "receive-message-dead-letter-exchange"
+      }
+    },
+    {
+      "name": "efti.send-messages.q",
+      "vhost": "host",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic",
+        "x-dead-letter-exchange": "send-message-dead-letter-exchange"
+      }
+    },
+    {
+      "name": "message-receive-dead-letter-queue",
+      "vhost": "host",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "message-send-dead-letter-queue",
+      "vhost": "host",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "efti.receive-message.exchange",
+      "vhost": "host",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
+    },
+    {
+      "name": "efti.send-message.exchange",
+      "vhost": "host",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+      }
+    },
+    {
+      "name": "receive-message-dead-letter-exchange",
+      "vhost": "host",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {
+      }
+    },
+    {
+      "name": "send-message-dead-letter-exchange",
+      "vhost": "host",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "efti.receive-message.exchange",
+      "vhost": "host",
+      "destination": "efti.receive-messages.q",
+      "destination_type": "queue",
+      "routing_key": "EFTI",
+      "arguments": {
+      }
+    },
+    {
+      "source": "efti.send-message.exchange",
+      "vhost": "host",
+      "destination": "efti.send-messages.q",
+      "destination_type": "queue",
+      "routing_key": "EFTI",
+      "arguments": {
+      }
+    },
+    {
+      "source": "receive-message-dead-letter-exchange",
+      "vhost": "host",
+      "destination": "message-receive-dead-letter-queue",
+      "destination_type": "queue",
+      "arguments": {
+      }
+    },
+    {
+      "source": "send-message-dead-letter-exchange",
+      "vhost": "host",
+      "destination": "message-send-dead-letter-queue",
+      "destination_type": "queue",
+      "arguments": {
+      }
+    }
+  ]
+}
