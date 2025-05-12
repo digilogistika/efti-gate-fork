@@ -50,7 +50,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,6 +85,7 @@ public class ControlService {
     private final EftiAsyncCallsProcessor eftiAsyncCallsProcessor;
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;
+    private final PlatformApiService platformApiService;
     @Value("${efti.control.pending.timeout:60}")
     private Integer timeoutValue;
 
@@ -96,6 +96,12 @@ public class ControlService {
             controlDto.setRequestId(null);
         }
         log.error("{}, {}", error.getErrorDescription(), error.getErrorCode());
+    }
+
+    private static ErrorEntity buildErrorEntity(final String errorCode) {
+        return ErrorEntity.builder()
+                .errorCode(errorCode)
+                .errorDescription(ERROR_REQUEST_ID_NOT_FOUND).build();
     }
 
     public ControlEntity getById(final long id) {
@@ -143,7 +149,9 @@ public class ControlService {
             return new NoteResponseDto(NOTE_WAS_NOT_SENT, errorDto.getErrorCode(), errorDto.getErrorDescription());
         } else {
             controlDto.setNotes(notesDto.getMessage());
-            getRequestService(RequestTypeEnum.NOTE_SEND).createAndSendRequest(controlDto, !gateProperties.isCurrentGate(controlDto.getGateId()) ? controlDto.getGateId() : null);
+            getRequestService(RequestTypeEnum.NOTE_SEND).createRequestOnly(controlDto, null, IN_PROGRESS);
+            platformApiService.sendFollowUpRequest(notesDto, controlDto);
+
             //log fti025
             logManager.logNoteReceiveFromAapMessage(controlDto, serializeUtils.mapObjectToBase64String(notesDto), receiver, ComponentType.GATE, ComponentType.PLATFORM, true, isCurrentGate ? RequestTypeEnum.NOTE_SEND : RequestTypeEnum.EXTERNAL_NOTE_SEND, isCurrentGate ? LogManager.FTI_025 : LogManager.FTI_026);
             log.info("Note has been registered for control with request uuid '{}'", controlDto.getRequestId());
@@ -267,12 +275,6 @@ public class ControlService {
                 .error(buildErrorEntity(ID_NOT_FOUND.name())).build());
     }
 
-    private static ErrorEntity buildErrorEntity(final String errorCode) {
-        return ErrorEntity.builder()
-                .errorCode(errorCode)
-                .errorDescription(ERROR_REQUEST_ID_NOT_FOUND).build();
-    }
-
     public ControlDto createControlFrom(final IdentifierQuery identifierQuery, final String fromGateId) {
         ControlDto controlDto = ControlUtils.fromExternalIdentifiersControl(identifierQuery, EXTERNAL_ASK_IDENTIFIERS_SEARCH, fromGateId, gateProperties.getOwner());
         return this.save(controlDto);
@@ -302,6 +304,12 @@ public class ControlService {
             if (controlDto.isExternalAsk()) {
                 getRequestService(controlDto.getRequestType()).createAndSendRequest(savedControl, controlDto.getFromGateId(), RequestStatusEnum.ERROR);
             }
+        } else if (gateProperties.isCurrentGate(controlDto.getGateId()) && checkOnLocalRegistry(controlDto)) {
+            // gate has the UIL in some connected platform
+            final ControlDto saveControl = this.save(controlDto);
+            getRequestService(controlDto.getRequestType()).createRequestOnly(saveControl, null, IN_PROGRESS);
+            platformApiService.sendUilRequest(controlDto);
+            log.info("Uil control with request id '{}' has been register", saveControl.getRequestId());
         } else {
             final ControlDto saveControl = this.save(controlDto);
             getRequestService(controlDto.getRequestType()).createAndSendRequest(saveControl, null);
@@ -401,9 +409,9 @@ public class ControlService {
         final List<IdentifierRequestResultDto> identifierResultDtos = new LinkedList<>();
         requestDtos.forEach(requestDto -> identifierResultDtos.add(
                 IdentifierRequestResultDto.builder()
-                        .consignments(requestDto.getIdentifiersResults() != null ? mapperUtils.consignmentDtoToApiDto(requestDto.getIdentifiersResults().getConsignments()): Collections.emptyList())
-                        .errorCode(requestDto.getError() != null? requestDto.getError().getErrorCode() : null)
-                        .errorDescription(requestDto.getError() != null? requestDto.getError().getErrorDescription() : null)
+                        .consignments(requestDto.getIdentifiersResults() != null ? mapperUtils.consignmentDtoToApiDto(requestDto.getIdentifiersResults().getConsignments()) : Collections.emptyList())
+                        .errorCode(requestDto.getError() != null ? requestDto.getError().getErrorCode() : null)
+                        .errorDescription(requestDto.getError() != null ? requestDto.getError().getErrorDescription() : null)
                         .gateIndicator(eftiGateIdResolver.resolve(requestDto.getGateIdDest()))
                         .status(mapRequestStatus(requestDto.getStatus()))
                         .build())
@@ -440,11 +448,11 @@ public class ControlService {
     }
 
     private String mapRequestStatus(final RequestStatusEnum requestStatus) {
-        if( List.of(RECEIVED, IN_PROGRESS, RESPONSE_IN_PROGRESS).contains(requestStatus) ) {
+        if (List.of(RECEIVED, IN_PROGRESS, RESPONSE_IN_PROGRESS).contains(requestStatus)) {
             return PENDING.name();
-        } else if ( RequestStatusEnum.SUCCESS.equals(requestStatus)) {
+        } else if (RequestStatusEnum.SUCCESS.equals(requestStatus)) {
             return COMPLETE.name();
-        } else if ( List.of(SEND_ERROR, ERROR).contains(requestStatus)) {
+        } else if (List.of(SEND_ERROR, ERROR).contains(requestStatus)) {
             return StatusEnum.ERROR.name();
         }
         return requestStatus.name();

@@ -1,0 +1,31 @@
+spring:
+  rabbitmq:
+    password: ee
+    username: ee
+    virtual-host: ee
+  datasource:
+    control:
+      liquibase:
+        default-schema: eftiee
+    identifiers:
+      liquibase:
+        default-schema: eftiee
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth.gate.estonia.eu:8080/realms/eFTI_EE
+  jpa:
+    properties:
+      hibernate:
+        control_schema: "eftiee"
+        identifiers_schema: "eftiee"
+
+gate:
+  owner: EU-EE11
+  country: EE
+  apikey: ${ADMIN_API_KEY}
+  ap:
+    url: http://harmony-ap-eu-ee11:8080/services/wsplugin
+    username: estonia_service_account
+    password: Azerty59*1234567

@@ -1,22 +1,27 @@
 package eu.efti.platformgatesimulator.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
+import eu.efti.commons.utils.SerializeUtils;
+import eu.efti.platformgatesimulator.config.GateProperties;
 import eu.efti.platformgatesimulator.exception.UploadException;
+import eu.efti.platformgatesimulator.mapper.MapperUtils;
 import eu.efti.platformgatesimulator.service.ApIncomingService;
+import eu.efti.platformgatesimulator.service.ApiKeyService;
 import eu.efti.platformgatesimulator.service.IdentifierService;
 import eu.efti.platformgatesimulator.service.ReaderService;
+import eu.efti.v1.edelivery.ObjectFactory;
 import eu.efti.v1.json.SaveIdentifiersRequest;
+import jakarta.xml.bind.JAXBElement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -26,8 +31,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class IdentifiersController {
 
     private final ApIncomingService apIncomingService;
-
+    private final MapperUtils mapperUtils = new MapperUtils();
+    private final ObjectFactory objectFactory = new ObjectFactory();
+    private final SerializeUtils serializeUtils;
     private final ReaderService readerService;
+    private final GateProperties gateProperties;
+    private final ApiKeyService apiKeyService;
 
     private final IdentifierService identifierService;
 
@@ -54,11 +63,29 @@ public class IdentifiersController {
         }
         log.info("send identifiers to gate");
         try {
-            apIncomingService.uploadIdentifiers(identifiersDto);
-        } catch (final JsonProcessingException e) {
+            final eu.efti.v1.edelivery.SaveIdentifiersRequest edeliveryRequest = mapperUtils.mapToEdeliveryRequest(identifiersDto);
+            final JAXBElement<eu.efti.v1.edelivery.SaveIdentifiersRequest> jaxbElement = objectFactory.createSaveIdentifiersRequest(edeliveryRequest);
+            final String requestBody = serializeUtils.mapJaxbObjectToXmlString(jaxbElement, eu.efti.v1.edelivery.SaveIdentifiersRequest.class);
+
+            RestClient restClient = RestClient
+                    .builder()
+                    .baseUrl(gateProperties.getGateBaseUrl() + "/api/v1/platform")
+                    .build();
+            String response = restClient.post()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/identifiers")
+                            .build()
+                    )
+                    .header("X-API-Key", apiKeyService.getApiKey())
+                    .contentType(MediaType.APPLICATION_XML)
+                    .body(requestBody)
+                    .retrieve()
+                    .body(String.class);
+            log.info("Response from gate: {}", response);
+            return new ResponseEntity<>("Identifiers uploaded", HttpStatus.OK);
+        } catch (final Exception e) {
             log.error("Error when try to send to gate the Identifiers", e);
-            return new ResponseEntity<>("No identifiers sent, error in JSON process", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("No identifiers sent", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Identifiers uploaded", HttpStatus.OK);
     }
 }

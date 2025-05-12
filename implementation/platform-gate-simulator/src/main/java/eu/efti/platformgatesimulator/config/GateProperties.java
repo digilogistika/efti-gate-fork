@@ -14,6 +14,11 @@ public class GateProperties {
     private String cdaPath;
     private String gate;
     private ApConfig ap;
+
+    private String gateSuperApiKey;
+    private String gateBaseUrl;
+    private String platformBaseUrl;
+
     private int minSleep;
     private int maxSleep;
 

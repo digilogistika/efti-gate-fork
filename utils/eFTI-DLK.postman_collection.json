@@ -1,0 +1,1120 @@
+{
+	"info": {
+		"_postman_id": "7b9ab83f-1b2b-4ca2-86b7-74907bb834cc",
+		"name": "eFTI-DLK",
+		"description": "eFTI gate request collection for different use cases",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37803187"
+	},
+	"item": [
+		{
+			"name": "BO",
+			"item": [
+				{
+					"name": "Gate",
+					"item": [
+						{
+							"name": "POST UIL Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8880/v1/control/uil",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET UIL Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8880/v1/control/uil?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Identifiers Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"modeCode\": \"1\",\n  \"identifier\": \"54321\",\n  \"identifierType\": [\n    \"EQUIPMENT\"\n  ],\n  \"registrationCountryCode\": \"FR\",\n  \"dangerousGoodsIndicator\": false,\n  \"eftiGateIndicator\": [\"BO\", \"SY\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8880/v1/control/identifiers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Identifiers Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8880/v1/control/identifiers?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Follow Up For UIL",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\" : \"LENS > PSG\",\n    \"requestId\": \"{{requestId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8880/v1/control/uil/follow-up",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"v1",
+										"control",
+										"uil",
+										"follow-up"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Platform",
+					"item": [
+						{
+							"name": "Upload Identifiers",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"consignment\": {\n    \"carrierAcceptanceDateTime\": {\n      \"formatId\": \"205\",\n      \"value\": \"202310011000+0000\"\n    },\n    \"deliveryEvent\": {\n      \"actualOccurrenceDateTime\": {\n        \"formatId\": \"205\",\n        \"value\": \"202310021500+0000\"\n      }\n    },\n    \"mainCarriageTransportMovement\": [\n      {\n        \"dangerousGoodsIndicator\": false,\n        \"modeCode\": \"1\",\n        \"usedTransportMeans\": {\n          \"id\": {\n            \"schemeAgencyId\": \"UN\",\n            \"value\": \"12345\"\n          },\n          \"registrationCountry\": {\n            \"code\": \"DE\"\n          }\n        }\n      }\n    ],\n    \"usedTransportEquipment\": [\n      {\n        \"carriedTransportEquipment\": [\n          {\n            \"id\": {\n              \"schemeAgencyId\": \"UN\",\n              \"value\": \"67890\"\n            },\n            \"sequenceNumber\": 1\n          }\n        ],\n        \"categoryCode\": \"AE\",\n        \"id\": {\n          \"schemeAgencyId\": \"UN\",\n          \"value\": \"54321\"\n        },\n        \"registrationCountry\": {\n          \"code\": \"FR\"\n        },\n        \"sequenceNumber\": 2\n      }\n    ]\n  },\n  \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8070/identifiers/upload",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8070",
+									"path": [
+										"identifiers",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload File",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/rig/Documents/Projects/DLK/efti-gate/implementation/platform-gate-simulator/src/main/resources/cda/12345678-ab12-4ab6-8999-123456789abc.xml"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8070/identifiers/upload/file",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8070",
+									"path": [
+										"identifiers",
+										"upload",
+										"file"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Borduria local development requests"
+		},
+		{
+			"name": "LI",
+			"item": [
+				{
+					"name": "Gate",
+					"item": [
+						{
+							"name": "POST UIL Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8881/v1/control/uil",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET UIL Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8881/v1/control/uil?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Identifiers Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"modeCode\": \"1\",\n  \"identifier\": \"54321\",\n  \"identifierType\": [\n    \"EQUIPMENT\"\n  ],\n  \"registrationCountryCode\": \"FR\",\n  \"dangerousGoodsIndicator\": false,\n  \"eftiGateIndicator\": [\"BO\", \"SY\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8881/v1/control/identifiers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Identifiers Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8881/v1/control/identifiers?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Follow Up For UIL",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\" : \"LENS > PSG\",\n    \"requestId\": \"{{requestId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8881/v1/control/uil/follow-up",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"v1",
+										"control",
+										"uil",
+										"follow-up"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Platform",
+					"item": [
+						{
+							"name": "Upload Identifiers",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"consignment\": {\n    \"carrierAcceptanceDateTime\": {\n      \"formatId\": \"205\",\n      \"value\": \"202310011000+0000\"\n    },\n    \"deliveryEvent\": {\n      \"actualOccurrenceDateTime\": {\n        \"formatId\": \"205\",\n        \"value\": \"202310021500+0000\"\n      }\n    },\n    \"mainCarriageTransportMovement\": [\n      {\n        \"dangerousGoodsIndicator\": false,\n        \"modeCode\": \"1\",\n        \"usedTransportMeans\": {\n          \"id\": {\n            \"schemeAgencyId\": \"UN\",\n            \"value\": \"12345\"\n          },\n          \"registrationCountry\": {\n            \"code\": \"DE\"\n          }\n        }\n      }\n    ],\n    \"usedTransportEquipment\": [\n      {\n        \"carriedTransportEquipment\": [\n          {\n            \"id\": {\n              \"schemeAgencyId\": \"UN\",\n              \"value\": \"67890\"\n            },\n            \"sequenceNumber\": 1\n          }\n        ],\n        \"categoryCode\": \"AE\",\n        \"id\": {\n          \"schemeAgencyId\": \"UN\",\n          \"value\": \"54321\"\n        },\n        \"registrationCountry\": {\n          \"code\": \"FR\"\n        },\n        \"sequenceNumber\": 2\n      }\n    ]\n  },\n  \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8072/identifiers/upload",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"identifiers",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload File",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/rig/Documents/Projects/DLK/efti-gate/implementation/platform-gate-simulator/src/main/resources/cda/12345678-ab12-4ab6-8999-123456789abc.xml"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8072/identifiers/upload/file",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"identifiers",
+										"upload",
+										"file"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Listenbourg local development requests"
+		},
+		{
+			"name": "EU-EE11-LOCAL",
+			"item": [
+				{
+					"name": "Platform",
+					"item": [
+						{
+							"name": "Upload Identifiers",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"consignment\": {\n    \"carrierAcceptanceDateTime\": {\n      \"formatId\": \"205\",\n      \"value\": \"202310011000+0000\"\n    },\n    \"deliveryEvent\": {\n      \"actualOccurrenceDateTime\": {\n        \"formatId\": \"205\",\n        \"value\": \"202310021500+0000\"\n      }\n    },\n    \"mainCarriageTransportMovement\": [\n      {\n        \"dangerousGoodsIndicator\": false,\n        \"modeCode\": \"1\",\n        \"usedTransportMeans\": {\n          \"id\": {\n            \"schemeAgencyId\": \"UN\",\n            \"value\": \"12345\"\n          },\n          \"registrationCountry\": {\n            \"code\": \"DE\"\n          }\n        }\n      }\n    ],\n    \"usedTransportEquipment\": [\n      {\n        \"carriedTransportEquipment\": [\n          {\n            \"id\": {\n              \"schemeAgencyId\": \"UN\",\n              \"value\": \"67890\"\n            },\n            \"sequenceNumber\": 1\n          }\n        ],\n        \"categoryCode\": \"AE\",\n        \"id\": {\n          \"schemeAgencyId\": \"UN\",\n          \"value\": \"54321\"\n        },\n        \"registrationCountry\": {\n          \"code\": \"FR\"\n        },\n        \"sequenceNumber\": 2\n      }\n    ]\n  },\n  \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8071/identifiers/upload",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8071",
+									"path": [
+										"identifiers",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload File",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/rig/Documents/Projects/DLK/efti-gate/implementation/platform-gate-simulator/src/main/resources/cda/12345678-ab12-4ab6-8999-123456789abc.xml"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8071/identifiers/upload/file",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8071",
+									"path": [
+										"identifiers",
+										"upload",
+										"file"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Gate",
+					"item": [
+						{
+							"name": "POST UIL Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"gateId\": \"EU-EE11\",\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\n    \"platformId\": \"estplat\",\n    \"subsetId\": \"full\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/uil",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET UIL Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/uil?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Identifiers Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"modeCode\": \"1\",\n  \"identifier\": \"54321\",\n  \"identifierType\": [\n    \"EQUIPMENT\"\n  ],\n  \"registrationCountryCode\": \"FR\",\n  \"dangerousGoodsIndicator\": false,\n  \"eftiGateIndicator\": [\"EE\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/identifiers",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Identifiers Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/identifiers?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Follow Up For UIL",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\" : \"LENS > PSG\",\n    \"requestId\": \"{{requestId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/uil/follow-up",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"uil",
+										"follow-up"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Gate",
+					"item": [
+						{
+							"name": "POST UIL Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"gateId\": \"EU-EE11\",\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\n    \"platformId\": \"estplat\",\n    \"subsetId\": \"full\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/uil",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET UIL Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/uil?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"uil"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Identifiers Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"modeCode\": \"1\",\n  \"identifier\": \"54321\",\n  \"identifierType\": [\n    \"EQUIPMENT\"\n  ],\n  \"registrationCountryCode\": \"FR\",\n  \"dangerousGoodsIndicator\": false,\n  \"eftiGateIndicator\": [\"EE\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/identifiers",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Identifiers Control",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/identifiers?requestId={{requestId}}",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									],
+									"query": [
+										{
+											"key": "requestId",
+											"value": "{{requestId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Follow Up For UIL",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "an7EL5JR2ThDnXRbvJd7",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\" : \"LENS > PSG\",\n    \"requestId\": \"{{requestId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8882/v1/control/uil/follow-up",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8882",
+									"path": [
+										"v1",
+										"control",
+										"uil",
+										"follow-up"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "for local testing of the coneinerized eu-ee11"
+		}
+	]
+}

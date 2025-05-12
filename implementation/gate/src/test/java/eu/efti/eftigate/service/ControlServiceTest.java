@@ -74,6 +74,23 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 @ExtendWith(MockitoExtension.class)
 class ControlServiceTest extends AbstractServiceTest {
 
+    private static final String URL = "http://france.lol";
+    private static final String PASSWORD = "password";
+    private static final String USERNAME = "username";
+    final ConsignmentDto identifiersResult = new ConsignmentDto();
+    final IdentifiersResults identifiersResults = new IdentifiersResults();
+    private final UilDto uilDto = new UilDto();
+    private final PostFollowUpRequestDto notesDto = new PostFollowUpRequestDto();
+    private final SearchWithIdentifiersRequestDto searchWithIdentifiersRequestDto = new SearchWithIdentifiersRequestDto();
+    private final ControlDto controlDto = new ControlDto();
+    private final ControlEntity controlEntity = ControlEntity.builder().requestType(RequestTypeEnum.LOCAL_UIL_SEARCH).build();
+    private final UilRequestEntity uilRequestEntity = new UilRequestEntity();
+    private final IdentifiersRequestEntity identifiersRequestEntity = new IdentifiersRequestEntity();
+    private final ConsignmentDto identifiersResultDto = new ConsignmentDto();
+    private final IdentifiersResultsDto identifiersResultsDto = new IdentifiersResultsDto();
+    private final ConsignmentApiDto identifiersApiResultDto = new ConsignmentApiDto();
+    private final RequestIdDto requestIdDto = new RequestIdDto();
+    private final String requestId = UUID.randomUUID().toString();
     @Mock
     private ControlRepository controlRepository;
     @Mock
@@ -84,51 +101,23 @@ class ControlServiceTest extends AbstractServiceTest {
     private IdentifiersRequestService identifiersRequestService;
     @Mock
     private IdentifiersService identifiersService;
-
+    @Mock
+    private PlatformApiService platformApiService;
     private ControlService controlService;
     @Mock
     private EftiGateIdResolver eftiGateIdResolver;
-
     @Mock
     private LogManager logManager;
-
     @Mock
     private RequestServiceFactory requestServiceFactory;
-
     @Mock
     private EftiAsyncCallsProcessor eftiAsyncCallsProcessor;
-
     @Mock
     private Function<List<String>, RequestTypeEnum> gateToRequestTypeFunction;
-
     @Mock
     private SerializeUtils serializeUtils;
-
     @Captor
     private ArgumentCaptor<ControlEntity> controlEntityArgumentCaptor;
-
-    private final UilDto uilDto = new UilDto();
-    private final PostFollowUpRequestDto notesDto = new PostFollowUpRequestDto();
-    private final SearchWithIdentifiersRequestDto searchWithIdentifiersRequestDto = new SearchWithIdentifiersRequestDto();
-    private final ControlDto controlDto = new ControlDto();
-    private final ControlEntity controlEntity = ControlEntity.builder().requestType(RequestTypeEnum.LOCAL_UIL_SEARCH).build();
-    private final UilRequestEntity uilRequestEntity = new UilRequestEntity();
-    private final IdentifiersRequestEntity identifiersRequestEntity = new IdentifiersRequestEntity();
-
-    final ConsignmentDto identifiersResult = new ConsignmentDto();
-    final IdentifiersResults identifiersResults = new IdentifiersResults();
-
-    private final ConsignmentDto identifiersResultDto = new ConsignmentDto();
-    private final IdentifiersResultsDto identifiersResultsDto = new IdentifiersResultsDto();
-
-    private final ConsignmentApiDto identifiersApiResultDto = new ConsignmentApiDto();
-
-    private final RequestIdDto requestIdDto = new RequestIdDto();
-    private final String requestId = UUID.randomUUID().toString();
-
-    private static final String URL = "http://france.lol";
-    private static final String PASSWORD = "password";
-    private static final String USERNAME = "username";
 
     @BeforeEach
     public void before() {
@@ -141,7 +130,7 @@ class ControlServiceTest extends AbstractServiceTest {
                         .username(USERNAME).build()).build();
         controlService = new ControlService(controlRepository, eftiGateIdResolver, identifiersService, mapperUtils,
                 requestServiceFactory, logManager, gateToRequestTypeFunction, eftiAsyncCallsProcessor,
-                gateProperties, serializeUtils);
+                gateProperties, serializeUtils, platformApiService);
         final LocalDateTime localDateTime = LocalDateTime.now(ZoneOffset.UTC);
         final StatusEnum status = StatusEnum.PENDING;
         final AuthorityDto authorityDto = AuthorityDto.builder()
@@ -246,7 +235,7 @@ class ControlServiceTest extends AbstractServiceTest {
 
         final RequestIdDto requestIdDtoResult = controlService.createUilControl(uilDto);
 
-        verify(uilRequestService, times(1)).createAndSendRequest(any(), any());
+        verify(uilRequestService, times(1)).createRequestOnly(any(), any(), any());
         verify(controlRepository, times(1)).save(any());
         verify(logManager).logAppRequest(any(), any(), any(), any(), any());
         verify(logManager, never()).logAppResponse(any(), any(), any(), any(), any(), any(), any());
@@ -629,7 +618,7 @@ class ControlServiceTest extends AbstractServiceTest {
         final IdentifiersResponseDto expectedIdentifiersResponse = IdentifiersResponseDto.builder()
                 .status(StatusEnum.COMPLETE)
                 .identifiers(List.of(IdentifierRequestResultDto.builder()
-                                .status(StatusEnum.COMPLETE.name())
+                        .status(StatusEnum.COMPLETE.name())
                         .consignments(List.of(identifiersApiResultDto)).build()))
                 .build();
         //Act
@@ -854,7 +843,7 @@ class ControlServiceTest extends AbstractServiceTest {
 
         final NoteResponseDto noteResponseDto = controlService.createNoteRequestForControl(notesDto);
 
-        verify(notesRequestService, times(1)).createAndSendRequest(any(), any());
+        verify(notesRequestService, times(1)).createRequestOnly(any(), any(), any());
         assertNotNull(noteResponseDto);
         assertEquals("Note sent", noteResponseDto.getMessage());
         assertNull(noteResponseDto.getErrorCode());

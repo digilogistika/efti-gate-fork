@@ -4,11 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.ErrorDto;
 import eu.efti.commons.dto.RequestDto;
-import eu.efti.commons.enums.ErrorCodesEnum;
-import eu.efti.commons.enums.RequestStatusEnum;
-import eu.efti.commons.enums.RequestType;
-import eu.efti.commons.enums.RequestTypeEnum;
-import eu.efti.commons.enums.StatusEnum;
+import eu.efti.commons.enums.*;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.edeliveryapconnector.dto.ApConfigDto;
 import eu.efti.edeliveryapconnector.dto.NotificationDto;
@@ -33,10 +29,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import static eu.efti.commons.constant.EftiGateConstants.EXTERNAL_REQUESTS_TYPES;
-import static eu.efti.commons.enums.RequestStatusEnum.ERROR;
-import static eu.efti.commons.enums.RequestStatusEnum.IN_PROGRESS;
-import static eu.efti.commons.enums.RequestStatusEnum.RESPONSE_IN_PROGRESS;
-import static eu.efti.commons.enums.RequestStatusEnum.TIMEOUT;
+import static eu.efti.commons.enums.RequestStatusEnum.*;
 
 @Slf4j
 @Component
@@ -89,6 +82,12 @@ public abstract class RequestService<T extends RequestEntity> {
         requestDto.setStatus(status);
         final RequestDto result = this.save(requestDto);
         this.sendRequest(result);
+    }
+
+    public void createRequestOnly(final ControlDto controlDto, final String destinationUrl, final RequestStatusEnum status) {
+        final RequestDto requestDto = initRequest(controlDto, destinationUrl);
+        requestDto.setStatus(status);
+        this.save(requestDto);
     }
 
     public RequestDto buildErrorRequestDto(final NotificationDto notificationDto, final RequestTypeEnum requestTypeEnum, final String error) {
