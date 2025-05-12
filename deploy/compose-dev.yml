@@ -1,0 +1,227 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: efti-rabbitmq
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
+
+  psql:
+    image: postgres:15.4
+    container_name: reference-gate-shared-db
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    ports:
+      - "9001:5432"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+
+  psql-meta:
+    image: postgres:15.4
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    ports:
+      - "2345:5432"
+    volumes:
+      - ./sql-meta:/docker-entrypoint-initdb.d
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.5
+    command: [ "start-dev", "--import-realm", "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=secret
+      - DEBUG=true
+      - DEBUG_PORT=*:8788
+    ports:
+      - "8080:8080"
+      - "8788:8788"
+    volumes:
+      - ./keycloak/bo-export.json:/opt/keycloak/data/import/bo-export.json
+      - ./keycloak/li-export.json:/opt/keycloak/data/import/li-export.json
+      - ./keycloak/sy-export.json:/opt/keycloak/data/import/sy-export.json
+
+  harmony-borduria:
+    image: niis/harmony-ap:2.5.0
+    container_name: harmony-ap-borduria-instance
+    depends_on:
+      harmony-db-borduria:
+        condition: service_started
+    environment:
+      - DB_HOST=harmony-db-borduria
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=borduria
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=harmony-borduria
+    volumes:
+      - ap_data_borduria:/var/opt/harmony-ap
+      - ./harmony/borduria/ws-plugin-dev.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+    ports:
+      - "8441:8443"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+
+  harmony-listenbourg:
+    image: niis/harmony-ap:2.5.0
+    container_name: harmony-ap-listenbourg-instance
+    depends_on:
+      harmony-db-listenbourg:
+        condition: service_started
+    environment:
+      - DB_HOST=harmony-db-listenbourg
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=listenbourg
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=harmony-listenbourg
+    volumes:
+      - ap_data_listenbourg:/var/opt/harmony-ap
+      - ./harmony/listenbourg/ws-plugin-dev.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+    ports:
+      - "8442:8443"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+
+  harmony-acme:
+    image: niis/harmony-ap:2.5.0
+    container_name: harmony-ap-acme-instance
+    depends_on:
+      harmony-db-acme:
+        condition: service_started
+    environment:
+      - DB_HOST=harmony-db-acme
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=acme
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=harmony-acme
+    volumes:
+      - ap_data_acme:/var/opt/harmony-ap
+      - ./harmony/acme/ws-plugin-dev.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+    ports:
+      - "8443:8443"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+
+  harmony-db-borduria:
+    image: mysql:8
+    container_name: harmony-db-borduria-instance
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data_borduria:/var/lib/mysql
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 512m
+
+  harmony-db-listenbourg:
+    image: mysql:8
+    container_name: harmony-db-listenbourg-instance
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data_listenbourg:/var/lib/mysql
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 512m
+
+  harmony-db-acme:
+    image: mysql:8
+    container_name: harmony-db-acme-instance
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - db_data_acme:/var/lib/mysql
+    networks:
+      - efti-network
+    restart: on-failure
+    mem_limit: 512m
+
+  dev-harmony-autoconfigure:
+    environment:
+      - ACCESS_POINT_BORDURIA=https://harmony-borduria:8443
+      - ACCESS_POINT_LISTENBOURG=https://harmony-listenbourg:8443
+      - ACCESS_POINT_ACME=https://harmony-acme:8443
+    build:
+      dockerfile: Dockerfile
+      context: ../utils/harmony_scripts/
+    networks:
+      efti-network:
+
+  setup-gate-indicators:
+    build:
+      dockerfile: Dockerfile
+      context: ./gate-db
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  ap_data_borduria:
+  ap_data_listenbourg:
+  ap_data_acme:
+  db_data_borduria:
+  db_data_listenbourg:
+  db_data_acme:
+
+networks:
+  efti-network:
+    driver: bridge
+

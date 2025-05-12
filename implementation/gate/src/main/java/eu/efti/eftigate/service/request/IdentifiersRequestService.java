@@ -37,6 +37,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.xml.sax.SAXException;
 
 import java.util.List;
 import java.util.Objects;
@@ -216,6 +217,16 @@ public class IdentifiersRequestService extends RequestService<IdentifiersRequest
 
         this.identifiersService.createOrUpdate(new SaveIdentifiersRequestWrapper(notificationDto.getContent().getFromPartyId(),
                 getSerializeUtils().mapXmlStringToJaxbObject(notificationDto.getContent().getBody())));
+    }
+
+    public void createOrUpdate(final String message, final String platformId) throws SAXException {
+        final Optional<String> validationResult = validationService.isXmlValid(message);
+        if (validationResult.isPresent()) {
+            log.error("Invalid message received from platform {}", platformId);
+            throw new SAXException(validationResult.get());
+        }
+        this.identifiersService.createOrUpdate(new SaveIdentifiersRequestWrapper(platformId,
+                getSerializeUtils().mapXmlStringToJaxbObject(message)));
     }
 
     private RequestDto createReceivedRequest(final ControlDto controlDto, final List<ConsignmentDto> identifiersDtos) {

@@ -24,7 +24,8 @@ spring:
 gate:
   country: BO
   owner: borduria
+  apikey: SuperSecretSecret123
   ap:
-    url: http://efti.gate.borduria.eu:81/domibus/services/wsplugin
+    url: https://localhost:8441/services/wsplugin
     username: borduria_service_account
     password: Azerty59*1234567

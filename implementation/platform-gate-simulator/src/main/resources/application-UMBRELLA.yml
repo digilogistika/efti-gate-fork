@@ -12,6 +12,9 @@ gate:
   minSleep: 1000
   maxSleep: 2000
   owner: umbrellainc
+  gateBaseUrl: http://localhost:8881
+  platformBaseUrl: http://localhost:${server.port}
+  gateSuperApiKey: SuperSecretSecret123
   cda_path: classpath:cda/
   gate: listenbourg
   ap:

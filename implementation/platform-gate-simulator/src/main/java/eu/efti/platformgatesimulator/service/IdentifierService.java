@@ -11,13 +11,7 @@ import eu.efti.edeliveryapconnector.exception.SendRequestException;
 import eu.efti.edeliveryapconnector.service.RequestSendingService;
 import eu.efti.platformgatesimulator.config.GateProperties;
 import eu.efti.v1.consignment.common.SupplyChainConsignment;
-import eu.efti.v1.edelivery.Identifier;
-import eu.efti.v1.edelivery.IdentifierQuery;
-import eu.efti.v1.edelivery.IdentifierResponse;
-import eu.efti.v1.edelivery.ObjectFactory;
-import eu.efti.v1.edelivery.UIL;
-import eu.efti.v1.edelivery.UILQuery;
-import eu.efti.v1.edelivery.UILResponse;
+import eu.efti.v1.edelivery.*;
 import jakarta.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,43 +28,29 @@ import static java.lang.Thread.sleep;
 @Slf4j
 public class IdentifierService {
 
+    private final RequestSendingService requestSendingService;
+    private final GateProperties gateProperties;
+    private final ObjectFactory objectFactory = new ObjectFactory();
+    private final SerializeUtils serializeUtils;
+    private final Random random = new Random();
     @Value("${mock.gaussWaitingTime.average:0}")
     int average;
-
     @Value("${mock.gaussWaitingTime.standardDeviation:0}")
     int standardDeviation;
-
     @Value("${mock.gaussWaitingTime.isActiveForIdentifierRequestTimer:false}")
     boolean isActiveForIdentifierRequestTimer;
-
     @Value("${mock.gaussWaitingTime.isTimerActiveForIdentifierResponse:false}")
     boolean isTimerActiveForIdentifierResponse;
-
     @Value("${mock.identifierReponseGoodResponse.description:description}")
     String descriptionIdentifierResponse;
-
     @Value("${mock.identifierReponseGoodResponse.status:200}")
     String statusIdentifierResponse;
-
     @Value("${mock.identifierReponseBadResponse.description:bad gateway}")
     String descriptionIdentifierBadResponse;
-
     @Value("${mock.identifierReponseBadResponse.status:502}")
     String statusIdentifierBadResponse;
-
     @Value("${mock.badRequestPercentage:0f}")
     float badRequestPercentage;
-
-
-    private final RequestSendingService requestSendingService;
-
-    private final GateProperties gateProperties;
-
-    private final ObjectFactory objectFactory = new ObjectFactory();
-
-    private final SerializeUtils serializeUtils;
-
-    private final Random random = new Random();
 
     public void sendResponseUil(final String requestId, final SupplyChainConsignment consignment) {
         sendResponse(requestId, consignment);
@@ -95,7 +75,7 @@ public class IdentifierService {
         }
     }
 
-    private String buildBody(final String requestId, final SupplyChainConsignment consignment) {
+    public String buildBody(final String requestId, final SupplyChainConsignment consignment) {
         final UILResponse uilResponse = new UILResponse();
         if (defineBadOrGoodRequest()) {
             log.info("Good request will be send");
