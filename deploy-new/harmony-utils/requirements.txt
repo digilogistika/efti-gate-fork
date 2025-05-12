@@ -1,8 +1,0 @@
-certifi
-cffi
-charset-normalizer
-cryptography>=44.0.0
-idna
-pycparser
-requests
-urllib3
