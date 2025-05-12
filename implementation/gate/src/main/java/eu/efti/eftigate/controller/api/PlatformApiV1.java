@@ -31,6 +31,7 @@ public interface PlatformApiV1 {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Request has been accepted for processing", content = {}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))),
     })
     @PostMapping(
             consumes = MediaType.APPLICATION_XML_VALUE,
@@ -38,6 +39,7 @@ public interface PlatformApiV1 {
     ResponseEntity<String> postConsignmentIdentifiers(
             @Parameter(description = "Consignment identifiers following the schema `http://efti.eu/v1/consignment/identifier`", required = true)
             @org.springframework.web.bind.annotation.RequestBody String body,
+            @Parameter(description = "Authentication key for the platform. This key is used to authenticate the platform and should be kept secret.", required = true)
             @RequestHeader(name = "X-API-Key", required = true) String apiKey
     );
 
@@ -53,6 +55,7 @@ public interface PlatformApiV1 {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Request has been accepted for processing", content = {}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))),
     })
     @PostMapping(
             consumes = MediaType.APPLICATION_XML_VALUE,
@@ -61,6 +64,7 @@ public interface PlatformApiV1 {
     ResponseEntity<String> consignmentResponse(
             @Parameter(description = "Consignment identifiers following the schema `http://efti.eu/v1/consignment/common`", required = true)
             @org.springframework.web.bind.annotation.RequestBody String body,
+            @Parameter(description = "Authentication key for the platform. This key is used to authenticate the platform and should be kept secret.", required = true)
             @RequestHeader(name = "X-API-Key", required = true) String apiKey
     );
 }
