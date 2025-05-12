@@ -2,7 +2,7 @@
 
 # --- Configuration ---
 UTIL_CONTAINER_SERVICE_NAME="harmony-setup-util"
-HARMONY_CONTAINER_SERVICE_NAME="harmony-gate"
+HARMONY_CONTAINER_SERVICE_NAME="harmony"
 CONNECT_PATH_INSIDE_CONTAINER="/tmp/connect"
 
 # --- Helper Functions ---
@@ -63,13 +63,13 @@ else
 fi
 
 if [ $PEER_ON_SAME_HOST ]; then
-    SELF_NETWORK_NAME=$(docker network ls -f name=$PROJECT_NAME -q)
+    SELF_NETWORK_ID=$(docker network ls -f name=$PROJECT_NAME -q)
     PEER_HARMONY_SERVICE_ID=$(docker compose -p "$PEER_NAME" ps -q "$HARMONY_CONTAINER_SERVICE_NAME" 2>/dev/null)
-    (docker network connect "$SELF_NETWORK_NAME" "$PEER_HARMONY_SERVICE_ID" 2>/dev/null)
+    (docker network connect "$SELF_NETWORK_ID" "$PEER_HARMONY_SERVICE_ID" 2>/dev/null)
     if [ $? -eq 0 ]; then
-        log_info "Successfully added $PEER_NAME to $SELF_NETWORK_NAME"
+        log_info "Successfully added $PEER_NAME to $PROJECT_NAME network"
     else
-        log_error "Failed to add $PEER_NAME to $SELF_NETWORK_NAME"
+        log_error "Failed to add $PEER_NAME to $PROJECT_NAME network"
     fi
 fi
 

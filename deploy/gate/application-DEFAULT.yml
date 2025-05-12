@@ -10,6 +10,11 @@ spring:
     identifiers:
       liquibase:
         default-schema: efti_schema
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth.gate.eu:8080/realms/eFTI
   jpa:
     properties:
       hibernate:
