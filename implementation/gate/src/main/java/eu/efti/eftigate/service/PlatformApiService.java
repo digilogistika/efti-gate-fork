@@ -3,6 +3,10 @@ package eu.efti.eftigate.service;
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.PostFollowUpRequestDto;
 import eu.efti.commons.utils.SerializeUtils;
+import eu.efti.edeliveryapconnector.dto.NotificationContentDto;
+import eu.efti.edeliveryapconnector.dto.NotificationDto;
+import eu.efti.edeliveryapconnector.dto.NotificationType;
+import eu.efti.eftigate.service.request.UilRequestService;
 import eu.efti.v1.edelivery.ObjectFactory;
 import eu.efti.v1.edelivery.PostFollowUpRequest;
 import eu.efti.v1.edelivery.UIL;
@@ -10,6 +14,7 @@ import jakarta.xml.bind.JAXBElement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,6 +29,7 @@ public class PlatformApiService {
     private final ObjectFactory objectFactory = new ObjectFactory();
     private final WebClient.Builder webClientBuilder;
     private final PlatformIdentityService platformIdentityService;
+    private final UilRequestService uilRequestService;
 
     @Async
     public CompletableFuture<Void> sendFollowUpRequest(PostFollowUpRequestDto postFollowUpRequestDto, ControlDto controlDto) {
@@ -72,13 +78,26 @@ public class PlatformApiService {
                     "&subsetId=" + "full" + // TODO: add reals subsets
                     "&requestId=" + controlDto.getRequestId();
 
-            webClientBuilder
+            ResponseEntity<String> response = webClientBuilder
                     .build()
                     .get()
                     .uri(uri)
                     .retrieve()
-                    .toBodilessEntity()
+                    .toEntity(String.class)
                     .block();
+
+            NotificationDto notificationDto = NotificationDto
+                    .builder()
+                    .notificationType(NotificationType.RECEIVED)
+                    .content(NotificationContentDto
+                            .builder()
+                            .body(response.getBody())
+                            .fromPartyId(controlDto.getPlatformId())
+                            .build()
+                    )
+                    .build();
+
+            uilRequestService.manageResponseReceived(notificationDto);
 
             return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
