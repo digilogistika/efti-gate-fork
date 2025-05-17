@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "Platform API", description = "REST API for platforms. This API is implemented by the gate for platforms to request")
-@RequestMapping("/api/v1/platform")
+@RequestMapping("/api/v1/platforms")
 public interface PlatformApiV1 {
 
     @Operation(

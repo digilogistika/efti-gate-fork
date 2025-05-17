@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Objects;
 
 
 @Service
@@ -96,15 +95,6 @@ public class PlatformIdentityService {
     }
 
     private void validatePlatform(String name, String secret) {
-        if (Objects.equals(name, "admin")) {
-            if (!Objects.equals(secret, gateProperties.getApikey())) {
-                log.warn("Admin platform validation failed: invalid secret");
-                throw new XApiKeyValidationexception("Invalid secret for admin platform");
-            }
-            log.info("Admin platform validated successfully");
-            return;
-        }
-
         PlatformEntity platformEntity = platformRepository.findByName(name);
 
         if (platformEntity == null) {

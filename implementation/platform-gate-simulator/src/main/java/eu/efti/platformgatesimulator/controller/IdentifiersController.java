@@ -69,7 +69,7 @@ public class IdentifiersController {
 
             RestClient restClient = RestClient
                     .builder()
-                    .baseUrl(gateProperties.getGateBaseUrl() + "/api/v1/platform")
+                    .baseUrl(gateProperties.getGateBaseUrl() + "/api/v1/platforms")
                     .build();
             String response = restClient.post()
                     .uri(uriBuilder -> uriBuilder

@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/platform")
+@RequestMapping("/api/v1/platforms")
 @Slf4j
 public class PlatformApiController implements PlatformApiV1 {
     private final IdentifiersRequestService identifiersRequestService;
@@ -26,7 +26,7 @@ public class PlatformApiController implements PlatformApiV1 {
             @RequestBody String body,
             @RequestHeader("X-API-Key") String apiKey
     ) {
-        log.info("POST on /api/v1/platform/identifiers");
+        log.info("POST on /api/v1/platforms/identifiers");
         try {
             platformIdentityService.validateXApiKeyHeader(apiKey);
         } catch (XApiKeyValidationexception e) {
