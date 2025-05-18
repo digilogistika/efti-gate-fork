@@ -24,6 +24,8 @@ services:
       - ./harmony/ws-plugin-ee.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
       - ./harmony/ws-plugin-ee.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
       - ./harmony/ws-plugin-ee.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: on-failure
     mem_limit: 1500m
     user: "root:root"
@@ -92,6 +94,8 @@ services:
       - ./harmony/ws-plugin-bo.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
       - ./harmony/ws-plugin-bo.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
       - ./harmony/ws-plugin-bo.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: on-failure
     mem_limit: 1500m
     user: "root:root"
@@ -143,8 +147,8 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     volumes:
-      - ../rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-      - ../rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
     restart: on-failure
     networks:
       - app-network
@@ -157,7 +161,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
     volumes:
-      - ../sql:/docker-entrypoint-initdb.d
+      - ./sql:/docker-entrypoint-initdb.d
     restart: on-failure
     networks:
       - app-network
@@ -170,7 +174,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: efti
     volumes:
-      - ../sql-meta:/docker-entrypoint-initdb.d
+      - ./sql-meta:/docker-entrypoint-initdb.d
     restart: on-failure
     networks:
       - app-network

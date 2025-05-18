@@ -1,15 +1,15 @@
 spring:
   rabbitmq:
-    password: pass
-    username: user
-    virtual-host: host
+    password: ee
+    username: ee
+    virtual-host: ee
   datasource:
     control:
       liquibase:
-        default-schema: efti_schema
+        default-schema: eftiee
     identifiers:
       liquibase:
-        default-schema: efti_schema
+        default-schema: eftiee
   security:
     oauth2:
       resourceserver:
@@ -18,8 +18,8 @@ spring:
   jpa:
     properties:
       hibernate:
-        control_schema: "efti_schema"
-        identifiers_schema: "efti_schema"
+        control_schema: "eftiee"
+        identifiers_schema: "eftiee"
 
 gate:
   country: EE
