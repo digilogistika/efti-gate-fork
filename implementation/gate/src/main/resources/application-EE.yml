@@ -22,10 +22,12 @@ spring:
         identifiers_schema: "efti_schema"
 
 gate:
-  country: BO
-  owner: borduria
+  country: EE
+  owner: estonia
   apikey: SuperSecretSecret123
   ap:
-    url: https://localhost:9443/services/wsplugin
+    url: https://localhost:8443/services/wsplugin
     username: service_account
     password: Azerty59*1234567
+server:
+  port: 8881
