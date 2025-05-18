@@ -34,8 +34,8 @@ public class ApiKeyService {
         body.setName(gateProperties.getOwner());
 
         ResponseEntity<PlatformRegistrationResponseDto> response = restClient.post()
-                .uri(gateProperties.getGateBaseUrl() + "/api/v1/platform-registration")
-                .header("X-API-Key", "admin_" + gateProperties.getGateSuperApiKey())
+                .uri(gateProperties.getGateBaseUrl() + "/api/v1/platforms")
+                .header("X-API-Key", gateProperties.getGateSuperApiKey())
                 .body(body)
                 .retrieve()
                 .toEntity(PlatformRegistrationResponseDto.class);

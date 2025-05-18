@@ -1,7 +1,6 @@
 package eu.efti.eftigate.controller.api;
 
 import eu.efti.v1.edelivery.SaveIdentifiersRequest;
-import eu.efti.v1.edelivery.UILResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "Platform API", description = "REST API for platforms. This API is implemented by the gate for platforms to request")
-@RequestMapping("/api/v1/platform")
+@RequestMapping("/api/v1/platforms")
 public interface PlatformApiV1 {
 
     @Operation(
@@ -38,31 +37,6 @@ public interface PlatformApiV1 {
             path = "identifiers")
     ResponseEntity<String> postConsignmentIdentifiers(
             @Parameter(description = "Consignment identifiers following the schema `http://efti.eu/v1/consignment/identifier`", required = true)
-            @org.springframework.web.bind.annotation.RequestBody String body,
-            @Parameter(description = "Authentication key for the platform. This key is used to authenticate the platform and should be kept secret.", required = true)
-            @RequestHeader(name = "X-API-Key", required = true) String apiKey
-    );
-
-
-    @Operation(
-            summary = "UIL response endpoint",
-            description = "After processing an UIL request the platform sends the response to this endpoint",
-            requestBody = @RequestBody(content = @Content(
-                    mediaType = MediaType.APPLICATION_XML_VALUE,
-                    schema = @Schema(implementation = UILResponse.class)
-            ))
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Request has been accepted for processing", content = {}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))),
-    })
-    @PostMapping(
-            consumes = MediaType.APPLICATION_XML_VALUE,
-            path = "uil"
-    )
-    ResponseEntity<String> consignmentResponse(
-            @Parameter(description = "Consignment identifiers following the schema `http://efti.eu/v1/consignment/common`", required = true)
             @org.springframework.web.bind.annotation.RequestBody String body,
             @Parameter(description = "Authentication key for the platform. This key is used to authenticate the platform and should be kept secret.", required = true)
             @RequestHeader(name = "X-API-Key", required = true) String apiKey
