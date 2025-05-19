@@ -45,7 +45,7 @@ services:
     volumes:
       - estonia_db_data_gate:/var/lib/mysql
     restart: on-failure
-    mem_limit: 512m
+    mem_limit: 2g
     networks:
       - app-network
 
@@ -115,7 +115,7 @@ services:
     volumes:
       - borduria_db_data_gate:/var/lib/mysql
     restart: on-failure
-    mem_limit: 512m
+    mem_limit: 2g
     networks:
       - app-network
 

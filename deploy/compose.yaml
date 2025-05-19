@@ -38,7 +38,7 @@ services:
     volumes:
       - db_data_gate:/var/lib/mysql
     restart: on-failure
-    mem_limit: 512m
+    mem_limit: 2g
 
   efti-rabbitmq:
     image: rabbitmq:3-management
