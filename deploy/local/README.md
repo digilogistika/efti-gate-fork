@@ -1,12 +1,19 @@
 # Local Deploy
 
+First add required hosts to your `/etc/hosts` file. Sudo, is needed.
+Here is a script for that:
+
+```bash
+sudo ./add_hosts.sh
+```
+
 The gate requires some services to be available for it to work. For local development these services can be made
-available by running the `start.sh` script. The script has to be run as `sudo`, because it will add required hosts to `/etc/hosts` file.
+available by running the `start.sh` script.
 
 ## Starting services
 
 ```bash
-sudo ./start.sh
+./start.sh
 ```
 
 ## Stoping services
