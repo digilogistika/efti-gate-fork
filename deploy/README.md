@@ -1,5 +1,7 @@
 # Deploy
 
+[Local deployment](local/README.md) is under the `./local` folder.
+
 ## Starting services
 
 Syntax (without platform):
