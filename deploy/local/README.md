@@ -38,7 +38,9 @@ Indicators are needed for Identifiers requests. Without the indicators the Ident
 ./setup-indicators.sh
 ```
 
-## Logs issue
+## Frequent issues
+
+### Logs issue
 
 [Sometimes the gate won't start locally (outside of docker) because of a log file directory access issue.
 
@@ -54,3 +56,7 @@ running:
 ```bash
 sudo chown -R $USER /var/log/javapp
 ```
+
+### Docker host access issue
+
+In certain machines and with certain docker setup it is impossible to access the host machine from docker container. Access to host machine is required by the harmony container to push incoming messages to the gate application. Using docker desktop instead of docker engine is reccomended in these cases as it allows the connection from container to host machine. 
