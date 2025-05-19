@@ -50,32 +50,6 @@ Besides the code base, the repository contains some other useful content. The re
 - `schema`: contains different data models and interface definitions
 - `utils`: contains some useful content such as a set of postman collections to test the gate
 
-## Local Development
-
-The gate requires some services to be available for it to work. For local development these services can be made
-available by running the `start-services.sh` script in the `deploy/local/side-services` folder. This script will start
-and expose the required services in Docker containers. The services are:
-
-- PostgreSQL
-- PostgreSQL (For metadata)
-- RabbitMQ
-- Keycloak
-
-Sometimes the gate won't start locally (outside of docker) because of a log file directory access issue.
-
-This happens because the `/var/log/javapp` directory is not created by default. This can be created manually by running:
-
-```bash
-sudo mkdir /var/log/javapp
-```
-
-Also the permissions for the folder need to be changed to that of the user running the gate. This can be done by
-running:
-
-```bash
-sudo chown -R $USER /var/log/javapp
-```
-
 ## Further documentation
 
 More detailed documentation of different elements of this repository can be found at their respective locations. Here is
@@ -92,9 +66,7 @@ a summary:
 - [Schemas](schema/README.md)
     - [Data models](schema/xsd/README.md)
     - [API definitions](schema/api-schemas/README.md)
-- [Deployment environments](deploy/README.md)
-    - [Local Deployment environments](deploy/local/README.md)
-        - [Gate](deploy/local/efti-gate/README.md)
-        - [Domibus](deploy/local/domibus/README.md)
+- [Deployment](deploy/README.md)
+    - [Local Deployment](deploy/local/README.md)
 - [Utils](utils/README.md)
 

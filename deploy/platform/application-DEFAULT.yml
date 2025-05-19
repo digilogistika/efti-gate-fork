@@ -1,0 +1,13 @@
+server:
+  port: 8070
+
+gate:
+  minSleep: 1000
+  maxSleep: 2000
+  owner: ${GATE}-platform
+  cda_path: file:/usr/src/myapp/cda/
+  gate: ${GATE}
+  gateBaseUrl: http://${GATE}-efti-gate-1:8880
+  platformBaseUrl: http://${GATE}-efti-platform-1:${server.port}
+  gateSuperApiKey: ${ADMIN_API_KEY}
+

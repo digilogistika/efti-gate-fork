@@ -1,0 +1,13 @@
+server:
+  port: 8072
+
+gate:
+  minSleep: 1000
+  maxSleep: 2000
+  gateBaseUrl: http://localhost:8881
+  platformBaseUrl: http://localhost:${server.port}
+  gateSuperApiKey: SuperSecretSecret123
+  owner: estplat
+  cda_path: classpath:cda/
+  gate: estonia
+

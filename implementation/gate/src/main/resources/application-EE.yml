@@ -1,15 +1,15 @@
 spring:
   rabbitmq:
-    password: bo
-    username: bo
-    virtual-host: bo
+    password: ee
+    username: ee
+    virtual-host: ee
   datasource:
     control:
       liquibase:
-        default-schema: eftibo
+        default-schema: eftiee
     identifiers:
       liquibase:
-        default-schema: eftibo
+        default-schema: eftiee
   security:
     oauth2:
       resourceserver:
@@ -18,14 +18,16 @@ spring:
   jpa:
     properties:
       hibernate:
-        control_schema: "eftibo"
-        identifiers_schema: "eftibo"
+        control_schema: "eftiee"
+        identifiers_schema: "eftiee"
 
 gate:
-  country: BO
-  owner: borduria
+  country: EE
+  owner: estonia
   apikey: SuperSecretSecret123
   ap:
-    url: https://localhost:9443/services/wsplugin
+    url: https://localhost:8443/services/wsplugin
     username: service_account
     password: Azerty59*1234567
+server:
+  port: 8881

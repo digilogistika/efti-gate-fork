@@ -1,0 +1,191 @@
+services:
+  estonia-harmony:
+    image: niis/harmony-ap:2.5.0
+    container_name: estonia-harmony-1
+    depends_on:
+      estonia-harmony-db:
+        condition: service_started
+    environment:
+      - DB_HOST=estonia-harmony-db
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=estonia
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=estonia-harmony-1
+    ports:
+      - "8443:8443"
+    volumes:
+      - estonia_ap_data_gate:/var/opt/harmony-ap
+      - ./harmony/ws-plugin-ee.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+      - ./harmony/ws-plugin-ee.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
+      - ./harmony/ws-plugin-ee.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+    networks:
+      - app-network
+
+  estonia-harmony-db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - estonia_db_data_gate:/var/lib/mysql
+    restart: on-failure
+    mem_limit: 2g
+    networks:
+      - app-network
+
+  estonia-harmony-setup-util:
+    build: ../harmony-utils
+    depends_on:
+      estonia-harmony:
+        condition: service_started
+    environment:
+      - HARMONY_USERNAME=harmony
+      - HARMONY_PASSWORD=Secret
+      - PLUGIN_USER_PASSWORD=Azerty59*1234567
+      - KEYSTORE_PASSWORD=changeit
+      - TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - HARMONY_GATE_SERVICE_NAME=estonia-harmony-1
+      - HARMONY_GATE_PARTY_NAME=estonia
+      - HARMONY_SERVICE_PORT=8443
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+
+  borduria-harmony:
+    image: niis/harmony-ap:2.5.0
+    container_name: borduria-harmony-1
+    depends_on:
+      borduria-harmony-db:
+        condition: service_started
+    environment:
+      - DB_HOST=borduria-harmony-db
+      - DB_SCHEMA=harmony_ap
+      - DB_PASSWORD=dbpassword
+      - ADMIN_PASSWORD=Secret
+      - USE_DYNAMIC_DISCOVERY=false
+      - PARTY_NAME=borduria
+      - SECURITY_KEYSTORE_PASSWORD=changeit
+      - SECURITY_TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - SERVER_FQDN=borduria-harmony-1
+    ports:
+      - "9443:8443"
+    volumes:
+      - borduria_ap_data_gate:/var/opt/harmony-ap
+      - ./harmony/ws-plugin-bo.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
+      - ./harmony/ws-plugin-bo.properties:/opt/harmony-ap/plugins/config/ws-plugin.properties
+      - ./harmony/ws-plugin-bo.properties:/opt/harmony-ap/plugins/ws-plugin.properties
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: on-failure
+    mem_limit: 1500m
+    user: "root:root"
+    networks:
+      - app-network
+
+  borduria-harmony-db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=harmony_ap
+      - MYSQL_USER=harmony_ap
+      - MYSQL_PASSWORD=dbpassword
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_bin"
+    volumes:
+      - borduria_db_data_gate:/var/lib/mysql
+    restart: on-failure
+    mem_limit: 2g
+    networks:
+      - app-network
+
+  borduria-harmony-setup-util:
+    build: ../harmony-utils
+    depends_on:
+      borduria-harmony:
+        condition: service_started
+    environment:
+      - HARMONY_USERNAME=harmony
+      - HARMONY_PASSWORD=Secret
+      - PLUGIN_USER_PASSWORD=Azerty59*1234567
+      - KEYSTORE_PASSWORD=changeit
+      - TRUSTSTORE_PASSWORD=changeit
+      - TLS_KEYSTORE_PASSWORD=changeit
+      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - HARMONY_GATE_SERVICE_NAME=borduria-harmony-1
+      - HARMONY_GATE_PARTY_NAME=borduria
+      - HARMONY_SERVICE_PORT=8443
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+
+  efti-rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
+    restart: on-failure
+    networks:
+      - app-network
+
+  efti-psql:
+    container_name: efti-psql
+    image: postgres:15.4
+    ports:
+      - "9001:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    restart: on-failure
+    networks:
+      - app-network
+
+  efti-psql-meta:
+    image: postgres:15.4
+    ports:
+      - "2345:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: efti
+    volumes:
+      - ./sql-meta:/docker-entrypoint-initdb.d
+    restart: on-failure
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  estonia_ap_data_gate:
+  estonia_db_data_gate:
+  borduria_ap_data_gate:
+  borduria_db_data_gate:
