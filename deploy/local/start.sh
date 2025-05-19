@@ -61,7 +61,7 @@ log_info "  - Borduria Harmony: https://localhost:9443"
 log_info ""
 log_info "Shared services:"
 log_info "  - RabbitMQ: localhost:5672"
-log_info "  - PostgreSQL DB: localhost:5432"
-log_info "  - PostgreSQL Meta DB: localhost:5433"
+log_info "  - PostgreSQL DB: localhost:9001"
+log_info "  - PostgreSQL Meta DB: localhost:2345"
 
 exit 0
