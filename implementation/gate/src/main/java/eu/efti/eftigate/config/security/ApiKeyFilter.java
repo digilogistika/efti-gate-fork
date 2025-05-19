@@ -29,7 +29,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                 || path.startsWith("/v3/api-docs")
                 || path.startsWith("/actuator")
                 || path.startsWith("/ws")
-                || path.startsWith("/api/v1/platform")) {
+                || path.startsWith("/api/v1/platforms/identifiers")) {
             chain.doFilter(req, res);
             return;
         }
