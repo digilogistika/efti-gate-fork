@@ -93,7 +93,6 @@ def do_initial_setup():
         set_plugin_user(HARMONY_GATE_URL, HARMONY_GATE_PARTY_NAME)
     except Exception as e:
         logger.error(f"Failed to set plugin user for Gate: {e}")
-        success = False
 
     if not setup_single_party(HARMONY_GATE_PARTY_NAME, HARMONY_GATE_URL):
         success = False
