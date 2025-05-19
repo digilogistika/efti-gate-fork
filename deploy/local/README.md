@@ -21,6 +21,16 @@ To run gate use `EftiGateApplication` with EE or BO profile.
 
 To run platform use `PlatformGateSimulatorApplication` with ACME or ESTPLAT profile.
 
+## Setting up indicators
+
+After you have started both gates locally (EE and BO), then you can use the `setup-indicators.sh` script to add indicators to database.
+
+Indicators are needed for Identifiers requests. Without the indicators the Identifiers requests will fail, but UIL ones will still work.
+
+```bash
+./setup-indicators.sh
+```
+
 ## Logs issue
 
 [Sometimes the gate won't start locally (outside of docker) because of a log file directory access issue.

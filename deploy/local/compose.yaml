@@ -154,6 +154,7 @@ services:
       - app-network
 
   efti-psql:
+    container_name: efti-psql
     image: postgres:15.4
     ports:
       - "9001:5432"
