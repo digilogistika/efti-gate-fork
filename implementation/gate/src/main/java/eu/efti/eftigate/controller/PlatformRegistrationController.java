@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/platforms")
+@RequestMapping("/api/platform")
 @Slf4j
 public class PlatformRegistrationController implements PlatformRegistrationApiV1 {
     private PlatformIdentityService platformIdentityService;
@@ -21,7 +21,7 @@ public class PlatformRegistrationController implements PlatformRegistrationApiV1
     public ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
             @RequestBody PlatformRegistrationRequestDto platformRegistrationRequestDto
     ) {
-        log.info("POST on /api/v1/platforms");
+        log.info("POST on /api/platform/v0/register");
 
         PlatformRegistrationResponseDto platformRegistrationResponseDto = platformIdentityService.registerPlatform(platformRegistrationRequestDto);
         return ResponseEntity.ok(platformRegistrationResponseDto);

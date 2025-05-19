@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "Platform Registration API", description = "Used for managing new platforms registration")
-@RequestMapping("/api/v1/platforms")
+@RequestMapping("/api/platform")
 public interface PlatformRegistrationApiV1 {
 
     @Operation(
@@ -26,7 +26,7 @@ public interface PlatformRegistrationApiV1 {
                     @ApiResponse(responseCode = "200", description = "Platform registered successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlatformRegistrationResponseDto.class))),
             }
     )
-    @PostMapping
+    @PostMapping(value = "/v0/register")
     ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
             @RequestBody PlatformRegistrationRequestDto platformRegistrationRequestDto
     );

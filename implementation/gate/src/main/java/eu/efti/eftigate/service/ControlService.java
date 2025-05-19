@@ -149,9 +149,12 @@ public class ControlService {
             return new NoteResponseDto(NOTE_WAS_NOT_SENT, errorDto.getErrorCode(), errorDto.getErrorDescription());
         } else {
             controlDto.setNotes(notesDto.getMessage());
-            getRequestService(RequestTypeEnum.NOTE_SEND).createRequestOnly(controlDto, null, IN_PROGRESS);
-            platformApiService.sendFollowUpRequest(notesDto, controlDto);
-
+            if (gateProperties.isCurrentGate(controlDto.getGateId())) {
+                getRequestService(RequestTypeEnum.NOTE_SEND).createRequestOnly(controlDto, null, IN_PROGRESS);
+                platformApiService.sendFollowUpRequest(notesDto, controlDto);
+            } else {
+                getRequestService(RequestTypeEnum.NOTE_SEND).createAndSendRequest(controlDto, !gateProperties.isCurrentGate(controlDto.getGateId()) ? controlDto.getGateId() : null);
+            }
             //log fti025
             logManager.logNoteReceiveFromAapMessage(controlDto, serializeUtils.mapObjectToBase64String(notesDto), receiver, ComponentType.GATE, ComponentType.PLATFORM, true, isCurrentGate ? RequestTypeEnum.NOTE_SEND : RequestTypeEnum.EXTERNAL_NOTE_SEND, isCurrentGate ? LogManager.FTI_025 : LogManager.FTI_026);
             log.info("Note has been registered for control with request uuid '{}'", controlDto.getRequestId());
