@@ -1,5 +1,5 @@
-# eFTI4EU Reference Implementation
-
+# Digilogistics Center of Excellence eFTI gate
+## Based on the Efti4EU Reference implementation
 This project contains the code base of the reference implementation for the eFTI4EU regulation. The project is still in
 progress and no release has been issued yet. Once released, involved member states can use it as a base code, base
 architecture or test reference for their national implementation.
