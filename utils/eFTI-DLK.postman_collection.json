@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "54b359bf-baa4-4374-8cff-1c718048a42d",
+		"_postman_id": "a23d0904-8bb8-4636-b95a-8eec68e8b1a1",
 		"name": "eFTI-DLK",
 		"description": "eFTI gate request collection for different use cases",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "35147351"
+		"_exporter_id": "37803187"
 	},
 	"item": [
 		{
@@ -39,7 +39,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
+									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -121,7 +121,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"modeCode\": \"1\",\n  \"identifier\": \"54321\",\n  \"identifierType\": [\n    \"EQUIPMENT\"\n  ],\n  \"registrationCountryCode\": \"FR\",\n  \"dangerousGoodsIndicator\": false,\n  \"eftiGateIndicator\": [\"BO\", \"SY\"]\n}",
+									"raw": "{\n  \"identifier\": \"tybkuj\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -220,7 +220,7 @@
 					"name": "Platform",
 					"item": [
 						{
-							"name": "Upload Identifiers",
+							"name": "Upload Identifiers [EDelivery]",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -290,6 +290,65 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Upload Identifiers [REST method]",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Access the form data in the request",
+											"const formData = pm.request.body.formdata;",
+											"",
+											"const a = formData[0]",
+											"formData.map(i => {",
+											"    if (i.key === \"consignmentFile\") {",
+											"        const fileName = i.src.split(\"/\").at(-1).split(\".\").at(0)",
+											"        pm.environment.set(\"uploaded_dataset_it\", fileName);",
+											"    }",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "consignmentFile",
+											"type": "file",
+											"src": "/home/rig/Documents/Projects/DLK/efti-gate/testing/testdata/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915.xml"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8070/identifiers/upload/consignment/{{uploaded_dataset_it}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8070",
+									"path": [
+										"identifiers",
+										"upload",
+										"consignment",
+										"{{uploaded_dataset_it}}"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -328,7 +387,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
+									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -410,7 +469,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"modeCode\": \"1\",\n  \"identifier\": \"54321\",\n  \"identifierType\": [\n    \"EQUIPMENT\"\n  ],\n  \"registrationCountryCode\": \"FR\",\n  \"dangerousGoodsIndicator\": false,\n  \"eftiGateIndicator\": [\"BO\", \"SY\"]\n}",
+									"raw": "{\n\n  \"identifier\": \"qlcvhc\"\n\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -575,6 +634,124 @@
 										"identifiers",
 										"upload",
 										"file"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Identifiers [REST method] Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Access the form data in the request",
+											"const formData = pm.request.body.formdata;",
+											"",
+											"const a = formData[0]",
+											"formData.map(i => {",
+											"    if (i.key === \"consignmentFile\") {",
+											"        const fileName = i.src.split(\"/\").at(-1).split(\".\").at(0)",
+											"        pm.environment.set(\"uploaded_dataset_it\", fileName);",
+											"    }",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "consignmentFile",
+											"type": "file",
+											"src": "/home/rig/Documents/Projects/DLK/efti-gate/testing/testdata/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915.xml"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8072/identifiers/upload/consignment/{{uploaded_dataset_it}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"identifiers",
+										"upload",
+										"consignment",
+										"{{uploaded_dataset_it}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Identifiers [REST method] Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Access the form data in the request",
+											"const formData = pm.request.body.formdata;",
+											"",
+											"const a = formData[0]",
+											"formData.map(i => {",
+											"    if (i.key === \"consignmentFile\") {",
+											"        const fileName = i.src.split(\"/\").at(-1).split(\".\").at(0)",
+											"        pm.environment.set(\"uploaded_dataset_it\", fileName);",
+											"    }",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "consignmentFile",
+											"type": "file",
+											"src": "/home/rig/Documents/Projects/DLK/efti-gate/testing/testdata/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915.xml"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8072/identifiers/upload/consignment/{{uploaded_dataset_it}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8072",
+									"path": [
+										"identifiers",
+										"upload",
+										"consignment",
+										"{{uploaded_dataset_it}}"
 									]
 								}
 							},
