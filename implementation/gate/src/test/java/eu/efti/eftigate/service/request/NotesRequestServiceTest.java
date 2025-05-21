@@ -21,6 +21,7 @@ import eu.efti.eftigate.entity.UilRequestEntity;
 import eu.efti.eftigate.exception.RequestNotFoundException;
 import eu.efti.eftigate.repository.NotesRequestRepository;
 import eu.efti.eftigate.service.BaseServiceTest;
+import eu.efti.eftigate.service.PlatformApiService;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,22 +55,34 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class NotesRequestServiceTest extends BaseServiceTest {
-    private NotesRequestService notesRequestService;
-    @Mock
-    private NotesRequestRepository notesRequestRepository;
-    @Captor
-    ArgumentCaptor<NoteRequestEntity> noteRequestEntityArgumentCaptor;
-
     private final NoteRequestEntity noteRequestEntity = new NoteRequestEntity();
     private final UilRequestEntity uilRequestEntity = new UilRequestEntity();
     private final NotesRequestDto notesRequestDto = new NotesRequestDto();
     private final ValidationService validationService = new ValidationService();
+    @Captor
+    ArgumentCaptor<NoteRequestEntity> noteRequestEntityArgumentCaptor;
+    private NotesRequestService notesRequestService;
+    @Mock
+    private NotesRequestRepository notesRequestRepository;
+    @Mock
+    private PlatformApiService platformApiService;
+
+    private static Stream<Arguments> getArgumentsForRequestTypeEnumSupport() {
+        return Stream.of(
+                Arguments.of(RequestTypeEnum.EXTERNAL_ASK_IDENTIFIERS_SEARCH, false),
+                Arguments.of(RequestTypeEnum.EXTERNAL_IDENTIFIERS_SEARCH, false),
+                Arguments.of(RequestTypeEnum.EXTERNAL_ASK_UIL_SEARCH, false),
+                Arguments.of(RequestTypeEnum.EXTERNAL_UIL_SEARCH, false),
+                Arguments.of(RequestTypeEnum.EXTERNAL_NOTE_SEND, true),
+                Arguments.of(RequestTypeEnum.LOCAL_IDENTIFIERS_SEARCH, false),
+                Arguments.of(RequestTypeEnum.LOCAL_UIL_SEARCH, false)
+        );
+    }
 
     @Override
     @BeforeEach
@@ -80,7 +93,7 @@ class NotesRequestServiceTest extends BaseServiceTest {
         super.setEntityRequestCommonAttributes(uilRequestEntity);
 
         controlEntity.setRequests(List.of(uilRequestEntity, noteRequestEntity));
-        notesRequestService = new NotesRequestService(notesRequestRepository, mapperUtils, rabbitSenderService, controlService, gateProperties, requestUpdaterService, serializeUtils, logManager, validationService);
+        notesRequestService = new NotesRequestService(notesRequestRepository, mapperUtils, rabbitSenderService, controlService, gateProperties, requestUpdaterService, serializeUtils, logManager, validationService, platformApiService);
         final Logger memoryAppenderTestLogger = (Logger) LoggerFactory.getLogger(NotesRequestService.class);
         memoryAppender = MemoryAppender.createInitializedMemoryAppender(Level.INFO, memoryAppenderTestLogger);
     }
@@ -152,7 +165,6 @@ class NotesRequestServiceTest extends BaseServiceTest {
 
         //assert
         verify(controlService, never()).createControlFrom(any(), any());
-        verify(rabbitSenderService, times(1)).sendMessageToRabbit(any(), any(), any());
         verify(requestUpdaterService).setMarkedAsDownload(any(), any());
         verify(notesRequestRepository).save(noteRequestEntityArgumentCaptor.capture());
         assertEquals("The inspection did not reveal any anomalies. We recommend that you replace the tires as they are on the verge of wear", noteRequestEntityArgumentCaptor.getValue().getNote());
@@ -215,18 +227,6 @@ class NotesRequestServiceTest extends BaseServiceTest {
     @MethodSource("getArgumentsForRequestTypeEnumSupport")
     void supports_ShouldReturnTrueForUil(final RequestTypeEnum requestTypeEnum, final boolean expectedResult) {
         assertEquals(expectedResult, notesRequestService.supports(requestTypeEnum));
-    }
-
-    private static Stream<Arguments> getArgumentsForRequestTypeEnumSupport() {
-        return Stream.of(
-                Arguments.of(RequestTypeEnum.EXTERNAL_ASK_IDENTIFIERS_SEARCH, false),
-                Arguments.of(RequestTypeEnum.EXTERNAL_IDENTIFIERS_SEARCH, false),
-                Arguments.of(RequestTypeEnum.EXTERNAL_ASK_UIL_SEARCH, false),
-                Arguments.of(RequestTypeEnum.EXTERNAL_UIL_SEARCH, false),
-                Arguments.of(RequestTypeEnum.EXTERNAL_NOTE_SEND, true),
-                Arguments.of(RequestTypeEnum.LOCAL_IDENTIFIERS_SEARCH, false),
-                Arguments.of(RequestTypeEnum.LOCAL_UIL_SEARCH, false)
-        );
     }
 
     @Test

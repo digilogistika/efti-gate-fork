@@ -1,44 +1,56 @@
 package eu.efti.platformgatesimulator.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.efti.commons.exception.TechnicalException;
+import eu.efti.commons.utils.EftiSchemaUtils;
+import eu.efti.commons.utils.MappingException;
 import eu.efti.commons.utils.SerializeUtils;
-import eu.efti.platformgatesimulator.config.GateProperties;
+import eu.efti.datatools.schema.EftiSchemas;
 import eu.efti.platformgatesimulator.exception.UploadException;
-import eu.efti.platformgatesimulator.mapper.MapperUtils;
 import eu.efti.platformgatesimulator.service.ApIncomingService;
-import eu.efti.platformgatesimulator.service.ApiKeyService;
-import eu.efti.platformgatesimulator.service.IdentifierService;
+import eu.efti.platformgatesimulator.service.GateIntegrationService;
 import eu.efti.platformgatesimulator.service.ReaderService;
-import eu.efti.v1.edelivery.ObjectFactory;
+import eu.efti.platformgatesimulator.utils.PlatformEftiSchemaUtils;
 import eu.efti.v1.json.SaveIdentifiersRequest;
-import jakarta.xml.bind.JAXBElement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/identifiers")
 @AllArgsConstructor
 @Slf4j
 public class IdentifiersController {
+    private static final Pattern datasetIdPattern = Pattern.compile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}");
 
     private final ApIncomingService apIncomingService;
-    private final MapperUtils mapperUtils = new MapperUtils();
-    private final ObjectFactory objectFactory = new ObjectFactory();
-    private final SerializeUtils serializeUtils;
-    private final ReaderService readerService;
-    private final GateProperties gateProperties;
-    private final ApiKeyService apiKeyService;
 
-    private final IdentifierService identifierService;
+    private final ReaderService readerService;
+
+    private final SerializeUtils serializeUtils;
+
+    private final GateIntegrationService gateIntegrationService;
+
+    private static String readFileAsString(MultipartFile file) {
+        try (var inputStream = file.getInputStream()) {
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new TechnicalException("Error while reading attachment", e);
+        }
+    }
 
     @PostMapping("/upload/file")
     public ResponseEntity<String> uploadFile(@RequestPart final MultipartFile file) {
@@ -63,29 +75,53 @@ public class IdentifiersController {
         }
         log.info("send identifiers to gate");
         try {
-            final eu.efti.v1.edelivery.SaveIdentifiersRequest edeliveryRequest = mapperUtils.mapToEdeliveryRequest(identifiersDto);
-            final JAXBElement<eu.efti.v1.edelivery.SaveIdentifiersRequest> jaxbElement = objectFactory.createSaveIdentifiersRequest(edeliveryRequest);
-            final String requestBody = serializeUtils.mapJaxbObjectToXmlString(jaxbElement, eu.efti.v1.edelivery.SaveIdentifiersRequest.class);
-
-            RestClient restClient = RestClient
-                    .builder()
-                    .baseUrl(gateProperties.getGateBaseUrl() + "/api/v1/platforms")
-                    .build();
-            String response = restClient.post()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/identifiers")
-                            .build()
-                    )
-                    .header("X-API-Key", apiKeyService.getApiKey())
-                    .contentType(MediaType.APPLICATION_XML)
-                    .body(requestBody)
-                    .retrieve()
-                    .body(String.class);
-            log.info("Response from gate: {}", response);
-            return new ResponseEntity<>("Identifiers uploaded", HttpStatus.OK);
-        } catch (final Exception e) {
+            apIncomingService.uploadIdentifiers(identifiersDto);
+        } catch (final JsonProcessingException e) {
             log.error("Error when try to send to gate the Identifiers", e);
-            return new ResponseEntity<>("No identifiers sent", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("No identifiers sent, error in JSON process", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Identifiers uploaded", HttpStatus.OK);
+    }
+
+    @PutMapping("/upload/consignment/{datasetId}")
+    public ResponseEntity<String> uploadConsignment(
+            @PathVariable String datasetId,
+            @RequestPart final MultipartFile consignmentFile) {
+        if (consignmentFile == null || consignmentFile.isEmpty()) {
+            return new ResponseEntity<>("File is missing", HttpStatus.BAD_REQUEST);
+        }
+        if (datasetId == null || !datasetIdPattern.matcher(datasetId).matches()) {
+            return new ResponseEntity<>("Dataset ID is not valid", HttpStatus.BAD_REQUEST);
+        }
+
+        log.info("Upload consignment {}", datasetId);
+        var commonXml = readFileAsString(consignmentFile);
+        try {
+            var common = serializeUtils.mapXmlStringToJaxbObject(commonXml, eu.efti.v1.consignment.common.SupplyChainConsignment.class, EftiSchemas.getJavaCommonSchema());
+            var identifiers = PlatformEftiSchemaUtils.commonToIdentifiers(serializeUtils, common);
+            gateIntegrationService.uploadIdentifiers(datasetId, identifiers);
+            readerService.uploadFile(consignmentFile, "%s.xml".formatted(datasetId));
+
+            String plateNumbers = identifiers.getUsedTransportEquipment().stream()
+                    .map(e -> e.getId().getValue())
+                    .reduce((a, b) -> a + ", " + b)
+                    .orElse("");
+            var doc = EftiSchemaUtils.mapIdentifiersObjectToDoc(serializeUtils, identifiers);
+            String xml = serializeUtils.mapDocToXmlString(doc);
+
+            String response = "Consignment saved and identifiers uploaded to gate." +
+                    "Identifiers: " + plateNumbers + "\n" +
+                    "XML: " + xml;
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (MappingException e) {
+            log.error("Could not map xml object", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid file: " + e.getMessage());
+        } catch (UploadException e) {
+            return new ResponseEntity<>("Error while uploading file " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            log.error("Unhandled error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

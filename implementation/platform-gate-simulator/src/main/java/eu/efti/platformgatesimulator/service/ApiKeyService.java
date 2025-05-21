@@ -29,12 +29,12 @@ public class ApiKeyService {
         RestClient restClient = RestClient.builder().build();
 
         PlatformRegistrationRequestDto body = new PlatformRegistrationRequestDto();
-        body.setFollowUpRequestUrl(gateProperties.getPlatformBaseUrl() + "/gate-api/follow-up");
-        body.setUilRequestUrl(gateProperties.getPlatformBaseUrl() + "/gate-api/consignments");
+        body.setFollowUpRequestUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v0/consignments");
+        body.setUilRequestUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v0/consignments");
         body.setName(gateProperties.getOwner());
 
         ResponseEntity<PlatformRegistrationResponseDto> response = restClient.post()
-                .uri(gateProperties.getGateBaseUrl() + "/api/v1/platforms")
+                .uri(gateProperties.getGateBaseUrl() + "/api/platform/v0/register")
                 .header("X-API-Key", gateProperties.getGateSuperApiKey())
                 .body(body)
                 .retrieve()
