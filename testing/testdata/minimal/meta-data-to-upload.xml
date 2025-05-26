@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<consignment xmlns="http://efti.eu/v1/consignment/identifier">
+    <mainCarriageTransportMovement>
+        <dangerousGoodsIndicator>false</dangerousGoodsIndicator>
+        <modeCode>4</modeCode>
+        <usedTransportMeans>
+            <id schemeAgencyId="UN">AAS501</id>
+            <registrationCountry>
+                <code>EE</code>
+            </registrationCountry>
+        </usedTransportMeans>
+    </mainCarriageTransportMovement>
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">MMG947</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>0</sequenceNumber>
+    </usedTransportEquipment>
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">EOP443</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>1</sequenceNumber>
+    </usedTransportEquipment>
+</consignment>
