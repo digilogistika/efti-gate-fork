@@ -27,8 +27,8 @@ public class PlatformIdentityService {
         log.info("Registering platform with params: {}", platformRegistrationRequestDto);
 
         if (platformRepository.existsByPlatformId(platformRegistrationRequestDto.getPlatformId())) {
-            log.warn("Registration failed: platform with name {} already exists", platformRegistrationRequestDto.getPlatformId());
-            throw new PlatformRegistrationException("Platform with this name already exists");
+            log.warn("Registration failed: platform with platformId {} already exists", platformRegistrationRequestDto.getPlatformId());
+            throw new PlatformRegistrationException("Platform with this platformId already exists");
         }
 
         byte[] randomBytes = new byte[128];
@@ -49,16 +49,16 @@ public class PlatformIdentityService {
         return responseDto;
     }
 
-    public String getPlatformNameFromHeader(String header) {
+    public String getPlatformIdFromHeader(String header) {
         String[] parts = header.split("_", 2);
         return parts[0];
     }
 
-    public String getRequestBaseUrl(String platformName) {
-        PlatformEntity platformEntity = platformRepository.findByPlatformId(platformName);
+    public String getRequestBaseUrl(String platformId) {
+        PlatformEntity platformEntity = platformRepository.findByPlatformId(platformId);
         if (platformEntity == null) {
-            log.warn("Platform with name {} does not exist", platformName);
-            throw new RuntimeException("Platform with this name does not exist");
+            log.warn("Platform with ID {} does not exist", platformId);
+            throw new RuntimeException("Platform with this ID does not exist");
         }
         return platformEntity.getRequestBaseUrl();
     }
@@ -70,31 +70,31 @@ public class PlatformIdentityService {
             throw new XApiKeyValidationexception("Invalid header format");
         }
 
-        String name = parts[0];
+        String platformId = parts[0];
         String secret = parts[1];
 
-        if (name.isEmpty() || secret.isEmpty()) {
-            log.warn("Platform validation failed: name or secret is empty");
-            throw new XApiKeyValidationexception("Name or secret is empty");
+        if (platformId.isEmpty() || secret.isEmpty()) {
+            log.warn("Platform validation failed: platformId or secret is empty");
+            throw new XApiKeyValidationexception("platformId or secret is empty");
         }
 
-        validatePlatform(name, secret);
+        validatePlatform(platformId, secret);
     }
 
-    private void validatePlatform(String name, String secret) {
-        PlatformEntity platformEntity = platformRepository.findByPlatformId(name);
+    private void validatePlatform(String platformId, String secret) {
+        PlatformEntity platformEntity = platformRepository.findByPlatformId(platformId);
 
         if (platformEntity == null) {
-            log.warn("Platform validation failed: platform with name {} does not exist", name);
-            throw new XApiKeyValidationexception("Platform with this name does not exist");
+            log.warn("Platform validation failed: platform with platformId {} does not exist", platformId);
+            throw new XApiKeyValidationexception("Platform with this platformId does not exist");
         }
 
         boolean isValid = passwordEncoder.matches(secret, platformEntity.getSecret());
 
         if (isValid) {
-            log.info("Platform {} validated successfully", name);
+            log.info("Platform {} validated successfully", platformId);
         } else {
-            log.warn("Platform validation failed: invalid secret for platform {}", name);
+            log.warn("Platform validation failed: invalid secret for platform {}", platformId);
             throw new XApiKeyValidationexception("Invalid secret for platform");
         }
     }

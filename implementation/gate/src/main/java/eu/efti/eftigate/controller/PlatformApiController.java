@@ -48,7 +48,7 @@ public class PlatformApiController { // implements V0Api {
         String apiKey = request.getHeader("X-API-Key");
 
         platformIdentityService.validateXApiKeyHeader(apiKey);
-        String name = platformIdentityService.getPlatformNameFromHeader(apiKey);
+        String name = platformIdentityService.getPlatformIdFromHeader(apiKey);
 
         String xml = body;
         var validationError = validationService.isXmlValid(xml);
@@ -81,7 +81,7 @@ public class PlatformApiController { // implements V0Api {
         String apiKey = attributes.getRequest().getHeader("X-API-Key");
 
         platformIdentityService.validateXApiKeyHeader(apiKey);
-        String name = platformIdentityService.getPlatformNameFromHeader(apiKey);
+        String name = platformIdentityService.getPlatformIdFromHeader(apiKey);
 
         return ResponseEntity.ok(new GetWhoami200Response(name, "PLATFORM"));
     }
