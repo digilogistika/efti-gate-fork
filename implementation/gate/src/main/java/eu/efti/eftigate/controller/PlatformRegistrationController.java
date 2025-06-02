@@ -1,6 +1,6 @@
 package eu.efti.eftigate.controller;
 
-import eu.efti.eftigate.controller.api.PlatformRegistrationApiV1;
+import eu.efti.eftigate.controller.api.PlatformRegistrationApiV0;
 import eu.efti.eftigate.dto.PlatformRegistrationRequestDto;
 import eu.efti.eftigate.dto.PlatformRegistrationResponseDto;
 import eu.efti.eftigate.service.PlatformIdentityService;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/api/platform")
 @Slf4j
-public class PlatformRegistrationController implements PlatformRegistrationApiV1 {
+public class PlatformRegistrationController implements PlatformRegistrationApiV0 {
     private PlatformIdentityService platformIdentityService;
 
     public ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
