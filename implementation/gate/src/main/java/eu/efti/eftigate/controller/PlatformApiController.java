@@ -47,8 +47,7 @@ public class PlatformApiController { // implements V0Api {
         HttpServletRequest request = attributes.getRequest();
         String apiKey = request.getHeader("X-API-Key");
 
-        platformIdentityService.validateXApiKeyHeader(apiKey);
-        String name = platformIdentityService.getPlatformIdFromHeader(apiKey);
+        String platformId = platformIdentityService.getPlatformIdFromHeader(apiKey);
 
         String xml = body;
         var validationError = validationService.isXmlValid(xml);
@@ -62,7 +61,7 @@ public class PlatformApiController { // implements V0Api {
             SaveIdentifiersRequest saveIdentifiersRequest = new SaveIdentifiersRequest();
             saveIdentifiersRequest.setDatasetId(datasetId);
             saveIdentifiersRequest.setConsignment(consignment);
-            identifiersService.createOrUpdate(new SaveIdentifiersRequestWrapper(name, saveIdentifiersRequest));
+            identifiersService.createOrUpdate(new SaveIdentifiersRequestWrapper(platformId, saveIdentifiersRequest));
 
             return ResponseEntity.ok().build();
         }
@@ -80,7 +79,6 @@ public class PlatformApiController { // implements V0Api {
         assert attributes != null;
         String apiKey = attributes.getRequest().getHeader("X-API-Key");
 
-        platformIdentityService.validateXApiKeyHeader(apiKey);
         String name = platformIdentityService.getPlatformIdFromHeader(apiKey);
 
         return ResponseEntity.ok(new GetWhoami200Response(name, "PLATFORM"));

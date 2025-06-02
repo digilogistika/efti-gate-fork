@@ -1,6 +1,5 @@
 package eu.efti.eftigate.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,8 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    private ApiKeyFilter apiKeyFilter;
+    @Bean
+    public ApiKeyFilter apiKeyFilter(PasswordEncoder passwordEncoder) {
+        ApiKeyFilter filter = new ApiKeyFilter();
+        filter.setPasswordEncoder(passwordEncoder);
+        return filter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -25,7 +28,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity http, ApiKeyFilter apiKeyFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(apiKeyFilter,

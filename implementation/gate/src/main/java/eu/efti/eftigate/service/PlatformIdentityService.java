@@ -4,7 +4,6 @@ import eu.efti.eftigate.dto.PlatformRegistrationRequestDto;
 import eu.efti.eftigate.dto.PlatformRegistrationResponseDto;
 import eu.efti.eftigate.entity.PlatformEntity;
 import eu.efti.eftigate.exception.PlatformRegistrationException;
-import eu.efti.eftigate.exception.XApiKeyValidationexception;
 import eu.efti.eftigate.repository.PlatformRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,41 +60,5 @@ public class PlatformIdentityService {
             throw new RuntimeException("Platform with this ID does not exist");
         }
         return platformEntity.getRequestBaseUrl();
-    }
-
-    public void validateXApiKeyHeader(String header) {
-        String[] parts = header.split("_", 2);
-        if (parts.length != 2) {
-            log.warn("Platform validation failed: invalid header format");
-            throw new XApiKeyValidationexception("Invalid header format");
-        }
-
-        String platformId = parts[0];
-        String secret = parts[1];
-
-        if (platformId.isEmpty() || secret.isEmpty()) {
-            log.warn("Platform validation failed: platformId or secret is empty");
-            throw new XApiKeyValidationexception("platformId or secret is empty");
-        }
-
-        validatePlatform(platformId, secret);
-    }
-
-    private void validatePlatform(String platformId, String secret) {
-        PlatformEntity platformEntity = platformRepository.findByPlatformId(platformId);
-
-        if (platformEntity == null) {
-            log.warn("Platform validation failed: platform with platformId {} does not exist", platformId);
-            throw new XApiKeyValidationexception("Platform with this platformId does not exist");
-        }
-
-        boolean isValid = passwordEncoder.matches(secret, platformEntity.getSecret());
-
-        if (isValid) {
-            log.info("Platform {} validated successfully", platformId);
-        } else {
-            log.warn("Platform validation failed: invalid secret for platform {}", platformId);
-            throw new XApiKeyValidationexception("Invalid secret for platform");
-        }
     }
 }
