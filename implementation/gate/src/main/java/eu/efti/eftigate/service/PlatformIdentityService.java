@@ -1,6 +1,5 @@
 package eu.efti.eftigate.service;
 
-import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.PlatformRegistrationRequestDto;
 import eu.efti.eftigate.dto.PlatformRegistrationResponseDto;
 import eu.efti.eftigate.entity.PlatformEntity;
@@ -22,14 +21,13 @@ import java.util.Base64;
 public class PlatformIdentityService {
     private final PlatformRepository platformRepository;
     private final PasswordEncoder passwordEncoder;
-    private final GateProperties gateProperties;
     private final SecureRandom secureRandom = new SecureRandom();
 
     public PlatformRegistrationResponseDto registerPlatform(PlatformRegistrationRequestDto platformRegistrationRequestDto) {
         log.info("Registering platform with params: {}", platformRegistrationRequestDto);
 
-        if (platformRepository.existsByName(platformRegistrationRequestDto.getName())) {
-            log.warn("Registration failed: platform with name {} already exists", platformRegistrationRequestDto.getName());
+        if (platformRepository.existsByPlatformId(platformRegistrationRequestDto.getPlatformId())) {
+            log.warn("Registration failed: platform with name {} already exists", platformRegistrationRequestDto.getPlatformId());
             throw new PlatformRegistrationException("Platform with this name already exists");
         }
 
@@ -39,17 +37,15 @@ public class PlatformIdentityService {
         String encodedSecret = passwordEncoder.encode(secret);
 
         PlatformEntity platformEntity = new PlatformEntity();
-        platformEntity.setName(platformRegistrationRequestDto.getName());
-        platformEntity.setUilRequestUrl(platformRegistrationRequestDto.getUilRequestUrl());
-        platformEntity.setFollowupRequestUrl(platformRegistrationRequestDto.getFollowUpRequestUrl());
+        platformEntity.setPlatformId(platformRegistrationRequestDto.getPlatformId());
+        platformEntity.setRequestBaseUrl(platformRegistrationRequestDto.getRequestBaseUrl());
         platformEntity.setSecret(encodedSecret);
 
         platformRepository.save(platformEntity);
-        log.info("Platform {} registered successfully", platformRegistrationRequestDto.getName());
+        log.info("Platform {} registered successfully", platformRegistrationRequestDto.getPlatformId());
 
         PlatformRegistrationResponseDto responseDto = new PlatformRegistrationResponseDto();
-        responseDto.setName(platformRegistrationRequestDto.getName());
-        responseDto.setSecret(secret);
+        responseDto.setApiKey(platformRegistrationRequestDto.getPlatformId() + "_" + secret);
         return responseDto;
     }
 
@@ -58,22 +54,13 @@ public class PlatformIdentityService {
         return parts[0];
     }
 
-    public String getUilRequestUrl(String platformName) {
-        PlatformEntity platformEntity = platformRepository.findByName(platformName);
+    public String getRequestBaseUrl(String platformName) {
+        PlatformEntity platformEntity = platformRepository.findByPlatformId(platformName);
         if (platformEntity == null) {
             log.warn("Platform with name {} does not exist", platformName);
             throw new RuntimeException("Platform with this name does not exist");
         }
-        return platformEntity.getUilRequestUrl();
-    }
-
-    public String getFollowUpRequestUrl(String platformName) {
-        PlatformEntity platformEntity = platformRepository.findByName(platformName);
-        if (platformEntity == null) {
-            log.warn("Platform with name {} does not exist", platformName);
-            throw new RuntimeException("Platform with this name does not exist");
-        }
-        return platformEntity.getFollowupRequestUrl();
+        return platformEntity.getRequestBaseUrl();
     }
 
     public void validateXApiKeyHeader(String header) {
@@ -95,7 +82,7 @@ public class PlatformIdentityService {
     }
 
     private void validatePlatform(String name, String secret) {
-        PlatformEntity platformEntity = platformRepository.findByName(name);
+        PlatformEntity platformEntity = platformRepository.findByPlatformId(name);
 
         if (platformEntity == null) {
             log.warn("Platform validation failed: platform with name {} does not exist", name);

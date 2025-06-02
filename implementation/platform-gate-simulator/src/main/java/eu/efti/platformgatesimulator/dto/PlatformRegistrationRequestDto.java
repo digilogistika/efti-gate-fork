@@ -2,6 +2,7 @@ package eu.efti.platformgatesimulator.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,13 +16,10 @@ import org.hibernate.validator.constraints.URL;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlatformRegistrationRequestDto {
     @NotNull
-    private String name;
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "Platform ID must contain only alphanumeric characters and hyphens")
+    private String platformId;
 
     @NotNull
     @URL
-    private String uilRequestUrl;
-
-    @NotNull
-    @URL
-    private String followUpRequestUrl;
+    private String requestBaseUrl;
 }

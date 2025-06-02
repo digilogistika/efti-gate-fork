@@ -243,6 +243,28 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="1707315732219-28" author="rig">
+        <dropColumn
+                columnName="uilrequesturl"
+                tableName="platform"
+        />
+        <renameColumn
+                columnDataType="VARCHAR(2048)"
+                tableName="platform"
+                newColumnName="requestbaseurl"
+                oldColumnName="followuprequesturl"
+                remarks="Change of column followuprequesturl to requestbaseurl"
+        />
+        <renameColumn
+                columnDataType="VARCHAR(255)"
+                tableName="platform"
+                newColumnName="platformid"
+                oldColumnName="name"
+                remarks="Change of column name to platformId"
+        />
+    </changeSet>
+    
     <include file="/db.changelog/db.gate.changelog-1-rename.xml"/>
     <include file="/db.changelog/db.gate.changelog-2-subsetIds.xml"/>
 </databaseChangeLog>
