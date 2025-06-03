@@ -64,7 +64,7 @@
     "clear": "Clear",
     "add-note": "Follow-up communication",
     "download": "Download",
-    "save":  "Save",
+    "save": "Save",
     "cancel": "Cancel"
   },
   "form": {
@@ -81,6 +81,22 @@
     "logout": "logout",
     "home": "Home",
     "search-by-uil": "Request By UIL",
-    "search-by-identifiers": "Request By Identifiers"
+    "search-by-identifiers": "Request By Identifiers",
+    "api-settings": "API key"
+  },
+  "api-key": {
+    "title": "API Key Configuration",
+    "enter-key-label": "API Key:",
+    "enter-key-placeholder": "X-API-KEY",
+    "key-required": "API Key is required.",
+    "save-button": "Save",
+    "clear-button": "Clear",
+    "show-button": "Show",
+    "hide-button": "Hide",
+    "status-label": "Status",
+    "status-configured": "API Key is configured",
+    "current-key-label": "Current Key",
+    "warning-label": "Warning",
+    "warning-no-key": "No API Key is configured. Requests will fail."
   }
 }
