@@ -264,7 +264,24 @@
                 remarks="Change of column name to platformId"
         />
     </changeSet>
-    
+
+    <changeSet id="1707315732219-29" author="rig">
+        <createTable tableName="authorityuser">
+            <column autoIncrement="true" name="id" startWith="1" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="authorityuser_pkey"/>
+            </column>
+            <column name="authorityid" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="secret" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permissionlevel" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
     <include file="/db.changelog/db.gate.changelog-1-rename.xml"/>
     <include file="/db.changelog/db.gate.changelog-2-subsetIds.xml"/>
 </databaseChangeLog>

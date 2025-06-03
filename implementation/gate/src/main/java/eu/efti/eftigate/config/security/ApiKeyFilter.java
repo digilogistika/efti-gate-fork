@@ -1,8 +1,10 @@
 // 2) a One-liner filter bean
 package eu.efti.eftigate.config.security;
 
+import eu.efti.eftigate.entity.AuthorityUserEntity;
 import eu.efti.eftigate.entity.PlatformEntity;
 import eu.efti.eftigate.exception.XApiKeyValidationException;
+import eu.efti.eftigate.repository.AuthorityUserRepository;
 import eu.efti.eftigate.repository.PlatformRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,19 +19,23 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 @Slf4j
 public class ApiKeyFilter extends OncePerRequestFilter {
 
     @Value("${gate.apikey}")
-    private String validApiKey;
+    private String superApiKey;
 
     @Setter
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private PlatformRepository platformRepository;
+
+    @Autowired
+    private AuthorityUserRepository authorityUserRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req,
@@ -41,19 +47,39 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         // platform api endpoints validation
         try {
-            if (path.startsWith("/api/platform/v0")) {
+            if (path.startsWith("/api/platform/v0/consignments")
+                    || path.startsWith("/api/platform/v0/whoami")
+            ) {
                 validatePlatformXApiKeyHeader(xApiKeyHeader);
+                chain.doFilter(req, res);
             }
         } catch (XApiKeyValidationException e) {
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform");
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform: " + e.getMessage());
         }
 
         // authority access point validation
-        if (path.startsWith("/v1/control")) {
-            if (validApiKey.equals(xApiKeyHeader)) {
+        try {
+            if (path.startsWith("/v1/control")) {
+                if (superApiKey.equals(xApiKeyHeader)) {
+                    chain.doFilter(req, res);
+                } else {
+                    validateAuthorityXApiKeyHeader(xApiKeyHeader);
+                    chain.doFilter(req, res);
+                }
+            }
+        } catch (XApiKeyValidationException e) {
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform: " + e.getMessage());
+        }
+
+
+        // registration endpoint validation
+        if (path.startsWith("/api/authority/v0/register")
+                || path.startsWith("/api/platform/v0/register")
+        ) {
+            if (superApiKey.equals(xApiKeyHeader)) {
                 chain.doFilter(req, res);
             } else {
-                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for authority");
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for registration endpoints");
             }
         }
 
@@ -61,31 +87,57 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         if (path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.startsWith("/actuator")
-                || path.startsWith("/ws")
-                || path.startsWith("/api/platform/v0")) {
+                || path.startsWith("/ws")) {
             chain.doFilter(req, res);
         }
     }
 
-    private void validatePlatformXApiKeyHeader(String header) throws XApiKeyValidationException {
+    private String[] getUserAndSecretFromHeader(String header) throws XApiKeyValidationException {
         String[] parts = header.split("_", 2);
         if (parts.length != 2) {
-            log.warn("Platform validation failed: invalid header format");
+            log.warn("User validation failed: invalid header format");
             throw new XApiKeyValidationException("Invalid header format");
         }
 
-        String platformId = parts[0];
+        String user = parts[0];
         String secret = parts[1];
 
-        if (platformId.isEmpty() || secret.isEmpty()) {
-            log.warn("Platform validation failed: platformId or secret is empty");
-            throw new XApiKeyValidationException("platformId or secret is empty");
+        if (user.isEmpty() || secret.isEmpty()) {
+            log.warn("User validation failed: user or secret is empty");
+            throw new XApiKeyValidationException("user or secret is empty");
         }
 
-        validatePlatform(platformId, secret);
+        return new String[]{user, secret};
     }
 
-    private void validatePlatform(String platformId, String secret) {
+    private void validateAuthorityXApiKeyHeader(String header) throws XApiKeyValidationException {
+        String[] credentials = getUserAndSecretFromHeader(header);
+        String authorityId = credentials[0];
+        String secret = credentials[1];
+
+        Optional<AuthorityUserEntity> authorityUserEntity = authorityUserRepository.findByAuthorityId(authorityId);
+
+        if (authorityUserEntity.isEmpty()) {
+            log.warn("Authority validation failed: authority with authorityId {} does not exist", authorityId);
+            throw new XApiKeyValidationException("Authority with this authorityId does not exist");
+        }
+
+        boolean isValid = passwordEncoder.matches(secret, authorityUserEntity.get().getSecret());
+
+        if (isValid) {
+            log.info("Authority {} validated successfully", authorityId);
+        } else {
+            log.warn("Authority validation failed: invalid secret for authority {}", authorityId);
+            throw new XApiKeyValidationException("Invalid secret for authority");
+        }
+    }
+
+
+    private void validatePlatformXApiKeyHeader(String header) throws XApiKeyValidationException {
+        String[] credentials = getUserAndSecretFromHeader(header);
+        String platformId = credentials[0];
+        String secret = credentials[1];
+
         PlatformEntity platformEntity = platformRepository.findByPlatformId(platformId);
 
         if (platformEntity == null) {
