@@ -29,9 +29,8 @@ public class ApiKeyService {
         RestClient restClient = RestClient.builder().build();
 
         PlatformRegistrationRequestDto body = new PlatformRegistrationRequestDto();
-        body.setFollowUpRequestUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v0/consignments");
-        body.setUilRequestUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v0/consignments");
-        body.setName(gateProperties.getOwner());
+        body.setRequestBaseUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v0/consignments");
+        body.setPlatformId(gateProperties.getOwner());
 
         ResponseEntity<PlatformRegistrationResponseDto> response = restClient.post()
                 .uri(gateProperties.getGateBaseUrl() + "/api/platform/v0/register")
@@ -42,18 +41,17 @@ public class ApiKeyService {
 
         if (response.getBody() != null) {
             PlatformRegistrationResponseDto responseBody = response.getBody();
-            saveApiKeyToFile(responseBody.getName(), responseBody.getSecret());
-            log.info("API key successfully fetched and saved for: {}", responseBody.getName());
+            saveApiKeyToFile(responseBody.getApiKey());
+            log.info("API key successfully fetched and saved for: {}", gateProperties.getOwner());
         } else {
             log.error("Failed to fetch API key: response body is null");
         }
     }
 
-    private void saveApiKeyToFile(String name, String secret) {
+    private void saveApiKeyToFile(String apiKey) {
         try {
             Path filePath = Paths.get(this.filePath);
-            String content = name + "_" + secret;
-            Files.writeString(filePath, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            Files.writeString(filePath, apiKey, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             log.info("API key saved to file: {}", filePath.toAbsolutePath());
         } catch (IOException e) {
             log.error("Failed to save API key to file", e);

@@ -243,6 +243,54 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="1707315732219-28" author="rig">
+        <dropColumn
+                columnName="uilrequesturl"
+                tableName="platform"
+        />
+        <renameColumn
+                columnDataType="VARCHAR(2048)"
+                tableName="platform"
+                newColumnName="requestbaseurl"
+                oldColumnName="followuprequesturl"
+                remarks="Change of column followuprequesturl to requestbaseurl"
+        />
+        <renameColumn
+                columnDataType="VARCHAR(255)"
+                tableName="platform"
+                newColumnName="platformid"
+                oldColumnName="name"
+                remarks="Change of column name to platformId"
+        />
+    </changeSet>
+
+    <changeSet id="1707315732219-29" author="rig">
+        <createTable tableName="authorityuser">
+            <column name="authorityid" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" primaryKey="true" primaryKeyName="authorityuser_pkey"/>
+            </column>
+            <column name="secret" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permissionlevel" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1707315732219-30" author="rig">
+        <dropPrimaryKey tableName="platform" constraintName="platform_pkey"/>
+
+        <dropColumn tableName="platform" columnName="id"/>
+
+        <addPrimaryKey
+                tableName="platform"
+                columnNames="platformid"
+                constraintName="platform_pkey"/>
+    </changeSet>
+
+
     <include file="/db.changelog/db.gate.changelog-1-rename.xml"/>
     <include file="/db.changelog/db.gate.changelog-2-subsetIds.xml"/>
 </databaseChangeLog>

@@ -50,7 +50,7 @@ public class PlatformApiService {
             webClientBuilder
                     .build()
                     .post()
-                    .uri(platformIdentityService.getFollowUpRequestUrl(controlDto.getPlatformId()) + "/" + controlDto.getDatasetId() + "/follow-up")
+                    .uri(platformIdentityService.getRequestBaseUrl(controlDto.getPlatformId()) + "/" + controlDto.getDatasetId() + "/follow-up")
                     .contentType(MediaType.TEXT_PLAIN)
                     .bodyValue(postFollowUpRequestDto.getMessage())
                     .retrieve()
@@ -72,7 +72,7 @@ public class PlatformApiService {
         try {
             log.info("Sending UIL request to platform with id: {}", controlDto.getPlatformId());
 
-            String uri = platformIdentityService.getUilRequestUrl(controlDto.getPlatformId()) +
+            String uri = platformIdentityService.getRequestBaseUrl(controlDto.getPlatformId()) +
                     "/" + controlDto.getDatasetId() +
                     "?" + "&subsetId=" + "full";  // TODO: add real subsets support
 

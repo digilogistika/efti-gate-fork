@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a23d0904-8bb8-4636-b95a-8eec68e8b1a1",
+		"_postman_id": "80df3c58-a2f5-494b-bfec-7466af5a971b",
 		"name": "eFTI-DLK",
 		"description": "eFTI gate request collection for different use cases",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -145,6 +145,56 @@
 							"response": []
 						},
 						{
+							"name": "[Authority user] POST Identifiers Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "{{authority_user_api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"identifier\": \"tybkuj\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8880/v1/control/identifiers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"v1",
+										"control",
+										"identifiers"
+									]
+								},
+								"description": "please register authority before calling this endpoint"
+							},
+							"response": []
+						},
+						{
 							"name": "GET Identifiers Control",
 							"request": {
 								"method": "GET",
@@ -213,14 +263,9 @@
 								}
 							},
 							"response": []
-						}
-					]
-				},
-				{
-					"name": "Platform",
-					"item": [
+						},
 						{
-							"name": "Upload Identifiers [EDelivery]",
+							"name": "REGISTER platform",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -232,7 +277,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"consignment\": {\n    \"carrierAcceptanceDateTime\": {\n      \"formatId\": \"205\",\n      \"value\": \"202310011000+0000\"\n    },\n    \"deliveryEvent\": {\n      \"actualOccurrenceDateTime\": {\n        \"formatId\": \"205\",\n        \"value\": \"202310021500+0000\"\n      }\n    },\n    \"mainCarriageTransportMovement\": [\n      {\n        \"dangerousGoodsIndicator\": false,\n        \"modeCode\": \"1\",\n        \"usedTransportMeans\": {\n          \"id\": {\n            \"schemeAgencyId\": \"UN\",\n            \"value\": \"12345\"\n          },\n          \"registrationCountry\": {\n            \"code\": \"DE\"\n          }\n        }\n      }\n    ],\n    \"usedTransportEquipment\": [\n      {\n        \"carriedTransportEquipment\": [\n          {\n            \"id\": {\n              \"schemeAgencyId\": \"UN\",\n              \"value\": \"67890\"\n            },\n            \"sequenceNumber\": 1\n          }\n        ],\n        \"categoryCode\": \"AE\",\n        \"id\": {\n          \"schemeAgencyId\": \"UN\",\n          \"value\": \"54321\"\n        },\n        \"registrationCountry\": {\n          \"code\": \"FR\"\n        },\n        \"sequenceNumber\": 2\n      }\n    ]\n  },\n  \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\"\n}",
+									"raw": "{\n    \"platformId\": \"test-plataa\",\n    \"requestBaseUrl\": \"http://test-base-url.com/api/gate-api/v0/consignments/\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -240,22 +285,47 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8070/identifiers/upload",
+									"raw": "http://localhost:8880/api/platform/v0/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8070",
+									"port": "8880",
 									"path": [
-										"identifiers",
-										"upload"
+										"api",
+										"platform",
+										"v0",
+										"register"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Upload File",
+							"name": "REGISTER authority",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Parse the JSON response body",
+											"let response = pm.response.json();",
+											"",
+											"// Check if the apiKey exists in the response",
+											"if (response.apiKey) {",
+											"    // Set the environment variable",
+											"    pm.globals.set(\"authority_user_api_key\", response.apiKey);",
+											"    console.log(\"authority_user_api_key set to:\", response.apiKey);",
+											"} else {",
+											"    console.warn(\"apiKey not found in response.\");",
+											"}",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -266,31 +336,36 @@
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "file",
-											"type": "file",
-											"src": "/home/rasmus/proge/gates/efti-gate/deploy/platform/cda/12345678-ab12-4ab6-8999-123456789abc.xml"
+									"mode": "raw",
+									"raw": "{\n    \"authorityId\": \"testa-aauthaaorityss\",\n    \"permissionLevel\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
-									"raw": "http://localhost:8070/identifiers/upload/file",
+									"raw": "http://localhost:8880/api/authority/v0/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8070",
+									"port": "8880",
 									"path": [
-										"identifiers",
-										"upload",
-										"file"
+										"api",
+										"authority",
+										"v0",
+										"register"
 									]
 								}
 							},
 							"response": []
-						},
+						}
+					]
+				},
+				{
+					"name": "Platform",
+					"item": [
 						{
 							"name": "Upload Identifiers [REST method]",
 							"event": [
@@ -561,14 +636,9 @@
 								}
 							},
 							"response": []
-						}
-					]
-				},
-				{
-					"name": "Platform",
-					"item": [
+						},
 						{
-							"name": "Upload Identifiers",
+							"name": "REGISTER platform",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -580,7 +650,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"consignment\": {\n    \"carrierAcceptanceDateTime\": {\n      \"formatId\": \"205\",\n      \"value\": \"202310011000+0000\"\n    },\n    \"deliveryEvent\": {\n      \"actualOccurrenceDateTime\": {\n        \"formatId\": \"205\",\n        \"value\": \"202310021500+0000\"\n      }\n    },\n    \"mainCarriageTransportMovement\": [\n      {\n        \"dangerousGoodsIndicator\": false,\n        \"modeCode\": \"1\",\n        \"usedTransportMeans\": {\n          \"id\": {\n            \"schemeAgencyId\": \"UN\",\n            \"value\": \"12345\"\n          },\n          \"registrationCountry\": {\n            \"code\": \"DE\"\n          }\n        }\n      }\n    ],\n    \"usedTransportEquipment\": [\n      {\n        \"carriedTransportEquipment\": [\n          {\n            \"id\": {\n              \"schemeAgencyId\": \"UN\",\n              \"value\": \"67890\"\n            },\n            \"sequenceNumber\": 1\n          }\n        ],\n        \"categoryCode\": \"AE\",\n        \"id\": {\n          \"schemeAgencyId\": \"UN\",\n          \"value\": \"54321\"\n        },\n        \"registrationCountry\": {\n          \"code\": \"FR\"\n        },\n        \"sequenceNumber\": 2\n      }\n    ]\n  },\n  \"datasetId\": \"12345678-ab12-4ab6-8999-123456789abc\"\n}",
+									"raw": "{\n    \"platformId\": \"test-plataa\",\n    \"requestBaseUrl\": \"http://test-base-url.com/api/gate-api/v0/consignments/\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -588,22 +658,24 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8072/identifiers/upload",
+									"raw": "http://localhost:8881/api/platform/v0/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8072",
+									"port": "8881",
 									"path": [
-										"identifiers",
-										"upload"
+										"api",
+										"platform",
+										"v0",
+										"register"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Upload File",
+							"name": "REGISTER authority",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -614,92 +686,38 @@
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "file",
-											"type": "file",
-											"src": "/home/rig/Documents/Projects/DLK/efti-gate/implementation/platform-gate-simulator/src/main/resources/cda/12345678-ab12-4ab6-8999-123456789abc.xml"
+									"mode": "raw",
+									"raw": "{\n    \"authorityId\": \"test-authority\",\n    \"permissionLevel\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
-									"raw": "http://localhost:8072/identifiers/upload/file",
+									"raw": "http://localhost:8881/api/authority/v0/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8072",
+									"port": "8881",
 									"path": [
-										"identifiers",
-										"upload",
-										"file"
+										"api",
+										"authority",
+										"v0",
+										"register"
 									]
 								}
 							},
 							"response": []
-						},
+						}
+					]
+				},
+				{
+					"name": "Platform",
+					"item": [
 						{
-							"name": "Upload Identifiers [REST method] Copy",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Access the form data in the request",
-											"const formData = pm.request.body.formdata;",
-											"",
-											"const a = formData[0]",
-											"formData.map(i => {",
-											"    if (i.key === \"consignmentFile\") {",
-											"        const fileName = i.src.split(\"/\").at(-1).split(\".\").at(0)",
-											"        pm.environment.set(\"uploaded_dataset_it\", fileName);",
-											"    }",
-											"})"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "SuperSecretSecret123",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "consignmentFile",
-											"type": "file",
-											"src": "/home/rig/Documents/Projects/DLK/efti-gate/testing/testdata/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915.xml"
-										}
-									]
-								},
-								"url": {
-									"raw": "http://localhost:8072/identifiers/upload/consignment/{{uploaded_dataset_it}}",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8072",
-									"path": [
-										"identifiers",
-										"upload",
-										"consignment",
-										"{{uploaded_dataset_it}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Upload Identifiers [REST method] Copy",
+							"name": "Upload Identifiers [REST method]",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -761,6 +779,28 @@
 				}
 			],
 			"description": "Listenbourg local development requests"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
