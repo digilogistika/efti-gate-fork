@@ -282,6 +282,29 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="1707315732219-30" author="rig">
+        <dropPrimaryKey tableName="authorityuser" constraintName="authorityuser_pkey"/>
+
+        <dropColumn tableName="authorityuser" columnName="id"/>
+
+        <addPrimaryKey
+                tableName="authorityuser"
+                columnNames="authorityid"
+                constraintName="authorityuser_pkey"/>
+    </changeSet>
+
+    <changeSet id="1707315732219-31" author="rig">
+        <dropPrimaryKey tableName="platform" constraintName="platform_pkey"/>
+
+        <dropColumn tableName="platform" columnName="id"/>
+
+        <addPrimaryKey
+                tableName="platform"
+                columnNames="platformid"
+                constraintName="platform_pkey"/>
+    </changeSet>
+
+
     <include file="/db.changelog/db.gate.changelog-1-rename.xml"/>
     <include file="/db.changelog/db.gate.changelog-2-subsetIds.xml"/>
 </databaseChangeLog>
