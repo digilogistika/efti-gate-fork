@@ -6,9 +6,9 @@ import org.springframework.data.repository.Repository;
 
 
 public interface PlatformRepository extends Repository<PlatformEntity, Long> {
-    boolean existsByName(@NotNull String name);
+    boolean existsByPlatformId(@NotNull String platformId);
 
     void save(PlatformEntity platformEntity);
 
-    PlatformEntity findByName(String name);
+    PlatformEntity findByPlatformId(String platformId);
 }

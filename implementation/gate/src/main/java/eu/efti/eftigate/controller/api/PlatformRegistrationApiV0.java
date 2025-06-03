@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "Platform Registration API", description = "Used for managing new platforms registration")
 @RequestMapping("/api/platform")
-public interface PlatformRegistrationApiV1 {
+public interface PlatformRegistrationApiV0 {
 
     @Operation(
             summary = "Register a new platform to the system",

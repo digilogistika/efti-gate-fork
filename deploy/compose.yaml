@@ -89,6 +89,7 @@ services:
       POSTGRES_DB: efti
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
+      - efti_psql:/var/lib/postgresql/data
     restart: on-failure
 
   efti-psql-meta:
@@ -98,6 +99,7 @@ services:
       POSTGRES_DB: efti
     volumes:
       - ./sql-meta:/docker-entrypoint-initdb.d
+      - efti_psql_meta:/var/lib/postgresql/data
     restart: on-failure
 
   harmony-setup-util:
@@ -122,3 +124,5 @@ services:
 volumes:
   ap_data_gate:
   db_data_gate:
+  efti_psql:
+  efti_psql_meta:

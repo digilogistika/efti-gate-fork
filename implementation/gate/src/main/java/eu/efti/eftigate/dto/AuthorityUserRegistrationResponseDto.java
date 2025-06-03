@@ -1,4 +1,4 @@
-package eu.efti.platformgatesimulator.dto;
+package eu.efti.eftigate.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PlatformRegistrationResponseDto {
+public class AuthorityUserRegistrationResponseDto {
     private String apiKey;
 }
