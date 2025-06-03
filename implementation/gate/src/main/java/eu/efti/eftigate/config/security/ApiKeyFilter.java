@@ -93,6 +93,8 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     }
 
     private String[] getUserAndSecretFromHeader(String header) throws XApiKeyValidationException {
+        if (header == null) throw new XApiKeyValidationException("X-API-Key header is missing");
+
         String[] parts = header.split("_", 2);
         if (parts.length != 2) {
             log.warn("User validation failed: invalid header format");
