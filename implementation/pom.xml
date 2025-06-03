@@ -127,6 +127,7 @@
     </scm>
 
     <modules>
+        <module>authority-app</module>
         <module>commons</module>
         <module>efti-logger</module>
         <module>edelivery-ap-connector</module>
