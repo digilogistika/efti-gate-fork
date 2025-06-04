@@ -170,7 +170,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"identifier\": \"tybkuj\"\n}",
+									"raw": "{\n  \"identifier\": \"qlcvhc\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -277,7 +277,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"platformId\": \"test-plataa\",\n    \"requestBaseUrl\": \"http://test-base-url.com/api/gate-api/v0/consignments/\"\n}",
+									"raw": "{\n    \"platformId\": \"test-plataaa\",\n    \"requestBaseUrl\": \"http://test-base-url.com/api/gate-api/v0/consignments/\",\n    \"headers\": [\n        {\n            \"key\": \"X-API-Key\",\n            \"value\": \"SuperSecretApiKey\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -337,7 +337,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"authorityId\": \"testa-aauthaaorityss\",\n    \"permissionLevel\": 0\n}",
+									"raw": "{\n    \"authorityId\": \"testa-aaauthaaorityss\",\n    \"permissionLevel\": 0\n}",
 									"options": {
 										"raw": {
 											"language": "json"
