@@ -4,10 +4,12 @@ import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.RequestDto;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.dto.identifiers.api.ConsignmentApiDto;
+import eu.efti.eftigate.dto.PlatformHeaderDto;
 import eu.efti.eftigate.dto.RabbitRequestDto;
 import eu.efti.eftigate.entity.ControlEntity;
 import eu.efti.eftigate.entity.ErrorEntity;
 import eu.efti.eftigate.entity.IdentifiersRequestEntity;
+import eu.efti.eftigate.entity.PlatformHeaderEntity;
 import eu.efti.eftigate.entity.RequestEntity;
 import eu.efti.eftigate.entity.UilRequestEntity;
 import eu.efti.identifiersregistry.IdentifiersMapper;
@@ -113,6 +115,15 @@ public class MapperUtils {
     public List<ConsignmentApiDto> consignmentDtoToApiDto(List<ConsignmentDto> consignmentDtos) {
         return CollectionUtils.emptyIfNull(consignmentDtos).stream().map(this::dtoToApiDto).toList();
     }
+
+    public List<PlatformHeaderDto> headerEntityListToHeaderDtoList(List<PlatformHeaderEntity> platformHeaderEntities) {
+        return platformHeaderEntities.stream().map(entity -> modelMapper.map(entity, PlatformHeaderDto.class)).toList();
+    }
+
+    public List<PlatformHeaderEntity> headerDtoListToHeaderEntityList(List<PlatformHeaderDto> platformHeaderDtos) {
+        return platformHeaderDtos.stream().map(dto -> modelMapper.map(dto, PlatformHeaderEntity.class)).toList();
+    }
+
 
     private ConsignmentApiDto dtoToApiDto(ConsignmentDto consignmentDto) {
         return modelMapper.map(consignmentDto, ConsignmentApiDto.class);
