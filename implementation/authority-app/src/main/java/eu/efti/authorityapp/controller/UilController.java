@@ -3,6 +3,7 @@ package eu.efti.authorityapp.controller;
 import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.UilControllerApi;
 import eu.efti.authorityapp.dto.RequestIdDto;
+import eu.efti.authorityapp.service.ConfigService;
 import eu.efti.commons.dto.UilDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,9 @@ import org.springframework.web.client.RestTemplate;
 public class UilController implements UilControllerApi {
     private final GateProperties gateProperties;
     private final RestTemplate restTemplate;
+    private final ConfigService configService;
+
+    private final String gateApiKey = configService.getApiKey();
 
     @Override
     @PostMapping("/control/uil")

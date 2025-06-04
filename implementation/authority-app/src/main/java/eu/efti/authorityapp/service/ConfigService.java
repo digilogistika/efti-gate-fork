@@ -34,10 +34,9 @@ public class ConfigService {
         log.info("Saved new API key to database");
     }
     
-    public Optional<String> getApiKey() {
+    public String getApiKey() {
         return authorityConfigRepository.getConfig()
-                .map(AuthorityConfigEntity::getGateApiKey)
-                .filter(value -> !value.trim().isEmpty());
+                .map(AuthorityConfigEntity::getGateApiKey).orElseThrow();
     }
     
     public boolean hasApiKey() {
