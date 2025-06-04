@@ -6,6 +6,7 @@ import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.edeliveryapconnector.dto.NotificationContentDto;
 import eu.efti.edeliveryapconnector.dto.NotificationDto;
 import eu.efti.edeliveryapconnector.dto.NotificationType;
+import eu.efti.eftigate.dto.PlatformHeaderDto;
 import eu.efti.eftigate.service.request.UilRequestService;
 import eu.efti.v1.edelivery.ObjectFactory;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -47,10 +49,18 @@ public class PlatformApiService {
     public CompletableFuture<Void> sendFollowUpRequest(PostFollowUpRequestDto postFollowUpRequestDto, ControlDto controlDto) {
         try {
             log.info("Sending follow up request to platform with id: {}", controlDto.getPlatformId());
+
+            List<PlatformHeaderDto> headers = platformIdentityService.getPlatformRequestHeaders(controlDto.getPlatformId());
+
             webClientBuilder
                     .build()
                     .post()
                     .uri(platformIdentityService.getRequestBaseUrl(controlDto.getPlatformId()) + "/" + controlDto.getDatasetId() + "/follow-up")
+                    .headers(consumer -> {
+                        for (PlatformHeaderDto header : headers) {
+                            consumer.add(header.getKey(), header.getValue());
+                        }
+                    })
                     .contentType(MediaType.TEXT_PLAIN)
                     .bodyValue(postFollowUpRequestDto.getMessage())
                     .retrieve()
@@ -76,10 +86,17 @@ public class PlatformApiService {
                     "/" + controlDto.getDatasetId() +
                     "?" + "&subsetId=" + "full";  // TODO: add real subsets support
 
+            List<PlatformHeaderDto> headers = platformIdentityService.getPlatformRequestHeaders(controlDto.getPlatformId());
+
             ResponseEntity<String> response = webClientBuilder
                     .build()
                     .get()
                     .uri(uri)
+                    .headers(consumer -> {
+                        for (PlatformHeaderDto header : headers) {
+                            consumer.add(header.getKey(), header.getValue());
+                        }
+                    })
                     .retrieve()
                     .toEntity(String.class)
                     .block();

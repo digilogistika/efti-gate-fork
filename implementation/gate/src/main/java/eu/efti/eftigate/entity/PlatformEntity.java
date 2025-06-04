@@ -1,11 +1,15 @@
 package eu.efti.eftigate.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +26,7 @@ public class PlatformEntity {
 
     @Column(name = "secret", length = 1024, nullable = false)
     private String secret;
+
+    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PlatformHeaderEntity> headers;
 }
