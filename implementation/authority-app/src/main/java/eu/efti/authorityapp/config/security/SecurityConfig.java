@@ -1,4 +1,4 @@
-package eu.efti.authorityapp.config;
+package eu.efti.authorityapp.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
