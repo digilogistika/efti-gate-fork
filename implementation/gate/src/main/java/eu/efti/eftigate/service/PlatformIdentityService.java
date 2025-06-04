@@ -30,7 +30,7 @@ public class PlatformIdentityService {
     private final SecureRandom secureRandom = new SecureRandom();
 
     public PlatformRegistrationResponseDto registerPlatform(PlatformRegistrationRequestDto platformRegistrationRequestDto) {
-        log.info("Registering platform with params: {}", platformRegistrationRequestDto);
+        log.info("Registering platform with ID: {}", platformRegistrationRequestDto.getPlatformId());
 
         if (platformRepository.existsByPlatformId(platformRegistrationRequestDto.getPlatformId())) {
             log.warn("Registration failed: platform with platformId {} already exists", platformRegistrationRequestDto.getPlatformId());
@@ -47,9 +47,11 @@ public class PlatformIdentityService {
         platformEntity.setRequestBaseUrl(platformRegistrationRequestDto.getRequestBaseUrl());
         platformEntity.setSecret(encodedSecret);
 
-        List<PlatformHeaderEntity> headers = mapperUtils.headerDtoListToHeaderEntityList(platformRegistrationRequestDto.getHeaders());
-        headers.forEach(h -> h.setPlatform(platformEntity));
-        platformEntity.setHeaders(headers);
+        if (platformRegistrationRequestDto.getHeaders() != null && !platformRegistrationRequestDto.getHeaders().isEmpty()) {
+            List<PlatformHeaderEntity> headers = mapperUtils.headerDtoListToHeaderEntityList(platformRegistrationRequestDto.getHeaders());
+            headers.forEach(h -> h.setPlatform(platformEntity));
+            platformEntity.setHeaders(headers);
+        }
 
         platformRepository.save(platformEntity);
         log.info("Platform {} registered successfully", platformRegistrationRequestDto.getPlatformId());
