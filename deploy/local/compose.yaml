@@ -180,6 +180,17 @@ services:
     networks:
       - app-network
 
+  authority-psql:
+    image: postgres:15.4
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: authorityapp
+    restart: on-failure
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
