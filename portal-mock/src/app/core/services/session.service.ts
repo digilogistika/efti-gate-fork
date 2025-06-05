@@ -8,7 +8,7 @@ export class SessionService {
   constructor() {}
 
   isAuthenticated(): boolean {
-    return true;
+    return false;
   }
 
   logout(): void {

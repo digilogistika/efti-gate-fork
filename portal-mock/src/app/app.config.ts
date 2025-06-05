@@ -12,6 +12,7 @@ import {provideToastr} from "ngx-toastr";
 import {ErrorInterceptor} from "./core/interceptors/error.interceptor";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import {ApiKeyInterceptor} from "./core/interceptors/api-key.interceptor";
+import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,7 +34,8 @@ export const appConfig: ApplicationConfig = {
     SessionService,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ]
 };
 

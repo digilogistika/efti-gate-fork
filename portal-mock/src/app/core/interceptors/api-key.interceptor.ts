@@ -6,12 +6,12 @@ import { ApiKeyService } from '../services/api-key.service';
 @Injectable()
 export class ApiKeyInterceptor implements HttpInterceptor {
 
-  constructor(private apiKeyService: ApiKeyService) {}
+  constructor(private readonly apiKeyService: ApiKeyService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const apiKey = this.apiKeyService.getApiKey();
 
-    if (req.url.includes('/api/') && apiKey) {
+    if (req.url.includes('/admin/') && apiKey) {
       const apiReq = req.clone({
         setHeaders: {
           'X-API-Key': apiKey
