@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthorityUserRegistrationRequestDto {
+public class AuthorityAppRegistrationRequestDto {
     @NotNull
     @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "Authority ID must contain only alphanumeric characters and hyphens")
     private String authorityId;

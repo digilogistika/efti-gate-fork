@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthorityUserRegistrationResponseDto {
+public class AuthorityAppRegistrationResponseDto {
     private String apiKey;
 }

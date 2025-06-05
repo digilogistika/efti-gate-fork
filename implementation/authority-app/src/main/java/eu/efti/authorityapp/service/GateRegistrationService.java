@@ -3,9 +3,8 @@ package eu.efti.authorityapp.service;
 import eu.efti.authorityapp.config.AuthorityAppProperties;
 import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.config.security.PermissionLevel;
-import eu.efti.authorityapp.dto.AuthorityUserRegistrationRequestDto;
-import eu.efti.authorityapp.dto.AuthorityUserRegistrationResponseDto;
-import eu.efti.commons.dto.UilDto;
+import eu.efti.authorityapp.dto.AuthorityAppRegistrationRequestDto;
+import eu.efti.authorityapp.dto.AuthorityAppRegistrationResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -45,7 +44,7 @@ public class GateRegistrationService {
         try {
             String registrationUrl = gateProperties.getBaseUrl() + "/api/authority/v0/register";
 
-            AuthorityUserRegistrationRequestDto registrationRequest = AuthorityUserRegistrationRequestDto.builder()
+            AuthorityAppRegistrationRequestDto registrationRequest = AuthorityAppRegistrationRequestDto.builder()
                     .authorityId(authorityAppProperties.getId())
                     .permissionLevel(PermissionLevel.AUTHORITY_ACCESS_POINT)
                     .build();
@@ -54,18 +53,18 @@ public class GateRegistrationService {
             headers.set("X-API-Key", gateProperties.getSuperApiKey());
             headers.set("Content-Type", "application/json");
 
-            HttpEntity<AuthorityUserRegistrationRequestDto> requestEntity = new HttpEntity<>(registrationRequest, headers);
+            HttpEntity<AuthorityAppRegistrationRequestDto> requestEntity = new HttpEntity<>(registrationRequest, headers);
 
             log.info("Registering authority '{}' with gate at: {}", authorityAppProperties.getId(), registrationUrl);
 
-            ResponseEntity<AuthorityUserRegistrationResponseDto> response = restTemplate.postForEntity(
+            ResponseEntity<AuthorityAppRegistrationResponseDto> response = restTemplate.postForEntity(
                     registrationUrl,
                     requestEntity,
-                    AuthorityUserRegistrationResponseDto.class
+                    AuthorityAppRegistrationResponseDto.class
             );
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                AuthorityUserRegistrationResponseDto responseBody = response.getBody();
+                AuthorityAppRegistrationResponseDto responseBody = response.getBody();
                 configService.saveApiKey(responseBody.getApiKey());
 
                 log.info("Successfully registered with gate. API key retrieved.");
