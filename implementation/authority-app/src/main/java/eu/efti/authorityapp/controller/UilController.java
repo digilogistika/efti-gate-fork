@@ -20,8 +20,6 @@ public class UilController implements UilControllerApi {
     private final RestTemplate restTemplate;
     private final ConfigService configService;
 
-    private final String gateApiKey = configService.getApiKey();
-
     @Override
     @PostMapping("/control/uil")
     public ResponseEntity<RequestIdDto> requestUil(@RequestBody UilDto uilDto) {
@@ -31,7 +29,7 @@ public class UilController implements UilControllerApi {
             String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil";
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("X-API-Key", gateApiKey);
+            headers.set("X-API-Key", configService.getApiKey());
             headers.set("Content-Type", "application/json");
 
             HttpEntity<UilDto> requestEntity = new HttpEntity<>(uilDto, headers);
@@ -60,7 +58,7 @@ public class UilController implements UilControllerApi {
             String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil?requestId=" + requestId;
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("X-API-Key", gateApiKey);
+            headers.set("X-API-Key", configService.getApiKey());
 
             HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 

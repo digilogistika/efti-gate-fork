@@ -22,6 +22,7 @@ public interface UilControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
+    @PostMapping("/control/uil")
     ResponseEntity<RequestIdDto> requestUil(@RequestBody UilDto uilDto);
 
 
@@ -32,5 +33,6 @@ public interface UilControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
+    @GetMapping("/control/uil")
     ResponseEntity<RequestIdDto> getRequestUil(@RequestParam String requestId);
 }

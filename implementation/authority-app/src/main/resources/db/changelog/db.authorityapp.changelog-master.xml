@@ -6,7 +6,7 @@
 
     <changeSet id="001-create-authority-config-table" author="Rasmus">
         <createTable tableName="authority_config">
-            <column name="gate_api_key" type="VARCHAR(100)">
+            <column name="gate_api_key" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">

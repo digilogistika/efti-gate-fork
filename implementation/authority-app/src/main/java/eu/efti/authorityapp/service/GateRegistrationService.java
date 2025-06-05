@@ -5,10 +5,13 @@ import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.config.security.PermissionLevel;
 import eu.efti.authorityapp.dto.AuthorityUserRegistrationRequestDto;
 import eu.efti.authorityapp.dto.AuthorityUserRegistrationResponseDto;
+import eu.efti.commons.dto.UilDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -47,11 +50,17 @@ public class GateRegistrationService {
                     .permissionLevel(PermissionLevel.AUTHORITY_ACCESS_POINT)
                     .build();
 
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("X-API-Key", gateProperties.getSuperApiKey());
+            headers.set("Content-Type", "application/json");
+
+            HttpEntity<AuthorityUserRegistrationRequestDto> requestEntity = new HttpEntity<>(registrationRequest, headers);
+
             log.info("Registering authority '{}' with gate at: {}", authorityAppProperties.getId(), registrationUrl);
 
             ResponseEntity<AuthorityUserRegistrationResponseDto> response = restTemplate.postForEntity(
                     registrationUrl,
-                    registrationRequest,
+                    requestEntity,
                     AuthorityUserRegistrationResponseDto.class
             );
 

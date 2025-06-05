@@ -23,8 +23,6 @@ public class IdentifiersController implements IdentifiersControllerApi {
     private final RestTemplate restTemplate;
     private final ConfigService configService;
 
-    private final String gateApiKey = configService.getApiKey();
-
     @Override
     @PostMapping("/control/identifiers")
     public ResponseEntity<RequestIdDto> requestIdentifiers(@RequestBody SearchWithIdentifiersRequestDto searchIdentifiersDto) {
@@ -34,7 +32,7 @@ public class IdentifiersController implements IdentifiersControllerApi {
             String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil";
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("X-API-Key", gateApiKey);
+            headers.set("X-API-Key", configService.getApiKey());
             headers.set("Content-Type", "application/json");
 
             HttpEntity<SearchWithIdentifiersRequestDto> requestEntity = new HttpEntity<>(searchIdentifiersDto, headers);
@@ -63,7 +61,7 @@ public class IdentifiersController implements IdentifiersControllerApi {
             String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil?requestId=" + requestId;
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("X-API-Key", gateApiKey);
+            headers.set("X-API-Key", configService.getApiKey());
 
             HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 

@@ -1,19 +1,25 @@
 server:
   port: 8084
-  servlet:
-    context-path: /authority-app
 
 spring:
   application:
     name: authority-app
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
-    show-sql: false
+      ddl-auto: none
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/authorityapp
+    username: postgres
+    password: root
+  liquibase:
+    change-log: db/changelog/db.authorityapp.changelog-master.xml
 
 logging:
   level:
@@ -21,3 +27,4 @@ logging:
     org.efti: DEBUG
     org.springframework: INFO
     org.hibernate: INFO
+    liquibase: INFO
