@@ -290,6 +290,31 @@
                 constraintName="platform_pkey"/>
     </changeSet>
 
+    <changeSet id="1707315732219-31" author="rig">
+        <createTable tableName="platformheader">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="platformheader_pkey"/>
+            </column>
+            <column name="platformid" type="VARCHAR(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="key" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="platformheader"
+                baseColumnNames="platformid"
+                constraintName="fk_platformheader_platform"
+                referencedTableName="platform"
+                referencedColumnNames="platformid"
+                onDelete="CASCADE"/>
+    </changeSet>
+
 
     <include file="/db.changelog/db.gate.changelog-1-rename.xml"/>
     <include file="/db.changelog/db.gate.changelog-2-subsetIds.xml"/>
