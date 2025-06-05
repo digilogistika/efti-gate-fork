@@ -18,4 +18,18 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="002-create-authority-user-table" author="Rasmus">
+        <createTable tableName="authority_user">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
