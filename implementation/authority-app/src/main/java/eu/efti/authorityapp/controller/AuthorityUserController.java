@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1")
 @AllArgsConstructor
 @Slf4j
 public class AuthorityUserController implements AuthorityUserControllerApi {
 
     private final AuthorityUserService authorityUserService;
 
-    @PostMapping("/admin/authority-user")
+    @PostMapping("/admin/authority-user/create")
     public ResponseEntity<Void> createAuthorityUser(final @RequestBody AuthorityUserDto authorityUserDto) {
         return authorityUserService.createAuthorityUser(authorityUserDto);
     }
