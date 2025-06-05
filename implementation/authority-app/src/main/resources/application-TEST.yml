@@ -1,6 +1,0 @@
-gate:
-  name: borduria
-  baseUrl: http://localhost:8880
-  superApiKey: SuperSecretSecret123
-authority:
-  id: BorduriaAuthority
