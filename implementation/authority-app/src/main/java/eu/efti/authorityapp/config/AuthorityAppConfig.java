@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.SecretKey;
 
@@ -27,5 +28,10 @@ public class AuthorityAppConfig {
     @Bean
     public SecretKey jwtKey() {
         return Jwts.SIG.HS256.key().build();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }
