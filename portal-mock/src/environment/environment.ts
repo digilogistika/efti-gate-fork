@@ -7,5 +7,6 @@ export const environment = {
     uil: "/v1/control/uil",
     note: "/v1/control/uil/follow-up",
     authUserVerify: "/public/authority-user/verify",
+    createAuthUser: "/admin/authority-user/create",
   },
 };
