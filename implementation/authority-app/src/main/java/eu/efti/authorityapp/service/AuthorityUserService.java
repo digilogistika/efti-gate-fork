@@ -40,6 +40,7 @@ public class AuthorityUserService {
 
     public ResponseEntity<Void> createAuthorityUser(AuthorityUserDto authorityUserDto) {
         if (repository.existsByEmail(authorityUserDto.getEmail())) {
+            log.info("User with email {} already exists", authorityUserDto.getEmail());
             return ResponseEntity.badRequest().build();
         }
         log.info("Creating new user with email {}", authorityUserDto.getEmail());

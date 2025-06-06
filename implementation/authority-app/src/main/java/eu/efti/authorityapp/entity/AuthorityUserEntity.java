@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "authority_user")
 @Data
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class AuthorityUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String email;

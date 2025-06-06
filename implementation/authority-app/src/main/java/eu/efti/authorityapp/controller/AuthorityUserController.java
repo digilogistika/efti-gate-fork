@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@Slf4j
 public class AuthorityUserController implements AuthorityUserControllerApi {
 
     private final AuthorityUserService authorityUserService;

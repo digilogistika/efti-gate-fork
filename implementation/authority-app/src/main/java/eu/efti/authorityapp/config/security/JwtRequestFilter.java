@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -32,6 +34,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain
     ) throws ServletException, IOException {
+        
+        String requestUri = request.getRequestURI();
+        
+        if (requestUri.startsWith("/admin")) {
+            log.info("Skipping JWT authentication for admin API");
+            chain.doFilter(request, response);
+            return;
+        }
+        
         Optional<String> token = getToken(request);
         if (token.isPresent()) {
             Claims tokenBody = parseToken(token.get());
@@ -62,4 +73,3 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         );
     }
 }
-
