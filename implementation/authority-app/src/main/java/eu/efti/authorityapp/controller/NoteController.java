@@ -34,11 +34,12 @@ public class NoteController implements NoteControllerApi {
         log.info("Forwarding POST request to gate for Note: {}", notesDto);
 
         try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil";
+            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil/follow-up";
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());
             headers.set("Content-Type", "application/json");
+            headers.set("Accept", "application/json");
 
             HttpEntity<PostFollowUpRequestDto> requestEntity = new HttpEntity<>(notesDto, headers);
 

@@ -31,6 +31,7 @@ public class UilController implements UilControllerApi {
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());
             headers.set("Content-Type", "application/json");
+            headers.set("Accept", "application/json");
 
             HttpEntity<UilDto> requestEntity = new HttpEntity<>(uilDto, headers);
 
@@ -59,6 +60,7 @@ public class UilController implements UilControllerApi {
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());
+            headers.set("Accept", "application/json");
 
             HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 

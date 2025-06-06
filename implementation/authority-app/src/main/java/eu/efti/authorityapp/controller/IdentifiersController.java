@@ -29,11 +29,12 @@ public class IdentifiersController implements IdentifiersControllerApi {
         log.info("Forwarding POST request to gate for identifier: {}", searchIdentifiersDto);
 
         try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil";
+            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/identifiers";
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());
             headers.set("Content-Type", "application/json");
+            headers.set("Accept", "application/json");
 
             HttpEntity<SearchWithIdentifiersRequestDto> requestEntity = new HttpEntity<>(searchIdentifiersDto, headers);
 
@@ -58,10 +59,11 @@ public class IdentifiersController implements IdentifiersControllerApi {
         log.info("Forwarding GET request to gate for requestId: {}", requestId);
 
         try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil?requestId=" + requestId;
+            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/identifiers?requestId=" + requestId;
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());
+            headers.set("Accept", "application/json");
 
             HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 
