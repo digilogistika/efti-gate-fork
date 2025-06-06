@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {SessionService} from "./core/services/session.service";
 import {LoaderInterceptor} from "./core/interceptors/loader.interceptor";
@@ -17,7 +17,7 @@ import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
     provideToastr(),
     importProvidersFrom(
@@ -33,9 +33,9 @@ export const appConfig: ApplicationConfig = {
     ),
     SessionService,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ]
 };
 

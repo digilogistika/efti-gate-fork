@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {AuthorityUserModel} from "../../core/models/authority-user.model";
 import {CreateUserService} from "../../core/services/create-user.service";
+import {ApiKeyService} from "../../core/services/api-key.service"; // Add this import
 
 @Component({
   selector: 'app-admin',
@@ -22,6 +23,7 @@ export class AdminComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly createUserService: CreateUserService,
+    private readonly apiKeyService: ApiKeyService,
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +47,14 @@ export class AdminComponent implements OnInit {
     this.errorMessage = '';
     this.showSuccessMessage = false;
 
-    const userModel: AuthorityUserModel = this.createUserForm.value;
+    const apiKey = this.createUserForm.get('masterApiKey')?.value;
+    this.apiKeyService.setApiKey(apiKey);
+
+    const userModel: AuthorityUserModel = {
+      email: this.createUserForm.get('userEmail')?.value,
+      password: this.createUserForm.get('userPassword')?.value
+    };
+
 
     this.createUserService.create(userModel)
       .subscribe({

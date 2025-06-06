@@ -5,7 +5,6 @@ import {postLoginGuard} from "./core/guard/post-login.guard";
 import {LoginComponent} from "./pages/login/login.component";
 import {IdentifiersDisplayComponent} from "./pages/identifiers-display/identifiers-display.component";
 import {UilSearchComponent} from "./pages/uil-search/uil-search.component";
-import {ApiKeyComponent} from "./pages/api-key/api-key.component";
 import {AdminComponent} from "./pages/admin/admin.component";
 
 export const routes: Routes = [
@@ -33,11 +32,6 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     canActivate: [postLoginGuard]
-  },
-  {
-    path: 'api-settings',
-    component: ApiKeyComponent,
-    canActivate: [authGuard]
   },
   {
     path: 'admin',
