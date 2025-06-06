@@ -43,5 +43,6 @@ log_info "Shared services:"
 log_info "  - RabbitMQ: localhost:5672"
 log_info "  - PostgreSQL DB: localhost:9001"
 log_info "  - PostgreSQL Meta DB: localhost:2345"
+log_info "  - PostgreSQL Authority App DB: localhost:5432"
 
 exit 0
