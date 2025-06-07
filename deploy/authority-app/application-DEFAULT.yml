@@ -1,0 +1,6 @@
+gate:
+  name: ${GATE-NAME}
+  baseUrl: http://${GATE-NAME}-efti-gate-1:8880
+  superApiKey: ${ADMIN_API_KEY}
+authority:
+  id: ${AUTHORITY-ID}

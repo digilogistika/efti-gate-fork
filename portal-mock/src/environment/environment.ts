@@ -3,10 +3,10 @@ export const environment = {
   logLevel: 3,
   baseUrl: "http://localhost:8090",
   apiUrl: {
-    identifiers: "/v1/control/identifiers",
-    uil: "/v1/control/uil",
-    note: "/v1/control/uil/follow-up",
-    authUserVerify: "/public/authority-user/verify",
-    createAuthUser: "/admin/authority-user/create",
+    identifiers: "/api/v1/control/identifiers",
+    uil: "/api/v1/control/uil",
+    note: "/api/v1/control/uil/follow-up",
+    authUserVerify: "/api/public/authority-user/verify",
+    createAuthUser: "/api/admin/authority-user/create",
   },
 };

@@ -37,7 +37,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         
         String requestUri = request.getRequestURI();
         
-        if (requestUri.startsWith("/admin")) {
+        if (requestUri.startsWith("/api/admin")) {
             log.info("Skipping JWT authentication for admin API");
             chain.doFilter(request, response);
             return;

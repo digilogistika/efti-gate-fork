@@ -35,7 +35,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         String requestUri = request.getRequestURI();
 
-        if (requestUri.startsWith("/admin")) {
+        if (requestUri.startsWith("/api/admin")) {
             Optional<String> apiKey = getApiKey(request);
 
             if (apiKey.isEmpty() || !isValidApiKey(apiKey.get())) {
