@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from "@angular/router";
+import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { DatePipe, KeyValuePipe, NgClass, NgIf, NgFor } from "@angular/common";
+import { DatePipe, NgClass, NgIf, NgFor } from "@angular/common";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { IdentifiersService } from "../../core/services/identifiers.service";
-import { SessionService } from "../../core/services/session.service";
 import { CurrentSearch } from "../../core/models/current-search.model";
 import { IconsModule } from "../../icons/icons.module";
 import { ArrayUtils } from "../../core/utils/array-utils";
@@ -27,9 +26,9 @@ import { EnumSelectPipe } from "../../core/pipe/enum-select.pipe";
   standalone: true,
   templateUrl: './identifiers-search.component.html',
   imports: [
-    RouterOutlet, ReactiveFormsModule, NgFor, NgIf, NgClass,
+    ReactiveFormsModule, NgFor, NgIf, NgClass,
     IconsModule, TranslateModule, DatePipe, NgMultiSelectDropDownModule, FormsModule, NgbPopover,
-    HighchartsChartModule, KeyValuePipe, EnumSelectPipe
+    HighchartsChartModule, EnumSelectPipe
   ],
   styleUrl: './identifiers-search.component.css'
 })
@@ -62,9 +61,9 @@ export class IdentifiersSearchComponent implements OnInit {
 
   updateFlag: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, public translate: TranslateService, private service: IdentifiersService,
-              private sessionService: SessionService, private router: Router,
-              private localStorageService: LocalStorageService, private toastr: ToastrService) {
+  constructor(private readonly formBuilder: FormBuilder, public translate: TranslateService,
+              private readonly service: IdentifiersService, private readonly router: Router,
+              private readonly localStorageService: LocalStorageService, private readonly toastr: ToastrService) {
     this.initForm();
   }
   selectedGateIndicators: string[] = [];

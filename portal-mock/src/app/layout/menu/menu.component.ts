@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 import {Router, RouterLink} from "@angular/router";
-import {SessionService} from "../../core/services/session.service";
 import {NgIf} from "@angular/common";
 import {TranslateModule} from "@ngx-translate/core";
 import {FormsModule} from "@angular/forms";
 import {LocalStorageService} from "../../core/services/local-storage.service";
+import {LoginService} from "../../core/services/login.service";
 
 @Component({
   selector: 'app-menu',
@@ -17,12 +17,12 @@ import {LocalStorageService} from "../../core/services/local-storage.service";
 export class MenuComponent {
 
   autoPolling: boolean = true;
-  constructor(private sessionService: SessionService, private router: Router, private localStorageService: LocalStorageService) {
+  constructor(private readonly loginService: LoginService, private readonly router: Router, private readonly localStorageService: LocalStorageService) {
     this.localStorageService.saveAutoPolling(this.autoPolling);
   }
 
   public isAuthenticated() {
-    return this.sessionService.isAuthenticated();
+    return this.loginService.isLoggedIn();
   }
 
   public login() {
@@ -31,11 +31,11 @@ export class MenuComponent {
     });
   }
   public logout() {
-    this.sessionService.logout();
+    this.loginService.logout();
   }
 
   public isLogged() {
-    return this.sessionService.isAuthenticated()
+    return this.loginService.isLoggedIn()
   }
 
   public updatePollingValue(value: any) {

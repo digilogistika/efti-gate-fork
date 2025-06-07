@@ -5,7 +5,6 @@ import { routes } from './app.routes';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
-import {SessionService} from "./core/services/session.service";
 import {LoaderInterceptor} from "./core/interceptors/loader.interceptor";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideToastr} from "ngx-toastr";
@@ -31,7 +30,6 @@ export const appConfig: ApplicationConfig = {
       }),
       NgMultiSelectDropDownModule.forRoot()
     ),
-    SessionService,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true},
