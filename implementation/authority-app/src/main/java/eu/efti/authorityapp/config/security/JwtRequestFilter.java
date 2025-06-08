@@ -34,20 +34,28 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain
     ) throws ServletException, IOException {
-        
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String requestUri = request.getRequestURI();
-        
+
         if (requestUri.startsWith("/api/admin")) {
             log.info("Skipping JWT authentication for admin API");
             chain.doFilter(request, response);
             return;
         }
-        
+
         Optional<String> token = getToken(request);
         if (token.isPresent()) {
-            Claims tokenBody = parseToken(token.get());
-            SecurityContext context = SecurityContextHolder.getContext();
-            context.setAuthentication(buildAuthToken(tokenBody));
+            try {
+                Claims tokenBody = parseToken(token.get());
+                SecurityContext context = SecurityContextHolder.getContext();
+                context.setAuthentication(buildAuthToken(tokenBody));
+            } catch (Exception e) {
+                log.warn("Invalid JWT token: {}", e.getMessage());
+            }
         }
 
         chain.doFilter(request, response);

@@ -74,8 +74,6 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/authority-app/Dockerfile
-    ports:
-      - "8090:8090"
     depends_on:
       authority-psql:
         condition: service_started
