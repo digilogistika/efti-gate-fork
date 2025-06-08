@@ -40,9 +40,10 @@ public class UilController implements UilControllerApi {
                     requestEntity,
                     RequestIdDto.class
             );
-
             log.info("Gate responded with status: {}", response.getStatusCode());
-            return response;
+
+            return ResponseEntity.status(response.getStatusCode())
+                    .body(response.getBody());
 
         } catch (Exception e) {
             log.error("Error forwarding request to gate", e);
@@ -70,9 +71,10 @@ public class UilController implements UilControllerApi {
                     requestEntity,
                     RequestIdDto.class
             );
-
             log.info("Gate responded with status: {}", response.getStatusCode());
-            return response;
+
+            return ResponseEntity.status(response.getStatusCode())
+                    .body(response.getBody());
 
         } catch (Exception e) {
             log.error("Error forwarding request to gate", e);

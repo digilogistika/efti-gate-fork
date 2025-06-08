@@ -6,10 +6,8 @@ import eu.efti.authorityapp.dto.RequestIdDto;
 import eu.efti.authorityapp.service.ConfigService;
 import eu.efti.commons.dto.IdentifiersResponseDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -43,9 +41,10 @@ public class IdentifiersController implements IdentifiersControllerApi {
                     requestEntity,
                     RequestIdDto.class
             );
-
             log.info("Gate responded with status: {}", response.getStatusCode());
-            return response;
+
+            return ResponseEntity.status(response.getStatusCode())
+                    .body(response.getBody());
 
         } catch (Exception e) {
             log.error("Error forwarding request to gate", e);
@@ -73,9 +72,10 @@ public class IdentifiersController implements IdentifiersControllerApi {
                     requestEntity,
                     IdentifiersResponseDto.class
             );
-
             log.info("Gate responded with status: {}", response.getStatusCode());
-            return response;
+
+            return ResponseEntity.status(response.getStatusCode())
+                    .body(response.getBody());
 
         } catch (Exception e) {
             log.error("Error forwarding request to gate", e);
