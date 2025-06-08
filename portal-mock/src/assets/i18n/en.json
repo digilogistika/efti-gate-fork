@@ -98,5 +98,39 @@
     "current-key-label": "Current Key",
     "warning-label": "Warning",
     "warning-no-key": "No API Key is configured. Requests will fail."
+  },
+  "login": {
+    "title": "Sign In",
+    "subtitle": "Please login to access your account",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signInButton": "Sign In",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters long"
+    }
+  },
+  "admin-panel": {
+    "title": "Admin Panel",
+    "subtitle": "Create new user account",
+    "masterApiKeyLabel": "Master API Key",
+    "masterApiKeyPlaceholder": "Enter master API key",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter user email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter user password",
+    "createUserButton": "Create User",
+    "userCreatedSuccess": "User created successfully!",
+    "validation": {
+      "masterApiKeyRequired": "Master API key is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters long"
+    }
   }
 }

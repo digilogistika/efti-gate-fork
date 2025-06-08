@@ -9,8 +9,22 @@
   color: #221b48;
 }
 
+#neubar .dropdown-menu {
+  background: #545454;
+  border: 1px solid #666;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+#neubar .dropdown-menu a {
+  color: #ffffff;
+  padding: 8px 16px;
+  transition: background-color 0.2s;
+}
+
 #neubar .dropdown-menu a:hover {
-  color: #454545
+  background-color: #666;
+  color: #ffffff;
 }
 
 #neubar .nav-item {
@@ -18,13 +32,8 @@
 }
 
 #neubar a {
-
   padding-left:12px;
   padding-right:12px;
-}
-
-#neubar .dropdown-menu {
-  background : #545454
 }
 
 a.navbar-brand {
@@ -33,6 +42,10 @@ a.navbar-brand {
 
 .nav-link {
   color: white;
+}
+
+.nav-link:hover {
+  color: #c6aa76;
 }
 
 .login-btn {
@@ -57,4 +70,14 @@ a.navbar-brand {
 
 .navend-button {
   margin-right: 90px;
+}
+
+.flag-icon {
+  width: 20px;
+  height: 15px;
+  object-fit: cover;
+}
+
+.dropdown-toggle::after {
+  color: white;
 }

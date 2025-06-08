@@ -6,11 +6,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginService } from '../../core/services/login.service';
 import { LocalStorageService } from '../../core/services/local-storage.service';
 import { AuthorityUserModel } from "../../core/models/authority-user.model";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgbModule],
+  imports: [CommonModule, ReactiveFormsModule, NgbModule, TranslateModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })

@@ -4,12 +4,13 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {AuthorityUserModel} from "../../core/models/authority-user.model";
 import {CreateUserService} from "../../core/services/create-user.service";
-import {ApiKeyService} from "../../core/services/api-key.service"; // Add this import
+import {ApiKeyService} from "../../core/services/api-key.service";
+import {TranslateModule} from "@ngx-translate/core"; // Add this import
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgbModule],
+  imports: [CommonModule, ReactiveFormsModule, NgbModule, TranslateModule],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })

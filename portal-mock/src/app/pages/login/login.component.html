@@ -1,40 +1,40 @@
 <div class="login-container">
   <div class="login-form-container">
     <div class="login-header">
-      <h2>Sign In</h2>
-      <p>Please login to access your account</p>
+      <h2>{{ 'login.title' | translate }}</h2>
+      <p>{{ 'login.subtitle' | translate }}</p>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">{{ 'login.emailLabel' | translate }}</label>
         <input
           type="email"
           id="email"
           formControlName="email"
           class="form-control"
-          placeholder="Enter your email"
+          [placeholder]="'login.emailPlaceholder' | translate"
           [ngClass]="{'is-invalid': emailControl?.invalid && (emailControl?.touched || emailControl?.dirty)}"
         >
         <div *ngIf="emailControl?.invalid && (emailControl?.touched || emailControl?.dirty)" class="invalid-feedback">
-          <div *ngIf="emailControl?.errors?.['required']">Email is required</div>
-          <div *ngIf="emailControl?.errors?.['email']">Please enter a valid email address</div>
+          <div *ngIf="emailControl?.errors?.['required']">{{ 'login.validation.emailRequired' | translate }}</div>
+          <div *ngIf="emailControl?.errors?.['email']">{{ 'login.validation.emailInvalid' | translate }}</div>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">{{ 'login.passwordLabel' | translate }}</label>
         <input
           type="password"
           id="password"
           formControlName="password"
           class="form-control"
-          placeholder="Enter your password"
+          [placeholder]="'login.passwordPlaceholder' | translate"
           [ngClass]="{'is-invalid': passwordControl?.invalid && (passwordControl?.touched || passwordControl?.dirty)}"
         >
         <div *ngIf="passwordControl?.invalid && (passwordControl?.touched || passwordControl?.dirty)" class="invalid-feedback">
-          <div *ngIf="passwordControl?.errors?.['required']">Password is required</div>
-          <div *ngIf="passwordControl?.errors?.['minlength']">Password must be at least 6 characters long</div>
+          <div *ngIf="passwordControl?.errors?.['required']">{{ 'login.validation.passwordRequired' | translate }}</div>
+          <div *ngIf="passwordControl?.errors?.['minlength']">{{ 'login.validation.passwordMinLength' | translate }}</div>
         </div>
       </div>
 
@@ -49,7 +49,7 @@
           [disabled]="loginForm.invalid || isSubmitting"
         >
           <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          Sign In
+          {{ 'login.signInButton' | translate }}
         </button>
       </div>
     </form>
