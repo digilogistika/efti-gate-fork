@@ -1,7 +1,6 @@
 export const environment = {
   production: true,
   logLevel: 1,
-  baseUrl: '',
   apiUrl: {
     identifiers: "/api/v1/control/identifiers",
     uil: "/api/v1/control/uil",

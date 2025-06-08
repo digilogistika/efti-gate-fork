@@ -1,7 +1,6 @@
 export const environment = {
   production: false,
   logLevel: 3,
-  baseUrl: "http://localhost:8090",
   apiUrl: {
     identifiers: "/api/v1/control/identifiers",
     uil: "/api/v1/control/uil",

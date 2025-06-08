@@ -7,7 +7,6 @@ import { UilResponse } from "../models/uil-response.model";
 import { RequestIdModel } from "../models/RequestId.model";
 import { IdentifiersResponse } from "../models/identifiers-response.model";
 
-const baseUrl = environment.baseUrl;
 const url = environment.apiUrl.uil;
 
 @Injectable({
@@ -19,11 +18,11 @@ export class UilService {
   ) {}
 
   postUilControl(searchParams: UilSearchModel): Observable<RequestIdModel> {
-    return this.http.post<IdentifiersResponse>(`${baseUrl}${url}`, searchParams);
+    return this.http.post<IdentifiersResponse>(`${url}`, searchParams);
   }
 
   getUilControl(requestId: string): Observable<UilResponse> {
-    return this.http.get<UilResponse>(`${baseUrl}${url}?requestId=${requestId}`);
+    return this.http.get<UilResponse>(`${url}?requestId=${requestId}`);
   }
 
 }

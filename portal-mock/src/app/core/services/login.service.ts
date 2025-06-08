@@ -6,7 +6,6 @@ import { JwtResponse} from "../models/jwt-response.model";
 import { AuthorityUserModel} from "../models/authority-user.model";
 import { LocalStorageService } from './local-storage.service';
 
-const baseUrl = environment.baseUrl;
 const url = environment.apiUrl.authUserVerify;
 
 @Injectable({
@@ -20,7 +19,7 @@ export class LoginService {
   ) {}
 
   login(credentials: AuthorityUserModel): Observable<JwtResponse> {
-    return this.http.post<JwtResponse>(`${baseUrl}${url}`, credentials);
+    return this.http.post<JwtResponse>(`${url}`, credentials);
   }
 
   isLoggedIn(): boolean {

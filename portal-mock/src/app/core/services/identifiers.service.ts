@@ -6,7 +6,6 @@ import { RequestIdModel } from "../models/RequestId.model";
 import { IdentifiersSearch } from "../models/identifiers-search.model";
 import { IdentifiersResponse } from "../models/identifiers-response.model";
 
-const baseUrl = environment.baseUrl;
 const url = environment.apiUrl.identifiers;
 
 @Injectable({
@@ -18,10 +17,10 @@ export class IdentifiersService {
   ) {}
 
   postIdentifiersControl(searchParams: IdentifiersSearch): Observable<RequestIdModel> {
-    return this.http.post<IdentifiersResponse>(`${baseUrl}${url}`, searchParams);
+    return this.http.post<IdentifiersResponse>(`${url}`, searchParams);
   }
 
   getIdentifiersControl(requestId: string): Observable<IdentifiersResponse> {
-    return this.http.get<IdentifiersResponse>(`${baseUrl}${url}?requestId=${requestId}`);
+    return this.http.get<IdentifiersResponse>(`${url}?requestId=${requestId}`);
   }
 }

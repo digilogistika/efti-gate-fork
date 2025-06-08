@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { AuthorityUserModel} from "../models/authority-user.model";
 
-const baseUrl = environment.baseUrl;
 const url = environment.apiUrl.createAuthUser;
 
 @Injectable({
@@ -17,6 +16,6 @@ export class CreateUserService {
   ) {}
 
   create(userModel: AuthorityUserModel): Observable<undefined> {
-    return this.http.post<undefined>(`${baseUrl}${url}`, userModel);
+    return this.http.post<undefined>(`${url}`, userModel);
   }
 }

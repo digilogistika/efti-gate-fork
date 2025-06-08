@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from "../../../environment/environment";
 import {NoteRequestModel} from "../models/note-request.model";
 
-const baseUrl = environment.baseUrl;
 const url = environment.apiUrl.note;
 
 @Injectable({
@@ -17,6 +16,6 @@ export class NoteService {
   ) {}
 
   postNote(note: NoteRequestModel): Observable<string> {
-    return this.http.post<string>(`${baseUrl}${url}`, note);
+    return this.http.post<string>(`${url}`, note);
   }
 }
