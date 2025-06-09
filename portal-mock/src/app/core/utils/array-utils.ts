@@ -8,7 +8,7 @@ export class ArrayUtils {
 
   public static dynamicSort(property: string) {
     let sortOrder = 1;
-    if(property[0] === "-") {
+    if(property.startsWith("-")) {
       sortOrder = -1;
       property = property.substr(1);
     }

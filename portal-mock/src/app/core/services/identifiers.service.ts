@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import { environment } from "../../../environment/environment";
 import { RequestIdModel } from "../models/RequestId.model";
 import { IdentifiersSearch } from "../models/identifiers-search.model";
@@ -12,9 +12,9 @@ const url = environment.apiUrl.identifiers;
   providedIn: 'root'
 })
 export class IdentifiersService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private readonly http: HttpClient,
+  ) {}
 
   postIdentifiersControl(searchParams: IdentifiersSearch): Observable<RequestIdModel> {
     return this.http.post<IdentifiersResponse>(`${url}`, searchParams);

@@ -11,7 +11,7 @@ log_success() {
 }
 
 log_info "Stopping the development environment..."
-docker compose down
+docker compose down -v
 
 log_success "Development environment stopped successfully!"
 

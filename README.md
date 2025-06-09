@@ -63,6 +63,7 @@ a summary:
     - [Common library](implementation/commons/README.md)
     - [Logger](implementation/efti-logger/README.md)
     - [Platform and gate simulator](implementation/platform-gate-simulator/README.md)
+    - [Authority App](implementation/authority-app/README.md)
 - [Schemas](schema/README.md)
     - [Data models](schema/xsd/README.md)
     - [API definitions](schema/api-schemas/README.md)

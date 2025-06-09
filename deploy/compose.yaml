@@ -55,7 +55,7 @@ services:
       context: ../
       dockerfile: ./deploy/gate/Dockerfile
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8882/actuator/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:8880/actuator/health || exit 1" ]
       interval: 5s
       timeout: 5s
       retries: 100
@@ -68,6 +68,21 @@ services:
       - ADMIN_API_KEY=an7EL5JR2ThDnXRbvJd7
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    restart: on-failure
+
+  authority-app:
+    build:
+      context: ../
+      dockerfile: ./deploy/authority-app/Dockerfile
+    depends_on:
+      authority-psql:
+        condition: service_started
+      efti-gate:
+        condition: service_healthy
+    environment:
+      - GATE-NAME=${COMPOSE_PROJECT_NAME}
+      - ADMIN_API_KEY=an7EL5JR2ThDnXRbvJd7
+      - AUTHORITY-ID=${COMPOSE_PROJECT_NAME}-authority
     restart: on-failure
 
   efti-platform:
@@ -102,6 +117,15 @@ services:
       - efti_psql_meta:/var/lib/postgresql/data
     restart: on-failure
 
+  authority-psql:
+    image: postgres:15.4
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: authorityapp
+    volumes:
+      - authority_psql:/var/lib/postgresql/data
+    restart: on-failure
+
   harmony-setup-util:
     build: ./harmony-utils
     depends_on:
@@ -126,3 +150,4 @@ volumes:
   db_data_gate:
   efti_psql:
   efti_psql_meta:
+  authority_psql:

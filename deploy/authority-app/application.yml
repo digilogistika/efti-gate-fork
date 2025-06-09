@@ -1,0 +1,30 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: authority-app
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://authority-psql:5432/authorityapp
+    username: postgres
+    password: root
+  liquibase:
+    change-log: db/changelog/db.authorityapp.changelog-master.xml
+
+logging:
+  level:
+    root: INFO
+    org.efti: INFO
+    org.springframework: INFO
+    org.hibernate: ERROR
+    liquibase: ERROR

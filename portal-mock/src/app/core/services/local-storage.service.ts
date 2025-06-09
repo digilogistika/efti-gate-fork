@@ -6,7 +6,9 @@ import {Identifiers} from "../models/identifiers.model";
 })
 export class LocalStorageService {
 
-  private autoPolling: string = "AUTO-POLLING";
+  private readonly autoPolling: string = "AUTO-POLLING";
+  private readonly authToken: string = "AUTH-TOKEN";
+  private readonly currentLanguage: string = "CURRENT-LANGUAGE";
 
   addIdentifiers(identifiers: Identifiers) {
     localStorage.setItem(identifiers.datasetId, JSON.stringify(identifiers));
@@ -24,4 +26,31 @@ export class LocalStorageService {
     return JSON.parse(localStorage.getItem(this.autoPolling)!);
   }
 
+  saveAuthToken(token: string): void {
+    localStorage.setItem(this.authToken, token);
+  }
+
+  getAuthToken(): string | null {
+    return localStorage.getItem(this.authToken);
+  }
+
+  removeAuthToken(): void {
+    localStorage.removeItem(this.authToken);
+  }
+
+  hasAuthToken(): boolean {
+    return !!this.getAuthToken();
+  }
+
+  saveCurrentLanguage(language: string): void {
+    localStorage.setItem(this.currentLanguage, language);
+  }
+
+  getCurrentLanguage(): string | null {
+    return localStorage.getItem(this.currentLanguage);
+  }
+
+  removeCurrentLanguage(): void {
+    localStorage.removeItem(this.currentLanguage);
+  }
 }

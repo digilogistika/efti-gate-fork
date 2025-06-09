@@ -1,0 +1,136 @@
+{
+  "identifiers-display": {
+    "title": "Identifikatorių rodymas",
+    "identifiers": "Identifikatoriai",
+    "gate-id": "Vartų ID",
+    "dataset-id": "Duomenų rinkinio ID",
+    "platform-id": "Platformos ID",
+    "delivery-date": "Faktinė pristatymo įvykio data",
+    "acceptance-date": "Vežėjo priėmimo data",
+    "transport-movement": "Pagrindinis transporto judėjimas",
+    "used-transport-equipment": "Naudojama transporto įranga",
+    "carried-transport-equipment": "Gabenama transporto įranga",
+    "id": "Id",
+    "scheme-agency-id": "Schemos agentūros ID",
+    "mode-code": "Režimo kodas",
+    "registrationCountry": "Registracijos šalis",
+    "dangerous-goods-indicator": "Pavojingų krovinių indikatorius",
+    "sequence-number": "Sekos numeris",
+    "category-code": "Kategorijos kodas",
+    "registration-country": "Registracijos šalis",
+    "go-to-uil": "Eiti į užklausą pagal UIL"
+  },
+  "identifiers-search": {
+    "title": "Identifikatorių užklausa",
+    "search": "Užklausa",
+    "identifier": "Identifikatorius",
+    "identifier-type": "Identifikatoriaus tipas",
+    "registration-country-code": "Registracijos šalies kodas",
+    "mode-code": "Režimo kodas",
+    "transport-mode": "Transporto rūšis",
+    "is-dangerous-good": "Ar pavojingas krovinys? *",
+    "yes": "Taip",
+    "no": "Ne",
+    "na": "N/T",
+    "reset": "Atstatyti",
+    "send-search": "Siųsti užklausą",
+    "result": "Rezultatas",
+    "request-id": "Užklausos ID",
+    "status": "Būsena",
+    "update-status": "Atnaujinti būseną",
+    "gate-id": "Vartų ID",
+    "dataset-id": "Duomenų rinkinio ID",
+    "platform-id": "Platformos ID",
+    "delivery-date": "Faktinė pristatymo įvykio data",
+    "acceptance-date": "Vežėjo priėmimo data",
+    "action": "Veiksmas",
+    "open": "Atidaryti",
+    "error": "Įvyko klaida",
+    "request-saved": "Užklausa išsaugota",
+    "note-saved": "Pastaba išsaugota",
+    "request-updated": "Užklausa atnaujinta",
+    "gate-indicator": "Vartų indikatoriai"
+  },
+  "uil-search": {
+    "title": "UIL užklausa",
+    "search": "Užklausa",
+    "dataset-id": "Duomenų rinkinio ID *",
+    "gate": "Vartų ID *",
+    "platform": "Platformos ID *",
+    "reset": "Atstatyti",
+    "send-search": "Siųsti užklausą",
+    "update": "Atnaujinti",
+    "open": "Atidaryti",
+    "clear": "Išvalyti",
+    "add-note": "Tolesnis bendravimas",
+    "download": "Atsisiųsti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti"
+  },
+  "form": {
+    "error": {
+      "required": "šis laukas yra privalomas",
+      "pattern": "šis laukas neatitinka reikiamo formato"
+    }
+  },
+  "loader": {
+    "text": "Kraunama"
+  },
+  "menu": {
+    "login": "Prisijungti",
+    "logout": "Atsijungti",
+    "home": "Pradžia",
+    "search-by-uil": "Užklausa pagal UIL",
+    "search-by-identifiers": "Užklausa pagal identifikatorius",
+    "api-settings": "API raktas"
+  },
+  "api-key": {
+    "title": "API rakto konfigūracija",
+    "enter-key-label": "API raktas:",
+    "enter-key-placeholder": "X-API-KEY",
+    "key-required": "API raktas yra privalomas.",
+    "save-button": "Išsaugoti",
+    "clear-button": "Išvalyti",
+    "show-button": "Rodyti",
+    "hide-button": "Slėpti",
+    "status-label": "Būsena",
+    "status-configured": "API raktas sukonfigūruotas",
+    "current-key-label": "Dabartinis raktas",
+    "warning-label": "Įspėjimas",
+    "warning-no-key": "Nėra sukonfigūruoto API rakto. Užklausos nepavyks."
+  },
+  "login": {
+    "title": "Prisijungti",
+    "subtitle": "Prisijunkite, kad pasiektumėte savo paskyrą",
+    "emailLabel": "El. paštas",
+    "emailPlaceholder": "Įveskite savo el. pašto adresą",
+    "passwordLabel": "Slaptažodis",
+    "passwordPlaceholder": "Įveskite savo slaptažodį",
+    "signInButton": "Prisijungti",
+    "validation": {
+      "emailRequired": "El. paštas yra privalomas",
+      "emailInvalid": "Įveskite galiojantį el. pašto adresą",
+      "passwordRequired": "Slaptažodis yra privalomas",
+      "passwordMinLength": "Slaptažodis turi būti bent 6 simbolių ilgio"
+    }
+  },
+  "admin-panel": {
+    "title": "Administratoriaus skydelis",
+    "subtitle": "Sukurti naują vartotojo paskyrą",
+    "masterApiKeyLabel": "Pagrindinis API raktas",
+    "masterApiKeyPlaceholder": "Įveskite pagrindinį API raktą",
+    "emailLabel": "El. paštas",
+    "emailPlaceholder": "Įveskite vartotojo el. pašto adresą",
+    "passwordLabel": "Slaptažodis",
+    "passwordPlaceholder": "Įveskite vartotojo slaptažodį",
+    "createUserButton": "Sukurti vartotoją",
+    "userCreatedSuccess": "Vartotojas sėkmingai sukurtas!",
+    "validation": {
+      "masterApiKeyRequired": "Pagrindinis API raktas yra privalomas",
+      "emailRequired": "El. paštas yra privalomas",
+      "emailInvalid": "Įveskite galiojantį el. pašto adresą",
+      "passwordRequired": "Slaptažodis yra privalomas",
+      "passwordMinLength": "Slaptažodis turi būti bent 6 simbolių ilgio"
+    }
+  }
+}

@@ -11,8 +11,9 @@ const url = environment.apiUrl.note;
 })
 export class NoteService {
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private readonly http: HttpClient,
+  ) {}
 
   postNote(note: NoteRequestModel): Observable<string> {
     return this.http.post<string>(`${url}`, note);

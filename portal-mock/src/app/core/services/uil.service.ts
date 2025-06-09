@@ -13,9 +13,9 @@ const url = environment.apiUrl.uil;
   providedIn: 'root'
 })
 export class UilService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private readonly http: HttpClient,
+  ) {}
 
   postUilControl(searchParams: UilSearchModel): Observable<RequestIdModel> {
     return this.http.post<IdentifiersResponse>(`${url}`, searchParams);

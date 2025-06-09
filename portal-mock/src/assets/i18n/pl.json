@@ -1,0 +1,136 @@
+{
+  "identifiers-display": {
+    "title": "Wyświetlanie identyfikatorów",
+    "identifiers": "Identyfikatory",
+    "gate-id": "ID bramki",
+    "dataset-id": "ID zbioru danych",
+    "platform-id": "ID platformy",
+    "delivery-date": "Rzeczywista data wystąpienia zdarzenia dostawy",
+    "acceptance-date": "Data akceptacji przez przewoźnika",
+    "transport-movement": "Główny ruch transportowy",
+    "used-transport-equipment": "Używany sprzęt transportowy",
+    "carried-transport-equipment": "Przewożony sprzęt transportowy",
+    "id": "Id",
+    "scheme-agency-id": "Id agencji schematu",
+    "mode-code": "Kod trybu",
+    "registrationCountry": "Kraj rejestracji",
+    "dangerous-goods-indicator": "Wskaźnik towarów niebezpiecznych",
+    "sequence-number": "Numer porządkowy",
+    "category-code": "Kod kategorii",
+    "registration-country": "Kraj rejestracji",
+    "go-to-uil": "Przejdź do zapytania przez UIL"
+  },
+  "identifiers-search": {
+    "title": "Zapytanie o identyfikatory",
+    "search": "Zapytanie",
+    "identifier": "Identyfikator",
+    "identifier-type": "Typ identyfikatora",
+    "registration-country-code": "Kod kraju rejestracji",
+    "mode-code": "Kod trybu",
+    "transport-mode": "Rodzaj transportu",
+    "is-dangerous-good": "Czy towar niebezpieczny? *",
+    "yes": "Tak",
+    "no": "Nie",
+    "na": "N/D",
+    "reset": "Resetuj",
+    "send-search": "Wyślij zapytanie",
+    "result": "Wynik",
+    "request-id": "ID zapytania",
+    "status": "Status",
+    "update-status": "Aktualizuj status",
+    "gate-id": "ID bramki",
+    "dataset-id": "ID zbioru danych",
+    "platform-id": "ID platformy",
+    "delivery-date": "Rzeczywista data wystąpienia zdarzenia dostawy",
+    "acceptance-date": "Data akceptacji przez przewoźnika",
+    "action": "Akcja",
+    "open": "Otwórz",
+    "error": "Wystąpił błąd",
+    "request-saved": "Zapytanie zapisane",
+    "note-saved": "Notatka zapisana",
+    "request-updated": "Zapytanie zaktualizowane",
+    "gate-indicator": "Wskaźniki bramki"
+  },
+  "uil-search": {
+    "title": "Zapytanie UIL",
+    "search": "Zapytanie",
+    "dataset-id": "ID zbioru danych *",
+    "gate": "ID bramki *",
+    "platform": "ID platformy *",
+    "reset": "Resetuj",
+    "send-search": "Wyślij zapytanie",
+    "update": "Aktualizuj",
+    "open": "Otwórz",
+    "clear": "Wyczyść",
+    "add-note": "Komunikacja uzupełniająca",
+    "download": "Pobierz",
+    "save": "Zapisz",
+    "cancel": "Anuluj"
+  },
+  "form": {
+    "error": {
+      "required": "to pole jest wymagane",
+      "pattern": "to pole nie pasuje do wymaganego formatu"
+    }
+  },
+  "loader": {
+    "text": "Ładowanie"
+  },
+  "menu": {
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
+    "home": "Strona główna",
+    "search-by-uil": "Zapytanie przez UIL",
+    "search-by-identifiers": "Zapytanie przez identyfikatory",
+    "api-settings": "Klucz API"
+  },
+  "api-key": {
+    "title": "Konfiguracja klucza API",
+    "enter-key-label": "Klucz API:",
+    "enter-key-placeholder": "X-API-KEY",
+    "key-required": "Klucz API jest wymagany.",
+    "save-button": "Zapisz",
+    "clear-button": "Wyczyść",
+    "show-button": "Pokaż",
+    "hide-button": "Ukryj",
+    "status-label": "Status",
+    "status-configured": "Klucz API jest skonfigurowany",
+    "current-key-label": "Obecny klucz",
+    "warning-label": "Ostrzeżenie",
+    "warning-no-key": "Brak skonfigurowanego klucza API. Zapytania nie będą działać."
+  },
+  "login": {
+    "title": "Zaloguj się",
+    "subtitle": "Zaloguj się, aby uzyskać dostęp do swojego konta",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Wprowadź swój email",
+    "passwordLabel": "Hasło",
+    "passwordPlaceholder": "Wprowadź swoje hasło",
+    "signInButton": "Zaloguj się",
+    "validation": {
+      "emailRequired": "Email jest wymagany",
+      "emailInvalid": "Wprowadź poprawny adres email",
+      "passwordRequired": "Hasło jest wymagane",
+      "passwordMinLength": "Hasło musi mieć co najmniej 6 znaków"
+    }
+  },
+  "admin-panel": {
+    "title": "Panel Administratora",
+    "subtitle": "Utwórz nowe konto użytkownika",
+    "masterApiKeyLabel": "Główny klucz API",
+    "masterApiKeyPlaceholder": "Wprowadź główny klucz API",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Wprowadź email użytkownika",
+    "passwordLabel": "Hasło",
+    "passwordPlaceholder": "Wprowadź hasło użytkownika",
+    "createUserButton": "Utwórz użytkownika",
+    "userCreatedSuccess": "Użytkownik utworzony pomyślnie!",
+    "validation": {
+      "masterApiKeyRequired": "Główny klucz API jest wymagany",
+      "emailRequired": "Email jest wymagany",
+      "emailInvalid": "Wprowadź poprawny adres email",
+      "passwordRequired": "Hasło jest wymagane",
+      "passwordMinLength": "Hasło musi mieć co najmniej 6 znaków"
+    }
+  }
+}

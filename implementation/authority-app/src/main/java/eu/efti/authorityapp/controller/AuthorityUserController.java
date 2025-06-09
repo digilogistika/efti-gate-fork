@@ -1,0 +1,31 @@
+package eu.efti.authorityapp.controller;
+
+import eu.efti.authorityapp.controller.api.AuthorityUserControllerApi;
+import eu.efti.authorityapp.dto.AuthorityUserDto;
+import eu.efti.authorityapp.dto.JwtDto;
+import eu.efti.authorityapp.service.AuthorityUserService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+@AllArgsConstructor
+public class AuthorityUserController implements AuthorityUserControllerApi {
+
+    private final AuthorityUserService authorityUserService;
+
+    @PostMapping("/admin/authority-user/create")
+    public ResponseEntity<Void> createAuthorityUser(final @RequestBody AuthorityUserDto authorityUserDto) {
+        return authorityUserService.createAuthorityUser(authorityUserDto);
+    }
+
+    @PostMapping("/public/authority-user/verify")
+    public ResponseEntity<JwtDto> verifyAuthorityUser(final @RequestBody AuthorityUserDto authorityUserDto) {
+        return authorityUserService.verifyAuthorityUser(authorityUserDto);
+    }
+}

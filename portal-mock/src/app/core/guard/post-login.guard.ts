@@ -1,17 +1,15 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
-import {SessionService} from "../services/session.service";
-@Injectable({ providedIn: 'root' })
+import { inject } from '@angular/core';
+import { Router, CanActivateFn } from '@angular/router';
+import {LoginService} from "../services/login.service";
 
-export class PostLoginGuard implements CanActivate {
+export const postLoginGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const loginService = inject(LoginService);
 
-  constructor(private router: Router, private sessionService: SessionService) {
+  if (loginService.isLoggedIn()) {
+    router.navigate(['']);
+    return false;
   }
 
-  canActivate(): boolean | Promise<boolean> {
-    if(this.sessionService.isAuthenticated()) {
-      return this.router.navigate(['']);
-    }
-    return true;
-  }
-}
+  return true;
+};
