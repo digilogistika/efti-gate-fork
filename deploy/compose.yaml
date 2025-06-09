@@ -95,6 +95,8 @@ services:
     environment:
       - GATE=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=an7EL5JR2ThDnXRbvJd7
+    volumes:
+      - efti_platform:/usr/src/myapp
     restart: on-failure
 
   efti-psql:
@@ -151,3 +153,4 @@ volumes:
   efti_psql:
   efti_psql_meta:
   authority_psql:
+  efti_platform:
