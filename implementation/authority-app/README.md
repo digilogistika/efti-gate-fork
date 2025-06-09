@@ -1,21 +1,12 @@
 # Authority Application
 
-The Authority Application is a Spring Boot application responsible for managing authorities and permissions within the EFTI platform.
+This is the back end of the Authority Application.
 
 ## Features
 
-- Authority management
-- Permission handling
-- User role assignment
+- Authority user creation
+- Authority user login 
+- Identifiers requests
+- UIL requests
+- Follow-up note requests
 
-## Development
-
-### Prerequisites
-
-- Java 17
-- Maven
-
-### Building the application
-
-```bash
-mvn clean install
