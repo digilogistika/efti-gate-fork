@@ -17,7 +17,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://authority-psql:5432/authorityapp
     username: postgres
-    password: root
+    password: ${AUTHORITY_APP_POSTGRES_PASSWORD}
   liquibase:
     change-log: db/changelog/db.authorityapp.changelog-master.xml
 
