@@ -32,7 +32,7 @@ spring:
       jdbc-url: jdbc:postgresql://efti-psql:5432/efti
       url: jdbc:postgresql://efti-psql:5432/efti
       username: efti
-      password: root
+      password: ${EFTI_POSTGRES_PASSWORD}
       driverClassName: org.postgresql.Driver
       liquibase:
         change-log: classpath:db.changelog/db.gate.changelog-master.xml
@@ -40,7 +40,7 @@ spring:
       jdbc-url: jdbc:postgresql://efti-psql-meta:5432/efti
       url: jdbc:postgresql://efti-psql-meta:5432/efti
       username: root
-      password: root
+      password: ${EFTI_META_POSTGRES_PASSWORD}
       driverClassName: org.postgresql.Driver
       liquibase:
         change-log: classpath:db.changelog/db.identifiers.changelog-master.xml

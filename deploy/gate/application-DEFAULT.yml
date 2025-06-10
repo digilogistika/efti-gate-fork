@@ -28,4 +28,4 @@ gate:
   ap:
     url: https://${OWNER}-harmony-1:8443/services/wsplugin
     username: service_account
-    password: Azerty59*1234567
+    password: ${GATE_PLUGIN_USER_PASSWORD}
