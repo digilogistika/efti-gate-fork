@@ -43,6 +43,8 @@ services:
       traefik.http.routers.traefik-dashboard.service: "api@internal"
       traefik.http.routers.traefik-dashboard.tls: "true"
       traefik.http.routers.traefik-dashboard.tls.certresolver: "myresolver"
+      traefik.http.routers.traefik-dashboard.middlewares: "traefik-auth"
+      traefik.http.middlewares.traefik-auth.basicauth.users: ${TRAEFIK_CREDENTIALS}
 
   harmony:
     image: niis/harmony-ap:2.5.0
