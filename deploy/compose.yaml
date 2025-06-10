@@ -1,6 +1,7 @@
 services:
   reverse-proxy:
     image: traefik:v3.4
+    profiles: [ "proxy" ]
     command:
       - --api.insecure=true
       - --providers.docker
@@ -12,6 +13,13 @@ services:
       - --entrypoints.efti-gate.address=:9080
       - --entrypoints.authority-app.address=:9090
       - --entrypoints.efti-platform.address=:9070
+      - --entryPoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+
+      - --certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+      # used during the challenge
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
     ports:
       - "80:80"
       # App ports
@@ -23,6 +31,7 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - letsencrypt:/letsencrypt
 
   harmony:
     image: niis/harmony-ap:2.5.0
@@ -50,11 +59,12 @@ services:
     mem_limit: 1500m
     user: "root:root"
     labels:
-      traefik.http.routers.harmony.rule: "Host(`localhost`)"
+      traefik.http.routers.harmony.rule: "${DOMAIN}"
       traefik.enable: "true"
       traefik.http.routers.harmony.entrypoints: "harmony"
       traefik.http.services.harmony.loadbalancer.server.port: "8080"
-
+      traefik.http.routers.harmony.tls: "true"
+      traefik.http.routers.harmony.tls.certresolver: "myresolver"
   harmony-db:
     image: mysql:8
     environment:
@@ -100,10 +110,12 @@ services:
       - "host.docker.internal:host-gateway"
     restart: on-failure
     labels:
-      traefik.http.routers.efti-gate.rule: "Host(`localhost`)"
+      traefik.http.routers.efti-gate.rule: "${DOMAIN}"
       traefik.enable: "true"
       traefik.http.routers.efti-gate.entrypoints: "efti-gate"
       traefik.http.services.efti-gate.loadbalancer.server.port: "8880"
+      traefik.http.routers.efti-gate.tls: "true"
+      traefik.http.routers.efti-gate.tls.certresolver: "myresolver"
 
   authority-app:
     build:
@@ -120,10 +132,12 @@ services:
       - AUTHORITY-ID=${COMPOSE_PROJECT_NAME}-authority
     restart: on-failure
     labels:
-      traefik.http.routers.authority-app.rule: "Host(`localhost`)"
+      traefik.http.routers.authority-app.rule: "${DOMAIN}"
       traefik.enable: "true"
       traefik.http.routers.authority-app.entrypoints: "authority-app"
       traefik.http.services.authority-app.loadbalancer.server.port: "8090"
+      traefik.http.routers.authority-app.tls: "true"
+      traefik.http.routers.authority-app.tls.certresolver: "myresolver"
 
   efti-platform:
     build:
@@ -139,10 +153,12 @@ services:
       - efti_platform:/usr/src/myapp
     restart: on-failure
     labels:
-      traefik.http.routers.efti-platform.rule: "Host(`localhost`)"
+      traefik.http.routers.efti-platform.rule: "${DOMAIN}"
       traefik.enable: "true"
       traefik.http.routers.efti-platform.entrypoints: "efti-platform"
       traefik.http.services.efti-platform.loadbalancer.server.port: "8070"
+      traefik.http.routers.efti-platform.tls: "true"
+      traefik.http.routers.efti-platform.tls.certresolver: "myresolver"
 
   efti-psql:
     image: postgres:15.4
@@ -199,3 +215,4 @@ volumes:
   efti_psql_meta:
   authority_psql:
   efti_platform:
+  letsencrypt:
