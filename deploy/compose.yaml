@@ -66,6 +66,9 @@ services:
       - OWNER=${COMPOSE_PROJECT_NAME}
       - COUNTRY=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - GATE_PLUGIN_USER_PASSWORD=${GATE_PLUGIN_USER_PASSWORD}
+      - EFTI_POSTGRES_PASSWORD=${EFTI_POSTGRES_PASSWORD}
+      - EFTI_META_POSTGRES_PASSWORD=${EFTI_META_POSTGRES_PASSWORD}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: on-failure
@@ -83,6 +86,7 @@ services:
       - GATE-NAME=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
       - AUTHORITY-ID=${COMPOSE_PROJECT_NAME}-authority
+      - AUTHORITY_APP_POSTGRES_PASSWORD=${AUTHORITY_APP_POSTGRES_PASSWORD}
     restart: on-failure
 
   efti-platform:
