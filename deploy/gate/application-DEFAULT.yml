@@ -26,6 +26,6 @@ gate:
   country: ${COUNTRY}
   apikey: ${ADMIN_API_KEY}
   ap:
-    url: https://${OWNER}-harmony-1:8443/services/wsplugin
+    url: http://${OWNER}-harmony-1:8080/services/wsplugin
     username: service_account
     password: ${GATE_PLUGIN_USER_PASSWORD}
