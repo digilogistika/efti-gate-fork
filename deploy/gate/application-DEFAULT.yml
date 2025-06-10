@@ -1,6 +1,6 @@
 spring:
   rabbitmq:
-    password: ${RABBITMQ_DEFAULT_PASSWORD}
+    password: pass
     username: user
     virtual-host: host
   datasource:
