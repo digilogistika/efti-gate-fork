@@ -42,7 +42,7 @@ public class GateRegistrationService {
         log.info("Application started - registering with gate...");
 
         try {
-            String registrationUrl = gateProperties.getBaseUrl() + "/api/authority/v0/register";
+            String registrationUrl = gateProperties.getBaseUrl() + "/api/admin/authority/register";
 
             AuthorityAppRegistrationRequestDto registrationRequest = AuthorityAppRegistrationRequestDto.builder()
                     .authorityId(authorityAppProperties.getId())

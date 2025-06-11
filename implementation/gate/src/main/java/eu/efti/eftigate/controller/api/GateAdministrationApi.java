@@ -1,11 +1,14 @@
 package eu.efti.eftigate.controller.api;
 
-import eu.efti.eftigate.dto.GateDto;
+import eu.efti.eftigate.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Gate administration api", description = "API for gate's administrator.")
@@ -21,7 +24,7 @@ public interface GateAdministrationApi {
             @ApiResponse(responseCode = "409", description = "Gate already exists."),
     })
     @PostMapping("/gate/register")
-    ResponseEntity<Void> registerGate(@RequestBody GateDto gateDto);
+    ResponseEntity<Void> registerGate(@RequestBody @Validated GateDto gateDto);
 
     @Operation(
             summary = "Delete gate.",
@@ -33,4 +36,32 @@ public interface GateAdministrationApi {
     })
     @DeleteMapping("/gate/delete/{gateId}")
     ResponseEntity<Void> deleteGate(@PathVariable String gateId);
+
+    @Operation(
+            summary = "Register an authority to the system",
+            description = "User will be registered and a response will be returned with the API key that can be used by the authority."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "authority registered successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthorityUserRegistrationResponseDto.class))),
+            }
+    )
+    @PostMapping(value = "/authority/register")
+    ResponseEntity<AuthorityUserRegistrationResponseDto> registerAuthority(
+            @RequestBody @Validated AuthorityUserRegistrationRequestDto authorityUserRegistrationRequestDto
+    );
+
+    @Operation(
+            summary = "Register a new platform to the system",
+            description = "Add a new platform with its endpoint information to the system. The platform will be registered and a response will be returned with the API key that can be used by the platform."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Platform registered successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlatformRegistrationResponseDto.class))),
+            }
+    )
+    @PostMapping(value = "/platform/register")
+    ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
+            @RequestBody @Validated PlatformRegistrationRequestDto platformRegistrationRequestDto
+    );
 }
