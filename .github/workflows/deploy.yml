@@ -1,13 +1,17 @@
 name: "Deploy efti gate with mock services to server"
+# RUNS ONLY ON PUSH TO eu-ee11 branch
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - eu-ee11
+      - deployment-pipeline
+
 jobs:
   build:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: echos out stuff
-        run: echo "${{ secrets.HOST }} a"
       - name: Update build and run the gate application
         uses: appleboy/ssh-action@v1
         with:
@@ -15,4 +19,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          script: whoami
+          script: |
+            echo "Hey"
+            
