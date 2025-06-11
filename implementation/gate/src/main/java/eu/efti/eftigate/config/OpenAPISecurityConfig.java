@@ -7,6 +7,8 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 
 @Configuration
 public class OpenAPISecurityConfig {
@@ -23,6 +25,12 @@ public class OpenAPISecurityConfig {
                         .title("Efti Gate")
                         .description("Efti gate")
                         .version("1.0"));
+    }
+
+    @EventListener
+    public void handleContextRefresh(ContextRefreshedEvent event) {
+        System.setProperty("springdoc.swagger-ui.url", "/v3/api-docs");
+        System.setProperty("server.forward-headers-strategy", "framework");
     }
 
     private SecurityScheme createAPIKeyScheme() {
