@@ -20,5 +20,10 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            echo "Hey"
+            cd efti-gate
+            echo "Pulling updates from github"
+            git checkout ${{ github.ref_name }}
+            git pull
+            
+            
             
