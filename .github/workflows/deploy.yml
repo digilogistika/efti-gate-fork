@@ -6,6 +6,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: echos out stuff
+        run: echo "${{ secrets.HOST }}"
       - name: Update build and run the gate application
         uses: appleboy/ssh-action@v1
         with:
