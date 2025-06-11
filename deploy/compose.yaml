@@ -1,4 +1,51 @@
 services:
+  reverse-proxy:
+    image: traefik:v3.4
+    profiles: [ "proxy" ]
+    command:
+      - --api.dashboard=true
+      - --api.insecure=false
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --tracing=true
+      - --accesslog=true
+      # App ports
+      - --entrypoints.harmony.address=:18067
+      - --entrypoints.efti-gate.address=:9080
+      - --entrypoints.authority-app.address=:9090
+      - --entrypoints.efti-platform.address=:9070
+      - --entryPoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+      - --entrypoints.traefik-dashboard.address=:8080
+
+      - --certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+      # used during the challenge
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+    ports:
+      - "80:80"
+      - "443:443"
+      # App ports
+      - "18067:18067"
+      - "9080:9080"
+      - "9090:9090"
+      - "9070:9070"
+      # The Web UI
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - letsencrypt:/letsencrypt
+    labels:
+      # Enable Traefik Dashboard and secure it
+      traefik.enable: "true"
+      traefik.http.routers.traefik-dashboard.rule: "${DOMAIN}"
+      traefik.http.routers.traefik-dashboard.entrypoints: "websecure"
+      traefik.http.routers.traefik-dashboard.service: "api@internal"
+      traefik.http.routers.traefik-dashboard.tls: "true"
+      traefik.http.routers.traefik-dashboard.tls.certresolver: "myresolver"
+      traefik.http.routers.traefik-dashboard.middlewares: "traefik-auth"
+      traefik.http.middlewares.traefik-auth.basicauth.users: ${TRAEFIK_CREDENTIALS}
+
   harmony:
     image: niis/harmony-ap:2.5.0
     depends_on:
@@ -7,15 +54,15 @@ services:
     environment:
       - DB_HOST=harmony-db
       - DB_SCHEMA=harmony_ap
-      - DB_PASSWORD=dbpassword
-      - ADMIN_PASSWORD=Secret
+      - DB_PASSWORD=${HARMONY_DB_PASSWORD}
+      - ADMIN_PASSWORD=${HARMONY_ADMIN_PASSWORD}
       - USE_DYNAMIC_DISCOVERY=false
       - PARTY_NAME=${COMPOSE_PROJECT_NAME}
-      - SECURITY_KEYSTORE_PASSWORD=changeit
-      - SECURITY_TRUSTSTORE_PASSWORD=changeit
-      - TLS_KEYSTORE_PASSWORD=changeit
-      - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=${COMPOSE_PROJECT_NAME}-harmony-1
+      - SECURITY_KEYSTORE_PASSWORD=${SECURITY_KEYSTORE_PASSWORD}
+      - SECURITY_TRUSTSTORE_PASSWORD=${SECURITY_TRUSTSTORE_PASSWORD}
+      - TLS_KEYSTORE_PASSWORD=${TLS_KEYSTORE_PASSWORD}
+      - TLS_TRUSTSTORE_PASSWORD=${TLS_TRUSTSTORE_PASSWORD}
+      - EXTERNAL_LB=true
     volumes:
       - ap_data_gate:/var/opt/harmony-ap
       - ./harmony/gate-ws-plugin.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -24,14 +71,20 @@ services:
     restart: on-failure
     mem_limit: 1500m
     user: "root:root"
-
+    labels:
+      traefik.http.routers.harmony.rule: "${DOMAIN}"
+      traefik.enable: "true"
+      traefik.http.routers.harmony.entrypoints: "harmony"
+      traefik.http.services.harmony.loadbalancer.server.port: "8080"
+      traefik.http.routers.harmony.tls: "true"
+      traefik.http.routers.harmony.tls.certresolver: "myresolver"
   harmony-db:
     image: mysql:8
     environment:
-      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_ROOT_PASSWORD=${HARMONY_DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=harmony_ap
       - MYSQL_USER=harmony_ap
-      - MYSQL_PASSWORD=dbpassword
+      - MYSQL_PASSWORD=${HARMONY_DB_PASSWORD}
     command:
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_bin"
@@ -44,7 +97,7 @@ services:
     image: rabbitmq:3-management
     environment:
       RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASSWORD}
     volumes:
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - ./rabbitmq/rabbitmq-defs.json:/etc/rabbitmq/definitions.json
@@ -65,10 +118,20 @@ services:
     environment:
       - OWNER=${COMPOSE_PROJECT_NAME}
       - COUNTRY=${COMPOSE_PROJECT_NAME}
-      - ADMIN_API_KEY=an7EL5JR2ThDnXRbvJd7
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - GATE_PLUGIN_USER_PASSWORD=${GATE_PLUGIN_USER_PASSWORD}
+      - EFTI_POSTGRES_PASSWORD=${EFTI_POSTGRES_PASSWORD}
+      - EFTI_META_POSTGRES_PASSWORD=${EFTI_META_POSTGRES_PASSWORD}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: on-failure
+    labels:
+      traefik.http.routers.efti-gate.rule: "${DOMAIN}"
+      traefik.enable: "true"
+      traefik.http.routers.efti-gate.entrypoints: "efti-gate"
+      traefik.http.services.efti-gate.loadbalancer.server.port: "8880"
+      traefik.http.routers.efti-gate.tls: "true"
+      traefik.http.routers.efti-gate.tls.certresolver: "myresolver"
 
   authority-app:
     build:
@@ -81,9 +144,17 @@ services:
         condition: service_healthy
     environment:
       - GATE-NAME=${COMPOSE_PROJECT_NAME}
-      - ADMIN_API_KEY=an7EL5JR2ThDnXRbvJd7
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
       - AUTHORITY-ID=${COMPOSE_PROJECT_NAME}-authority
+      - AUTHORITY_APP_POSTGRES_PASSWORD=${AUTHORITY_APP_POSTGRES_PASSWORD}
     restart: on-failure
+    labels:
+      traefik.http.routers.authority-app.rule: "${DOMAIN}"
+      traefik.enable: "true"
+      traefik.http.routers.authority-app.entrypoints: "authority-app"
+      traefik.http.services.authority-app.loadbalancer.server.port: "8090"
+      traefik.http.routers.authority-app.tls: "true"
+      traefik.http.routers.authority-app.tls.certresolver: "myresolver"
 
   efti-platform:
     build:
@@ -94,15 +165,22 @@ services:
       - efti-psql
     environment:
       - GATE=${COMPOSE_PROJECT_NAME}
-      - ADMIN_API_KEY=an7EL5JR2ThDnXRbvJd7
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
     volumes:
       - efti_platform:/usr/src/myapp
     restart: on-failure
+    labels:
+      traefik.http.routers.efti-platform.rule: "${DOMAIN}"
+      traefik.enable: "true"
+      traefik.http.routers.efti-platform.entrypoints: "efti-platform"
+      traefik.http.services.efti-platform.loadbalancer.server.port: "8070"
+      traefik.http.routers.efti-platform.tls: "true"
+      traefik.http.routers.efti-platform.tls.certresolver: "myresolver"
 
   efti-psql:
     image: postgres:15.4
     environment:
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: ${EFTI_POSTGRES_PASSWORD}
       POSTGRES_DB: efti
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
@@ -112,7 +190,7 @@ services:
   efti-psql-meta:
     image: postgres:15.4
     environment:
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: ${EFTI_META_POSTGRES_PASSWORD}
       POSTGRES_DB: efti
     volumes:
       - ./sql-meta:/docker-entrypoint-initdb.d
@@ -122,7 +200,7 @@ services:
   authority-psql:
     image: postgres:15.4
     environment:
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: ${AUTHORITY_APP_POSTGRES_PASSWORD}
       POSTGRES_DB: authorityapp
     volumes:
       - authority_psql:/var/lib/postgresql/data
@@ -135,15 +213,15 @@ services:
         condition: service_started
     environment:
       - HARMONY_USERNAME=harmony
-      - HARMONY_PASSWORD=Secret
-      - PLUGIN_USER_PASSWORD=Azerty59*1234567
-      - KEYSTORE_PASSWORD=changeit
-      - TRUSTSTORE_PASSWORD=changeit
-      - TLS_KEYSTORE_PASSWORD=changeit
-      - TLS_TRUSTSTORE_PASSWORD=changeit
+      - HARMONY_PASSWORD=${HARMONY_ADMIN_PASSWORD}
+      - PLUGIN_USER_PASSWORD=${GATE_PLUGIN_USER_PASSWORD}
+      - KEYSTORE_PASSWORD=${SECURITY_KEYSTORE_PASSWORD}
+      - TRUSTSTORE_PASSWORD=${SECURITY_TRUSTSTORE_PASSWORD}
+      - TLS_KEYSTORE_PASSWORD=${TLS_KEYSTORE_PASSWORD}
+      - TLS_TRUSTSTORE_PASSWORD=${TLS_TRUSTSTORE_PASSWORD}
       - HARMONY_GATE_SERVICE_NAME=${COMPOSE_PROJECT_NAME}-harmony-1
       - HARMONY_GATE_PARTY_NAME=${COMPOSE_PROJECT_NAME}
-      - HARMONY_SERVICE_PORT=8443
+      - HARMONY_SERVICE_PORT=8080
       - PYTHONUNBUFFERED=1
 
 
@@ -154,3 +232,4 @@ volumes:
   efti_psql_meta:
   authority_psql:
   efti_platform:
+  letsencrypt:

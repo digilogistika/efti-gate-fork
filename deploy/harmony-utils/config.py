@@ -1,6 +1,6 @@
-import urllib3
-import os
 import logging
+import os
+import urllib3
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -13,7 +13,7 @@ HARMONY_PASSWORD = os.environ.get("HARMONY_PASSWORD", "Secret")
 HARMONY_GATE_SERVICE_NAME = os.environ.get("HARMONY_GATE_SERVICE_NAME", "harmony")
 HARMONY_SERVICE_PORT = os.environ.get("HARMONY_SERVICE_PORT", "8443")
 
-HARMONY_GATE_URL = f"https://{HARMONY_GATE_SERVICE_NAME}:{HARMONY_SERVICE_PORT}"
+HARMONY_GATE_URL = f"http://{HARMONY_GATE_SERVICE_NAME}:{HARMONY_SERVICE_PORT}"
 
 PLUGIN_USER_PASSWORD = os.environ.get("PLUGIN_USER_PASSWORD", "changeit")
 KEYSTORE_PASSWORD = os.environ.get("KEYSTORE_PASSWORD", "changeit")
