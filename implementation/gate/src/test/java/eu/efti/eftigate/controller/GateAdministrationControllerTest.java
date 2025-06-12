@@ -7,6 +7,8 @@ import eu.efti.eftigate.config.security.PermissionLevel;
 import eu.efti.eftigate.dto.*;
 import eu.efti.eftigate.exception.AuthorityUserAlreadyExistsException;
 import eu.efti.eftigate.exception.DefaultExceptionHandler;
+import eu.efti.eftigate.exception.GateAlreadyExistsException;
+import eu.efti.eftigate.exception.GateDoesNotExistException;
 import eu.efti.eftigate.exception.PlatformAlreadyExistsException;
 import eu.efti.eftigate.service.AuthorityIdentityService;
 import eu.efti.eftigate.service.PlatformIdentityService;
@@ -18,7 +20,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -60,12 +61,36 @@ class GateAdministrationControllerTest {
                 .country(CountryIndicator.FR)
                 .build();
 
+        when(gateAdministrationService.registerGate(any()))
+                .thenReturn("Gate test-gate added successfully");
+
         // Then
         mockMvc.perform(post("/api/admin/gate/register")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(gateDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Gate test-gate added successfully"));
+    }
+
+    @Test
+    void givenExistingGateId_whenRegisterGate_thenReturnsConflict() throws Exception {
+        // Given
+        GateDto gateDto = GateDto.builder()
+                .gateId("existing-gate")
+                .country(CountryIndicator.FR)
+                .build();
+
+        when(gateAdministrationService.registerGate(any()))
+                .thenThrow(new GateAlreadyExistsException("Gate with this ID already exists"));
+
+        // Then
+        mockMvc.perform(post("/api/admin/gate/register")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(gateDto)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("Gate with this ID already exists"));
     }
 
     @Test
@@ -104,11 +129,14 @@ class GateAdministrationControllerTest {
     void givenExistingGateId_whenDeleteGate_thenReturnsOk() throws Exception {
         // Given
         String gateId = "test-gate";
+        when(gateAdministrationService.deleteGate(gateId))
+                .thenReturn("Gate test-gate deleted successfully");
 
         // Then
         mockMvc.perform(delete("/api/admin/gate/delete/{gateId}", gateId)
                         .with(csrf()))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Gate test-gate deleted successfully"));
     }
 
     @Test
@@ -116,12 +144,13 @@ class GateAdministrationControllerTest {
         // Given
         String gateId = "non-existing-gate";
         when(gateAdministrationService.deleteGate(gateId))
-                .thenReturn(ResponseEntity.notFound().build());
+                .thenThrow(new GateDoesNotExistException("Gate with this ID does not exist"));
 
         // Then
         mockMvc.perform(delete("/api/admin/gate/delete/{gateId}", gateId)
                         .with(csrf()))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Gate with this ID does not exist"));
     }
 
     @Test

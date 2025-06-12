@@ -4,6 +4,7 @@ import eu.efti.eftigate.dto.ErrorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -35,11 +36,19 @@ public class DefaultExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(e.getMessage()));
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorDto> handleValidationException(MethodArgumentNotValidException e) {
+        log.warn("Some given information was not valid: {}", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorDto(e.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDto> handleAllUncaughtException(Exception e) {
         log.error("Unhandled exception occurred: ", e);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorDto("An unexpected error occurred"));
+                .body(new ErrorDto("An unexpected error occurred: " + e.getMessage()));
     }
 }
