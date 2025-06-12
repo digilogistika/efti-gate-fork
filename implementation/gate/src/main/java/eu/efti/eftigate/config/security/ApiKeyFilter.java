@@ -1,4 +1,3 @@
-// 2) a One-liner filter bean
 package eu.efti.eftigate.config.security;
 
 import eu.efti.eftigate.entity.AuthorityUserEntity;
@@ -73,9 +72,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
 
         // registration endpoint validation
-        if (path.startsWith("/api/authority/v0/register")
-                || path.startsWith("/api/platform/v0/register")
-        ) {
+        if (path.startsWith("/api/admin")) {
             if (superApiKey.equals(xApiKeyHeader)) {
                 chain.doFilter(req, res);
             } else {

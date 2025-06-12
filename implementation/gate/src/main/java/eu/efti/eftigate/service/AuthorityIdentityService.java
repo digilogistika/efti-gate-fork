@@ -3,7 +3,7 @@ package eu.efti.eftigate.service;
 import eu.efti.eftigate.dto.AuthorityUserRegistrationRequestDto;
 import eu.efti.eftigate.dto.AuthorityUserRegistrationResponseDto;
 import eu.efti.eftigate.entity.AuthorityUserEntity;
-import eu.efti.eftigate.exception.AuthorityUserRegistrationException;
+import eu.efti.eftigate.exception.AuthorityUserAlreadyExistsException;
 import eu.efti.eftigate.repository.AuthorityUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class AuthorityIdentityService {
 
         if (authorityUserRepository.existsByAuthorityId(authorityUserRegistrationRequestDto.getAuthorityId())) {
             log.warn("Registration failed: authority user with ID {} already exists", authorityUserRegistrationRequestDto.getAuthorityId());
-            throw new AuthorityUserRegistrationException("Authority user with this ID already exists");
+            throw new AuthorityUserAlreadyExistsException("Authority user with this ID already exists");
         }
 
         byte[] randomBytes = new byte[128];
