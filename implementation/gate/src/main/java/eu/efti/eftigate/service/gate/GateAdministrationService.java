@@ -2,11 +2,11 @@ package eu.efti.eftigate.service.gate;
 
 import eu.efti.eftigate.dto.GateDto;
 import eu.efti.eftigate.entity.GateEntity;
+import eu.efti.eftigate.exception.GateAlreadyExistsException;
+import eu.efti.eftigate.exception.GateDoesNotExistException;
 import eu.efti.eftigate.repository.GateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class GateAdministrationService {
     private final GateRepository gateRepository;
 
-    public ResponseEntity<Void> registerGate(GateDto gateDto) {
+    public String registerGate(GateDto gateDto) {
         GateEntity gateEntity = gateRepository.findByGateId(gateDto.getGateId());
 
         if (gateEntity == null) {
@@ -25,23 +25,23 @@ public class GateAdministrationService {
                     .build();
             gateRepository.save(newGateEntity);
             log.info("Gate {} added successfully", gateDto.getGateId());
-            return ResponseEntity.ok().build();
+            return String.format("Gate %s added successfully", gateDto.getGateId());
         } else {
             log.warn("Gate {} already exists", gateDto.getGateId());
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new GateAlreadyExistsException("Gate with this ID already exists");
         }
     }
 
-    public ResponseEntity<Void> deleteGate(String gateId) {
+    public String deleteGate(String gateId) {
         GateEntity gateEntity = gateRepository.findByGateId(gateId);
 
         if (gateEntity != null) {
             gateRepository.delete(gateEntity);
             log.info("Gate {} deleted successfully", gateId);
-            return ResponseEntity.ok().build();
+            return String.format("Gate %s deleted successfully", gateId);
         } else {
             log.warn("Gate {} does not exist", gateId);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new GateDoesNotExistException("Gate with this ID does not exist");
         }
     }
 }

@@ -24,7 +24,7 @@ public interface GateAdministrationApi {
             @ApiResponse(responseCode = "409", description = "Gate already exists."),
     })
     @PostMapping("/gate/register")
-    ResponseEntity<Void> registerGate(@RequestBody @Validated GateDto gateDto);
+    ResponseEntity<String> registerGate(@RequestBody @Validated GateDto gateDto);
 
     @Operation(
             summary = "Delete gate.",
@@ -35,7 +35,7 @@ public interface GateAdministrationApi {
             @ApiResponse(responseCode = "404", description = "Gate does not exist."),
     })
     @DeleteMapping("/gate/delete/{gateId}")
-    ResponseEntity<Void> deleteGate(@PathVariable String gateId);
+    ResponseEntity<String> deleteGate(@PathVariable String gateId);
 
     @Operation(
             summary = "Register an authority to the system",

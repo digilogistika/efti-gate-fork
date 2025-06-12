@@ -19,16 +19,16 @@ public class GateAdministrationController implements GateAdministrationApi {
     private PlatformIdentityService platformIdentityService;
 
     @Override
-    public ResponseEntity<Void> registerGate(GateDto gateDto) {
+    public ResponseEntity<String> registerGate(GateDto gateDto) {
         log.info("POST on /api/admin/gate/register with id: {} and indicator: {}",
                 gateDto.getGateId(), gateDto.getCountry());
-        return gateAdministrationService.registerGate(gateDto);
+        return ResponseEntity.ok(gateAdministrationService.registerGate(gateDto));
     }
 
     @Override
-    public ResponseEntity<Void> deleteGate(String gateId) {
+    public ResponseEntity<String> deleteGate(String gateId) {
         log.info("DELETE on /api/admin/gate/delete with id: {}", gateId);
-        return gateAdministrationService.deleteGate(gateId);
+        return ResponseEntity.ok(gateAdministrationService.deleteGate(gateId));
     }
 
     @Override
