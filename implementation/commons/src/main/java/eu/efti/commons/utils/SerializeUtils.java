@@ -14,7 +14,6 @@ import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mapping.MappingException;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -36,7 +35,6 @@ import java.util.Base64;
 @Slf4j
 public class SerializeUtils {
     private static final String ERROR_WHILE_WRITING_CONTENT = "error while writing content";
-    private static final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     private final ObjectMapper objectMapper;
 
     public <T> T mapJsonStringToClass(final String message, final Class<T> className) {
@@ -160,6 +158,8 @@ public class SerializeUtils {
             throw new TechnicalException("Could not unmarshal", e);
         }
     }
+
+    private static final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
     public <T> String mapObjectToJsonString(final T content) {
         try {
