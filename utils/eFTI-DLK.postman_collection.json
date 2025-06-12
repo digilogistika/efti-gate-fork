@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "80df3c58-a2f5-494b-bfec-7466af5a971b",
+		"_postman_id": "c210f46f-47a6-4db9-a6df-452e422725dc",
 		"name": "eFTI-DLK",
 		"description": "eFTI gate request collection for different use cases",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "37803187"
+		"_exporter_id": "35147351"
 	},
 	"item": [
 		{
@@ -285,7 +285,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8880/api/platform/v0/register",
+									"raw": "http://localhost:8880/api/admin/platform/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -293,8 +293,8 @@
 									"port": "8880",
 									"path": [
 										"api",
+										"admin",
 										"platform",
-										"v0",
 										"register"
 									]
 								}
@@ -345,7 +345,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8880/api/authority/v0/register",
+									"raw": "http://localhost:8880/api/admin/authority/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -353,9 +353,81 @@
 									"port": "8880",
 									"path": [
 										"api",
+										"admin",
 										"authority",
-										"v0",
 										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "REGISTER gate",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"country\": \"EE\",\n    \"gateId\": \"estonia\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8880/api/admin/gate/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"api",
+										"admin",
+										"gate",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE gate",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8880/api/admin/gate/delete/estonia",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"api",
+										"admin",
+										"gate",
+										"delete",
+										"estonia"
 									]
 								}
 							},
@@ -658,7 +730,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8881/api/platform/v0/register",
+									"raw": "http://localhost:8881/api/admin/platform/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -666,8 +738,8 @@
 									"port": "8881",
 									"path": [
 										"api",
+										"admin",
 										"platform",
-										"v0",
 										"register"
 									]
 								}
@@ -695,7 +767,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8881/api/authority/v0/register",
+									"raw": "http://localhost:8881/api/admin/authority/register",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -703,9 +775,81 @@
 									"port": "8881",
 									"path": [
 										"api",
+										"admin",
 										"authority",
-										"v0",
 										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "REGISTER gate",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"country\": \"BO\",\n    \"gateId\": \"borduira\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8881/api/admin/gate/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"api",
+										"admin",
+										"gate",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE gate",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8881/api/admin/gate/delete/borduria",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"api",
+										"admin",
+										"gate",
+										"delete",
+										"borduria"
 									]
 								}
 							},
