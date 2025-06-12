@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -38,9 +40,16 @@ public class GateApiController implements V0Api {
             @RequestParam(value = "subsetId") Set<String> subsetId
     ) {
         log.info("GET on /api/gate-api/v0/consignments/{}?subsetId={}", datasetId, subsetId);
-
         try {
-            final SupplyChainConsignment supplyChainConsignment = readerService.readFromFile(gateProperties.getCdaPath() + datasetId, subsetId.stream().toList());
+            List<String> subsets = Arrays
+                    .stream(subsetId
+                            .toString()
+                            .replaceAll("\\[|\\]|\"", "")
+                            .split(",")
+                    )
+                    .map(String::trim)
+                    .toList();
+            final SupplyChainConsignment supplyChainConsignment = readerService.readFromFile(gateProperties.getCdaPath() + datasetId, subsets);
             if (supplyChainConsignment != null) {
                 var xml = serializeUtils.mapDocToXmlString(EftiSchemaUtils.mapCommonObjectToDoc(serializeUtils, supplyChainConsignment));
                 return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_XML).body(xml);

@@ -3,78 +3,63 @@ package eu.efti.eftigate.service;
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.enums.RequestTypeEnum;
 import eu.efti.commons.exception.TechnicalException;
-import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.RabbitRequestDto;
+import eu.efti.eftigate.repository.PlatformRepository;
 import eu.efti.eftigate.service.request.NotesRequestService;
 import eu.efti.eftigate.service.request.UilRequestService;
-import org.springframework.beans.factory.annotation.Autowired;
+import eu.efti.v1.consignment.common.SupplyChainConsignment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class PlatformIntegrationService {
-    private final List<GateProperties.PlatformProperties> platformsProperties;
 
     private final UilRequestService uilRequestService;
 
     private final NotesRequestService notesRequestService;
 
-    private final PlatformRestService platformRestService;
+    private final PlatformApiService platformApiService;
 
     private final DomibusIntegrationService domibusIntegrationService;
 
-    private Optional<GateProperties.PlatformProperties> getPlatformProperties(String platformId) {
-        return platformsProperties.stream()
-                .filter(platformProperties -> platformProperties.platformId().equals(platformId))
-                .findFirst();
-    }
+    private final PlatformRepository platformRepository;
 
-    @Autowired
-    public PlatformIntegrationService(GateProperties gateProperties, UilRequestService uilRequestService, NotesRequestService notesRequestService, PlatformRestService platformRestService, DomibusIntegrationService domibusIntegrationService) {
-        this.platformsProperties = gateProperties.getPlatforms();
-        this.uilRequestService = uilRequestService;
-        this.notesRequestService = notesRequestService;
-        this.platformRestService = platformRestService;
-        this.domibusIntegrationService = domibusIntegrationService;
-    }
 
     public boolean platformExists(String platformId) {
-        return getPlatformProperties(platformId).isPresent();
+        return platformRepository.existsByPlatformId(platformId);
     }
 
-    public record PlatformInfo(boolean useRestApi, URI restApiBaseUrl) {
-    }
-
-    Optional<PlatformInfo> getPlatformInfo(String platformId) {
-        return getPlatformProperties(platformId)
-                .map(platformProperties -> new PlatformInfo(platformProperties.restApiBaseUrl() != null, platformProperties.restApiBaseUrl()));
-    }
-
-    void handle(final RabbitRequestDto rabbitRequestDto, ControlDto control, Optional<String> note) {
+    public void handle(final RabbitRequestDto rabbitRequestDto, ControlDto control, Optional<String> note) {
         Objects.requireNonNull(control.getPlatformId());
 
-        var platformId = control.getPlatformId();
-        var platformInfo = getPlatformInfo(platformId);
-        if (platformInfo.isEmpty()) {
+        String platformId = control.getPlatformId();
+        boolean platformUsesRestApi = true;
+
+        if (platformId.isEmpty() || !platformExists(platformId)) {
             throw new IllegalArgumentException("platform " + platformId + " does not exist");
         } else {
             final RequestTypeEnum requestTypeEnum = control.getRequestType();
-            if (platformInfo.get().useRestApi()) {
-                var client = platformRestService.getClient(platformInfo.get().restApiBaseUrl());
+            if (platformUsesRestApi) {
                 try {
                     if (RequestTypeEnum.LOCAL_UIL_SEARCH.equals(requestTypeEnum)) {
                         uilRequestService.manageRestRequestInProgress(control.getRequestId());
-                        var res = client.callGetConsignmentSubsets(control.getDatasetId(), Set.copyOf(control.getSubsetIds()));
+                        SupplyChainConsignment res = platformApiService.callGetConsignmentSubsets(platformId, control.getDatasetId(), Set.copyOf(control.getSubsetIds()));
                         uilRequestService.manageRestResponseReceived(control.getRequestId(), res);
                     } else if (RequestTypeEnum.NOTE_SEND.equals(requestTypeEnum)) {
                         notesRequestService.manageRestRequestInProgress(control.getRequestId());
-                        client.callPostConsignmentFollowup(control.getDatasetId(), note.orElseThrow());
+                        platformApiService.callPostConsignmentFollowup(platformId, control.getDatasetId(), note.orElseThrow());
                         notesRequestService.manageRestRequestDone(control.getRequestId());
+                    } else if (RequestTypeEnum.EXTERNAL_ASK_UIL_SEARCH.equals(requestTypeEnum)) {
+                        uilRequestService.manageRestRequestInProgress(control.getRequestId());
+                        SupplyChainConsignment res = platformApiService.callGetConsignmentSubsets(platformId, control.getDatasetId(), Set.copyOf(control.getSubsetIds()));
+                        uilRequestService.manageRestResponseReceived(control.getRequestId(), res);
+                    } else if (RequestTypeEnum.EXTERNAL_NOTE_SEND.equals(requestTypeEnum)) {
+                        platformApiService.callPostConsignmentFollowup(platformId, control.getDatasetId(), note.orElseThrow());
                     } else {
                         throw new TechnicalException("unexpected request type: " + requestTypeEnum);
                     }

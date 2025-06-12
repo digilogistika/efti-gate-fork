@@ -63,8 +63,8 @@ import static eu.efti.edeliveryapconnector.constant.EDeliveryStatus.isNotFound;
 @Component
 public class UilRequestService extends RequestService<UilRequestEntity> {
 
-    private static final String UIL = "UIL";
     public static final String UIL_REQUEST_DTO_NOT_FIND_IN_DB = "uilRequestDto not find in DB";
+    private static final String UIL = "UIL";
     private final UilRequestRepository uilRequestRepository;
     private final SerializeUtils serializeUtils;
     private final ObjectFactory objectFactory = new ObjectFactory();
@@ -143,6 +143,10 @@ public class UilRequestService extends RequestService<UilRequestEntity> {
                 uilRequestDto.setReponseData(responseData.getBytes(Charset.defaultCharset()));
                 updateStatus(uilRequestDto, RequestStatusEnum.SUCCESS);
                 getControlService().updateControlStatus(uilRequestDto.getControl(), COMPLETE);
+
+                if (uilRequestDto.getControl().isExternalAsk()) {
+                    respondToOtherGate(uilRequestDto);
+                }
             } else {
                 throw new IllegalStateException("should only be called for local platform requests");
             }
