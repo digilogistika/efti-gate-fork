@@ -1,5 +1,7 @@
 package eu.efti.eftigate.service.gate;
 
+import eu.efti.commons.enums.CountryIndicator;
+import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.GateDto;
 import eu.efti.eftigate.entity.GateEntity;
 import eu.efti.eftigate.exception.GateAlreadyExistsException;
@@ -7,6 +9,8 @@ import eu.efti.eftigate.exception.GateDoesNotExistException;
 import eu.efti.eftigate.repository.GateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +18,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GateAdministrationService {
     private final GateRepository gateRepository;
+    private final GateProperties gateProperties;
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void setSelfIndicator() {
+        GateEntity gateEntity = GateEntity.builder()
+                .gateId(gateProperties.getOwner())
+                .country(CountryIndicator.valueOf(gateProperties.getCountry().toUpperCase()))
+                .build();
+        if (gateRepository.findByGateId(gateProperties.getOwner()) == null) {
+            log.info("Setting self indicator to {}.", gateProperties.getCountry());
+            gateRepository.save(gateEntity);
+        } else {
+            log.info("Indicator already set.");
+        }
+    }
 
     public String registerGate(GateDto gateDto) {
         GateEntity gateEntity = gateRepository.findByGateId(gateDto.getGateId());
