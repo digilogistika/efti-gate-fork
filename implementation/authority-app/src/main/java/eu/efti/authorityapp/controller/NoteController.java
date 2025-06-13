@@ -3,7 +3,6 @@ package eu.efti.authorityapp.controller;
 import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.NoteControllerApi;
 import eu.efti.authorityapp.dto.NoteResponseDto;
-import eu.efti.authorityapp.dto.RequestIdDto;
 import eu.efti.authorityapp.service.ConfigService;
 import eu.efti.commons.dto.PostFollowUpRequestDto;
 import lombok.AllArgsConstructor;
@@ -29,12 +28,12 @@ public class NoteController implements NoteControllerApi {
     private final RestTemplate restTemplate;
 
     @Override
-    @PostMapping("/control/uil/follow-up")
+    @PostMapping("/follow-up")
     public ResponseEntity<NoteResponseDto> createNote(final @RequestBody PostFollowUpRequestDto notesDto) {
         log.info("Forwarding POST request to gate for Note: {}", notesDto);
 
         try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/uil/follow-up";
+            String gateUrl = gateProperties.getBaseUrl() + "/v1/follow-up";
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());

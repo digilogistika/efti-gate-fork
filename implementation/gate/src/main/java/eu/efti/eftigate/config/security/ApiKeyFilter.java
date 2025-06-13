@@ -46,7 +46,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         // platform api endpoints validation
         try {
-            if (path.startsWith("/api/platform/v0/consignments")
+            if ((path.startsWith("/v1/identifiers") && req.getMethod().equals("PUT"))
                     || path.startsWith("/api/platform/v0/whoami")
             ) {
                 validatePlatformXApiKeyHeader(xApiKeyHeader);
@@ -58,7 +58,9 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         // authority access point validation
         try {
-            if (path.startsWith("/v1/control")) {
+            if (path.startsWith("/v1/dataset") ||
+                    (path.startsWith("/v1/identifiers") && (req.getMethod().equals("POST") || req.getMethod().equals("GET"))) ||
+                    path.startsWith("/v1/follow-up")) {
                 if (superApiKey.equals(xApiKeyHeader)) {
                     chain.doFilter(req, res);
                 } else {
@@ -67,7 +69,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                 }
             }
         } catch (XApiKeyValidationException e) {
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform: " + e.getMessage());
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for authority: " + e.getMessage());
         }
 
 

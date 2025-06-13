@@ -14,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "Identifiers query", description = "Interface to search for identifiers")
+@RequestMapping("/api/v1")
 public interface IdentifiersControllerApi {
     @Operation(summary = "Send an identifiers query", description = "Send a query to retrieve identifiers matching the search criteria")
     @ApiResponses(value = {
@@ -24,7 +26,7 @@ public interface IdentifiersControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
-    @PostMapping("/control/identifiers")
+    @PostMapping("/identifiers")
     ResponseEntity<RequestIdDto> requestIdentifiers(final @RequestBody SearchWithIdentifiersRequestDto identifiersRequestDto);
 
     @Operation(summary = "Get a response to an identifiers query", description = "Get a response to an identifiers query for given request id")
@@ -34,6 +36,6 @@ public interface IdentifiersControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
-    @GetMapping("/control/identifiers")
+    @GetMapping("/identifiers")
     ResponseEntity<IdentifiersResponseDto> getRequestIdentifiers(final @Parameter String requestId);
 }
