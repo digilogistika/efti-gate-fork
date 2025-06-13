@@ -13,11 +13,6 @@ public class GateProperties {
     private String country;
     private String owner;
     private ApConfig ap;
-    private String apikey;
-
-    public boolean isCurrentGate(final String gateId) {
-        return this.owner.equalsIgnoreCase(gateId);
-    }
 
     @Data
     @Builder
@@ -25,5 +20,9 @@ public class GateProperties {
         private String url;
         private String username;
         private String password;
+    }
+
+    public boolean isCurrentGate(final String gateId) {
+        return this.owner.equalsIgnoreCase(gateId);
     }
 }

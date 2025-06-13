@@ -85,7 +85,8 @@ public class ControlService {
     private final EftiAsyncCallsProcessor eftiAsyncCallsProcessor;
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;
-    private final PlatformApiService platformApiService;
+    private final PlatformIntegrationService platformIntegrationService;
+
     @Value("${efti.control.pending.timeout:60}")
     private Integer timeoutValue;
 
@@ -98,12 +99,6 @@ public class ControlService {
         log.error("{}, {}", error.getErrorDescription(), error.getErrorCode());
     }
 
-    private static ErrorEntity buildErrorEntity(final String errorCode) {
-        return ErrorEntity.builder()
-                .errorCode(errorCode)
-                .errorDescription(ERROR_REQUEST_ID_NOT_FOUND).build();
-    }
-
     public ControlEntity getById(final long id) {
         final Optional<ControlEntity> controlEntity = controlRepository.findById(id);
         return controlEntity.orElse(null);
@@ -112,13 +107,16 @@ public class ControlService {
     @Transactional("controlTransactionManager")
     public RequestIdDto createUilControl(final UilDto uilDto) {
         log.info("create Uil control for dataset id : {}", uilDto.getDatasetId());
+        boolean isLocal = gateProperties.isCurrentGate(uilDto.getGateId());
         return createControl(uilDto, ControlUtils
-                .fromUilControl(uilDto, gateProperties.isCurrentGate(uilDto.getGateId()) ? RequestTypeEnum.LOCAL_UIL_SEARCH : RequestTypeEnum.EXTERNAL_UIL_SEARCH));
+                        .fromUilControl(uilDto, isLocal ? RequestTypeEnum.LOCAL_UIL_SEARCH : RequestTypeEnum.EXTERNAL_UIL_SEARCH),
+                (dto) -> validateControl(dto)
+                        .or(() -> isLocal ? (platformIntegrationService.platformExists(dto.getPlatformId()) ? Optional.empty() : Optional.of(ErrorDto.fromErrorCode(ErrorCodesEnum.PLATFORM_ID_DOES_NOT_EXIST))) : Optional.empty()));
     }
 
     public RequestIdDto createIdentifiersControl(final SearchWithIdentifiersRequestDto identifiersRequestDto) {
         log.info("create Consignment control for identifier : {}", identifiersRequestDto.getIdentifier());
-        return createControl(identifiersRequestDto, ControlUtils.fromLocalIdentifiersControl(identifiersRequestDto, RequestTypeEnum.LOCAL_IDENTIFIERS_SEARCH));
+        return createControl(identifiersRequestDto, ControlUtils.fromLocalIdentifiersControl(identifiersRequestDto, RequestTypeEnum.LOCAL_IDENTIFIERS_SEARCH), this::validateControl);
     }
 
     public NoteResponseDto createNoteRequestForControl(final PostFollowUpRequestDto postFollowUpRequestDto) {
@@ -130,14 +128,18 @@ public class ControlService {
         logManager.logNoteReceiveFromAapMessage(savedControl, serializeUtils.mapObjectToBase64String(postFollowUpRequestDto), receiver, ComponentType.CA_APP, ComponentType.GATE, true, RequestTypeEnum.NOTE_SEND, LogManager.FTI_023);
         if (savedControl.isFound()) {
             log.info("sending note to platform {}", savedControl.getPlatformId());
-            return createNoteRequestForControl(savedControl, postFollowUpRequestDto);
+            return createNoteRequestForControl(
+                    savedControl,
+                    postFollowUpRequestDto,
+                    dto -> validateControl(dto)
+                            .or(() -> isCurrentGate ? (platformIntegrationService.platformExists(savedControl.getPlatformId()) ? Optional.empty() : Optional.of(ErrorDto.fromErrorCode(ErrorCodesEnum.PLATFORM_ID_DOES_NOT_EXIST))) : Optional.empty()));
         } else {
             return new NoteResponseDto(NOTE_WAS_NOT_SENT, ID_NOT_FOUND.name(), ID_NOT_FOUND.getMessage());
         }
     }
 
-    private NoteResponseDto createNoteRequestForControl(final ControlDto controlDto, final PostFollowUpRequestDto notesDto) {
-        final Optional<ErrorDto> errorOptional = this.validateControl(notesDto);
+    private NoteResponseDto createNoteRequestForControl(final ControlDto controlDto, final PostFollowUpRequestDto notesDto, Function<PostFollowUpRequestDto, Optional<ErrorDto>> validate) {
+        final Optional<ErrorDto> errorOptional = validate.apply(notesDto);
         final boolean isCurrentGate = gateProperties.isCurrentGate(controlDto.getGateId());
         final String receiver = isCurrentGate ? controlDto.getPlatformId() : controlDto.getGateId();
         if (errorOptional.isPresent()) {
@@ -149,12 +151,7 @@ public class ControlService {
             return new NoteResponseDto(NOTE_WAS_NOT_SENT, errorDto.getErrorCode(), errorDto.getErrorDescription());
         } else {
             controlDto.setNotes(notesDto.getMessage());
-            if (gateProperties.isCurrentGate(controlDto.getGateId())) {
-                getRequestService(RequestTypeEnum.NOTE_SEND).createRequestOnly(controlDto, null, IN_PROGRESS);
-                platformApiService.sendFollowUpRequest(notesDto, controlDto);
-            } else {
-                getRequestService(RequestTypeEnum.NOTE_SEND).createAndSendRequest(controlDto, !gateProperties.isCurrentGate(controlDto.getGateId()) ? controlDto.getGateId() : null);
-            }
+            getRequestService(RequestTypeEnum.NOTE_SEND).createAndSendRequest(controlDto, !gateProperties.isCurrentGate(controlDto.getGateId()) ? controlDto.getGateId() : null);
             //log fti025
             logManager.logNoteReceiveFromAapMessage(controlDto, serializeUtils.mapObjectToBase64String(notesDto), receiver, ComponentType.GATE, ComponentType.PLATFORM, true, isCurrentGate ? RequestTypeEnum.NOTE_SEND : RequestTypeEnum.EXTERNAL_NOTE_SEND, isCurrentGate ? LogManager.FTI_025 : LogManager.FTI_026);
             log.info("Note has been registered for control with request uuid '{}'", controlDto.getRequestId());
@@ -278,6 +275,12 @@ public class ControlService {
                 .error(buildErrorEntity(ID_NOT_FOUND.name())).build());
     }
 
+    private static ErrorEntity buildErrorEntity(final String errorCode) {
+        return ErrorEntity.builder()
+                .errorCode(errorCode)
+                .errorDescription(ERROR_REQUEST_ID_NOT_FOUND).build();
+    }
+
     public ControlDto createControlFrom(final IdentifierQuery identifierQuery, final String fromGateId) {
         ControlDto controlDto = ControlUtils.fromExternalIdentifiersControl(identifierQuery, EXTERNAL_ASK_IDENTIFIERS_SEARCH, fromGateId, gateProperties.getOwner());
         return this.save(controlDto);
@@ -292,8 +295,8 @@ public class ControlService {
         return mapperUtils.controlEntityToControlDto(controlRepository.save(controlEntity));
     }
 
-    private <T extends ValidableDto> RequestIdDto createControl(final T searchDto, final ControlDto controlDto) {
-        this.validateControl(searchDto).ifPresentOrElse(
+    private <T extends ValidableDto> RequestIdDto createControl(final T searchDto, final ControlDto controlDto, Function<T, Optional<ErrorDto>> validate) {
+        validate.apply(searchDto).ifPresentOrElse(
                 error -> createErrorControl(controlDto, error, true),
                 () -> createControlFromType(searchDto, controlDto));
         return buildResponse(controlDto);
@@ -307,12 +310,6 @@ public class ControlService {
             if (controlDto.isExternalAsk()) {
                 getRequestService(controlDto.getRequestType()).createAndSendRequest(savedControl, controlDto.getFromGateId(), RequestStatusEnum.ERROR);
             }
-        } else if (gateProperties.isCurrentGate(controlDto.getGateId()) && checkOnLocalRegistry(controlDto)) {
-            // gate has the UIL in some connected platform
-            final ControlDto saveControl = this.save(controlDto);
-            getRequestService(controlDto.getRequestType()).createRequestOnly(saveControl, null, IN_PROGRESS);
-            platformApiService.sendUilRequest(controlDto);
-            log.info("Uil control with request id '{}' has been register", saveControl.getRequestId());
         } else {
             final ControlDto saveControl = this.save(controlDto);
             getRequestService(controlDto.getRequestType()).createAndSendRequest(saveControl, null);

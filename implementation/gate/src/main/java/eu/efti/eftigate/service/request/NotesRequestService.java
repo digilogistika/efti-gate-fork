@@ -2,9 +2,9 @@ package eu.efti.eftigate.service.request;
 
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.NotesRequestDto;
-import eu.efti.commons.dto.PostFollowUpRequestDto;
 import eu.efti.commons.dto.RequestDto;
 import eu.efti.commons.enums.RequestStatusEnum;
+import eu.efti.commons.enums.RequestType;
 import eu.efti.commons.enums.RequestTypeEnum;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.edeliveryapconnector.dto.NotificationDto;
@@ -18,7 +18,6 @@ import eu.efti.eftigate.mapper.MapperUtils;
 import eu.efti.eftigate.repository.NotesRequestRepository;
 import eu.efti.eftigate.service.ControlService;
 import eu.efti.eftigate.service.LogManager;
-import eu.efti.eftigate.service.PlatformApiService;
 import eu.efti.eftigate.service.RabbitSenderService;
 import eu.efti.eftilogger.model.ComponentType;
 import eu.efti.v1.edelivery.PostFollowUpRequest;
@@ -28,11 +27,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static eu.efti.commons.constant.EftiGateConstants.NOTES_TYPES;
 import static eu.efti.commons.enums.RequestStatusEnum.IN_PROGRESS;
-import static eu.efti.commons.enums.RequestStatusEnum.RECEIVED;
 import static eu.efti.commons.enums.RequestStatusEnum.SUCCESS;
 
 @Slf4j
@@ -43,7 +42,6 @@ public class NotesRequestService extends RequestService<NoteRequestEntity> {
     private final NotesRequestRepository notesRequestRepository;
 
     private final ValidationService validationService;
-    private final PlatformApiService platformApiService;
 
     public NotesRequestService(final NotesRequestRepository notesRequestRepository,
                                final MapperUtils mapperUtils,
@@ -53,11 +51,10 @@ public class NotesRequestService extends RequestService<NoteRequestEntity> {
                                final RequestUpdaterService requestUpdaterService,
                                final SerializeUtils serializeUtils,
                                final LogManager logManager,
-                               final ValidationService validationService, PlatformApiService platformApiService) {
+                               final ValidationService validationService) {
         super(mapperUtils, rabbitSenderService, controlService, gateProperties, requestUpdaterService, serializeUtils, logManager);
         this.notesRequestRepository = notesRequestRepository;
         this.validationService = validationService;
-        this.platformApiService = platformApiService;
     }
 
     @Override
@@ -113,15 +110,33 @@ public class NotesRequestService extends RequestService<NoteRequestEntity> {
             final ControlDto controlDto = getMapperUtils().controlEntityToControlDto(controlEntity);
             sendLogNote(controlDto, false, notificationDto.getContent().getBody());
             controlDto.setNotes(messageBody.getMessage());
-            createRequestOnly(controlDto, messageBody.getUil().getPlatformId(), RECEIVED);
-            var postFollowUpRequestDto = PostFollowUpRequestDto
-                    .builder()
-                    .message(messageBody.getMessage())
-                    .requestId(controlDto.getRequestId())
-                    .build();
-            platformApiService.sendFollowUpRequest(postFollowUpRequestDto, controlDto);
+
+            createRequestOnly(controlDto, null, RequestStatusEnum.RECEIVED);
+            sendRequest(createRequest(controlDto));
+
             markMessageAsDownloaded(notificationDto.getMessageId());
         });
+    }
+
+    public void manageRestRequestInProgress(String requestId) {
+        Optional.ofNullable(notesRequestRepository.findByControlRequestIdAndStatus(requestId, RequestStatusEnum.RECEIVED))
+                .ifPresentOrElse(
+                        uilRequest -> updateStatus(uilRequest, IN_PROGRESS),
+                        () -> log.error("Not found request with requestId {}", requestId));
+    }
+
+    public void manageRestRequestDone(String requestId) {
+        final Optional<NoteRequestEntity> maybeUilRequestDto = Optional.ofNullable(notesRequestRepository.findByControlRequestIdAndStatus(requestId, IN_PROGRESS));
+        if (maybeUilRequestDto.isPresent()) {
+            if (Objects.equals(RequestType.NOTE.name(), maybeUilRequestDto.get().getRequestType())) {
+                NoteRequestEntity uilRequestDto = maybeUilRequestDto.get();
+                updateStatus(uilRequestDto, RequestStatusEnum.SUCCESS);
+            } else {
+                throw new IllegalStateException("should only be called for local platform requests");
+            }
+        } else {
+            log.error("couldn't find Notes request for requestId" + ": {}", requestId);
+        }
     }
 
     @Override
