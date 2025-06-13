@@ -32,7 +32,3 @@ gate:
     url: https://localhost:9443/services/wsplugin
     username: service_account
     password: Azerty59*1234567
-  platforms:
-    - platformId: "acme"
-      useRestApi: true
-      restApiBaseUrl: "http://localhost:8070/api/gate-api"

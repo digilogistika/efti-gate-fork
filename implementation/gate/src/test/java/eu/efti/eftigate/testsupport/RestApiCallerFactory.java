@@ -1,6 +1,5 @@
 package eu.efti.eftigate.testsupport;
 
-import eu.efti.eftigate.config.security.RestApiRoles;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.logging.LogLevel;
 import org.jetbrains.annotations.NotNull;
@@ -21,27 +20,8 @@ import java.util.function.Consumer;
 @Lazy
 @Component
 public class RestApiCallerFactory {
-    public record RestApiCaller(WebTestClient webTestClient) {
-        public <O> EntityExchangeResult<O> get(String url, Class<O> responseType) {
-            return webTestClient.get().uri(url).exchange().expectBody(responseType).returnResult();
-        }
-
-        public <I, O> EntityExchangeResult<O> put(String url, I body, MediaType contentType, Class<O> responseType) {
-            return webTestClient.put().uri(url).contentType(contentType).body(BodyInserters.fromValue(body)).exchange().expectBody(responseType).returnResult();
-        }
-    }
-
     @LocalServerPort
     private int port;
-
-    public RestApiCaller createUnauthenticated() {
-        return getRestApiCaller(h -> {
-        });
-    }
-
-    public RestApiCaller createAuthenticatedForPlatformApi(String platformId) {
-        return createAuthenticatedWithRole(platformId, RestApiRoles.ROLE_PLATFORM);
-    }
 
     public RestApiCaller createAuthenticatedWithRole(String platformId, String role) {
         return getRestApiCaller(h -> h
@@ -63,5 +43,15 @@ public class RestApiCallerFactory {
                 .build();
 
         return new RestApiCaller(testClient);
+    }
+
+    public record RestApiCaller(WebTestClient webTestClient) {
+        public <O> EntityExchangeResult<O> get(String url, Class<O> responseType) {
+            return webTestClient.get().uri(url).exchange().expectBody(responseType).returnResult();
+        }
+
+        public <I, O> EntityExchangeResult<O> put(String url, I body, MediaType contentType, Class<O> responseType) {
+            return webTestClient.put().uri(url).contentType(contentType).body(BodyInserters.fromValue(body)).exchange().expectBody(responseType).returnResult();
+        }
     }
 }
