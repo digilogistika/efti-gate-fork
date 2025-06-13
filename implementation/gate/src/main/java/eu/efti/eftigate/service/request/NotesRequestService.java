@@ -111,7 +111,9 @@ public class NotesRequestService extends RequestService<NoteRequestEntity> {
             sendLogNote(controlDto, false, notificationDto.getContent().getBody());
             controlDto.setNotes(messageBody.getMessage());
 
+            createRequestOnly(controlDto, null, RequestStatusEnum.RECEIVED);
             sendRequest(createRequest(controlDto));
+
             markMessageAsDownloaded(notificationDto.getMessageId());
         });
     }
