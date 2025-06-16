@@ -194,7 +194,11 @@ public class LogManager {
                 .respondingComponentId(respondingComponentId)
                 .respondingComponentCountry(gateProperties.getCountry()).build();
 
-        final String body = serializeUtils.mapObjectToBase64String(requestIdDto);
+        // Remove the substring part if full body wanted
+        String body = serializeUtils.mapObjectToBase64String(requestIdDto);
+        if (body.length() > 500) {
+            body = body.substring(0, 500) + "...";
+        }
         this.auditRequestLogService.log(control, messagePartiesDto, gateProperties.getOwner(), gateProperties.getCountry(), body, control.getStatus(), false, name);
     }
 
