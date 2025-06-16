@@ -1,0 +1,141 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 p-4 sm:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-8 lg:mb-12">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-5 pb-2 leading-tight">
+        Gate Management
+      </h1>
+    </div>
+
+    <!-- Forms Container -->
+    <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-12 items-start justify-center">
+
+      <!-- Add Gate Form -->
+      <div class="w-full lg:w-auto lg:flex-1 lg:max-w-md">
+        <form
+          [formGroup]="addGateFrom"
+          (ngSubmit)="onAddGateSubmit()"
+          class="group relative bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:bg-white/80"
+        >
+          <!-- Form Header -->
+          <div class="text-center mb-6 sm:mb-8">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:rotate-6 transition-transform duration-500">
+              <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Add New Gate</h2>
+            <p class="text-gray-500 text-sm">Create a new gate entry</p>
+          </div>
+
+          <!-- Country Input -->
+          <div class="space-y-2 mb-6">
+            <label for="add-country" class="block text-sm font-semibold text-gray-700 mb-2">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+                </svg>
+                Country
+              </span>
+            </label>
+            <input
+              id="add-country"
+              type="text"
+              formControlName="country"
+              class="w-full px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80 text-sm sm:text-base"
+              placeholder="e.g., EE"
+            >
+          </div>
+
+          <!-- Gate ID Input -->
+          <div class="space-y-2 mb-8">
+            <label for="add-gateId" class="block text-sm font-semibold text-gray-700 mb-2">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+                Gate ID
+              </span>
+            </label>
+            <input
+              id="add-gateId"
+              type="text"
+              formControlName="gateId"
+              class="w-full px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80 text-sm sm:text-base"
+              placeholder="e.g., eu-ee11"
+            >
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="group/btn w-full bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-600 hover:to-blue-700 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl transition-all duration-300 focus:ring-4 focus:ring-emerald-500/20 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm sm:text-base"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+              Add Gate
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Divider for large screens -->
+      <div class="hidden lg:flex items-center justify-center">
+        <div class="w-px h-64 bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
+      </div>
+
+      <!-- Delete Gate Form -->
+      <div class="w-full lg:w-auto lg:flex-1 lg:max-w-md">
+        <form
+          [formGroup]="deleteGateForm"
+          (ngSubmit)="onDeleteGateSubmit()"
+          class="group relative bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:bg-white/80"
+        >
+          <!-- Form Header -->
+          <div class="text-center mb-6 sm:mb-8">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-red-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:rotate-6 transition-transform duration-500">
+              <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Delete Gate</h2>
+            <p class="text-gray-500 text-sm">Remove an existing gate</p>
+          </div>
+
+          <!-- Gate ID Input -->
+          <div class="space-y-2 mb-8">
+            <label for="delete-gateId" class="block text-sm font-semibold text-gray-700 mb-2">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+                Gate ID to Delete
+              </span>
+            </label>
+            <input
+              id="delete-gateId"
+              type="text"
+              formControlName="gateId"
+              class="w-full px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80 text-sm sm:text-base"
+              placeholder="e.g., eu-ee11"
+            >
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="group/btn w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl transition-all duration-300 focus:ring-4 focus:ring-red-500/20 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm sm:text-base"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Delete Gate
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
