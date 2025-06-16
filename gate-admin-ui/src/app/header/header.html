@@ -1,0 +1,132 @@
+<header class="bg-white shadow-lg sticky top-0 z-50">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo/Brand -->
+      <div class="flex-shrink-0 flex items-center">
+        <a routerLink="/" class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">L</span>
+          </div>
+          <span class="text-xl font-bold text-gray-900">YourApp</span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <a
+            routerLink="/"
+            routerLinkActive="text-blue-600 border-b-2 border-blue-600"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200 border-b-2 border-transparent"
+          >
+            Home
+          </a>
+          <a
+            routerLink="/about"
+            routerLinkActive="text-blue-600 border-b-2 border-blue-600"
+            class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200 border-b-2 border-transparent"
+          >
+            About
+          </a>
+          <a
+            routerLink="/services"
+            routerLinkActive="text-blue-600 border-b-2 border-blue-600"
+            class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200 border-b-2 border-transparent"
+          >
+            Services
+          </a>
+          <a
+            routerLink="/contact"
+            routerLinkActive="text-blue-600 border-b-2 border-blue-600"
+            class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200 border-b-2 border-transparent"
+          >
+            Contact
+          </a>
+        </div>
+      </div>
+
+      <!-- Desktop CTA Button -->
+      <div class="hidden md:block">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+          Get Started
+        </button>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          (click)="toggleMobileMenu()"
+          class="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600 p-2"
+        >
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            @if (isMobileMenuOpen) {
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            } @else {
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            }
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div
+      class="md:hidden transition-all duration-300 ease-in-out"
+      [class.max-h-0]="!isMobileMenuOpen"
+      [class.max-h-64]="isMobileMenuOpen"
+      [class.overflow-hidden]="true"
+    >
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-gray-50 rounded-lg mt-2">
+        <a
+          routerLink="/"
+          routerLinkActive="bg-blue-100 text-blue-600"
+          [routerLinkActiveOptions]="{exact: true}"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-md transition-colors duration-200"
+        >
+          Home
+        </a>
+        <a
+          routerLink="/about"
+          routerLinkActive="bg-blue-100 text-blue-600"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-md transition-colors duration-200"
+        >
+          About
+        </a>
+        <a
+          routerLink="/services"
+          routerLinkActive="bg-blue-100 text-blue-600"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-md transition-colors duration-200"
+        >
+          Services
+        </a>
+        <a
+          routerLink="/contact"
+          routerLinkActive="bg-blue-100 text-blue-600"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 rounded-md transition-colors duration-200"
+        >
+          Contact
+        </a>
+        <div class="pt-2">
+          <button class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+            Get Started
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
