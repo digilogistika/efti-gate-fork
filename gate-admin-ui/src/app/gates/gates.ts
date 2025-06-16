@@ -9,13 +9,13 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
   templateUrl: './gates.html',
 })
 export class Gates {
-  addGateFrom = new FormGroup({
+  registerGateFrom = new FormGroup({
     country: new FormControl(''),
     gateId: new FormControl('')
   })
 
-  onAddGateSubmit() {
-    console.log(this.addGateFrom.value)
+  onRegisterGateSubmit() {
+    console.log(this.registerGateFrom.value)
   }
 
   deleteGateForm = new FormGroup({

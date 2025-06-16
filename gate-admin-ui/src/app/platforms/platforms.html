@@ -1,1 +1,152 @@
-<p>platforms works!</p>
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 p-4 sm:p-6 lg:p-8">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Page Header -->
+    <div class="text-center mb-8 lg:mb-12">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-sky-600 bg-clip-text text-transparent mb-5 pb-2 leading-tight">
+        Platform Registration
+      </h1>
+    </div>
+
+    <!-- Main Form -->
+    <form
+      [formGroup]="registerPlatformForm"
+      (ngSubmit)="onRegisterPlatformSubmit()"
+      class="group relative bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] hover:bg-white/80"
+    >
+      <!-- Form Header -->
+      <div class="text-center mb-6 sm:mb-8">
+        <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-sky-400 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:rotate-6 transition-transform duration-500">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 004.5 9.75v7.5a2.25 2.25 0 002.25 2.25h7.5a2.25 2.25 0 002.25-2.25v-7.5a2.25 2.25 0 00-2.25-2.25h-.75m-6 3.75l3 3m0 0l3-3m-3 3V1.5m-9 13.5h18" />
+          </svg>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Register New Platform</h2>
+        <p class="text-gray-500 text-sm">Provide the details for the new platform integration</p>
+      </div>
+
+      <!-- Main Inputs Section -->
+      <div class="space-y-6 mb-8">
+        <!-- Platform ID Input -->
+        <div>
+          <label for="platformId" class="block text-sm font-semibold text-gray-700 mb-2">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+              Platform ID
+            </span>
+          </label>
+          <input
+            id="platformId"
+            type="text"
+            formControlName="platformId"
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80"
+            placeholder="e.g., estplat"
+          >
+        </div>
+
+        <!-- Request Base URL Input -->
+        <div>
+          <label for="requestBaseUrl" class="block text-sm font-semibold text-gray-700 mb-2">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+              Request Base URL
+            </span>
+          </label>
+          <input
+            id="requestBaseUrl"
+            type="text"
+            formControlName="requestBaseUrl"
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80"
+            placeholder="e.g., https://estplat/api/gate-api/v0/consignments/"
+          >
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="my-8 border-t-2 border-dashed border-gray-200">
+
+      <!-- Headers Section -->
+      <div class="space-y-4">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-700 flex items-center gap-2">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Headers (Optional)
+          </h3>
+          <button type="button" (click)="addHeader()" class="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-300 group/add">
+            <svg class="w-5 h-5 p-1 bg-blue-100 rounded-full group-hover/add:bg-blue-200 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            Add Header
+          </button>
+        </div>
+
+        <div formArrayName="headers" class="space-y-4">
+          @for (headerCtrl of headers.controls; let i = $index; track i) {
+            <div [formGroupName]="i" class="bg-gray-50/70 p-4 rounded-xl border border-gray-200/80 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:gap-4 transition-all duration-300">
+              <div class="flex-1 space-y-2">
+                <!-- Header Key -->
+                <div>
+                  <label for="key-{{i}}" class="text-xs font-medium text-gray-500">Key</label>
+                  <input
+                    id="key-{{i}}"
+                    type="text"
+                    formControlName="key"
+                    placeholder="e.g., X-API-Key"
+                    class="w-full mt-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-sky-500/50 focus:border-sky-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80"
+                  >
+                  @if (headerCtrl.get('key')?.invalid && (headerCtrl.get('key')?.dirty || headerCtrl.get('key')?.touched)) {
+                    <div class="text-red-600 text-xs mt-1">Header key is required.</div>
+                  }
+                </div>
+                <!-- Header Value -->
+                <div>
+                  <label for="value-{{i}}" class="text-xs font-medium text-gray-500">Value</label>
+                  <input
+                    id="value-{{i}}"
+                    type="text"
+                    formControlName="value"
+                    placeholder="e.g., SuperSecretApiKey"
+                    class="w-full mt-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-sky-500/50 focus:border-sky-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80"
+                  >
+                  @if (headerCtrl.get('value')?.invalid && (headerCtrl.get('value')?.dirty || headerCtrl.get('value')?.touched)) {
+                    <div class="text-red-600 text-xs mt-1">Header value is required.</div>
+                  }
+                </div>
+              </div>
+
+              <!-- Remove Header Button -->
+              <div class="flex justify-end sm:justify-center">
+                <button
+                  type="button"
+                  (click)="removeHeader(i)"
+                  class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-100 rounded-full transition-all duration-200"
+                  aria-label="Remove Header"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Spacer -->
+      <div class="mt-10"></div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="registerPlatformForm.invalid"
+        class="group/btn w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl transition-all duration-300 focus:ring-4 focus:ring-blue-500/30 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-md"
+      >
+        <span class="flex items-center justify-center gap-2">
+          <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Register Platform
+        </span>
+      </button>
+
+    </form>
+  </div>
+</div>
