@@ -24,8 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static org.apache.commons.collections4.CollectionUtils.emptyCollection;
-import static org.assertj.core.api.AssertionsForClassTypes.not;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -71,7 +69,7 @@ class IdentifiersControllerTest {
                         .requestId(REQUEST_ID)
                         .build());
 
-        String result = mockMvc.perform(post("/v1/control/identifiers")
+        String result = mockMvc.perform(post("/v1/identifiers")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsBytes(identifiersRequestDto)))
@@ -88,7 +86,7 @@ class IdentifiersControllerTest {
     void requestIdentifiersGetTest() throws Exception {
         Mockito.when(controlService.getIdentifiersResponse(REQUEST_ID)).thenReturn(identifiersResponseDto);
 
-        final String result = mockMvc.perform(get("/v1/control/identifiers").param("requestId", REQUEST_ID))
+        final String result = mockMvc.perform(get("/v1/identifiers").param("requestId", REQUEST_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -107,7 +105,7 @@ class IdentifiersControllerTest {
         identifiersResponseDto.setErrorDescription("Error requestId not found.");
         Mockito.when(controlService.getIdentifiersResponse(REQUEST_ID)).thenReturn(identifiersResponseDto);
 
-        final String result = mockMvc.perform(get("/v1/control/identifiers").param("requestId", REQUEST_ID))
+        final String result = mockMvc.perform(get("/v1/identifiers").param("requestId", REQUEST_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
