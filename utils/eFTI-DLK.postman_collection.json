@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "c210f46f-47a6-4db9-a6df-452e422725dc",
+		"_postman_id": "da95359b-1932-4ece-ada6-3545ba8fd46e",
 		"name": "eFTI-DLK",
 		"description": "eFTI gate request collection for different use cases",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "35147351"
+		"_exporter_id": "37803187"
 	},
 	"item": [
 		{
@@ -47,7 +47,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8880/v1/control/uil",
+									"raw": "http://localhost:8880/v1/dataset",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -55,8 +55,7 @@
 									"port": "8880",
 									"path": [
 										"v1",
-										"control",
-										"uil"
+										"dataset"
 									]
 								}
 							},
@@ -74,7 +73,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8880/v1/control/uil?requestId={{requestId}}",
+									"raw": "http://localhost:8880/v1/dataset?requestId={{requestId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -82,8 +81,7 @@
 									"port": "8880",
 									"path": [
 										"v1",
-										"control",
-										"uil"
+										"dataset"
 									],
 									"query": [
 										{
@@ -129,7 +127,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8880/v1/control/identifiers",
+									"raw": "http://localhost:8880/v1/identifiers",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -137,7 +135,6 @@
 									"port": "8880",
 									"path": [
 										"v1",
-										"control",
 										"identifiers"
 									]
 								}
@@ -178,7 +175,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8880/v1/control/identifiers",
+									"raw": "http://localhost:8880/v1/identifiers",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -186,7 +183,6 @@
 									"port": "8880",
 									"path": [
 										"v1",
-										"control",
 										"identifiers"
 									]
 								},
@@ -206,7 +202,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8880/v1/control/identifiers?requestId={{requestId}}",
+									"raw": "http://localhost:8880/v1/identifiers?requestId={{requestId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -214,7 +210,6 @@
 									"port": "8880",
 									"path": [
 										"v1",
-										"control",
 										"identifiers"
 									],
 									"query": [
@@ -248,7 +243,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8880/v1/control/uil/follow-up",
+									"raw": "http://localhost:8880/v1/follow-up",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -256,8 +251,6 @@
 									"port": "8880",
 									"path": [
 										"v1",
-										"control",
-										"uil",
 										"follow-up"
 									]
 								}
@@ -542,7 +535,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8881/v1/control/uil",
+									"raw": "http://localhost:8881/v1/dataset",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -550,8 +543,7 @@
 									"port": "8881",
 									"path": [
 										"v1",
-										"control",
-										"uil"
+										"dataset"
 									]
 								}
 							},
@@ -569,7 +561,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8881/v1/control/uil?requestId={{requestId}}",
+									"raw": "http://localhost:8881/v1/dataset?requestId={{requestId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -577,8 +569,7 @@
 									"port": "8881",
 									"path": [
 										"v1",
-										"control",
-										"uil"
+										"dataset"
 									],
 									"query": [
 										{
@@ -624,7 +615,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8881/v1/control/identifiers",
+									"raw": "http://localhost:8881/v1/identifiers",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -632,7 +623,6 @@
 									"port": "8881",
 									"path": [
 										"v1",
-										"control",
 										"identifiers"
 									]
 								}
@@ -651,7 +641,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8881/v1/control/identifiers?requestId={{requestId}}",
+									"raw": "http://localhost:8881/v1/identifiers?requestId={{requestId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -659,7 +649,6 @@
 									"port": "8881",
 									"path": [
 										"v1",
-										"control",
 										"identifiers"
 									],
 									"query": [
@@ -693,7 +682,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8881/v1/control/uil/follow-up",
+									"raw": "http://localhost:8881/v1/follow-up",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -701,8 +690,6 @@
 									"port": "8881",
 									"path": [
 										"v1",
-										"control",
-										"uil",
 										"follow-up"
 									]
 								}

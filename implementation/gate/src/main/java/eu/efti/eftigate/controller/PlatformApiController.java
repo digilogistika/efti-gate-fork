@@ -24,9 +24,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/platform")
 @Slf4j
-public class PlatformApiController { // implements V0Api {
+public class PlatformApiController {
     private final PlatformIdentityService platformIdentityService;
     private final ValidationService validationService;
     private final SerializeUtils serializeUtils;
@@ -34,14 +33,14 @@ public class PlatformApiController { // implements V0Api {
 
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = "/v0/consignments/{datasetId}",
+            value = "/v1/identifiers/{datasetId}",
             consumes = {"application/xml"}
     )
     public ResponseEntity<Void> putConsignmentIdentifiers(
             @PathVariable String datasetId,
             @RequestBody String body
     ) {
-        log.info("PUT on /api/platform/v0/consignments/{datasetId}");
+        log.info("PUT on /v1/identifiers/{datasetId}");
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         assert attributes != null;
         HttpServletRequest request = attributes.getRequest();

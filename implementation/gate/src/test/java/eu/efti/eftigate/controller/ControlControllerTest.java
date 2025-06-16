@@ -34,13 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ControlControllerTest {
 
     public static final String REQUEST_ID = "requestId";
+    private final RequestIdDto requestIdDto = new RequestIdDto();
     @Autowired
     protected MockMvc mockMvc;
-
     @MockBean
     ControlService controlService;
-
-    private final RequestIdDto requestIdDto = new RequestIdDto();
 
     @BeforeEach
     void before() {
@@ -68,7 +66,7 @@ class ControlControllerTest {
 
         Mockito.when(controlService.createUilControl(uilDto)).thenReturn(requestIdDto);
 
-        mockMvc.perform(post("/v1/control/uil")
+        mockMvc.perform(post("/v1/dataset")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsBytes(uilDto)))
@@ -81,7 +79,7 @@ class ControlControllerTest {
     void getRequestUilTest() throws Exception {
         Mockito.when(controlService.getControlEntity(REQUEST_ID)).thenReturn(requestIdDto);
 
-        final MvcResult result = mockMvc.perform(get("/v1/control/uil").param("requestId", REQUEST_ID))
+        final MvcResult result = mockMvc.perform(get("/v1/dataset").param("requestId", REQUEST_ID))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();

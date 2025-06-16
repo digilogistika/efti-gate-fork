@@ -8,8 +8,17 @@ import eu.efti.commons.dto.IdentifiersResponseDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -22,12 +31,12 @@ public class IdentifiersController implements IdentifiersControllerApi {
     private final ConfigService configService;
 
     @Override
-    @PostMapping("/control/identifiers")
+    @PostMapping("/identifiers")
     public ResponseEntity<RequestIdDto> requestIdentifiers(@RequestBody SearchWithIdentifiersRequestDto searchIdentifiersDto) {
         log.info("Forwarding POST request to gate for identifier: {}", searchIdentifiersDto);
 
         try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/identifiers";
+            String gateUrl = gateProperties.getBaseUrl() + "/v1/identifiers";
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());
@@ -53,12 +62,12 @@ public class IdentifiersController implements IdentifiersControllerApi {
     }
 
     @Override
-    @GetMapping("/control/identifiers")
+    @GetMapping("/identifiers")
     public ResponseEntity<IdentifiersResponseDto> getRequestIdentifiers(@RequestParam String requestId) {
         log.info("Forwarding GET request to gate for requestId: {}", requestId);
 
         try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/control/identifiers?requestId=" + requestId;
+            String gateUrl = gateProperties.getBaseUrl() + "/v1/identifiers?requestId=" + requestId;
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("X-API-Key", configService.getApiKey());

@@ -27,7 +27,7 @@ public interface IdentifiersControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
-    @PostMapping("/control/identifiers")
+    @PostMapping("/identifiers")
     ResponseEntity<RequestIdDto> getIdentifiers(final @RequestBody SearchWithIdentifiersRequestDto identifiersRequestDto);
 
     @Operation(summary = "Get a response to an identifiers query", description = "Get a response to an identifiers query for given request id")
@@ -37,6 +37,6 @@ public interface IdentifiersControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
-    @GetMapping("/control/identifiers")
+    @GetMapping("/identifiers")
     ResponseEntity<IdentifiersResponseDto> getIdentifiersResult(final @Parameter String requestId);
 }

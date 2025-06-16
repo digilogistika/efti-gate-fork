@@ -26,7 +26,7 @@ public interface ControlControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
-    @PostMapping("/control/uil")
+    @PostMapping("/dataset")
     ResponseEntity<RequestIdDto> requestUil(@RequestBody UilDto uilDto);
 
     @Operation(summary = "Get a response to an UIL query", description = "Get a dataset for a given request id")
@@ -36,6 +36,6 @@ public interface ControlControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
-    @GetMapping("/control/uil")
+    @GetMapping("/dataset")
     ResponseEntity<RequestIdDto> getRequestUil(@Parameter String requestId);
 }

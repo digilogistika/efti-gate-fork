@@ -25,7 +25,7 @@ public class IdentifiersController implements IdentifiersControllerApi {
 
     @Override
     public ResponseEntity<RequestIdDto> getIdentifiers(final @RequestBody SearchWithIdentifiersRequestDto identifiersRequestDto) {
-        log.info("POST on /control/identifiers on gates {} with params, identifier: {}, identifierType:{}, modeCode: {}, registrationCountryCode: {}, dangerousGoodsIndicator: {} ",
+        log.info("POST on /v1/identifiers on gates {} with params, identifier: {}, identifierType:{}, modeCode: {}, registrationCountryCode: {}, dangerousGoodsIndicator: {} ",
                 StringUtils.join(identifiersRequestDto.getEftiGateIndicator(), ","), identifiersRequestDto.getIdentifier(),
                 StringUtils.join(identifiersRequestDto.getIdentifierType(), ","), identifiersRequestDto.getModeCode(),
                 identifiersRequestDto.getRegistrationCountryCode(), identifiersRequestDto.getDangerousGoodsIndicator());
@@ -34,7 +34,7 @@ public class IdentifiersController implements IdentifiersControllerApi {
 
     @Override
     public ResponseEntity<IdentifiersResponseDto> getIdentifiersResult(final @Parameter String requestId) {
-        log.info("GET on /control/identifiers with param requestId {}", requestId);
+        log.info("GET on /v1/identifiers with param requestId {}", requestId);
         return new ResponseEntity<>(controlService.getIdentifiersResponse(requestId), HttpStatus.OK);
     }
 }

@@ -9,8 +9,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "Follow up communication", description = "Interface to send a follow up communication to a platform ")
+@RequestMapping("/api/v1")
 public interface NoteControllerApi {
 
     @Operation(summary = "Send follow up communication", description = "Send a follow up communication to a platform for a given control")
@@ -21,6 +23,6 @@ public interface NoteControllerApi {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PostMapping("/control/uil/follow-up")
+    @PostMapping("/follow-up")
     ResponseEntity<NoteResponseDto> createNote(final @RequestBody PostFollowUpRequestDto notesDto);
 }

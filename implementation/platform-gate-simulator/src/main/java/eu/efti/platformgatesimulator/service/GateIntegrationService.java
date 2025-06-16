@@ -30,7 +30,7 @@ public class GateIntegrationService {
             var doc = EftiSchemaUtils.mapIdentifiersObjectToDoc(serializeUtils, consignmentIdentifiers);
             var xml = serializeUtils.mapDocToXmlString(doc);
 
-            var url = gateProperties.getGateBaseUrl() + "/api/platform/v0/consignments/" + datasetId;
+            var url = gateProperties.getGateBaseUrl() + "/v1/identifiers/" + datasetId;
             RestClient restClient = RestClient
                     .builder()
                     .baseUrl(url)

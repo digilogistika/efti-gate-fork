@@ -23,13 +23,13 @@ public class ControlController implements ControlControllerApi {
 
     @Override
     public ResponseEntity<RequestIdDto> requestUil(@RequestBody final UilDto uilDto) {
-        log.info("POST on /control/uil with params gateId: {}, datasetId: {}, platformId: {}", uilDto.getGateId(), uilDto.getDatasetId(), uilDto.getPlatformId());
+        log.info("POST on /v1/dataset with params gateId: {}, datasetId: {}, platformId: {}", uilDto.getGateId(), uilDto.getDatasetId(), uilDto.getPlatformId());
         return new ResponseEntity<>(controlService.createUilControl(uilDto), HttpStatus.ACCEPTED);
     }
 
     @Override
     public ResponseEntity<RequestIdDto> getRequestUil(@Parameter final String requestId) {
-        log.info("GET on /control/uil with param requestId {}", requestId);
+        log.info("GET on /v1/dataset with param requestId {}", requestId);
         return new ResponseEntity<>(controlService.getControlEntity(requestId), HttpStatus.OK);
     }
 }
