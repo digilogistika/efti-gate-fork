@@ -15,7 +15,6 @@ export class GateService {
   private http = inject(HttpClient);
 
   registerGate(gate: Gate): Observable<HttpResponse<Text>> {
-    console.log("Registering gate:", gate);
     return this.http.post<Text>(this.registerUrl, gate, {
       observe: "response",
       responseType: "text" as "json",
@@ -23,7 +22,6 @@ export class GateService {
   }
 
   deleteGate(gateId: string): Observable<HttpResponse<Text>> {
-    console.log("Deleting gate:", gateId);
     return this.http.delete<Text>(this.deleteUrl + "/" + gateId, {
       observe: "response",
       responseType: "text" as "json",
