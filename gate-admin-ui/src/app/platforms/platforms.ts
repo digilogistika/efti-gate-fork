@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import {FormArray, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Platform} from './platform.model';
+import {catchError, of} from 'rxjs';
+import {PlatformService} from './platform.service';
+import {NotificationService} from '../notification/notification.service';
 
 @Component({
   selector: 'app-platforms',
@@ -14,6 +18,11 @@ export class Platforms {
     requestBaseUrl: new FormControl(''),
     headers: new FormArray([])
   })
+
+  constructor(
+    private readonly platformService: PlatformService,
+    private readonly notificationService: NotificationService
+  ) {}
 
   get headers() {
     return this.registerPlatformForm.get('headers') as FormArray;
@@ -32,6 +41,18 @@ export class Platforms {
   }
 
   onRegisterPlatformSubmit() {
-    console.log(this.registerPlatformForm.value);
+    const platform: Platform = this.registerPlatformForm.value as Platform
+    this.platformService.registerPlatform(platform).pipe(
+      catchError(error => {
+        if (error.status === 409) {
+          this.notificationService.showError("Platform already exists");
+        } else if (error.status === 400) {
+          this.notificationService.showError("Invalid gate data provided");
+        } else {
+          throw error;
+        }
+        return of(null);
+      })
+    )
   }
 }
