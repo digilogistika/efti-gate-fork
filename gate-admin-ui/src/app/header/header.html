@@ -70,6 +70,7 @@
           <input
             type="password"
             [(ngModel)]="apiKeyValue"
+            (ngModelChange)="onApiKeyChange()"
             placeholder="Master API key"
             class="w-64 pl-10 pr-4 py-3 bg-white/70 backdrop-blur-sm border-2 border-white/30 text-gray-700 text-sm rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 hover:bg-white/80 hover:border-indigo-300 shadow-md hover:shadow-lg"
           />
@@ -156,6 +157,7 @@
             <input
               type="password"
               [(ngModel)]="apiKeyValue"
+              (ngModelChange)="onApiKeyChange()"
               placeholder="Master API key"
               class="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border-2 border-white/40 text-gray-700 text-sm rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 hover:bg-white/90 shadow-md hover:shadow-lg"
             />
