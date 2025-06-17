@@ -20,8 +20,8 @@ export class Gates {
   });
 
   constructor(
-    private gateService: GateService,
-    private notificationService: NotificationService,
+    private readonly gateService: GateService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   onRegisterGateSubmit() {
@@ -33,7 +33,6 @@ export class Gates {
         } else if (error.status === 400) {
           this.notificationService.showError("Invalid gate data provided");
         } else {
-          // Let other errors propagate to the error handler
           throw error;
         }
         return of(null);
@@ -63,7 +62,6 @@ export class Gates {
         } else if (error.status === 400) {
           this.notificationService.showError("Invalid gate ID format");
         } else {
-          // Let other errors propagate to the error handler
           throw error;
         }
         return of(null);

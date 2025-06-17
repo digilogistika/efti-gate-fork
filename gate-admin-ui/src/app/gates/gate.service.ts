@@ -12,7 +12,7 @@ export class GateService {
   registerUrl = this.baseUrl + environment.apiUrl.registerGate;
   deleteUrl = this.baseUrl + environment.apiUrl.deleteGate;
 
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   registerGate(gate: Gate): Observable<HttpResponse<Text>> {
     return this.http.post<Text>(this.registerUrl, gate, {
