@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { environment } from "../../environments/environment";
+import { RouterLink } from "@angular/router";
 
 @Component({
-  selector: 'app-home-page',
-  imports: [],
-  templateUrl: './home-page.html',
+  selector: "app-home-page",
+  imports: [RouterLink],
+  templateUrl: "./home-page.html",
 })
 export class HomePage {
-
+  gate = environment.gateId;
 }
