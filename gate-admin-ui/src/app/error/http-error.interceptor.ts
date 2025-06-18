@@ -9,7 +9,9 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        notificationService.showError("Unauthorized access, have you set API key?");
+        notificationService.showError(
+          "Unauthorized access, have you set API key?",
+        );
         return EMPTY;
       }
 
