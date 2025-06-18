@@ -60,17 +60,30 @@
       <p class="text-gray-600 text-sm">Authorities</p>
     </div>
 
-    <!-- System Status -->
+    <!-- System Status - Updated with dynamic health check -->
     <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 card-hover group">
       <div class="flex items-center justify-between mb-4">
-        <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500"
+             [ngClass]="isSystemOnline ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-gradient-to-r from-red-500 to-rose-500'">
           <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            @if (isSystemOnline) {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            } @else {
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            }
           </svg>
         </div>
-        <div class="w-2 h-2 bg-green-400 rounded-full pulse-glow"></div>
+        <div class="w-2 h-2 rounded-full pulse-glow"
+             [ngClass]="{
+               'bg-green-400': isSystemOnline,
+               'bg-red-400': !isSystemOnline
+             }"></div>
       </div>
-      <h3 class="text-2xl font-bold text-green-600 mb-1">Online</h3>
+      <h3 class="text-2xl font-bold mb-1"
+          [ngClass]="{
+            'text-green-600': isSystemOnline,
+            'text-red-600': !isSystemOnline
+          }">{{systemStatus}}</h3>
       <p class="text-gray-600 text-sm">System Status</p>
     </div>
   </div>
