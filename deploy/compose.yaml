@@ -107,6 +107,8 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/gate/Dockerfile
+      args:
+        OWNER_VALUE: ${COMPOSE_PROJECT_NAME}
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8880/actuator/health || exit 1" ]
       interval: 5s
