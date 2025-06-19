@@ -1,5 +1,5 @@
-import { HttpClient, HttpRequest, HttpResponse } from "@angular/common/http";
-import { Host, inject, Injectable } from "@angular/core";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Gate } from "./gate.model";
 import { environment } from "../../environments/environment";
@@ -8,9 +8,8 @@ import { environment } from "../../environments/environment";
   providedIn: "root",
 })
 export class GateService {
-  baseUrl = environment.baseUrl;
-  registerUrl = this.baseUrl + environment.apiUrl.registerGate;
-  deleteUrl = this.baseUrl + environment.apiUrl.deleteGate;
+  registerUrl = environment.apiUrl.registerGate;
+  deleteUrl = environment.apiUrl.deleteGate;
 
   private readonly http = inject(HttpClient);
 

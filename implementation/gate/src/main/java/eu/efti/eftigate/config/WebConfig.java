@@ -1,11 +1,17 @@
 package eu.efti.eftigate.config;
 
 import eu.efti.eftigate.utils.StringAsObjectHttpMessageConverter;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 
+import java.io.IOException;
 import java.util.List;
 
 @Configuration
@@ -18,5 +24,21 @@ public class WebConfig implements WebMvcConfigurer {
         var stringAsObjectHttpMessageConverter = new StringAsObjectHttpMessageConverter();
         stringAsObjectHttpMessageConverter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_XML));
         converters.add(0, stringAsObjectHttpMessageConverter);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(@NotNull String resourcePath, @NotNull Resource location) throws IOException {
+                        Resource requestedResource = location.createRelative(resourcePath);
+                        return requestedResource.exists() && requestedResource.isReadable() ? requestedResource :
+                                new ClassPathResource("/static/index.html");
+                    }
+                })
+        ;
     }
 }

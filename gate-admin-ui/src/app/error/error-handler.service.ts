@@ -6,8 +6,8 @@ import { NotificationService } from "../notification/notification.service";
 })
 export class GlobalErrorHandler implements ErrorHandler {
   constructor(
-    private notificationService: NotificationService,
-    private ngZone: NgZone,
+    private readonly notificationService: NotificationService,
+    private readonly ngZone: NgZone,
   ) {}
 
   handleError(error: Error): void {
