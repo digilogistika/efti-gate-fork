@@ -5,8 +5,7 @@ import { BehaviorSubject } from "rxjs";
   providedIn: "root",
 })
 export class AuthService {
-  private apiKeySubject = new BehaviorSubject<string>("");
-  apiKey$ = this.apiKeySubject.asObservable();
+  private readonly apiKeySubject = new BehaviorSubject<string>("");
 
   setApiKey(apiKey: string) {
     console.log("Setting api key to: ", apiKey);

@@ -1,7 +1,6 @@
 export const environment = {
   production: true,
-  gateId: process.env["GATE_ID"],
-  baseUrl: process.env["BASE_URL"],
+  gateId: "OWNER",
   apiUrl: {
     registerGate: "/api/admin/gate/register",
     registerPlatform: "/api/admin/platform/register",

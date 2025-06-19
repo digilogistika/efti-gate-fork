@@ -3,8 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { RouterLink } from "@angular/router";
 import { interval, Subscription } from "rxjs";
-import { catchError } from "rxjs/operators";
-import { of } from "rxjs";
 import { CommonModule } from "@angular/common";
 
 @Component({
@@ -46,7 +44,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   private performHealthCheck() {
-    const healthUrl = environment.baseUrl + environment.apiUrl.health;
+    const healthUrl = environment.apiUrl.health;
 
     this.http.get(healthUrl).subscribe({
       next: () => {

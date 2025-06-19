@@ -1,7 +1,6 @@
 export const environment = {
   production: false,
   gateId: "Borduria",
-  baseUrl: "http://localhost:8880",
   apiUrl: {
     registerGate: "/api/admin/gate/register",
     registerPlatform: "/api/admin/platform/register",

@@ -9,8 +9,7 @@ import { Authority } from "./authority.model";
   providedIn: "root",
 })
 export class AuthorityService {
-  baseUrl = environment.baseUrl;
-  registerUrl = this.baseUrl + environment.apiUrl.registerAuthority;
+  registerUrl = environment.apiUrl.registerAuthority;
 
   private readonly http = inject(HttpClient);
 

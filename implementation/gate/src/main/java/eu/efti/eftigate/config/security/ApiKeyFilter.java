@@ -44,40 +44,13 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         String xApiKeyHeader = req.getHeader("X-API-Key");
         String path = req.getRequestURI();
 
-        // platform api endpoints validation
-        try {
-            if (path.startsWith("/api/platform/v0/consignments")
-                    || path.startsWith("/api/platform/v0/whoami")
-            ) {
-                validatePlatformXApiKeyHeader(xApiKeyHeader);
-                chain.doFilter(req, res);
-            }
-        } catch (XApiKeyValidationException e) {
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform: " + e.getMessage());
-        }
-
-        // authority access point validation
-        try {
-            if (path.startsWith("/v1/control")) {
-                if (superApiKey.equals(xApiKeyHeader)) {
-                    chain.doFilter(req, res);
-                } else {
-                    validateAuthorityXApiKeyHeader(xApiKeyHeader);
-                    chain.doFilter(req, res);
-                }
-            }
-        } catch (XApiKeyValidationException e) {
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform: " + e.getMessage());
-        }
-
-
-        // registration endpoint validation
-        if (path.startsWith("/api/admin")) {
-            if (superApiKey.equals(xApiKeyHeader)) {
-                chain.doFilter(req, res);
-            } else {
-                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for registration endpoints");
-            }
+        // skip for static files and root path
+        if (path.equals("/") ||
+                path.startsWith("/index.html") ||
+                path.startsWith("/favicon.ico") ||
+                path.matches(".*\\.(js|css|png|jpg|jpeg|svg|woff2?)$")) {
+            chain.doFilter(req, res);
+            return;
         }
 
         // skip public endpoints
@@ -86,7 +59,47 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                 || path.startsWith("/actuator")
                 || path.startsWith("/ws")) {
             chain.doFilter(req, res);
+            return;
         }
+
+        // platform api endpoints validation
+        if (path.startsWith("/api/platform/v0/consignments")
+                || path.startsWith("/api/platform/v0/whoami")) {
+            try {
+                validatePlatformXApiKeyHeader(xApiKeyHeader);
+                chain.doFilter(req, res);
+            } catch (XApiKeyValidationException e) {
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform: " + e.getMessage());
+            }
+            return;
+        }
+
+        // authority access point validation
+        if (path.startsWith("/v1/control")) {
+            try {
+                if (superApiKey.equals(xApiKeyHeader)) {
+                    chain.doFilter(req, res);
+                } else {
+                    validateAuthorityXApiKeyHeader(xApiKeyHeader);
+                    chain.doFilter(req, res);
+                }
+            } catch (XApiKeyValidationException e) {
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for platform: " + e.getMessage());
+            }
+            return;
+        }
+
+        // registration endpoint validation
+        if (path.startsWith("/api/admin")) {
+            if (superApiKey.equals(xApiKeyHeader)) {
+                chain.doFilter(req, res);
+            } else {
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key for registration endpoints");
+            }
+            return;
+        }
+
+        chain.doFilter(req, res);
     }
 
     private String[] getUserAndSecretFromHeader(String header) throws XApiKeyValidationException {

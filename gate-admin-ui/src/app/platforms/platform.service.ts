@@ -9,8 +9,7 @@ import { ApiKeyResponse } from "../authentication/api-key-response.model";
   providedIn: "root",
 })
 export class PlatformService {
-  baseUrl = environment.baseUrl;
-  registerUrl = this.baseUrl + environment.apiUrl.registerPlatform;
+  registerUrl = environment.apiUrl.registerPlatform;
 
   private readonly http = inject(HttpClient);
 
