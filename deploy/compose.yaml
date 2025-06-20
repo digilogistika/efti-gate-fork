@@ -107,6 +107,8 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/gate/Dockerfile
+      args:
+        OWNER_VALUE: ${COMPOSE_PROJECT_NAME}
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8880/actuator/health || exit 1" ]
       interval: 5s
@@ -117,7 +119,7 @@ services:
       - efti-rabbitmq
     environment:
       - OWNER=${COMPOSE_PROJECT_NAME}
-      - COUNTRY=${COMPOSE_PROJECT_NAME}
+      - COUNTRY=${COUNTRY}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
       - GATE_PLUGIN_USER_PASSWORD=${GATE_PLUGIN_USER_PASSWORD}
       - EFTI_POSTGRES_PASSWORD=${EFTI_POSTGRES_PASSWORD}

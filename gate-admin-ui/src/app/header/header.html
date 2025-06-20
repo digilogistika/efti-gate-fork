@@ -1,0 +1,169 @@
+<header class="bg-gradient-to-r from-indigo-50/90 via-white/80 to-cyan-50/90 backdrop-blur-xl shadow-xl border-b border-white/20 sticky top-0 z-50">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <!-- Logo Section -->
+      <div class="flex-shrink-0 flex items-center">
+        <a routerLink="/" class="group flex items-center space-x-3 transition-all duration-300 hover:scale-105">
+          <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform duration-500">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            {{gate}} Gate Admin
+          </span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="flex items-center space-x-2">
+          <a
+            routerLink="/gate"
+            class="group relative px-4 py-2 text-sm font-semibold text-gray-700 hover:text-indigo-600 transition-all duration-300 rounded-xl hover:bg-white/60 hover:shadow-md hover:backdrop-blur-sm border border-transparent hover:border-white/30"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+              </svg>
+              Gates
+            </span>
+            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 group-hover:w-full transition-all duration-300"></div>
+          </a>
+
+          <a
+            routerLink="/platform"
+            class="group relative px-4 py-2 text-sm font-semibold text-gray-700 hover:text-indigo-600 transition-all duration-300 rounded-xl hover:bg-white/60 hover:shadow-md hover:backdrop-blur-sm border border-transparent hover:border-white/30"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+              Platforms
+            </span>
+            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 group-hover:w-full transition-all duration-300"></div>
+          </a>
+
+          <a
+            routerLink="/authority"
+            class="group relative px-4 py-2 text-sm font-semibold text-gray-700 hover:text-indigo-600 transition-all duration-300 rounded-xl hover:bg-white/60 hover:shadow-md hover:backdrop-blur-sm border border-transparent hover:border-white/30"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+              Authorities
+            </span>
+            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 group-hover:w-full transition-all duration-300"></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- API Key Input (Desktop) -->
+      <div class="hidden md:block">
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-4 h-4 text-gray-400 group-focus-within:text-indigo-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+            </svg>
+          </div>
+          <input
+            type="password"
+            [(ngModel)]="apiKeyValue"
+            (ngModelChange)="onApiKeyChange()"
+            placeholder="Master API key"
+            class="w-64 pl-10 pr-4 py-3 bg-white/70 backdrop-blur-sm border-2 border-white/30 text-gray-700 text-sm rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 hover:bg-white/80 hover:border-indigo-300 shadow-md hover:shadow-lg"
+          />
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          (click)="toggleMobileMenu()"
+          class="group relative p-3 text-gray-700 hover:text-indigo-600 focus:outline-none rounded-xl hover:bg-white/60 hover:shadow-md transition-all duration-300 border border-transparent hover:border-white/30"
+        >
+          <svg class="h-6 w-6 group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            @if (isMobileMenuOpen) {
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            } @else {
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            }
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div
+      class="md:hidden transition-all duration-500 ease-in-out overflow-hidden"
+      [class.max-h-0]="!isMobileMenuOpen"
+      [class.max-h-96]="isMobileMenuOpen"
+      [class.opacity-0]="!isMobileMenuOpen"
+      [class.opacity-100]="isMobileMenuOpen"
+    >
+      <div class="px-2 pt-4 pb-6 space-y-3 bg-white/70 backdrop-blur-sm rounded-2xl mt-4 mb-4 shadow-xl border border-white/20">
+        <a
+          routerLink="/gate"
+          (click)="closeMobileMenu()"
+          class="group flex items-center gap-3 px-4 py-3 text-base font-semibold text-gray-700 hover:text-indigo-600 hover:bg-white/60 rounded-xl transition-all duration-300 hover:shadow-md border border-transparent hover:border-white/30"
+        >
+          <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+          </svg>
+          Gates
+        </a>
+
+        <a
+          routerLink="/platform"
+          (click)="closeMobileMenu()"
+          class="group flex items-center gap-3 px-4 py-3 text-base font-semibold text-gray-700 hover:text-indigo-600 hover:bg-white/60 rounded-xl transition-all duration-300 hover:shadow-md border border-transparent hover:border-white/30"
+        >
+          <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          Platforms
+        </a>
+
+        <a
+          routerLink="/authority"
+          (click)="closeMobileMenu()"
+          class="group flex items-center gap-3 px-4 py-3 text-base font-semibold text-gray-700 hover:text-indigo-600 hover:bg-white/60 rounded-xl transition-all duration-300 hover:shadow-md border border-transparent hover:border-white/30"
+        >
+          <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          Authorities
+        </a>
+
+        <!-- Mobile API Key Input -->
+        <div class="pt-2">
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="w-4 h-4 text-gray-400 group-focus-within:text-indigo-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+              </svg>
+            </div>
+            <input
+              type="password"
+              [(ngModel)]="apiKeyValue"
+              (ngModelChange)="onApiKeyChange()"
+              placeholder="Master API key"
+              class="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border-2 border-white/40 text-gray-700 text-sm rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 hover:bg-white/90 shadow-md hover:shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

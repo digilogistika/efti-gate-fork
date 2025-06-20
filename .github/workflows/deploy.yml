@@ -23,10 +23,10 @@ jobs:
             cd efti-gate
             echo "Pulling updates from github"
             git checkout ${{ github.ref_name }}
+            git restore .
             git pull
             echo "shuting down old gate applications"
             cd deploy 
-            docker compose --profile platform --profile proxy down
             echo "Building and starting latest version for gate applications"
             docker compose --profile platform --profile proxy up -d --build
             

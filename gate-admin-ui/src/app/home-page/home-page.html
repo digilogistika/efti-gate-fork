@@ -1,0 +1,186 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+  <!-- Welcome Hero Section -->
+  <div class="text-center mb-12">
+    <div class="relative">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent mb-6 leading-tight">
+        Welcome {{gate}} Gate Admin
+      </h1>
+      <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+        Manage your gate's connections.
+      </p>
+
+      <!-- Floating Elements -->
+      <div class="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full opacity-20 float-animation" style="animation-delay: 0s;"></div>
+      <div class="absolute -top-8 -right-8 w-16 h-16 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-20 float-animation" style="animation-delay: 2s;"></div>
+      <div class="absolute -bottom-4 left-1/2 w-12 h-12 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full opacity-20 float-animation" style="animation-delay: 4s;"></div>
+    </div>
+  </div>
+
+  <!-- Quick Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <!-- Active Gates -->
+    <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 card-hover group">
+      <div class="flex items-center justify-between mb-4">
+        <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+          </svg>
+        </div>
+        <div class="w-2 h-2 bg-green-400 rounded-full pulse-glow"></div>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-800 mb-1">24</h3>
+      <p class="text-gray-600 text-sm">Gates</p>
+    </div>
+
+    <!-- Registered Platforms -->
+    <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 card-hover group">
+      <div class="flex items-center justify-between mb-4">
+        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+        </div>
+        <div class="w-2 h-2 bg-blue-400 rounded-full pulse-glow"></div>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-800 mb-1">8</h3>
+      <p class="text-gray-600 text-sm">Platforms</p>
+    </div>
+
+    <!-- Authorities -->
+    <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 card-hover group">
+      <div class="flex items-center justify-between mb-4">
+        <div class="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+        </div>
+        <div class="w-2 h-2 bg-emerald-400 rounded-full pulse-glow"></div>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-800 mb-1">12</h3>
+      <p class="text-gray-600 text-sm">Authorities</p>
+    </div>
+
+    <!-- System Status - Updated with dynamic health check -->
+    <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 card-hover group">
+      <div class="flex items-center justify-between mb-4">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-500"
+             [ngClass]="isSystemOnline ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-gradient-to-r from-red-500 to-rose-500'">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            @if (isSystemOnline) {
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            } @else {
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            }
+          </svg>
+        </div>
+        <div class="w-2 h-2 rounded-full pulse-glow"
+             [ngClass]="{
+               'bg-green-400': isSystemOnline,
+               'bg-red-400': !isSystemOnline
+             }"></div>
+      </div>
+      <h3 class="text-2xl font-bold mb-1"
+          [ngClass]="{
+            'text-green-600': isSystemOnline,
+            'text-red-600': !isSystemOnline
+          }">{{systemStatus}}</h3>
+      <p class="text-gray-600 text-sm">System Status</p>
+    </div>
+  </div>
+
+  <!-- Quick Actions Section -->
+  <div class="mb-12">
+    <!-- Quick Actions -->
+    <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01]">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h2 class="text-xl font-bold text-gray-800">Quick Actions</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <a
+          routerLink="/gate"
+          class="w-full group flex items-center gap-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 rounded-xl transition-all duration-300 hover:shadow-md"
+        >
+          <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center group-hover:rotate-6 transition-transform duration-300">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+          </div>
+          <div class="text-left flex-1">
+            <p class="font-semibold text-gray-800">Add New Gate</p>
+            <p class="text-sm text-gray-600">Register a new gate</p>
+          </div>
+          <svg class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+
+        <a routerLink="/platform" class="w-full group flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 rounded-xl transition-all duration-300 hover:shadow-md">
+          <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:rotate-6 transition-transform duration-300">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <div class="text-left flex-1">
+            <p class="font-semibold text-gray-800">Register Platform</p>
+            <p class="text-sm text-gray-600">Register a new platform</p>
+          </div>
+          <svg class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+
+        <a routerLink="/authority" class="w-full group flex items-center gap-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 hover:from-emerald-100 hover:to-green-100 rounded-xl transition-all duration-300 hover:shadow-md">
+          <div class="w-8 h-8 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center group-hover:rotate-6 transition-transform duration-300">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <div class="text-left flex-1">
+            <p class="font-semibold text-gray-800">Add Authority</p>
+            <p class="text-sm text-gray-600">Register a new authority</p>
+          </div>
+          <svg class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(180deg); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+  }
+
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+  }
+
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+</style>
