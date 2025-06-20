@@ -1,14 +1,10 @@
 {
-  "/api/*": {
+  "/api": {
     "target": "http://localhost:8880",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
+    "secure": false
   },
-  "/actuator/*": {
+  "/actuator": {
     "target": "http://localhost:8880",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
+    "secure": false
   }
 }
