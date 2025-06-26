@@ -36,7 +36,6 @@ public class IdentifiersSearchService {
     private final EftiGateIdResolver eftiGateIdResolver;
     private final MapperUtils mapperUtils;
     private final LogManager logManager;
-    private final ControlRepository controlRepository;
     private final IdentifiersRequestService identifiersRequestService;
 
     public IdentifiersResponseDto searchIdentifiers(SearchWithIdentifiersRequestDto searchRequestDto) {
@@ -52,7 +51,9 @@ public class IdentifiersSearchService {
         logManager.logAppRequest(controlDto, searchRequestDto, ComponentType.CA_APP, ComponentType.GATE, LogManager.FTI_008_FTI_014);
         controlService.createIdentifiersControl(controlDto, searchRequestDto);
 
-        CompletableFuture<IdentifiersResponseDto> processingFuture = CompletableFuture.supplyAsync(() -> waitForResponse(requestId));
+
+        CompletableFuture<IdentifiersResponseDto> processingFuture = CompletableFuture.supplyAsync(
+                () -> waitForResponse(requestId, searchRequestDto.getEftiGateIndicator().size()));
         IdentifiersResponseDto response;
 
         try {
@@ -67,9 +68,9 @@ public class IdentifiersSearchService {
         return response;
     }
 
-    private IdentifiersResponseDto waitForResponse(String requestId) {
-        StatusEnum controlStatus = getControlStatus(requestId);
-        while (controlStatus.equals(StatusEnum.PENDING)) {
+    private IdentifiersResponseDto waitForResponse(String requestId, int requestCount) {
+        ControlEntity entity = getControlEntity(requestId);
+        while (entity.getStatus().equals(PENDING)) {
             log.info("Waiting for identifiers response for requestId: {}", requestId);
             try {
                 Thread.sleep(1000);
@@ -77,18 +78,17 @@ public class IdentifiersSearchService {
                 log.error("Thread interrupted while waiting for identifiers response", e);
                 Thread.currentThread().interrupt();
             }
-            controlStatus = getControlStatus(requestId);
+            if (entity.getRequests().size() == requestCount) {
+                controlService.updateControl(requestId);
+            }
+            entity = getControlEntity(requestId);
         }
         return getIdentifiersResponse(requestId);
     }
 
-    private StatusEnum getControlStatus(String requestId) {
-        Optional<ControlEntity> controlEntity = controlRepository.findByRequestId(requestId);
-        if (controlEntity.isPresent()) {
-            return controlEntity.get().getStatus();
-        } else {
-            return StatusEnum.ERROR;
-        }
+    private ControlEntity getControlEntity(String requestId) {
+        Optional<ControlEntity> controlEntity = controlService.findByRequestId(requestId);
+        return controlEntity.orElseGet(ControlEntity::new);
     }
 
     public IdentifiersResponseDto getIdentifiersResponse(final String requestId) {

@@ -34,10 +34,10 @@ public class IdentifiersController implements IdentifiersControllerApi {
             Boolean dangerousGoodsIndicator,
             List<String> eftiGateIndicator,
             Boolean callback) {
-        log.info("GET on /v1/identifiers on gates {} with params, identifier: {}, identifierType:{}, modeCode: {}, registrationCountryCode: {}, dangerousGoodsIndicator: {}, callback: {}, eftiGateIndicators: {}",
+        log.info("GET on /v1/identifiers on gates {} with params, identifier: {}, identifierType:{}, modeCode: {}, registrationCountryCode: {}, dangerousGoodsIndicator: {}, callback: {}",
                 StringUtils.join(eftiGateIndicator, ","), identifier,
                 StringUtils.join(identifierType, ","), modeCode,
-                registrationCountryCode, dangerousGoodsIndicator, callback, eftiGateIndicator);
+                registrationCountryCode, dangerousGoodsIndicator, callback);
 
         SearchWithIdentifiersRequestDto dto = SearchWithIdentifiersRequestDto
                 .builder()
