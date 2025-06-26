@@ -2,7 +2,7 @@ package eu.efti.eftigate.service;
 
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.IdentifiersResponseDto;
-import eu.efti.commons.dto.ValidableDto;
+import eu.efti.commons.dto.ValidatableDto;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.enums.RequestTypeEnum;
 import eu.efti.commons.enums.StatusEnum;
@@ -162,11 +162,11 @@ public class LogManager {
         this.auditRegistryLogService.logByControlDto(controlDto, gateProperties.getOwner(), gateProperties.getCountry(), requestingComponentType, respondingComponentType, body, null, name);
     }
 
-    public <T extends ValidableDto> void logAppRequest(final ControlDto control,
-                                                       final T searchDto,
-                                                       final ComponentType requestingComponentType,
-                                                       final ComponentType respondingComponentType,
-                                                       final String name) {
+    public <T extends ValidatableDto> void logAppRequest(final ControlDto control,
+                                                         final T searchDto,
+                                                         final ComponentType requestingComponentType,
+                                                         final ComponentType respondingComponentType,
+                                                         final String name) {
         final MessagePartiesDto messagePartiesDto = MessagePartiesDto.builder()
                 .requestingComponentType(requestingComponentType)
                 .requestingComponentId(control.getFromGateId())

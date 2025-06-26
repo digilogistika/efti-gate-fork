@@ -42,7 +42,7 @@ class NoteControllerTest {
         notesDto.setRequestId("requestId");
         notesDto.setMessage("Ugly driver");
 
-        when(controlService.getControlByRequestId("requestId")).thenReturn(new ControlDto());
+        when(controlService.getControlDtoByRequestId("requestId")).thenReturn(new ControlDto());
         when(controlService.createNoteRequestForControl(notesDto)).thenReturn(NoteResponseDto.builder().message("Note sent").build());
 
         final String response = mockMvc.perform(post("/v1/follow-up")

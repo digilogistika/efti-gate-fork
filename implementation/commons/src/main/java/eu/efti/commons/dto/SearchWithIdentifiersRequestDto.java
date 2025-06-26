@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchWithIdentifiersRequestDto implements ValidableDto {
+public class SearchWithIdentifiersRequestDto implements ValidatableDto {
 
     @Pattern(regexp = "^\\d$", message = "MODE_CODE_INCORRECT_FORMAT")
     private String modeCode;

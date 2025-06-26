@@ -28,10 +28,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ControlController.class)
-@ContextConfiguration(classes = {ControlController.class})
+@WebMvcTest(DatasetController.class)
+@ContextConfiguration(classes = {DatasetController.class})
 @ExtendWith(SpringExtension.class)
-class ControlControllerTest {
+class DatasetControllerTest {
 
     public static final String REQUEST_ID = "requestId";
     private final RequestIdDto requestIdDto = new RequestIdDto();
@@ -76,7 +76,7 @@ class ControlControllerTest {
 
     @Test
     @WithMockUser
-    void getRequestUilTest() throws Exception {
+    void getDatasetTest() throws Exception {
         Mockito.when(controlService.getControlEntity(REQUEST_ID)).thenReturn(requestIdDto);
 
         final MvcResult result = mockMvc.perform(get("/v1/dataset").param("requestId", REQUEST_ID))

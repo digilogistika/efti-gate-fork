@@ -6,7 +6,6 @@ import eu.efti.commons.enums.*;
 import eu.efti.eftigate.entity.ControlEntity;
 import eu.efti.eftigate.entity.IdentifiersRequestEntity;
 import eu.efti.eftigate.mapper.MapperUtils;
-import eu.efti.eftigate.repository.ControlRepository;
 import eu.efti.eftigate.service.gate.EftiGateIdResolver;
 import eu.efti.eftigate.service.request.IdentifiersRequestService;
 import eu.efti.eftigate.utils.ControlUtils;
@@ -45,12 +44,11 @@ public class IdentifiersSearchService {
         Optional<ErrorDto> violation = controlService.validateDto(searchRequestDto);
         if (violation.isPresent()) {
             ControlService.updateControlWithError(controlDto, violation.get(), true);
-            // This error and everything else should not be continued
+            // This is an error and everything else should not be continued
         }
 
         logManager.logAppRequest(controlDto, searchRequestDto, ComponentType.CA_APP, ComponentType.GATE, LogManager.FTI_008_FTI_014);
         controlService.createIdentifiersControl(controlDto, searchRequestDto);
-
 
         CompletableFuture<IdentifiersResponseDto> processingFuture = CompletableFuture.supplyAsync(
                 () -> waitForResponse(requestId, searchRequestDto.getEftiGateIndicator().size()));
@@ -69,7 +67,7 @@ public class IdentifiersSearchService {
     }
 
     private IdentifiersResponseDto waitForResponse(String requestId, int requestCount) {
-        ControlEntity entity = getControlEntity(requestId);
+        ControlEntity entity = controlService.getControlEntityByRequestId(requestId);
         while (entity.getStatus().equals(PENDING)) {
             log.info("Waiting for identifiers response for requestId: {}", requestId);
             try {
@@ -81,18 +79,13 @@ public class IdentifiersSearchService {
             if (entity.getRequests().size() == requestCount) {
                 controlService.updateControl(requestId);
             }
-            entity = getControlEntity(requestId);
+            entity = controlService.getControlEntityByRequestId(requestId);
         }
         return getIdentifiersResponse(requestId);
     }
 
-    private ControlEntity getControlEntity(String requestId) {
-        Optional<ControlEntity> controlEntity = controlService.findByRequestId(requestId);
-        return controlEntity.orElseGet(ControlEntity::new);
-    }
-
     public IdentifiersResponseDto getIdentifiersResponse(final String requestId) {
-        final ControlDto controlDto = controlService.getControlByRequestId(requestId);
+        final ControlDto controlDto = controlService.getControlDtoByRequestId(requestId);
         final List<IdentifiersRequestEntity> requestEntities = identifiersRequestService.findAllForControlId(controlDto.getId());
         final List<IdentifiersRequestDto> requestDtos = requestEntities.stream().map(r -> mapperUtils.requestToRequestDto(r, IdentifiersRequestDto.class)).toList();
         return buildIdentifiersResponse(controlDto, requestDtos);

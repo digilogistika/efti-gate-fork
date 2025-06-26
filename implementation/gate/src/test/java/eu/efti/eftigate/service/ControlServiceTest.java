@@ -623,7 +623,7 @@ class ControlServiceTest extends AbstractServiceTest {
                 .status(StatusEnum.COMPLETE)
                 .identifiersResults(identifiersResultsDto.getConsignments())
                 .build();
-        when(controlService.getControlByRequestId(requestId)).thenReturn(expectedControl);
+        when(controlService.getControlDtoByRequestId(requestId)).thenReturn(expectedControl);
         when(requestServiceFactory.getRequestServiceByRequestType(anyString())).thenReturn(identifiersRequestService);
 
         identifiersRequestEntity.setStatus(RequestStatusEnum.SUCCESS);
@@ -650,7 +650,7 @@ class ControlServiceTest extends AbstractServiceTest {
                 .status(StatusEnum.ERROR)
                 .error(ErrorDto.builder().errorCode(" Id not found.").errorDescription("Error requestId not found.").build())
                 .build();
-        when(controlService.getControlByRequestId(requestId)).thenReturn(expectedControl);
+        when(controlService.getControlDtoByRequestId(requestId)).thenReturn(expectedControl);
         when(requestServiceFactory.getRequestServiceByRequestType(anyString())).thenReturn(identifiersRequestService);
 
         final IdentifiersResponseDto expectedIdentifiersResponse = IdentifiersResponseDto.builder()
@@ -946,7 +946,7 @@ class ControlServiceTest extends AbstractServiceTest {
     @Test
     void shouldGetByRequestId() {
         //Act
-        controlService.getControlByRequestId(requestId);
+        controlService.getControlDtoByRequestId(requestId);
 
         //Assert
         verify(controlRepository, times(1)).findByRequestId(requestId);

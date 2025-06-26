@@ -2,11 +2,8 @@ package eu.efti.eftigate.controller;
 
 import eu.efti.commons.dto.IdentifiersResponseDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
-import eu.efti.commons.enums.CountryIndicator;
-import eu.efti.commons.validator.ValueOfEnum;
 import eu.efti.eftigate.controller.api.IdentifiersControllerApi;
 import eu.efti.eftigate.service.IdentifiersSearchService;
-import eu.efti.v1.edelivery.IdentifierType;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

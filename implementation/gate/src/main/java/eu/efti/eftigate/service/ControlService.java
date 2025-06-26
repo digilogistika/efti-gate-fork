@@ -6,8 +6,7 @@ import eu.efti.commons.dto.ErrorDto;
 import eu.efti.commons.dto.PostFollowUpRequestDto;
 import eu.efti.commons.dto.RequestDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
-import eu.efti.commons.dto.UilDto;
-import eu.efti.commons.dto.ValidableDto;
+import eu.efti.commons.dto.ValidatableDto;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.enums.ErrorCodesEnum;
 import eu.efti.commons.enums.RequestStatusEnum;
@@ -17,7 +16,6 @@ import eu.efti.commons.enums.StatusEnum;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.NoteResponseDto;
-import eu.efti.eftigate.dto.RequestIdDto;
 import eu.efti.eftigate.entity.ControlEntity;
 import eu.efti.eftigate.entity.ErrorEntity;
 import eu.efti.eftigate.exception.AmbiguousIdentifierException;
@@ -42,7 +40,6 @@ import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -93,19 +90,9 @@ public class ControlService {
         return controlEntity.orElse(null);
     }
 
-    @Transactional("controlTransactionManager")
-    public RequestIdDto createUilControl(final UilDto uilDto) {
-        log.info("create Uil control for dataset id : {}", uilDto.getDatasetId());
-        boolean isLocal = gateProperties.isCurrentGate(uilDto.getGateId());
-        return createControl(uilDto, ControlUtils
-                        .fromUilControl(uilDto, isLocal ? RequestTypeEnum.LOCAL_UIL_SEARCH : RequestTypeEnum.EXTERNAL_UIL_SEARCH),
-                (dto) -> validateDto(dto)
-                        .or(() -> isLocal ? (platformIntegrationService.platformExists(dto.getPlatformId()) ? Optional.empty() : Optional.of(ErrorDto.fromErrorCode(ErrorCodesEnum.PLATFORM_ID_DOES_NOT_EXIST))) : Optional.empty()));
-    }
-
     public NoteResponseDto createNoteRequestForControl(final PostFollowUpRequestDto postFollowUpRequestDto) {
         log.info("create Note Request for control with requestId : {}", postFollowUpRequestDto.getRequestId());
-        final ControlDto savedControl = getControlByRequestId(postFollowUpRequestDto.getRequestId());
+        final ControlDto savedControl = getControlDtoByRequestId(postFollowUpRequestDto.getRequestId());
         final boolean isCurrentGate = gateProperties.isCurrentGate(savedControl.getGateId());
         final String receiver = isCurrentGate ? savedControl.getPlatformId() : savedControl.getGateId();
         //log FTI023
@@ -143,32 +130,37 @@ public class ControlService {
         }
     }
 
-    public Optional<ErrorDto> validateDto(final ValidableDto validatable) {
+    public Optional<ErrorDto> validateDto(final ValidatableDto validatable) {
         final Validator validator;
         try (final ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();
         }
 
-        final Set<ConstraintViolation<ValidableDto>> violations = validator.validate(validatable);
+        final Set<ConstraintViolation<ValidatableDto>> violations = validator.validate(validatable);
 
         if (violations.isEmpty()) {
             return Optional.empty();
         }
 
         //we manage only one error by control
-        final ConstraintViolation<ValidableDto> constraintViolation = violations.iterator().next();
+        final ConstraintViolation<ValidatableDto> constraintViolation = violations.iterator().next();
 
         return Optional.of(ErrorDto.fromErrorCode(ErrorCodesEnum.valueOf(constraintViolation.getMessage())));
     }
 
-    public ControlDto getControlByRequestId(final String requestId) {
+    public ControlDto getControlDtoByRequestId(final String requestId) {
         log.info("get ControlEntity with request id : {}", requestId);
         final Optional<ControlEntity> optionalControlEntity = getByRequestId(requestId);
         if (optionalControlEntity.isPresent()) {
             return mapperUtils.controlEntityToControlDto(optionalControlEntity.get());
         } else {
-            return buildNotFoundControlEntity();
+            return buildNotFoundControlDto();
         }
+    }
+
+    public ControlEntity getControlEntityByRequestId(String requestId) {
+        Optional<ControlEntity> controlEntity = findByRequestId(requestId);
+        return controlEntity.orElse(buildNotFoundControlEntity());
     }
 
     public Optional<ControlEntity> getByRequestId(final String requestId) {
@@ -181,7 +173,7 @@ public class ControlService {
         if (optionalControlEntity.isPresent()) {
             return updatePendingControl(optionalControlEntity.get());
         } else {
-            return buildNotFoundControlEntity();
+            return buildNotFoundControlDto();
         }
     }
 
@@ -253,10 +245,16 @@ public class ControlService {
         return requestServiceFactory.getRequestServiceByRequestType(requestType);
     }
 
-    private ControlDto buildNotFoundControlEntity() {
+    private ControlDto buildNotFoundControlDto() {
         return mapperUtils.controlEntityToControlDto(ControlEntity.builder()
                 .status(StatusEnum.ERROR)
                 .error(buildErrorEntity(ID_NOT_FOUND.name())).build());
+    }
+
+    private ControlEntity buildNotFoundControlEntity() {
+        return ControlEntity.builder()
+                .status(StatusEnum.ERROR)
+                .error(buildErrorEntity(ID_NOT_FOUND.name())).build();
     }
 
     private static ErrorEntity buildErrorEntity(final String errorCode) {
@@ -277,13 +275,6 @@ public class ControlService {
 
     public ControlDto save(final ControlEntity controlEntity) {
         return mapperUtils.controlEntityToControlDto(controlRepository.save(controlEntity));
-    }
-
-    private <T extends ValidableDto> RequestIdDto createControl(final T searchDto, final ControlDto controlDto, Function<T, Optional<ErrorDto>> validate) {
-        validate.apply(searchDto).ifPresentOrElse(
-                error -> updateControlWithError(controlDto, error, true),
-                () -> createControlFromType(searchDto, controlDto));
-        return buildResponse(controlDto);
     }
 
     public void createUilControl(final ControlDto controlDto) {
@@ -326,35 +317,6 @@ public class ControlService {
             }
         });
         log.info("Identifier control with request uuid '{}' has been register", saveControl.getRequestId());
-    }
-
-    private <T extends ValidableDto> void createControlFromType(final T searchDto, final ControlDto controlDto) {
-        logManager.logAppRequest(controlDto, searchDto, ComponentType.CA_APP, ComponentType.GATE, LogManager.FTI_008_FTI_014);
-        if (searchDto instanceof UilDto) {
-            createUilControl(controlDto);
-        } else if (searchDto instanceof final SearchWithIdentifiersRequestDto searchWithIdentifiersRequestDto) {
-            createIdentifiersControl(controlDto, searchWithIdentifiersRequestDto);
-        }
-    }
-
-    public RequestIdDto getControlEntity(final String requestId) {
-        final ControlDto controlDto = getControlByRequestId(requestId);
-        return buildResponse(controlDto);
-    }
-
-    private RequestIdDto buildResponse(final ControlDto controlDto) {
-        final RequestIdDto result = RequestIdDto.builder()
-                .requestId(controlDto.getRequestId())
-                .status(controlDto.getStatus())
-                .data(controlDto.getEftiData()).build();
-        if (controlDto.isError() && controlDto.getError() != null) {
-            result.setErrorDescription(controlDto.getError().getErrorDescription());
-            result.setErrorCode(controlDto.getError().getErrorCode());
-        }
-        if (controlDto.getStatus() != PENDING) { // pending request are not logged
-            logManager.logAppResponse(controlDto, result, ComponentType.GATE, gateProperties.getOwner(), ComponentType.CA_APP, null, LogManager.FTI_011_FTI_017);
-        }
-        return result;
     }
 
     public int updatePendingControls() {
