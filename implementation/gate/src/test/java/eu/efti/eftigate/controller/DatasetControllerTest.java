@@ -3,7 +3,7 @@ package eu.efti.eftigate.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.efti.commons.dto.UilDto;
 import eu.efti.commons.enums.StatusEnum;
-import eu.efti.eftigate.dto.RequestIdDto;
+import eu.efti.eftigate.dto.DatasetDto;
 import eu.efti.eftigate.entity.ControlEntity;
 import eu.efti.eftigate.service.ControlService;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DatasetControllerTest {
 
     public static final String REQUEST_ID = "requestId";
-    private final RequestIdDto requestIdDto = new RequestIdDto();
+    private final DatasetDto datasetDto = new DatasetDto();
     @Autowired
     protected MockMvc mockMvc;
     @MockBean
@@ -42,8 +42,8 @@ class DatasetControllerTest {
 
     @BeforeEach
     void before() {
-        requestIdDto.setStatus(StatusEnum.PENDING);
-        requestIdDto.setRequestId(REQUEST_ID);
+        datasetDto.setStatus(StatusEnum.PENDING);
+        datasetDto.setRequestId(REQUEST_ID);
     }
 
     @Test
@@ -64,7 +64,7 @@ class DatasetControllerTest {
         uilDto.setDatasetId("uuid");
         uilDto.setGateId("gate");
 
-        Mockito.when(controlService.createUilControl(uilDto)).thenReturn(requestIdDto);
+        Mockito.when(controlService.createUilControl(uilDto)).thenReturn(datasetDto);
 
         mockMvc.perform(post("/v1/dataset")
                         .with(csrf())
@@ -77,7 +77,7 @@ class DatasetControllerTest {
     @Test
     @WithMockUser
     void getDatasetTest() throws Exception {
-        Mockito.when(controlService.getControlEntity(REQUEST_ID)).thenReturn(requestIdDto);
+        Mockito.when(controlService.getControlEntity(REQUEST_ID)).thenReturn(datasetDto);
 
         final MvcResult result = mockMvc.perform(get("/v1/dataset").param("requestId", REQUEST_ID))
                 .andDo(print())
@@ -85,7 +85,7 @@ class DatasetControllerTest {
                 .andReturn();
         final String contentAsString = result.getResponse().getContentAsString();
 
-        final RequestIdDto response = new ObjectMapper().readValue(contentAsString, RequestIdDto.class);
+        final DatasetDto response = new ObjectMapper().readValue(contentAsString, DatasetDto.class);
         Assertions.assertNotNull(response);
         Assertions.assertEquals(REQUEST_ID, response.getRequestId());
     }

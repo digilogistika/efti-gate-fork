@@ -1,6 +1,6 @@
 package eu.efti.eftigate.controller.api;
 
-import eu.efti.eftigate.dto.RequestIdDto;
+import eu.efti.eftigate.dto.DatasetDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ public interface DatasetControllerApi {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
     @GetMapping("/dataset/{gateId}/{platformId}/{datasetId}")
-    ResponseEntity<RequestIdDto> getDataset(
+    ResponseEntity<DatasetDto> getDataset(
             @PathVariable
             @NotNull(message = "UIL_GATE_MISSING")
             @NotBlank(message = "UIL_GATE_MISSING")

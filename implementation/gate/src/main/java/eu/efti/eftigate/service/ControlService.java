@@ -3,7 +3,7 @@ package eu.efti.eftigate.service;
 import eu.efti.commons.constant.EftiGateConstants;
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.ErrorDto;
-import eu.efti.commons.dto.PostFollowUpRequestDto;
+import eu.efti.commons.dto.FollowUpRequestDto;
 import eu.efti.commons.dto.RequestDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import eu.efti.commons.dto.ValidatableDto;
@@ -90,18 +90,18 @@ public class ControlService {
         return controlEntity.orElse(null);
     }
 
-    public NoteResponseDto createNoteRequestForControl(final PostFollowUpRequestDto postFollowUpRequestDto) {
-        log.info("create Note Request for control with requestId : {}", postFollowUpRequestDto.getRequestId());
-        final ControlDto savedControl = getControlDtoByRequestId(postFollowUpRequestDto.getRequestId());
+    public NoteResponseDto createNoteRequestForControl(final FollowUpRequestDto followUpRequestDto) {
+        log.info("create Note Request for control with requestId : {}", followUpRequestDto.getRequestId());
+        final ControlDto savedControl = getControlDtoByRequestId(followUpRequestDto.getRequestId());
         final boolean isCurrentGate = gateProperties.isCurrentGate(savedControl.getGateId());
         final String receiver = isCurrentGate ? savedControl.getPlatformId() : savedControl.getGateId();
         //log FTI023
-        logManager.logNoteReceiveFromAapMessage(savedControl, serializeUtils.mapObjectToBase64String(postFollowUpRequestDto), receiver, ComponentType.CA_APP, ComponentType.GATE, true, RequestTypeEnum.NOTE_SEND, LogManager.FTI_023);
+        logManager.logNoteReceiveFromAapMessage(savedControl, serializeUtils.mapObjectToBase64String(followUpRequestDto), receiver, ComponentType.CA_APP, ComponentType.GATE, true, RequestTypeEnum.NOTE_SEND, LogManager.FTI_023);
         if (savedControl.isFound()) {
             log.info("sending note to platform {}", savedControl.getPlatformId());
             return createNoteRequestForControl(
                     savedControl,
-                    postFollowUpRequestDto,
+                    followUpRequestDto,
                     dto -> validateDto(dto)
                             .or(() -> isCurrentGate ? (platformIntegrationService.platformExists(savedControl.getPlatformId()) ? Optional.empty() : Optional.of(ErrorDto.fromErrorCode(ErrorCodesEnum.PLATFORM_ID_DOES_NOT_EXIST))) : Optional.empty()));
         } else {
@@ -109,7 +109,7 @@ public class ControlService {
         }
     }
 
-    private NoteResponseDto createNoteRequestForControl(final ControlDto controlDto, final PostFollowUpRequestDto notesDto, Function<PostFollowUpRequestDto, Optional<ErrorDto>> validate) {
+    private NoteResponseDto createNoteRequestForControl(final ControlDto controlDto, final FollowUpRequestDto notesDto, Function<FollowUpRequestDto, Optional<ErrorDto>> validate) {
         final Optional<ErrorDto> errorOptional = validate.apply(notesDto);
         final boolean isCurrentGate = gateProperties.isCurrentGate(controlDto.getGateId());
         final String receiver = isCurrentGate ? controlDto.getPlatformId() : controlDto.getGateId();

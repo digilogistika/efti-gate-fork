@@ -2,7 +2,7 @@ package eu.efti.eftigate.controller;
 
 import eu.efti.commons.dto.UilDto;
 import eu.efti.eftigate.controller.api.DatasetControllerApi;
-import eu.efti.eftigate.dto.RequestIdDto;
+import eu.efti.eftigate.dto.DatasetDto;
 import eu.efti.eftigate.service.DatasetSearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class DatasetController implements DatasetControllerApi {
     private final DatasetSearchService datasetSearchService;
 
     @Override
-    public ResponseEntity<RequestIdDto> getDataset(String gateId, String platformId, String datasetId, List<String> subsetIds) {
+    public ResponseEntity<DatasetDto> getDataset(String gateId, String platformId, String datasetId, List<String> subsetIds) {
         log.info("GET on /v1/dataset with params gateId: {}, platformId: {}, datasetId: {} and subsets: {}", gateId, platformId, datasetId, subsetIds);
         UilDto dto = UilDto.builder()
                 .gateId(gateId)

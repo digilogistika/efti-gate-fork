@@ -6,7 +6,7 @@ import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import eu.efti.commons.dto.identifiers.api.ConsignmentApiDto;
 import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
 import eu.efti.commons.enums.StatusEnum;
-import eu.efti.eftigate.dto.RequestIdDto;
+import eu.efti.eftigate.dto.DatasetDto;
 import eu.efti.eftigate.service.ControlService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ class IdentifiersControllerTest {
         final SearchWithIdentifiersRequestDto identifiersRequestDto = SearchWithIdentifiersRequestDto.builder().identifier("abc123").build();
 
         Mockito.when(controlService.createIdentifiersControl(identifiersRequestDto)).thenReturn(
-                RequestIdDto.builder()
+                DatasetDto.builder()
                         .status(StatusEnum.PENDING)
                         .requestId(REQUEST_ID)
                         .build());

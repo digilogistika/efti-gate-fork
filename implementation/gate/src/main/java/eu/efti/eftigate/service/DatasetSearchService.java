@@ -6,7 +6,7 @@ import eu.efti.commons.dto.UilDto;
 import eu.efti.commons.enums.ErrorCodesEnum;
 import eu.efti.commons.enums.RequestTypeEnum;
 import eu.efti.eftigate.config.GateProperties;
-import eu.efti.eftigate.dto.RequestIdDto;
+import eu.efti.eftigate.dto.DatasetDto;
 import eu.efti.eftigate.entity.ControlEntity;
 import eu.efti.eftigate.utils.ControlUtils;
 import eu.efti.eftilogger.model.ComponentType;
@@ -33,7 +33,7 @@ public class DatasetSearchService {
     private final PlatformIntegrationService platformIntegrationService;
     private final LogManager logManager;
 
-    public RequestIdDto getDataset(final UilDto uilDto) {
+    public DatasetDto getDataset(final UilDto uilDto) {
         boolean isLocal = gateProperties.isCurrentGate(uilDto.getGateId());
         ControlDto controlDto = ControlUtils.fromUilControl(
                 uilDto,
@@ -57,9 +57,9 @@ public class DatasetSearchService {
         logManager.logAppRequest(controlDto, uilDto, ComponentType.CA_APP, ComponentType.GATE, LogManager.FTI_008_FTI_014);
         controlService.createUilControl(controlDto);
 
-        CompletableFuture<RequestIdDto> processingFuture = CompletableFuture.supplyAsync(
+        CompletableFuture<DatasetDto> processingFuture = CompletableFuture.supplyAsync(
                 () -> waitForResponse(requestId));
-        RequestIdDto response;
+        DatasetDto response;
 
         try {
             response = processingFuture.get(60, TimeUnit.SECONDS);
@@ -73,7 +73,7 @@ public class DatasetSearchService {
         return response;
     }
 
-    private RequestIdDto waitForResponse(final String requestId) {
+    private DatasetDto waitForResponse(final String requestId) {
         ControlEntity entity = controlService.getControlEntityByRequestId(requestId);
         while (entity.getStatus().equals(PENDING)) {
             log.info("Waiting for dataset response for requestId {}", requestId);
@@ -89,8 +89,8 @@ public class DatasetSearchService {
         return buildResponse(controlService.getControlDtoByRequestId(requestId));
     }
 
-    private RequestIdDto buildResponse(final ControlDto controlDto) {
-        final RequestIdDto result = RequestIdDto.builder()
+    private DatasetDto buildResponse(final ControlDto controlDto) {
+        final DatasetDto result = DatasetDto.builder()
                 .requestId(controlDto.getRequestId())
                 .status(controlDto.getStatus())
                 .data(controlDto.getEftiData()).build();

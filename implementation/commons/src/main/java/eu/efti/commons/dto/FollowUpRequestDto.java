@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PostFollowUpRequestDto implements ValidatableDto {
+public class FollowUpRequestDto implements ValidatableDto {
     @Size(max = 255, message = "NOTE_TOO_LONG")
     private String message;
     private String requestId;
