@@ -53,9 +53,8 @@ public class ControlUtils {
     }
 
     public static ControlDto fromLocalIdentifiersControl(final SearchWithIdentifiersRequestDto identifiersRequestDto, final RequestTypeEnum requestTypeEnum) {
-        final AuthorityDto authorityDto = identifiersRequestDto.getAuthority();
 
-        final ControlDto controlDto = getControlFrom(requestTypeEnum, authorityDto, UUID.randomUUID().toString());
+        final ControlDto controlDto = getControlFrom(requestTypeEnum, UUID.randomUUID().toString());
         controlDto.setTransportIdentifiers(SearchParameter.builder()
                 .identifier(identifiersRequestDto.getIdentifier())
                 .identifierType(identifiersRequestDto.getIdentifierType())
@@ -67,7 +66,7 @@ public class ControlUtils {
     }
 
     public static ControlDto fromExternalIdentifiersControl(final IdentifierQuery identifierQuery, final RequestTypeEnum requestTypeEnum, final String fromGateId, final String gateId) {
-        final ControlDto controlDto = getControlFrom(requestTypeEnum, null, identifierQuery.getRequestId());
+        final ControlDto controlDto = getControlFrom(requestTypeEnum, identifierQuery.getRequestId());
         controlDto.setGateId(gateId);
         controlDto.setFromGateId(fromGateId);
         controlDto.setTransportIdentifiers(SearchParameter.builder()
@@ -79,13 +78,12 @@ public class ControlUtils {
         return controlDto;
     }
 
-    private static ControlDto getControlFrom(final RequestTypeEnum requestTypeEnum, final AuthorityDto authorityDto, final String requestId) {
+    private static ControlDto getControlFrom(final RequestTypeEnum requestTypeEnum, final String requestId) {
         final ControlDto controlDto = new ControlDto();
         controlDto.setRequestId(requestId);
         controlDto.setRequestType(requestTypeEnum);
         controlDto.setStatus(PENDING);
         controlDto.setSubsetIds(List.of(SUBSET_ID));
-        controlDto.setAuthority(authorityDto);
         return controlDto;
     }
 }

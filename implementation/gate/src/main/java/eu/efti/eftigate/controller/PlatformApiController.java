@@ -48,15 +48,14 @@ public class PlatformApiController {
 
         String platformId = platformIdentityService.getPlatformIdFromHeader(apiKey);
 
-        String xml = body;
-        var validationError = validationService.isXmlValid(xml);
+        var validationError = validationService.isXmlValid(body);
         if (validationError.isPresent()) {
             var problemDetail = org.springframework.http.ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
             problemDetail.setDetail(validationError.get());
             return ResponseEntity.of(problemDetail).headers(h -> h.setContentType(MediaType.APPLICATION_PROBLEM_XML)).build();
         }
 
-        SupplyChainConsignment consignment = serializeUtils.mapXmlStringToJaxbObject(xml, SupplyChainConsignment.class);
+        SupplyChainConsignment consignment = serializeUtils.mapXmlStringToJaxbObject(body, SupplyChainConsignment.class);
 
         SaveIdentifiersRequest saveIdentifiersRequest = new SaveIdentifiersRequest();
         saveIdentifiersRequest.setDatasetId(datasetId);

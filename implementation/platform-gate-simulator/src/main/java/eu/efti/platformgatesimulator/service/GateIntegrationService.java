@@ -35,7 +35,7 @@ public class GateIntegrationService {
                     .builder()
                     .baseUrl(url)
                     .build();
-            String response = restClient.put()
+            String response = restClient.post()
                     .header("X-API-Key", apiKeyService.getApiKey())
                     .contentType(MediaType.APPLICATION_XML)
                     .body(xml)
