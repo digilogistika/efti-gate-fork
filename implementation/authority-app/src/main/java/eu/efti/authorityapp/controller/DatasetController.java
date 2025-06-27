@@ -50,7 +50,7 @@ public class DatasetController implements DatasetControllerApi {
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 
         try {
-            log.info("Sending GET request to gate at: {}", queryUrl);
+            log.info("Sending GET request for dataset to gate at: {}", queryUrl);
             ResponseEntity<DatasetDto> response = restTemplate.exchange(
                     queryUrl,
                     HttpMethod.GET,

@@ -2,10 +2,8 @@ package eu.efti.authorityapp.controller;
 
 import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.IdentifiersControllerApi;
-import eu.efti.authorityapp.dto.DatasetDto;
 import eu.efti.authorityapp.service.ConfigService;
 import eu.efti.commons.dto.IdentifiersResponseDto;
-import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -14,12 +12,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -31,63 +30,67 @@ public class IdentifiersController implements IdentifiersControllerApi {
     private final ConfigService configService;
 
     @Override
-    @PostMapping("/identifiers")
-    public ResponseEntity<DatasetDto> requestIdentifiers(@RequestBody SearchWithIdentifiersRequestDto searchIdentifiersDto) {
-        log.info("Forwarding POST request to gate for identifier: {}", searchIdentifiersDto);
+    @GetMapping("/identifiers/{identifier}")
+    public ResponseEntity<IdentifiersResponseDto> getIdentifiers(
+            String identifier,
+            String modeCode,
+            List<String> identifierType,
+            String registrationCountryCode,
+            Boolean dangerousGoodsIndicator,
+            List<String> eftiGateIndicator) {
+        log.info("Querying gate for identifiers with identifier: {}, modeCode: {}, identifierType: {}, registrationCountryCode: {}, dangerousGoodsIndicator: {}, eftiGateIndicator: {}",
+                identifier, modeCode, identifierType, registrationCountryCode, dangerousGoodsIndicator, eftiGateIndicator);
 
-        try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/identifiers";
+        List<String> queryBuilder = new ArrayList<>();
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("X-API-Key", configService.getApiKey());
-            headers.set("Content-Type", "application/json");
-            headers.set("Accept", "application/json");
-
-            HttpEntity<SearchWithIdentifiersRequestDto> requestEntity = new HttpEntity<>(searchIdentifiersDto, headers);
-
-            ResponseEntity<DatasetDto> response = restTemplate.postForEntity(
-                    gateUrl,
-                    requestEntity,
-                    DatasetDto.class
-            );
-            log.info("Gate responded with status: {}", response.getStatusCode());
-
-            return ResponseEntity.status(response.getStatusCode())
-                    .body(response.getBody());
-
-        } catch (Exception e) {
-            log.error("Error forwarding request to gate", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        if (modeCode != null) {
+            queryBuilder.add("modeCode=" + modeCode);
         }
-    }
+        if (identifierType != null && !identifierType.isEmpty()) {
+            queryBuilder.add("identifierType=" + String.join(",", identifierType));
+        }
+        if (registrationCountryCode != null) {
+            queryBuilder.add("registrationCountryCode=" + registrationCountryCode);
+        }
+        if (dangerousGoodsIndicator != null) {
+            queryBuilder.add("dangerousGoodsIndicator=" + dangerousGoodsIndicator);
+        }
+        if (eftiGateIndicator != null && !eftiGateIndicator.isEmpty()) {
+            queryBuilder.add("eftiGateIndicator=" + String.join(",", eftiGateIndicator));
+        }
 
-    @Override
-    @GetMapping("/identifiers")
-    public ResponseEntity<IdentifiersResponseDto> getRequestIdentifiers(@RequestParam String requestId) {
-        log.info("Forwarding GET request to gate for requestId: {}", requestId);
+        String queryParams = String.join("&", queryBuilder);
+
+        String queryUrl = UriComponentsBuilder
+                .newInstance()
+                .scheme(gateProperties.getBaseUrl().getProtocol())
+                .host(gateProperties.getBaseUrl().getHost())
+                .port(gateProperties.getBaseUrl().getPort())
+                .pathSegment("v1", "identifiers", identifier)
+                .query(queryParams)
+                .toUriString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-API-Key", configService.getApiKey());
+        headers.set("Accept", "application/json");
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 
         try {
-            String gateUrl = gateProperties.getBaseUrl() + "/v1/identifiers?requestId=" + requestId;
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("X-API-Key", configService.getApiKey());
-            headers.set("Accept", "application/json");
-
-            HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-
+            log.info("Sending GET request for identifiers to gate at: {}", queryUrl);
             ResponseEntity<IdentifiersResponseDto> response = restTemplate.exchange(
-                    gateUrl,
+                    queryUrl,
                     HttpMethod.GET,
                     requestEntity,
                     IdentifiersResponseDto.class
             );
-            log.info("Gate responded with status: {}", response.getStatusCode());
+            log.info("Received response from gate with status: {}", response.getStatusCode());
 
-            return ResponseEntity.status(response.getStatusCode())
+            return ResponseEntity
+                    .status(response.getStatusCode())
                     .body(response.getBody());
-
         } catch (Exception e) {
-            log.error("Error forwarding request to gate", e);
+            log.error("Error querying gate for identifiers", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
