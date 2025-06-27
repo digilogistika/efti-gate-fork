@@ -336,19 +336,6 @@ public class ControlService {
         return this.save(controlDto);
     }
 
-    public ControlEntity getControlForCriteria(final String requestId, final RequestStatusEnum requestStatus) {
-        Preconditions.checkArgument(requestId != null, "Request Uuid must not be null");
-        final List<ControlEntity> controls = controlRepository.findByCriteria(requestId, requestStatus);
-        if (CollectionUtils.isNotEmpty(controls)) {
-            if (controls.size() > 1) {
-                throw new AmbiguousIdentifierException(format("Control with request uuid '%s', and request with status '%s' is not unique, %d controls found!", requestId, requestStatus, controls.size()));
-            } else {
-                return controls.get(0);
-            }
-        }
-        return null;
-    }
-
     public Optional<ControlEntity> findByRequestId(final String controlRequestId) {
         return controlRepository.findByRequestId(controlRequestId);
     }

@@ -5,6 +5,7 @@ import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
 import eu.efti.commons.enums.*;
 import eu.efti.eftigate.entity.ControlEntity;
 import eu.efti.eftigate.entity.IdentifiersRequestEntity;
+import eu.efti.eftigate.exception.DtoValidationException;
 import eu.efti.eftigate.mapper.MapperUtils;
 import eu.efti.eftigate.service.gate.EftiGateIdResolver;
 import eu.efti.eftigate.service.request.IdentifiersRequestService;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -40,31 +40,21 @@ public class IdentifiersSearchService {
     public IdentifiersResponseDto searchIdentifiers(SearchWithIdentifiersRequestDto searchRequestDto) {
         ControlDto controlDto = ControlUtils.fromLocalIdentifiersControl(searchRequestDto, RequestTypeEnum.LOCAL_IDENTIFIERS_SEARCH);
         String requestId = controlDto.getRequestId();
-
         Optional<ErrorDto> violation = controlService.validateDto(searchRequestDto);
         if (violation.isPresent()) {
             ControlService.updateControlWithError(controlDto, violation.get(), true);
-            // This is an error and everything else should not be continued
+            throw new DtoValidationException(violation.get().getErrorDescription());
         }
-
         logManager.logAppRequest(controlDto, searchRequestDto, ComponentType.CA_APP, ComponentType.GATE, LogManager.FTI_008_FTI_014);
         controlService.createIdentifiersControl(controlDto, searchRequestDto);
 
-        CompletableFuture<IdentifiersResponseDto> processingFuture = CompletableFuture.supplyAsync(
-                () -> waitForResponse(requestId, searchRequestDto.getEftiGateIndicator().size()));
-        IdentifiersResponseDto response;
-
-        try {
-            response = processingFuture.get(60, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (TimeoutException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+        return CompletableFuture
+                .supplyAsync(() -> waitForResponse(requestId, searchRequestDto.getEftiGateIndicator().size()))
+                .orTimeout(60, TimeUnit.SECONDS)
+                .exceptionally(this::handleAsyncException)
+                .join();
     }
+
 
     private IdentifiersResponseDto waitForResponse(String requestId, int requestCount) {
         ControlEntity entity = controlService.getControlEntityByRequestId(requestId);
@@ -133,5 +123,16 @@ public class IdentifiersSearchService {
             return StatusEnum.ERROR.name();
         }
         return requestStatus.name();
+    }
+
+    private IdentifiersResponseDto handleAsyncException(Throwable throwable) {
+        if (throwable instanceof TimeoutException) {
+            throw new RuntimeException("Processing timed out after 60 seconds", throwable);
+        } else if (throwable instanceof InterruptedException) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Processing was interrupted", throwable);
+        } else {
+            throw new RuntimeException("Processing failed", throwable);
+        }
     }
 }

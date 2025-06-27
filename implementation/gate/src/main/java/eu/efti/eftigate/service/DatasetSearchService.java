@@ -8,6 +8,7 @@ import eu.efti.commons.enums.RequestTypeEnum;
 import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.DatasetDto;
 import eu.efti.eftigate.entity.ControlEntity;
+import eu.efti.eftigate.exception.DtoValidationException;
 import eu.efti.eftigate.utils.ControlUtils;
 import eu.efti.eftilogger.model.ComponentType;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -44,33 +44,24 @@ public class DatasetSearchService {
         Optional<ErrorDto> violation = controlService.validateDto(uilDto);
         if (violation.isPresent()) {
             ControlService.updateControlWithError(controlDto, violation.get(), true);
-            // This is an error and everything else should not be continued
+            throw new DtoValidationException(violation.get().getErrorDescription());
         } else if (isLocal && !platformIntegrationService.platformExists(uilDto.getPlatformId())) {
             ControlService.updateControlWithError(
                     controlDto,
                     ErrorDto.fromErrorCode(ErrorCodesEnum.PLATFORM_ID_DOES_NOT_EXIST),
                     true
             );
-            // This is an error and everything else should not be continued
+            throw new DtoValidationException("Platform id " + uilDto.getPlatformId() + " doesn't exist");
         }
 
         logManager.logAppRequest(controlDto, uilDto, ComponentType.CA_APP, ComponentType.GATE, LogManager.FTI_008_FTI_014);
         controlService.createUilControl(controlDto);
 
-        CompletableFuture<DatasetDto> processingFuture = CompletableFuture.supplyAsync(
-                () -> waitForResponse(requestId));
-        DatasetDto response;
-
-        try {
-            response = processingFuture.get(60, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (TimeoutException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+        return CompletableFuture
+                .supplyAsync(() -> waitForResponse(requestId))
+                .orTimeout(60, TimeUnit.SECONDS)
+                .exceptionally(this::handleAsyncException)
+                .join();
     }
 
     private DatasetDto waitForResponse(final String requestId) {
@@ -102,5 +93,16 @@ public class DatasetSearchService {
             logManager.logAppResponse(controlDto, result, ComponentType.GATE, gateProperties.getOwner(), ComponentType.CA_APP, null, LogManager.FTI_011_FTI_017);
         }
         return result;
+    }
+
+    private DatasetDto handleAsyncException(Throwable throwable) {
+        if (throwable instanceof TimeoutException) {
+            throw new RuntimeException("Processing timed out after 60 seconds", throwable);
+        } else if (throwable instanceof InterruptedException) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Processing was interrupted", throwable);
+        } else {
+            throw new RuntimeException("Processing failed", throwable);
+        }
     }
 }

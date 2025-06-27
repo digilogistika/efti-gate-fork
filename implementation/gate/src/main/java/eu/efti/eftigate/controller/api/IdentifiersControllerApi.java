@@ -1,7 +1,6 @@
 package eu.efti.eftigate.controller.api;
 
 import eu.efti.commons.dto.IdentifiersResponseDto;
-import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import eu.efti.commons.enums.CountryIndicator;
 import eu.efti.commons.validator.ValueOfEnum;
 import eu.efti.v1.codes.CountryCode;
