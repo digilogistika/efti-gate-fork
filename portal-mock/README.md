@@ -1,29 +1,59 @@
-# eFTI CA APP mock 
+# PortalMock
 
-This project is the mock for the Competent Authority application.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
 
-## Prerequisites
+## Development server
 
-- NodeJs version 	^18.19, ^20.11 or ^22.0.0
-- The deploy/local docker project running
+To start a local development server, run:
 
-For easier configuration, this mock use the borduria gate as it's associated gate, so make sure it is up and running. 
-It also use the apache httpd server to serve the web app, and keycloak for authentication purpose.
-
-Open your host file (for windows C:\Windows\System32\drivers\etc\hosts) and add the following:
-```
-127.0.0.1 portal.efti.fr
+```bash
+ng serve
 ```
 
-## Run the project
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-move to the root of this project and run
+## Code scaffolding
 
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+
+```bash
+ng generate component component-name
 ```
-npm ci
-npm start
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
 ```
 
-Then go to http://portal.efti.fr:83 and you should be asked to log in:
-- user: user_bo
-- password: Azerty59*123
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
