@@ -59,11 +59,11 @@ class ApiKeyFilterTest {
 
     // Platform endpoint tests
     @Test
-    void shouldAllowValidPlatformApiKeyForIdentifiersPutEndpoint() throws ServletException, IOException {
+    void shouldAllowValidPlatformApiKeyForIdentifiersPostEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_PLATFORM_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
 
         PlatformEntity platformEntity = new PlatformEntity();
         platformEntity.setSecret("hashed-platform-secret");
@@ -94,11 +94,11 @@ class ApiKeyFilterTest {
     }
 
     @Test
-    void shouldRejectInvalidPlatformApiKeyForIdentifiersPutEndpoint() throws ServletException, IOException {
+    void shouldRejectInvalidPlatformApiKeyForIdentifiersPostEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_PLATFORM_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
 
         PlatformEntity platformEntity = new PlatformEntity();
         platformEntity.setSecret("hashed-platform-secret");
@@ -114,11 +114,11 @@ class ApiKeyFilterTest {
     }
 
     @Test
-    void shouldRejectNonExistentPlatformForIdentifiersPutEndpoint() throws ServletException, IOException {
+    void shouldRejectNonExistentPlatformForIdentifiersPostEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_PLATFORM_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
         when(platformRepository.findByPlatformId(PLATFORM_ID)).thenReturn(null);
 
         // When
@@ -134,21 +134,6 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/dataset");
-
-        // When
-        apiKeyFilter.doFilterInternal(request, response, filterChain);
-
-        // Then
-        verify(filterChain).doFilter(request, response);
-        verify(response, never()).sendError(anyInt(), anyString());
-    }
-
-    @Test
-    void shouldAllowSuperApiKeyForIdentifiersPostEndpoint() throws ServletException, IOException {
-        // Given
-        when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
-        when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("POST");
 
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);
@@ -192,26 +177,6 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/dataset");
-
-        AuthorityUserEntity authorityUserEntity = new AuthorityUserEntity();
-        authorityUserEntity.setSecret("hashed-authority-secret");
-        when(authorityUserRepository.findByAuthorityId(AUTHORITY_ID)).thenReturn(Optional.of(authorityUserEntity));
-        when(passwordEncoder.matches(AUTHORITY_SECRET, "hashed-authority-secret")).thenReturn(true);
-
-        // When
-        apiKeyFilter.doFilterInternal(request, response, filterChain);
-
-        // Then
-        verify(filterChain).doFilter(request, response);
-        verify(response, never()).sendError(anyInt(), anyString());
-    }
-
-    @Test
-    void shouldAllowValidAuthorityApiKeyForIdentifiersPostEndpoint() throws ServletException, IOException {
-        // Given
-        when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
-        when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("POST");
 
         AuthorityUserEntity authorityUserEntity = new AuthorityUserEntity();
         authorityUserEntity.setSecret("hashed-authority-secret");
@@ -401,7 +366,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(null);
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
 
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);
@@ -416,7 +381,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("invalid-format");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
 
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);
@@ -445,7 +410,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("_secret");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
 
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);
@@ -460,7 +425,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("user_");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
 
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);
@@ -476,7 +441,7 @@ class ApiKeyFilterTest {
         String apiKeyWithMultipleUnderscores = "platform123_secret_with_underscores";
         when(request.getHeader("X-API-Key")).thenReturn(apiKeyWithMultipleUnderscores);
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
-        when(request.getMethod()).thenReturn("PUT");
+        when(request.getMethod()).thenReturn("POST");
 
         PlatformEntity platformEntity = new PlatformEntity();
         platformEntity.setSecret("hashed-platform-secret");

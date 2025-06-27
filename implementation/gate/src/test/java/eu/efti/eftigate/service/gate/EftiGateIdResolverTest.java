@@ -38,7 +38,6 @@ class EftiGateIdResolverTest {
 
         this.searchWithIdentifiersRequestDto.setIdentifier("abc123");
         this.searchWithIdentifiersRequestDto.setRegistrationCountryCode("FR");
-        this.searchWithIdentifiersRequestDto.setAuthority(authorityDto);
         this.searchWithIdentifiersRequestDto.setModeCode("ROAD");
 
         frGateEntity = GateEntity.builder().id(1L).gateId("https://efti.gate.fr.eu").country(CountryIndicator.FR).build();

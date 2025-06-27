@@ -4,7 +4,6 @@ import eu.efti.commons.dto.AuthorityDto;
 import eu.efti.commons.dto.ContactInformationDto;
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.ErrorDto;
-import eu.efti.commons.dto.IdentifiersResponseDto;
 import eu.efti.commons.dto.IdentifiersResultsDto;
 import eu.efti.commons.dto.FollowUpRequestDto;
 import eu.efti.commons.dto.RequestDto;
@@ -13,8 +12,6 @@ import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import eu.efti.commons.dto.UilDto;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.dto.identifiers.api.ConsignmentApiDto;
-import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
-import eu.efti.commons.enums.ErrorCodesEnum;
 import eu.efti.commons.enums.RequestStatusEnum;
 import eu.efti.commons.enums.RequestType;
 import eu.efti.commons.enums.RequestTypeEnum;
@@ -175,7 +172,6 @@ class ControlServiceTest extends AbstractServiceTest {
 
         this.searchWithIdentifiersRequestDto.setIdentifier("abc123");
         this.searchWithIdentifiersRequestDto.setRegistrationCountryCode("FR");
-        this.searchWithIdentifiersRequestDto.setAuthority(authorityDto);
         this.searchWithIdentifiersRequestDto.setModeCode("1");
 
         this.controlDto.setDatasetId(uilDto.getDatasetId());
@@ -240,179 +236,6 @@ class ControlServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void createControlEntitySameGate() {
-        uilDto.setGateId("france");
-
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(requestServiceFactory.getRequestServiceByRequestType(any(RequestTypeEnum.class))).thenReturn(uilRequestService);
-        when(identifiersService.findByUIL(any(), any(), any())).thenReturn(new ConsignmentDto());
-        when(platformIntegrationService.platformExists(uilDto.getPlatformId())).thenReturn(true);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, times(1)).createAndSendRequest(any(), any());
-        verify(controlRepository, times(1)).save(any());
-        verify(logManager).logAppRequest(any(), any(), any(), any(), any());
-        verify(logManager, never()).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertNull(datasetDtoResult.getErrorCode());
-        assertNull(datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createControlEntityTest() {
-        uilDto.setGateId("borduria");
-        uilDto.setPlatformId("acme");
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(requestServiceFactory.getRequestServiceByRequestType(any(RequestTypeEnum.class))).thenReturn(uilRequestService);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, times(1)).createAndSendRequest(any(), any());
-        verify(controlRepository, times(1)).save(any());
-        verify(logManager).logAppRequest(any(), any(), any(), any(), any());
-        verify(logManager, never()).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertNull(datasetDtoResult.getErrorCode());
-        assertNull(datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createControlEntityErrorGateNullTest() {
-        uilDto.setGateId(null);
-        controlDto.setGateId(null);
-        controlEntity.setStatus(StatusEnum.ERROR);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(controlRepository, never()).save(any());
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.UIL_GATE_MISSING.name(), datasetDtoResult.getErrorCode());
-        assertEquals("Missing parameter gateId", datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createControlEntityErrorGateFormatTest() {
-        uilDto.setGateId("http://france.com");
-        controlEntity.setStatus(StatusEnum.ERROR);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(controlRepository, times(0)).save(any());
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.GATE_ID_INCORRECT_FORMAT.name(), datasetDtoResult.getErrorCode());
-        assertEquals("gateId format incorrect.", datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createControlEntityErrorPlatformNullTest() {
-        uilDto.setPlatformId(null);
-        controlDto.setPlatformId(null);
-        controlEntity.setStatus(StatusEnum.ERROR);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(controlRepository, never()).save(any());
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.UIL_PLATFORM_MISSING.name(), datasetDtoResult.getErrorCode());
-        assertEquals("Missing parameter platformId", datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createControlEntityErrorPlatformFormatTest() {
-        uilDto.setPlatformId("https://acme.com");
-        controlEntity.setStatus(StatusEnum.ERROR);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(controlRepository, times(0)).save(any());
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.PLATFORM_ID_INCORRECT_FORMAT.name(), datasetDtoResult.getErrorCode());
-        assertEquals("platformId format incorrect.", datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createControlEntityErrorUuidNullTest() {
-        uilDto.setDatasetId(null);
-        controlDto.setRequestId(null);
-        controlEntity.setStatus(StatusEnum.ERROR);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(controlRepository, never()).save(any());
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.UIL_UUID_MISSING.name(), datasetDtoResult.getErrorCode());
-        assertEquals("Missing parameter datasetId", datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createControlEntityErrorDatasetIdFormatTest() {
-        uilDto.setDatasetId("toto");
-        controlEntity.setStatus(StatusEnum.ERROR);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(controlRepository, times(0)).save(any());
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.DATASET_ID_INCORRECT_FORMAT.name(), datasetDtoResult.getErrorCode());
-        assertEquals("datasetId format is incorrect.", datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void getControlEntitySuccessTest() {
-        uilRequestEntity.setStatus(RequestStatusEnum.SUCCESS);
-        controlEntity.setStatus(StatusEnum.COMPLETE);
-        controlEntity.setRequests(Collections.singletonList(uilRequestEntity));
-        when(controlRepository.findByRequestId(any())).thenReturn(Optional.of(controlEntity));
-
-        final DatasetDto datasetDtoResult = controlService.getControlEntity(requestId);
-
-        verify(controlRepository, times(1)).findByRequestId(any());
-
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(datasetDtoResult.getRequestId(), controlEntity.getRequestId());
-    }
-
-    @Test
-    void getControlEntitySuccessTestWhenStatusComplete() {
-        controlEntity.setStatus(StatusEnum.COMPLETE);
-        when(controlRepository.findByRequestId(any())).thenReturn(Optional.of(controlEntity));
-
-        final DatasetDto datasetDtoResult = controlService.getControlEntity(requestId);
-
-        verify(controlRepository, times(1)).findByRequestId(any());
-
-        verify(logManager).logAppResponse(any(), any(), any(), any(), any(), any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(datasetDtoResult.getRequestId(), controlEntity.getRequestId());
-    }
-
-    @Test
-    void getControlEntityNotFoundTest() {
-        when(controlRepository.findByRequestId(any())).thenReturn(Optional.empty());
-
-        final DatasetDto datasetDtoResult = controlService.getControlEntity(requestId);
-
-        verify(controlRepository, times(1)).findByRequestId(any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(StatusEnum.ERROR, datasetDtoResult.getStatus());
-        assertEquals(0, datasetDtoResult.getData().length);
-    }
-
-    @Test
     void shouldSetError() {
         final String description = "description";
         final String code = "code";
@@ -425,138 +248,6 @@ class ControlServiceTest extends AbstractServiceTest {
 
         verify(controlRepository).save(controlEntityArgumentCaptor.capture());
         assertEquals(StatusEnum.ERROR, controlEntityArgumentCaptor.getValue().getStatus());
-    }
-
-    @Test
-    void createIdentifiersControlTest() {
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(requestServiceFactory.getRequestServiceByRequestType(any(RequestTypeEnum.class))).thenReturn(identifiersRequestService);
-        when(gateToRequestTypeFunction.apply(any())).thenReturn(RequestTypeEnum.EXTERNAL_ASK_IDENTIFIERS_SEARCH);
-        when(eftiGateIdResolver.resolve(any(SearchWithIdentifiersRequestDto.class))).thenReturn(List.of("borduria"));
-
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(identifiersRequestService, times(1)).createAndSendRequest(any(), any());
-        verify(eftiAsyncCallsProcessor, never()).checkLocalRepoAsync(any(), any());
-        verify(controlRepository, times(1)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertNull(datasetDtoResult.getErrorCode());
-        assertNull(datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createIdentifiersControlForLocalRequestTest() {
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(gateToRequestTypeFunction.apply(any())).thenReturn(RequestTypeEnum.LOCAL_IDENTIFIERS_SEARCH);
-        when(eftiGateIdResolver.resolve(any(SearchWithIdentifiersRequestDto.class))).thenReturn(List.of("france"));
-
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(identifiersRequestService, never()).createAndSendRequest(any(), any());
-        verify(eftiAsyncCallsProcessor, times(1)).checkLocalRepoAsync(any(), any());
-        verify(controlRepository, times(1)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertNull(datasetDtoResult.getErrorCode());
-        assertNull(datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void shouldCreateIdentifiersControlWithPendingStatus_whenSomeOfGivenDestinationGatesDoesNotExist() {
-        controlEntity.setRequestType(RequestTypeEnum.EXTERNAL_IDENTIFIERS_SEARCH);
-        searchWithIdentifiersRequestDto.setEftiGateIndicator(List.of("IT", "RO"));
-        when(requestServiceFactory.getRequestServiceByRequestType(any(RequestTypeEnum.class))).thenReturn(identifiersRequestService);
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(gateToRequestTypeFunction.apply(any())).thenReturn(RequestTypeEnum.EXTERNAL_IDENTIFIERS_SEARCH);
-        when(eftiGateIdResolver.resolve(any(SearchWithIdentifiersRequestDto.class))).thenReturn(List.of("http://italie.it"));
-
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(identifiersRequestService, times(1)).createAndSendRequest(any(), any());
-        verify(eftiAsyncCallsProcessor, never()).checkLocalRepoAsync(any(), any());
-        verify(controlRepository, times(1)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(StatusEnum.PENDING, datasetDtoResult.getStatus());
-    }
-
-    @Test
-    void shouldCreateIdentifiersControlWithPendingStatus_whenAllGivenDestinationGatesDoesNotExist() {
-        searchWithIdentifiersRequestDto.setEftiGateIndicator(List.of("IT", "RO"));
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(gateToRequestTypeFunction.apply(any())).thenReturn(RequestTypeEnum.EXTERNAL_IDENTIFIERS_SEARCH);
-
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        verify(identifiersRequestService, never()).createAndSendRequest(any(), any());
-        verify(eftiAsyncCallsProcessor, never()).checkLocalRepoAsync(any(), any());
-        verify(controlRepository, times(1)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(StatusEnum.PENDING, datasetDtoResult.getStatus());
-    }
-
-    @Test
-    void createIdentifiersControlWithMinimumRequiredTest() {
-        searchWithIdentifiersRequestDto.setModeCode(null);
-        searchWithIdentifiersRequestDto.setRegistrationCountryCode(null);
-        searchWithIdentifiersRequestDto.setEftiGateIndicator(null);
-        searchWithIdentifiersRequestDto.setDangerousGoodsIndicator(null);
-
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(gateToRequestTypeFunction.apply(any())).thenReturn(RequestTypeEnum.EXTERNAL_ASK_IDENTIFIERS_SEARCH);
-        when(eftiGateIdResolver.resolve(any(SearchWithIdentifiersRequestDto.class))).thenReturn(List.of("borduria"));
-        when(requestServiceFactory.getRequestServiceByRequestType(any(RequestTypeEnum.class))).thenReturn(identifiersRequestService);
-
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-
-        verify(identifiersRequestService, times(1)).createAndSendRequest(any(), any());
-        verify(uilRequestService, times(0)).createAndSendRequest(any(), any());
-        verify(controlRepository, times(1)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertNull(datasetDtoResult.getErrorCode());
-        assertNull(datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createIdentifiersControlVehicleIDIncorrect() {
-        searchWithIdentifiersRequestDto.setIdentifier("bad identifier");
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-
-        verify(uilRequestService, times(0)).createAndSendRequest(any(), any());
-        verify(controlRepository, times(0)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.IDENTIFIER_INCORRECT_FORMAT.name(), datasetDtoResult.getErrorCode());
-        assertEquals(ErrorCodesEnum.IDENTIFIER_INCORRECT_FORMAT.getMessage(), datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createIdentifiersControlVehicleCountryIncorrect() {
-        searchWithIdentifiersRequestDto.setRegistrationCountryCode("toto");
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-
-        verify(uilRequestService, times(0)).createAndSendRequest(any(), any());
-        verify(controlRepository, times(0)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.REGISTRATION_COUNTRY_INCORRECT.name(), datasetDtoResult.getErrorCode());
-        assertEquals(ErrorCodesEnum.REGISTRATION_COUNTRY_INCORRECT.getMessage(), datasetDtoResult.getErrorDescription());
-    }
-
-    @Test
-    void createIdentifiersControlTransportModeIncorrect() {
-        searchWithIdentifiersRequestDto.setModeCode("#toto");
-
-        final DatasetDto datasetDtoResult = controlService.createIdentifiersControl(searchWithIdentifiersRequestDto);
-
-        verify(uilRequestService, times(0)).createAndSendRequest(any(), any());
-        verify(controlRepository, times(0)).save(any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.MODE_CODE_INCORRECT_FORMAT.name(), datasetDtoResult.getErrorCode());
-        assertEquals(ErrorCodesEnum.MODE_CODE_INCORRECT_FORMAT.getMessage(), datasetDtoResult.getErrorDescription());
     }
 
     @Test
@@ -614,102 +305,6 @@ class ControlServiceTest extends AbstractServiceTest {
         verify(controlRepository, times(1)).save(any());
         verify(mapperUtils, times(1)).controlDtoToControlEntity(any());
         verify(mapperUtils, times(1)).controlEntityToControlDto(any());
-    }
-
-    @Test
-    void shouldGetIdentifiersResponse_whenControlExistsWithData() {
-        //Arrange
-        final ControlDto expectedControl = ControlDto.builder()
-                .status(StatusEnum.COMPLETE)
-                .identifiersResults(identifiersResultsDto.getConsignments())
-                .build();
-        when(controlService.getControlDtoByRequestId(requestId)).thenReturn(expectedControl);
-        when(requestServiceFactory.getRequestServiceByRequestType(anyString())).thenReturn(identifiersRequestService);
-
-        identifiersRequestEntity.setStatus(RequestStatusEnum.SUCCESS);
-        identifiersRequestEntity.setIdentifiersResults(identifiersResults);
-        when(identifiersRequestService.findAllForControlId(anyInt())).thenReturn(List.of(identifiersRequestEntity));
-
-        final IdentifiersResponseDto expectedIdentifiersResponse = IdentifiersResponseDto.builder()
-                .status(StatusEnum.COMPLETE)
-                .identifiers(List.of(IdentifierRequestResultDto.builder()
-                                .status(StatusEnum.COMPLETE.name())
-                        .consignments(List.of(identifiersApiResultDto)).build()))
-                .build();
-        //Act
-        final IdentifiersResponseDto identifiersResponseDto = controlService.getIdentifiersResponse(requestId);
-
-        //Assert
-        assertThat(identifiersResponseDto).isEqualTo(expectedIdentifiersResponse);
-    }
-
-    @Test
-    void shouldGetIdentifiersResponseAsError_whenControlDoesNotExist() {
-        //Arrange
-        final ControlDto expectedControl = ControlDto.builder()
-                .status(StatusEnum.ERROR)
-                .error(ErrorDto.builder().errorCode(" Id not found.").errorDescription("Error requestId not found.").build())
-                .build();
-        when(controlService.getControlDtoByRequestId(requestId)).thenReturn(expectedControl);
-        when(requestServiceFactory.getRequestServiceByRequestType(anyString())).thenReturn(identifiersRequestService);
-
-        final IdentifiersResponseDto expectedIdentifiersResponse = IdentifiersResponseDto.builder()
-                .status(StatusEnum.ERROR)
-                .errorDescription("Error requestId not found.")
-                .errorCode(" Id not found.")
-                .identifiers(Collections.emptyList())
-                .build();
-        //Act
-        final IdentifiersResponseDto identifiersResponseDto = controlService.getIdentifiersResponse(requestId);
-
-        //Assert
-        assertThat(identifiersResponseDto).isEqualTo(expectedIdentifiersResponse);
-    }
-
-    @Test
-    void shouldGetControlWithCriteria_whenControlExistsAndIsUnique() {
-        //Arrange
-        final RequestEntity expectedRequest = new UilRequestEntity();
-        uilRequestEntity.setStatus(RequestStatusEnum.IN_PROGRESS);
-        final ControlEntity expectedControl = ControlEntity.builder().requestId(requestId).status(StatusEnum.PENDING).requests(List.of(expectedRequest)).build();
-        when(controlRepository.findByCriteria(anyString(), any(RequestStatusEnum.class))).thenReturn(List.of(expectedControl));
-        //Act
-        final ControlEntity control = controlService.getControlForCriteria(requestId, RequestStatusEnum.IN_PROGRESS);
-        //Assert
-        verify(controlRepository, times(1)).findByCriteria(requestId, RequestStatusEnum.IN_PROGRESS);
-        assertThat(control).isEqualTo(expectedControl);
-    }
-
-    @Test
-    void shouldThrowException_whenControlExistsAndIsNotUnique() {
-        //Arrange
-        final UilRequestEntity firstRequest = new UilRequestEntity();
-        firstRequest.setStatus(RequestStatusEnum.IN_PROGRESS);
-        final UilRequestEntity secondRequest = new UilRequestEntity();
-        secondRequest.setStatus(RequestStatusEnum.IN_PROGRESS);
-        final ControlEntity firstControl = ControlEntity.builder().requestId(requestId).status(StatusEnum.PENDING).requests(List.of(firstRequest)).build();
-        final ControlEntity secondControl = ControlEntity.builder().requestId(requestId).status(StatusEnum.PENDING).requests(List.of(secondRequest)).build();
-
-        when(controlRepository.findByCriteria(anyString(), any(RequestStatusEnum.class))).thenReturn(List.of(firstControl, secondControl));
-        //Act && Assert
-        final AmbiguousIdentifierException exception = assertThrows(AmbiguousIdentifierException.class,
-                () -> controlService.getControlForCriteria(requestId, RequestStatusEnum.IN_PROGRESS));
-        final String expectedMessage = String.format("Control with request uuid '%s', and request with status 'IN_PROGRESS' is not unique, 2 controls found!", requestId);
-        final String actualMessage = exception.getMessage();
-
-        verify(controlRepository, times(1)).findByCriteria(requestId, RequestStatusEnum.IN_PROGRESS);
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
-    void shouldReturnNull_whenNoControlFound() {
-        //Arrange
-        when(controlRepository.findByCriteria(anyString(), any(RequestStatusEnum.class))).thenReturn(null);
-        //Act
-        final ControlEntity control = controlService.getControlForCriteria(requestId, RequestStatusEnum.IN_PROGRESS);
-        //Assert
-        verify(controlRepository, times(1)).findByCriteria(requestId, RequestStatusEnum.IN_PROGRESS);
-        assertNull(control);
     }
 
     @Test
@@ -829,22 +424,6 @@ class ControlServiceTest extends AbstractServiceTest {
 
         //Assert
         verify(controlRepository, times(1)).save(controlEntity);
-    }
-
-    @Test
-    void shouldNotSendRequestIfNotFoundOnLocalRegistry() {
-        uilDto.setGateId("france");
-
-        when(controlRepository.save(any())).thenReturn(controlEntity);
-        when(identifiersService.findByUIL(any(), any(), any())).thenReturn(null);
-        when(platformIntegrationService.platformExists(uilDto.getPlatformId())).thenReturn(true);
-
-        final DatasetDto datasetDtoResult = controlService.createUilControl(uilDto);
-
-        verify(uilRequestService, never()).createAndSendRequest(any(), any());
-        assertNotNull(datasetDtoResult);
-        assertEquals(ErrorCodesEnum.DATA_NOT_FOUND_ON_REGISTRY.name(), datasetDtoResult.getErrorCode());
-        assertEquals(ErrorCodesEnum.DATA_NOT_FOUND_ON_REGISTRY.getMessage(), datasetDtoResult.getErrorDescription());
     }
 
     @Test
