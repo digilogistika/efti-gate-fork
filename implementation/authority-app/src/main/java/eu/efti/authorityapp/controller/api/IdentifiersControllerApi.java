@@ -1,6 +1,6 @@
 package eu.efti.authorityapp.controller.api;
 
-import eu.efti.authorityapp.dto.RequestIdDto;
+import eu.efti.authorityapp.dto.DatasetDto;
 import eu.efti.commons.dto.IdentifiersResponseDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +27,7 @@ public interface IdentifiersControllerApi {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
     })
     @PostMapping("/identifiers")
-    ResponseEntity<RequestIdDto> requestIdentifiers(final @RequestBody SearchWithIdentifiersRequestDto identifiersRequestDto);
+    ResponseEntity<DatasetDto> requestIdentifiers(final @RequestBody SearchWithIdentifiersRequestDto identifiersRequestDto);
 
     @Operation(summary = "Get a response to an identifiers query", description = "Get a response to an identifiers query for given request id")
     @ApiResponses(value = {

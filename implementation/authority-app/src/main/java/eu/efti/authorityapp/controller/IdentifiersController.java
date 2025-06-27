@@ -2,7 +2,7 @@ package eu.efti.authorityapp.controller;
 
 import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.IdentifiersControllerApi;
-import eu.efti.authorityapp.dto.RequestIdDto;
+import eu.efti.authorityapp.dto.DatasetDto;
 import eu.efti.authorityapp.service.ConfigService;
 import eu.efti.commons.dto.IdentifiersResponseDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
@@ -32,7 +32,7 @@ public class IdentifiersController implements IdentifiersControllerApi {
 
     @Override
     @PostMapping("/identifiers")
-    public ResponseEntity<RequestIdDto> requestIdentifiers(@RequestBody SearchWithIdentifiersRequestDto searchIdentifiersDto) {
+    public ResponseEntity<DatasetDto> requestIdentifiers(@RequestBody SearchWithIdentifiersRequestDto searchIdentifiersDto) {
         log.info("Forwarding POST request to gate for identifier: {}", searchIdentifiersDto);
 
         try {
@@ -45,10 +45,10 @@ public class IdentifiersController implements IdentifiersControllerApi {
 
             HttpEntity<SearchWithIdentifiersRequestDto> requestEntity = new HttpEntity<>(searchIdentifiersDto, headers);
 
-            ResponseEntity<RequestIdDto> response = restTemplate.postForEntity(
+            ResponseEntity<DatasetDto> response = restTemplate.postForEntity(
                     gateUrl,
                     requestEntity,
-                    RequestIdDto.class
+                    DatasetDto.class
             );
             log.info("Gate responded with status: {}", response.getStatusCode());
 
