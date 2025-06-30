@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static eu.efti.commons.enums.RequestStatusEnum.*;
@@ -50,7 +49,6 @@ public class IdentifiersSearchService {
 
         return CompletableFuture
                 .supplyAsync(() -> waitForResponse(requestId, searchRequestDto.getEftiGateIndicator().size()))
-                .orTimeout(60, TimeUnit.SECONDS)
                 .exceptionally(this::handleAsyncException)
                 .join();
     }
