@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import {Login} from './login/login';
 import {Admin} from './admin/admin';
 import {IdentifiersSearch} from './identifiers-search/identifiers-search';
+import {AuthGuard} from './auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -14,7 +15,8 @@ export const routes: Routes = [
   },
   {
     path: "identifiers-search",
-    component: IdentifiersSearch
+    component: IdentifiersSearch,
+    canActivate: [AuthGuard]
   },
   {
     path: "**",
