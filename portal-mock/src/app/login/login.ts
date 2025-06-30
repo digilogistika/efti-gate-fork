@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class Login {
 
   constructor(
     private fb: FormBuilder,
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
+    private readonly authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -29,13 +31,6 @@ export class Login {
 
     const formData = this.loginForm.value;
 
-    this.http.post("/api/public/authority-user/verify", {
-      email: formData.email,
-      password: formData.password
-    }).subscribe(
-      v => {
-        console.log(v)
-      }
-    )
+    this.authService.login(formData.email, formData.password)
   }
 }
