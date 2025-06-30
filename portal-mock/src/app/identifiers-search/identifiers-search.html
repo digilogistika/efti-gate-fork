@@ -1,1 +1,51 @@
-<p>identifiers-search works!</p>
+<form (ngSubmit)="onSubmit()" [formGroup]="identifiersSearchForm">
+  <label for="identifier">Identifier</label>
+  <small>*</small>
+  <input formControlName="identifier" id="identifier" type="text">
+
+  <label for="modeCode">Transportation mode</label>
+  <select formControlName="modeCode" id="modeCode">
+    <option value="1">
+      Waterway
+    </option>
+    <option value="2">
+      Railway
+    </option>
+    <option value="3">
+      Road
+    </option>
+    <option value="4">
+      Air
+    </option>
+  </select>
+
+  <mat-form-field>
+    <mat-label>Identifier Type</mat-label>
+    <mat-select formControlName="identifierType" multiple>
+      <mat-option value="means">Means</mat-option>
+      <mat-option value="equipment">Equipment</mat-option>
+      <mat-option value="carried">Carried</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <label for="registrationCountryCode">Registration Country Code</label>
+  <select formControlName="registrationCountryCode" id="registrationCountryCode">
+    @for (country of euCountries; track country.isoCode) {
+      <option [value]="country.isoCode">{{ country.isoCode }}</option>
+    }
+  </select>
+
+  <label for="dangerousGoodsIndicator">Dangerous Goods</label>
+  <input formControlName="dangerousGoodsIndicator" id="dangerousGoodsIndicator" type="checkbox">
+
+  <mat-form-field>
+    <mat-label>Countries to search</mat-label>
+    <mat-select formControlName="eftiGateIndicator" multiple>
+      @for (country of euCountries; track country.isoCode) {
+        <mat-option [value]="country.isoCode">{{ country.isoCode }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button type="submit">Submit</button>
+</form>
