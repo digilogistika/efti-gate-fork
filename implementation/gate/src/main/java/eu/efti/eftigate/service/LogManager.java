@@ -2,13 +2,13 @@ package eu.efti.eftigate.service;
 
 import eu.efti.commons.dto.ControlDto;
 import eu.efti.commons.dto.IdentifiersResponseDto;
-import eu.efti.commons.dto.ValidableDto;
+import eu.efti.commons.dto.ValidatableDto;
 import eu.efti.commons.dto.identifiers.ConsignmentDto;
 import eu.efti.commons.enums.RequestTypeEnum;
 import eu.efti.commons.enums.StatusEnum;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.eftigate.config.GateProperties;
-import eu.efti.eftigate.dto.RequestIdDto;
+import eu.efti.eftigate.dto.DatasetDto;
 import eu.efti.eftigate.service.gate.EftiGateIdResolver;
 import eu.efti.eftilogger.dto.MessagePartiesDto;
 import eu.efti.eftilogger.model.ComponentType;
@@ -162,11 +162,11 @@ public class LogManager {
         this.auditRegistryLogService.logByControlDto(controlDto, gateProperties.getOwner(), gateProperties.getCountry(), requestingComponentType, respondingComponentType, body, null, name);
     }
 
-    public <T extends ValidableDto> void logAppRequest(final ControlDto control,
-                                                       final T searchDto,
-                                                       final ComponentType requestingComponentType,
-                                                       final ComponentType respondingComponentType,
-                                                       final String name) {
+    public <T extends ValidatableDto> void logAppRequest(final ControlDto control,
+                                                         final T searchDto,
+                                                         final ComponentType requestingComponentType,
+                                                         final ComponentType respondingComponentType,
+                                                         final String name) {
         final MessagePartiesDto messagePartiesDto = MessagePartiesDto.builder()
                 .requestingComponentType(requestingComponentType)
                 .requestingComponentId(control.getFromGateId())
@@ -180,7 +180,7 @@ public class LogManager {
     }
 
     public void logAppResponse(final ControlDto control,
-                               final RequestIdDto requestIdDto,
+                               final DatasetDto datasetDto,
                                final ComponentType requestingComponentType,
                                final String requestingComponentId,
                                final ComponentType respondingComponentType,
@@ -195,7 +195,7 @@ public class LogManager {
                 .respondingComponentCountry(gateProperties.getCountry()).build();
 
         // Remove the substring part if full body wanted
-        String body = serializeUtils.mapObjectToBase64String(requestIdDto);
+        String body = serializeUtils.mapObjectToBase64String(datasetDto);
         if (body.length() > 500) {
             body = body.substring(0, 500) + "...";
         }

@@ -1,13 +1,11 @@
 package eu.efti.eftigate.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.efti.commons.dto.IdentifiersResponseDto;
 import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import eu.efti.commons.dto.identifiers.api.ConsignmentApiDto;
 import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
 import eu.efti.commons.enums.StatusEnum;
-import eu.efti.eftigate.dto.RequestIdDto;
-import eu.efti.eftigate.service.ControlService;
+import eu.efti.eftigate.service.IdentifiersSearchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +13,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,9 +22,8 @@ import java.util.List;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.core.Is.is;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +41,7 @@ class IdentifiersControllerTest {
     protected MockMvc mockMvc;
 
     @MockBean
-    ControlService controlService;
+    IdentifiersSearchService identifiersSearchService;
 
     @BeforeEach
     void before() {
@@ -56,37 +52,61 @@ class IdentifiersControllerTest {
         consignmentDto.setGateId("gateId");
         identifiersResponseDto.setIdentifiers(List.of(IdentifierRequestResultDto.builder()
                 .consignments(List.of(consignmentDto)).build()));
+
+
     }
 
     @Test
     @WithMockUser
-    void requestIdentifiersTest() throws Exception {
-        final SearchWithIdentifiersRequestDto identifiersRequestDto = SearchWithIdentifiersRequestDto.builder().identifier("abc123").build();
+    void getIdentifiersWithValidationErrorTest() throws Exception {
+        // Test validation constraints from the API interface
+        mockMvc.perform(get("/v1/identifiers/{identifier}", "?"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 
-        Mockito.when(controlService.createIdentifiersControl(identifiersRequestDto)).thenReturn(
-                RequestIdDto.builder()
-                        .status(StatusEnum.PENDING)
-                        .requestId(REQUEST_ID)
-                        .build());
+    @Test
+    @WithMockUser
+    void getIdentifiersWithInvalidModeCodeTest() throws Exception {
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
 
-        String result = mockMvc.perform(post("/v1/identifiers")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsBytes(identifiersRequestDto)))
-                .andExpect(status().isAccepted())
+        mockMvc.perform(get("/v1/identifiers/{identifier}", "abc123")
+                        .param("modeCode", "99"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser
+    void getIdentifiersWithValidModeCodeTest() throws Exception {
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
+
+        final String result = mockMvc.perform(get("/v1/identifiers/{identifier}", "abc123")
+                        .param("modeCode", "1"))
+                .andDo(print())
+                .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         with(result)
                 .assertThat("$.requestId", is("requestId"))
-                .assertThat("$.status", is("PENDING"));
+                .assertThat("$.status", is("COMPLETE"));
     }
 
     @Test
     @WithMockUser
-    void requestIdentifiersGetTest() throws Exception {
-        Mockito.when(controlService.getIdentifiersResponse(REQUEST_ID)).thenReturn(identifiersResponseDto);
+    void getIdentifiersTest() throws Exception {
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
 
-        final String result = mockMvc.perform(get("/v1/identifiers").param("requestId", REQUEST_ID))
+        final String result = mockMvc.perform(get("/v1/identifiers/{identifier}", "abc123")
+                        .param("modeCode", "3")
+                        .param("identifierType", "MEANS")
+                        .param("registrationCountryCode", "FR")
+                        .param("dangerousGoodsIndicator", "false")
+                        .param("eftiGateIndicator", "EE")
+                        .param("callback", "false"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -99,20 +119,101 @@ class IdentifiersControllerTest {
 
     @Test
     @WithMockUser
-    void requestIdentifiersNotFoundGetTest() throws Exception {
-        identifiersResponseDto.setRequestId(null);
-        identifiersResponseDto.setErrorCode("Uuid not found.");
-        identifiersResponseDto.setErrorDescription("Error requestId not found.");
-        Mockito.when(controlService.getIdentifiersResponse(REQUEST_ID)).thenReturn(identifiersResponseDto);
+    void getIdentifiersWithMinimalParametersTest() throws Exception {
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
 
-        final String result = mockMvc.perform(get("/v1/identifiers").param("requestId", REQUEST_ID))
+        final String result = mockMvc.perform(get("/v1/identifiers/{identifier}", "abc123"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         with(result)
-                .assertThat("$.errorCode", is("Uuid not found."))
+                .assertThat("$.requestId", is("requestId"))
+                .assertThat("$.status", is("COMPLETE"))
+                .assertThat("$.identifiers[0].consignments[0].platformId", is("acme"));
+    }
+
+    @Test
+    @WithMockUser
+    void getIdentifiersWithMultipleValuesTest() throws Exception {
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
+
+        final String result = mockMvc.perform(get("/v1/identifiers/{identifier}", "abc123")
+                        .param("identifierType", "MEANS", "EQUIPMENT")
+                        .param("eftiGateIndicator", "FR", "EE"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        with(result)
+                .assertThat("$.requestId", is("requestId"))
+                .assertThat("$.status", is("COMPLETE"))
+                .assertThat("$.identifiers[0].consignments[0].platformId", is("acme"));
+    }
+
+    @Test
+    @WithMockUser
+    void getIdentifiersNotFoundTest() throws Exception {
+        identifiersResponseDto.setRequestId(null);
+        identifiersResponseDto.setErrorCode("ID_NOT_FOUND");
+        identifiersResponseDto.setErrorDescription("Error requestId not found.");
+
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
+
+        final String result = mockMvc.perform(get("/v1/identifiers/{identifier}", "nonexistent")
+                        .param("eftiGateIndicator", "FR"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        with(result)
+                .assertThat("$.errorCode", is("ID_NOT_FOUND"))
                 .assertThat("$.errorDescription", is("Error requestId not found."))
                 .assertThat("$.status", is("COMPLETE"));
+    }
+
+    @Test
+    @WithMockUser
+    void getIdentifiersWithPendingStatusTest() throws Exception {
+        identifiersResponseDto.setStatus(StatusEnum.PENDING);
+
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
+
+        final String result = mockMvc.perform(get("/v1/identifiers/{identifier}", "abc123")
+                        .param("eftiGateIndicator", "FR"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        with(result)
+                .assertThat("$.requestId", is("requestId"))
+                .assertThat("$.status", is("PENDING"))
+                .assertThat("$.identifiers[0].consignments[0].platformId", is("acme"));
+    }
+
+    @Test
+    @WithMockUser
+    void getIdentifiersWithErrorStatusTest() throws Exception {
+        identifiersResponseDto.setStatus(StatusEnum.ERROR);
+        identifiersResponseDto.setErrorCode("VALIDATION_ERROR");
+        identifiersResponseDto.setErrorDescription("Invalid request parameters.");
+
+        Mockito.when(identifiersSearchService.searchIdentifiers(any(SearchWithIdentifiersRequestDto.class)))
+                .thenReturn(identifiersResponseDto);
+
+        final String result = mockMvc.perform(get("/v1/identifiers/{identifier}", "invalid")
+                        .param("eftiGateIndicator", "FR"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        with(result)
+                .assertThat("$.errorCode", is("VALIDATION_ERROR"))
+                .assertThat("$.errorDescription", is("Invalid request parameters."))
+                .assertThat("$.status", is("ERROR"));
     }
 }

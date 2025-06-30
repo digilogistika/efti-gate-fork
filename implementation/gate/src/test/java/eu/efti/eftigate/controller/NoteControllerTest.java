@@ -2,7 +2,7 @@ package eu.efti.eftigate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.efti.commons.dto.ControlDto;
-import eu.efti.commons.dto.PostFollowUpRequestDto;
+import eu.efti.commons.dto.FollowUpRequestDto;
 import eu.efti.eftigate.dto.NoteResponseDto;
 import eu.efti.eftigate.service.ControlService;
 import org.junit.jupiter.api.Test;
@@ -38,11 +38,11 @@ class NoteControllerTest {
     @Test
     @WithMockUser
     void createNoteTestAccepted() throws Exception {
-        final PostFollowUpRequestDto notesDto = new PostFollowUpRequestDto();
+        final FollowUpRequestDto notesDto = new FollowUpRequestDto();
         notesDto.setRequestId("requestId");
         notesDto.setMessage("Ugly driver");
 
-        when(controlService.getControlByRequestId("requestId")).thenReturn(new ControlDto());
+        when(controlService.getControlDtoByRequestId("requestId")).thenReturn(new ControlDto());
         when(controlService.createNoteRequestForControl(notesDto)).thenReturn(NoteResponseDto.builder().message("Note sent").build());
 
         final String response = mockMvc.perform(post("/v1/follow-up")
@@ -59,7 +59,7 @@ class NoteControllerTest {
     @Test
     @WithMockUser
     void createNoteTestNotAccepted() throws Exception {
-        final PostFollowUpRequestDto notesDto = new PostFollowUpRequestDto();
+        final FollowUpRequestDto notesDto = new FollowUpRequestDto();
         notesDto.setRequestId("requestId");
         notesDto.setMessage("Ugly driver");
 

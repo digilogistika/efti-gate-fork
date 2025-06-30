@@ -32,7 +32,7 @@ public class PlatformApiController {
     private final IdentifiersService identifiersService;
 
     @RequestMapping(
-            method = RequestMethod.PUT,
+            method = RequestMethod.POST,
             value = "/v1/identifiers/{datasetId}",
             consumes = {"application/xml"}
     )
@@ -40,7 +40,7 @@ public class PlatformApiController {
             @PathVariable String datasetId,
             @RequestBody String body
     ) {
-        log.info("PUT on /v1/identifiers/{datasetId}");
+        log.info("POST on /v1/identifiers/{datasetId}");
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         assert attributes != null;
         HttpServletRequest request = attributes.getRequest();
@@ -48,22 +48,21 @@ public class PlatformApiController {
 
         String platformId = platformIdentityService.getPlatformIdFromHeader(apiKey);
 
-        String xml = body;
-        var validationError = validationService.isXmlValid(xml);
+        var validationError = validationService.isXmlValid(body);
         if (validationError.isPresent()) {
             var problemDetail = org.springframework.http.ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
             problemDetail.setDetail(validationError.get());
             return ResponseEntity.of(problemDetail).headers(h -> h.setContentType(MediaType.APPLICATION_PROBLEM_XML)).build();
-        } else {
-            SupplyChainConsignment consignment = serializeUtils.mapXmlStringToJaxbObject(xml, SupplyChainConsignment.class);
-
-            SaveIdentifiersRequest saveIdentifiersRequest = new SaveIdentifiersRequest();
-            saveIdentifiersRequest.setDatasetId(datasetId);
-            saveIdentifiersRequest.setConsignment(consignment);
-            identifiersService.createOrUpdate(new SaveIdentifiersRequestWrapper(platformId, saveIdentifiersRequest));
-
-            return ResponseEntity.ok().build();
         }
+
+        SupplyChainConsignment consignment = serializeUtils.mapXmlStringToJaxbObject(body, SupplyChainConsignment.class);
+
+        SaveIdentifiersRequest saveIdentifiersRequest = new SaveIdentifiersRequest();
+        saveIdentifiersRequest.setDatasetId(datasetId);
+        saveIdentifiersRequest.setConsignment(consignment);
+        identifiersService.createOrUpdate(new SaveIdentifiersRequestWrapper(platformId, saveIdentifiersRequest));
+
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(

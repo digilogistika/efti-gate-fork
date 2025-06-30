@@ -63,7 +63,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         }
 
         // platform api endpoints validation
-        if ((path.startsWith("/v1/identifiers") && req.getMethod().equals("PUT"))
+        if ((path.startsWith("/v1/identifiers") && req.getMethod().equals("POST"))
                 || path.startsWith("/api/platform/v0/whoami")
         ) {
             try {

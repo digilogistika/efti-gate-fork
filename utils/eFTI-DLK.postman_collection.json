@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "da95359b-1932-4ece-ada6-3545ba8fd46e",
+		"_postman_id": "9de929ba-c943-4d32-9764-ffa86fa8c44e",
 		"name": "eFTI-DLK",
 		"description": "eFTI gate request collection for different use cases",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "37803187"
+		"_exporter_id": "35147351"
 	},
 	"item": [
 		{
@@ -14,185 +14,23 @@
 					"name": "Gate",
 					"item": [
 						{
-							"name": "POST UIL Control",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"let responseData = pm.response.json();",
-											"pm.globals.set(\"requestId\", responseData.requestId);"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "SuperSecretSecret123",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8880/v1/dataset",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8880",
-									"path": [
-										"v1",
-										"dataset"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GET UIL Control",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "SuperSecretSecret123",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8880/v1/dataset?requestId={{requestId}}",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8880",
-									"path": [
-										"v1",
-										"dataset"
-									],
-									"query": [
-										{
-											"key": "requestId",
-											"value": "{{requestId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "POST Identifiers Control",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"let responseData = pm.response.json();",
-											"pm.globals.set(\"requestId\", responseData.requestId);"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "SuperSecretSecret123",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"identifier\": \"tybkuj\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8880/v1/identifiers",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8880",
-									"path": [
-										"v1",
-										"identifiers"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "[Authority user] POST Identifiers Control",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"let responseData = pm.response.json();",
-											"pm.globals.set(\"requestId\", responseData.requestId);"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "{{authority_user_api_key}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"identifier\": \"qlcvhc\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8880/v1/identifiers",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8880",
-									"path": [
-										"v1",
-										"identifiers"
-									]
-								},
-								"description": "please register authority before calling this endpoint"
-							},
-							"response": []
-						},
-						{
 							"name": "GET Identifiers Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -202,7 +40,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8880/v1/identifiers?requestId={{requestId}}",
+									"raw": "http://localhost:8880/v1/identifiers/tybkuj?eftiGateIndicator=EE,BO",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -210,12 +48,69 @@
 									"port": "8880",
 									"path": [
 										"v1",
-										"identifiers"
+										"identifiers",
+										"tybkuj"
 									],
 									"query": [
 										{
-											"key": "requestId",
-											"value": "{{requestId}}"
+											"key": "eftiGateIndicator",
+											"value": "BO",
+											"disabled": true
+										},
+										{
+											"key": "eftiGateIndicator",
+											"value": "EE,BO"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Dataset Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8880/v1/dataset/borduria/acme/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915?subsets=full",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8880",
+									"path": [
+										"v1",
+										"dataset",
+										"borduria",
+										"acme",
+										"5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915"
+									],
+									"query": [
+										{
+											"key": "subsets",
+											"value": "full"
 										}
 									]
 								}
@@ -224,6 +119,18 @@
 						},
 						{
 							"name": "POST Follow Up For UIL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -235,7 +142,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"message\" : \"LENS > PSG\",\n    \"requestId\": \"{{requestId}}\"\n}",
+									"raw": "{\n    \"message\" : \"Hello ACME!\",\n    \"requestId\": \"{{requestId}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -469,7 +376,7 @@
 										{
 											"key": "consignmentFile",
 											"type": "file",
-											"src": "/home/rig/Documents/Projects/DLK/efti-gate/testing/testdata/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915.xml"
+											"src": "/home/rasmus/proge/gates/efti-gate/testdata/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915.xml"
 										}
 									]
 								},
@@ -502,136 +409,11 @@
 					"name": "Gate",
 					"item": [
 						{
-							"name": "POST UIL Control",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"let responseData = pm.response.json();",
-											"pm.globals.set(\"requestId\", responseData.requestId);"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "SuperSecretSecret123",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"gateId\": \"borduria\",\n    \"datasetId\": \"5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915\",\n    \"platformId\": \"acme\",\n    \"subsetId\": \"full\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8881/v1/dataset",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8881",
-									"path": [
-										"v1",
-										"dataset"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GET UIL Control",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "SuperSecretSecret123",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "http://localhost:8881/v1/dataset?requestId={{requestId}}",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8881",
-									"path": [
-										"v1",
-										"dataset"
-									],
-									"query": [
-										{
-											"key": "requestId",
-											"value": "{{requestId}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "POST Identifiers Control",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"let responseData = pm.response.json();",
-											"pm.globals.set(\"requestId\", responseData.requestId);"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "SuperSecretSecret123",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\n  \"identifier\": \"qlcvhc\"\n\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8881/v1/identifiers",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8881",
-									"path": [
-										"v1",
-										"identifiers"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "GET Identifiers Control",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -641,7 +423,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8881/v1/identifiers?requestId={{requestId}}",
+									"raw": "http://localhost:8881/v1/identifiers/tybkuj?eftiGateIndicator=EE,BO",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -649,12 +431,69 @@
 									"port": "8881",
 									"path": [
 										"v1",
-										"identifiers"
+										"identifiers",
+										"tybkuj"
 									],
 									"query": [
 										{
-											"key": "requestId",
-											"value": "{{requestId}}"
+											"key": "eftiGateIndicator",
+											"value": "BO",
+											"disabled": true
+										},
+										{
+											"key": "eftiGateIndicator",
+											"value": "EE,BO"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Dataset Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();",
+											"pm.globals.set(\"requestId\", responseData.requestId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "SuperSecretSecret123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8881/v1/dataset/borduria/acme/5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915?subsets=full",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8881",
+									"path": [
+										"v1",
+										"dataset",
+										"borduria",
+										"acme",
+										"5d5f8df4-e70c-4f8f-aa7e-6737d9ee9915"
+									],
+									"query": [
+										{
+											"key": "subsets",
+											"value": "full"
 										}
 									]
 								}
@@ -786,7 +625,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"country\": \"BO\",\n    \"gateId\": \"borduira\"\n}",
+									"raw": "{\n    \"country\": \"BO\",\n    \"gateId\": \"borduria\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

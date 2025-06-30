@@ -1,7 +1,7 @@
 package eu.efti.authorityapp.controller.api;
 
 import eu.efti.authorityapp.dto.NoteResponseDto;
-import eu.efti.commons.dto.PostFollowUpRequestDto;
+import eu.efti.commons.dto.FollowUpRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,5 +24,5 @@ public interface NoteControllerApi {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/follow-up")
-    ResponseEntity<NoteResponseDto> createNote(final @RequestBody PostFollowUpRequestDto notesDto);
+    ResponseEntity<NoteResponseDto> createNote(final @RequestBody FollowUpRequestDto notesDto);
 }

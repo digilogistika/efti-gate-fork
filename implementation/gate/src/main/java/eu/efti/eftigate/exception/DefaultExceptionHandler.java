@@ -30,7 +30,9 @@ public class DefaultExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(e.getMessage()));
     }
 
-    @ExceptionHandler({XApiKeyValidationException.class})
+    @ExceptionHandler({
+            XApiKeyValidationException.class,
+            DtoValidationException.class})
     public ResponseEntity<ErrorDto> handleInvalidException(RuntimeException e) {
         log.error("Error: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(e.getMessage()));

@@ -4,7 +4,7 @@ import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.NoteControllerApi;
 import eu.efti.authorityapp.dto.NoteResponseDto;
 import eu.efti.authorityapp.service.ConfigService;
-import eu.efti.commons.dto.PostFollowUpRequestDto;
+import eu.efti.commons.dto.FollowUpRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -29,7 +29,7 @@ public class NoteController implements NoteControllerApi {
 
     @Override
     @PostMapping("/follow-up")
-    public ResponseEntity<NoteResponseDto> createNote(final @RequestBody PostFollowUpRequestDto notesDto) {
+    public ResponseEntity<NoteResponseDto> createNote(final @RequestBody FollowUpRequestDto notesDto) {
         log.info("Forwarding POST request to gate for Note: {}", notesDto);
 
         try {
@@ -40,7 +40,7 @@ public class NoteController implements NoteControllerApi {
             headers.set("Content-Type", "application/json");
             headers.set("Accept", "application/json");
 
-            HttpEntity<PostFollowUpRequestDto> requestEntity = new HttpEntity<>(notesDto, headers);
+            HttpEntity<FollowUpRequestDto> requestEntity = new HttpEntity<>(notesDto, headers);
 
             ResponseEntity<NoteResponseDto> response = restTemplate.postForEntity(
                     gateUrl,

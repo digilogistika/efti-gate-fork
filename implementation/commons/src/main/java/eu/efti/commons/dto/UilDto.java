@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UilDto extends AbstractUilDto implements ValidableDto {
+public class UilDto extends AbstractUilDto implements ValidatableDto {
     private static final String REGEX_URI = "^[-@./#&+\\w\\s]*$";
 
     private List<String> subsetIds = new ArrayList<>();

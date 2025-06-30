@@ -9,9 +9,8 @@ import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
 import eu.efti.commons.enums.RequestTypeEnum;
 import eu.efti.commons.enums.StatusEnum;
 import eu.efti.eftigate.config.GateProperties;
-import eu.efti.eftigate.dto.RequestIdDto;
+import eu.efti.eftigate.dto.DatasetDto;
 import eu.efti.eftilogger.dto.MessagePartiesDto;
-import eu.efti.eftilogger.model.ComponentType;
 import eu.efti.eftilogger.service.AuditRegistryLogService;
 import eu.efti.eftilogger.service.AuditRequestLogService;
 import org.junit.jupiter.api.BeforeEach;
@@ -189,7 +188,7 @@ class LogManagerTest extends BaseServiceTest {
 
     @Test
     void logAppResponseTest() {
-        RequestIdDto requestIdDto = RequestIdDto.builder().requestId("requestId").status(StatusEnum.COMPLETE).build();
+        DatasetDto datasetDto = DatasetDto.builder().requestId("requestId").status(StatusEnum.COMPLETE).build();
         controlDto.setStatus(StatusEnum.COMPLETE);
         final MessagePartiesDto expectedMessageParties = MessagePartiesDto.builder()
                 .requestingComponentId("requestingComponentId")
@@ -198,9 +197,9 @@ class LogManagerTest extends BaseServiceTest {
                 .respondingComponentId("respondingComponentId")
                 .respondingComponentType(GATE)
                 .respondingComponentCountry("ownerCountry").build();
-        final String body = serializeUtils.mapObjectToBase64String(requestIdDto);
+        final String body = serializeUtils.mapObjectToBase64String(datasetDto);
 
-        logManager.logAppResponse(controlDto, requestIdDto, GATE, "requestingComponentId", GATE, "respondingComponentId", "test");
+        logManager.logAppResponse(controlDto, datasetDto, GATE, "requestingComponentId", GATE, "respondingComponentId", "test");
 
         verify(auditRequestLogService).log(controlDto, expectedMessageParties, "ownerId", "ownerCountry", body, StatusEnum.COMPLETE, false, "test");
     }
