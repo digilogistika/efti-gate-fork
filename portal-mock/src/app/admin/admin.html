@@ -1,0 +1,10 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="createAuthorityUserForm">
+  <label for="admin-api-key">Admin API Key</label>
+  <input formControlName="admin-api-key" id="admin-api-key" type="password">
+  <label for="email">Email</label>
+  <input formControlName="email" id="email" type="email">
+  <label for="password">Password</label>
+  <input formControlName="password" id="password" type="password">
+
+  <button [disabled]="createAuthorityUserForm.invalid" type="submit">Submit</button>
+</form>

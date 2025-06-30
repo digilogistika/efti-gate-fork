@@ -23,22 +23,19 @@ export class Login {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const formData = this.loginForm.value;
-      console.log('Form Data:', formData);
-
-      // Access individual values
-      console.log('Email:', formData.email);
-      console.log('Password:', formData.password);
-
-      this.http.post("/api/public/authority-user/verify", {
-        email: formData.email,
-        password: formData.password
-      }).subscribe(
-        v => {
-          console.log(v)
-        }
-      )
+    if (!this.loginForm.valid) {
+      return
     }
+
+    const formData = this.loginForm.value;
+
+    this.http.post("/api/public/authority-user/verify", {
+      email: formData.email,
+      password: formData.password
+    }).subscribe(
+      v => {
+        console.log(v)
+      }
+    )
   }
 }
