@@ -25,6 +25,8 @@ export class IdentifiersSearch {
 
   protected identifierResponse: IdentifierResponse | null = null;
   protected isLoading: boolean = false;
+  private readonly selectedIdentifierTypes = new Set<string>();
+  private readonly selectedCountries = new Set<string>();
 
   constructor(
     private fb: FormBuilder,
@@ -51,10 +53,10 @@ export class IdentifiersSearch {
     let identifiersQuery: string = `/api/v1/identifiers/${formValues.identifier}`;
     const queryParams: string[] = [];
     if (formValues.modeCode) queryParams.push(`modeCode=${formValues.modeCode}`);
-    if (formValues.identifierType?.length > 0) queryParams.push(`identifierType=${formValues.identifierType}`);
+    if (this.selectedIdentifierTypes.size > 0) queryParams.push(`identifierType=${Array.from(this.selectedIdentifierTypes).join(",")}`);
     if (formValues.registrationCountryCode) queryParams.push(`registrationCountryCode=${formValues.registrationCountryCode}`);
     if (formValues.dangerousGoodsIndicator) queryParams.push(`dangerousGoodsIndicator=${formValues.dangerousGoodsIndicator}`);
-    if (formValues.eftiGateIndicator?.length > 0) queryParams.push(`eftiGateIndicator=${formValues.eftiGateIndicator}`);
+    if (this.selectedCountries.size > 0) queryParams.push(`eftiGateIndicator=${Array.from(this.selectedCountries).join(",")}`);
     if (queryParams.length > 0) {
       identifiersQuery += '?' + queryParams.join('&');
     }
@@ -65,5 +67,23 @@ export class IdentifiersSearch {
         this.identifierResponse = v;
         this.isLoading = false;
       })
+  }
+
+  onIdentifierTypeChange(type: string, event: any) {
+    // Handle identifier type checkbox changes
+    if (event.target.checked) {
+      this.selectedIdentifierTypes.add(type);
+    } else {
+      this.selectedIdentifierTypes.delete(type);
+    }
+  }
+
+  onCountryChange(countryCode: string, event: any) {
+    // Handle country selection changes
+    if (event.target.checked) {
+      this.selectedCountries.add(countryCode);
+    } else {
+      this.selectedCountries.delete(countryCode);
+    }
   }
 }

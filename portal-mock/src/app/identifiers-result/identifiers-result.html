@@ -1,33 +1,6 @@
 @if (identifierResponse) {
-  <div class="min-h-screen bg-gradient-to-br from-indigo-50/90 via-white/80 to-cyan-50/90 p-4 sm:p-6 lg:p-8">
+  <div class="min-h-screen p-4 sm:p-6 lg:p-8">
     <div class="max-w-7xl mx-auto">
-      <!-- Header Section -->
-      <div class="bg-white/60 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search text-white">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </div>
-            <div>
-              <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Identifier Search
-              </h1>
-              <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-1">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  {{ identifierResponse.status }}
-                </span>
-                <span class="text-sm text-gray-600">
-                  Request ID: <span class="font-mono font-semibold text-indigo-600">{{ identifierResponse.requestId }}</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       @if (identifierResponse.errorCode || identifierResponse.errorDescription) {
         <!-- Error Display -->
         <div class="bg-red-50/80 backdrop-blur-xl border border-red-200/50 rounded-xl p-6 mb-8 shadow-lg">
