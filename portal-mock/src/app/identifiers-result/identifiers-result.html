@@ -1,6 +1,13 @@
 @if (identifierResponse) {
-  <div class="min-h-screen p-4 sm:p-6 lg:p-8">
+  <div>
     <div class="max-w-7xl mx-auto">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-800">
+          Results
+        </h1>
+        <small class="text-gray-400">Request ID: {{identifierResponse.requestId}}</small>
+      </div>
+
       @if (identifierResponse.errorCode || identifierResponse.errorDescription) {
         <!-- Error Display -->
         <div class="bg-red-50/80 backdrop-blur-xl border border-red-200/50 rounded-xl p-6 mb-8 shadow-lg">
@@ -25,7 +32,7 @@
         <!-- Identifiers Section -->
         <div class="space-y-6">
           @for (identifier of identifierResponse.identifiers; track $index) {
-            <div class="bg-white/60 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+            <div class="bg-white/60 backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden">
               <!-- Identifier Header -->
               <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
                 <div class="flex items-center justify-between">
