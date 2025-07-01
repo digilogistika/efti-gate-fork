@@ -47,5 +47,14 @@
     </mat-select>
   </mat-form-field>
 
-  <button type="submit">Submit</button>
+  <button [disabled]="isLoading" type="submit">
+    @if (isLoading) {
+      <span>Submitting...</span>
+
+    } @else {
+      <span>Submit</span>
+    }
+  </button>
+
+  <app-identifiers-result [searchResults]="searchResults"></app-identifiers-result>
 </form>

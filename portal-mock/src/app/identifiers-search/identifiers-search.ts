@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {euCountries} from './countries';
+import {euCountries} from '../core/countries';
 import {MatFormField, MatLabel, MatOption, MatSelect} from '@angular/material/select';
-import {IdentifierResponse} from './types';
+import {IdentifierResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
+import {IdentifiersResult} from '../identifiers-result/identifiers-result';
 
 @Component({
   selector: 'app-identifiers-search',
@@ -14,6 +15,7 @@ import {HttpClient} from '@angular/common/http';
     MatLabel,
     MatFormField,
     MatOption,
+    IdentifiersResult,
   ],
   templateUrl: './identifiers-search.html',
 })
@@ -22,6 +24,7 @@ export class IdentifiersSearch {
   protected readonly euCountries;
 
   protected searchResults: IdentifierResponse | unknown
+  protected isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -48,17 +51,19 @@ export class IdentifiersSearch {
     let identifiersQuery: string = `/api/v1/identifiers/${formValues.identifier}`;
     const queryParams: string[] = [];
     if (formValues.modeCode) queryParams.push(`modeCode=${formValues.modeCode}`);
-    if (formValues.identifierType) queryParams.push(`identifierType=${formValues.identifierType}`);
+    if (formValues.identifierType?.length > 0) queryParams.push(`identifierType=${formValues.identifierType}`);
     if (formValues.registrationCountryCode) queryParams.push(`registrationCountryCode=${formValues.registrationCountryCode}`);
     if (formValues.dangerousGoodsIndicator) queryParams.push(`dangerousGoodsIndicator=${formValues.dangerousGoodsIndicator}`);
-    if (formValues.eftiGateIndicator) queryParams.push(`eftiGateIndicator=${formValues.eftiGateIndicator}`);
+    if (formValues.eftiGateIndicator?.length > 0) queryParams.push(`eftiGateIndicator=${formValues.eftiGateIndicator}`);
     if (queryParams.length > 0) {
       identifiersQuery += '?' + queryParams.join('&');
     }
 
-    this.http.get(identifiersQuery)
+    this.isLoading = true;
+    this.http.get<IdentifierResponse>(identifiersQuery)
       .subscribe(v => {
-        console.log(v)
+        this.searchResults = v;
+        this.isLoading = false;
       })
   }
 }
