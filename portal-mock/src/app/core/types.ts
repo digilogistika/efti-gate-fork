@@ -37,7 +37,7 @@ interface UsedTransportEquipment {
   id: string
   sequenceNumber: number
   schemeAgencyId: string
-  registrationCountryCode: string
+  registrationCountry: string
   categoryCode: string
   carriedTransportEquipment: CarriedTransportEquipment[]
 }

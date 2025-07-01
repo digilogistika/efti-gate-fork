@@ -23,7 +23,7 @@ export class IdentifiersSearch {
   public readonly identifiersSearchForm: FormGroup;
   protected readonly euCountries;
 
-  protected searchResults: IdentifierResponse | unknown
+  protected identifierResponse: IdentifierResponse | null = null;
   protected isLoading: boolean = false;
 
   constructor(
@@ -62,7 +62,7 @@ export class IdentifiersSearch {
     this.isLoading = true;
     this.http.get<IdentifierResponse>(identifiersQuery)
       .subscribe(v => {
-        this.searchResults = v;
+        this.identifierResponse = v;
         this.isLoading = false;
       })
   }
