@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Tag(name = "Identifiers query", description = "Interface to search for identifiers")
-@RequestMapping("/v1")
+@RequestMapping("/api/v1")
 public interface IdentifiersControllerApi {
 
     @Operation(summary = "Requesting identifiers from the gate", description = "Send a query to retrieve identifiers matching to the search criteria.")
