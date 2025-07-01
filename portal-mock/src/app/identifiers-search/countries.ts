@@ -27,4 +27,6 @@ export const euCountries = [
   {"isoCode": "ES", "name": "Spain"},
   {"isoCode": "SE", "name": "Sweden"},
   {"isoCode": "GB", "name": "United Kingdom (Great Britain)"},
+  // fake countries for testing purposes
+  {"isoCode": "BO", "name": "Borduria"},
 ]

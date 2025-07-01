@@ -55,6 +55,10 @@ export class AuthService {
         );
     }
 
+    getJwtToken(): string | null {
+      return localStorage.getItem(this.LOCALSTORAGE_KEY)
+    }
+
     logout(): void {
         localStorage.removeItem(this.LOCALSTORAGE_KEY);
         this.isAuthenticated = false;
