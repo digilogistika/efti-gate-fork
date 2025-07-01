@@ -1,8 +1,14 @@
 package eu.efti.eftigate.service;
 
-import eu.efti.commons.dto.*;
+import eu.efti.commons.dto.ControlDto;
+import eu.efti.commons.dto.ErrorDto;
+import eu.efti.commons.dto.IdentifiersRequestDto;
+import eu.efti.commons.dto.IdentifiersResponseDto;
+import eu.efti.commons.dto.SearchWithIdentifiersRequestDto;
 import eu.efti.commons.dto.identifiers.api.IdentifierRequestResultDto;
-import eu.efti.commons.enums.*;
+import eu.efti.commons.enums.RequestStatusEnum;
+import eu.efti.commons.enums.RequestTypeEnum;
+import eu.efti.commons.enums.StatusEnum;
 import eu.efti.eftigate.entity.ControlEntity;
 import eu.efti.eftigate.entity.IdentifiersRequestEntity;
 import eu.efti.eftigate.exception.DtoValidationException;
@@ -17,11 +23,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
-import static eu.efti.commons.enums.RequestStatusEnum.*;
+import static eu.efti.commons.enums.RequestStatusEnum.ERROR;
+import static eu.efti.commons.enums.RequestStatusEnum.IN_PROGRESS;
+import static eu.efti.commons.enums.RequestStatusEnum.RECEIVED;
+import static eu.efti.commons.enums.RequestStatusEnum.RESPONSE_IN_PROGRESS;
+import static eu.efti.commons.enums.RequestStatusEnum.SEND_ERROR;
 import static eu.efti.commons.enums.StatusEnum.COMPLETE;
 import static eu.efti.commons.enums.StatusEnum.PENDING;
 
@@ -47,8 +60,12 @@ public class IdentifiersSearchService {
         logManager.logAppRequest(controlDto, searchRequestDto, ComponentType.CA_APP, ComponentType.GATE, LogManager.FTI_008_FTI_014);
         controlService.createIdentifiersControl(controlDto, searchRequestDto);
 
+        int requestCount = Optional.ofNullable(searchRequestDto.getEftiGateIndicator())
+                .map(List::size)
+                .orElse(0);
+        
         return CompletableFuture
-                .supplyAsync(() -> waitForResponse(requestId, searchRequestDto.getEftiGateIndicator().size()))
+                .supplyAsync(() -> waitForResponse(requestId, requestCount))
                 .exceptionally(this::handleAsyncException)
                 .join();
     }
