@@ -47,3 +47,12 @@ interface CarriedTransportEquipment {
   sequenceNumber: number
   schemeAgencyId: string
 }
+
+
+export interface DatasetResponse {
+  requestId: string
+  status: string
+  errorCode: string
+  errorDescription: string
+  data: string
+}

@@ -3,6 +3,7 @@ import {Login} from './login/login';
 import {Admin} from './admin/admin';
 import {IdentifiersSearch} from './identifiers-search/identifiers-search';
 import {AuthGuard} from './auth/auth.guard';
+import {DatasetQuery} from './dataset-query/dataset-query';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,11 @@ export const routes: Routes = [
   {
     path: "identifiers-search",
     component: IdentifiersSearch,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "dataset-query/:gateId/:platformId/:datasetId",
+    component: DatasetQuery,
     canActivate: [AuthGuard]
   },
   {

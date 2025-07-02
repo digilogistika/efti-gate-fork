@@ -11,10 +11,6 @@ import {IdentifiersResult} from '../identifiers-result/identifiers-result';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    MatSelect,
-    MatLabel,
-    MatFormField,
-    MatOption,
     IdentifiersResult,
   ],
   templateUrl: './identifiers-search.html',

@@ -1,0 +1,50 @@
+<h1>Dataset query</h1>
+
+<label class="switch">
+  <span>Edit UIL query</span>
+  <input (change)="onUILEditToggleChange($event)" type="checkbox">
+  <span class="slider round"></span>
+</label>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="datasetQueryForm">
+  <label for="gateId">Gate ID</label>
+  <input formControlName="gateId" id="gateId" type="text">
+  |>
+  <label for="platformId">Platform ID</label>
+  <input formControlName="platformId" id="platformId" type="text">
+  |>
+  <label for="datasetId">Dataset ID</label>
+  <input formControlName="datasetId" id="datasetId" type="text">
+
+  <button type="submit">
+    Query Dataset
+  </button>
+
+  <h1>Select subsets for the query</h1>
+
+  <ul>
+    @for (memberState of getAvailableSubsets(); track memberState.isoCode) {
+      <li>
+        <details>
+          <summary>
+            <h2>{{memberState.name}} - {{memberState.isoCode}}</h2>
+          </summary>
+          <ul>
+            @for (subset of memberState.subsets; track $index) {
+              <li>
+                <label>
+                  <input
+                    type="checkbox"
+                    [value]="subset"
+                    (change)="onSubsetsChange(subset, $event)"
+                  >
+                  <span class="ml-2 text-xs font-medium text-gray-700">{{ subset }}</span>
+                </label>
+              </li>
+            }
+          </ul>
+        </details>
+      </li>
+    }
+  </ul>
+</form>
