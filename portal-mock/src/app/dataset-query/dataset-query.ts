@@ -4,6 +4,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse, IdentifierResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
+import xmlFormatter from 'xml-formatter';
+import * as Prism from 'prismjs';
 
 @Component({
   selector: 'app-dataset-query',
@@ -85,5 +87,16 @@ export class DatasetQuery {
       datasetId: this.datasetQueryForm.get('datasetId')?.value,
       subsetIds: this.selectedSubsets
     });
+  }
+
+  getFormattedXml(base64Xml: string): string {
+    const rawXml = atob(base64Xml);
+
+    const formatted = xmlFormatter(rawXml, {
+      indentation: '  ', // 2 spaces
+      collapseContent: true,
+    });
+
+    return formatted
   }
 }
