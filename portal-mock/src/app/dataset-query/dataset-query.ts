@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {memberStateSubsets} from '../core/subsets';
-import {DatasetResponse, IdentifierResponse} from '../core/types';
+import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import xmlFormatter from 'xml-formatter';
-import * as Prism from 'prismjs';
 
 @Component({
   selector: 'app-dataset-query',
@@ -92,11 +91,9 @@ export class DatasetQuery {
   getFormattedXml(base64Xml: string): string {
     const rawXml = atob(base64Xml);
 
-    const formatted = xmlFormatter(rawXml, {
+    return xmlFormatter(rawXml, {
       indentation: '  ', // 2 spaces
       collapseContent: true,
-    });
-
-    return formatted
+    })
   }
 }

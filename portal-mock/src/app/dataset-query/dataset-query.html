@@ -234,31 +234,31 @@
           } @else {
             <!-- Success State -->
             <div class="space-y-6">
-              <div class="flex items-center gap-3">
-                <div class="flex-shrink-0">
-                  <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-                  </svg>
+              <div class="flex flex-row justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="flex-shrink-0">
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    </svg>
+                  </div>
+                  <h2 class="text-lg font-semibold text-gray-800">Retrieved Dataset</h2>
                 </div>
-                <h2 class="text-lg font-semibold text-gray-800">Retrieved Dataset</h2>
+                <button class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
+                  <span class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>Follow up</span>
+                  </span>
+                </button>
               </div>
 
-              <div class="relative">
-                <div class="absolute top-3 right-3 z-10">
-                  <button class="inline-flex items-center px-3 py-1.5 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-lg text-xs font-medium text-gray-600 hover:bg-white hover:text-gray-800 transition-all duration-200">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-                    </svg>
-                    Copy
-                  </button>
-                </div>
-                <textarea
-                  class="w-full h-96 p-4 bg-gray-50/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 font-mono text-sm text-gray-700 resize-none backdrop-blur-sm"
-                  [value]="getFormattedXml(datasetQueryResponse.data)"
-                  readonly
-                  placeholder="Dataset content will appear here..."
-                ></textarea>
-              </div>
+              <textarea
+                class="w-full h-96 p-4 bg-gray-50/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 font-mono text-sm text-gray-700 resize-none backdrop-blur-sm"
+                [value]="getFormattedXml(datasetQueryResponse.data)"
+                readonly
+                placeholder="Dataset content will appear here..."
+              ></textarea>
             </div>
           }
         </div>
