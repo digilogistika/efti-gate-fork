@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {memberStateSubsets} from '../core/subsets';
@@ -14,10 +14,12 @@ import xmlFormatter from 'xml-formatter';
   templateUrl: './dataset-query.html',
 })
 export class DatasetQuery {
+  @ViewChild('myDialog') dialog!: ElementRef<HTMLDialogElement>;
   protected datasetQueryForm: FormGroup;
   protected readonly selectedSubsets = new Set<string>();
   protected isLoading: boolean = false;
   protected datasetQueryResponse: DatasetResponse | null = null;
+  protected followUpForm: FormGroup;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -33,6 +35,10 @@ export class DatasetQuery {
       platformId: [{value: platformId, disabled: true}, [Validators.required]],
       datasetId: [{value: datasetId, disabled: true}, [Validators.required]],
       subsetIds: [new Set<string>(), [Validators.required, Validators.minLength(1)]]
+    });
+
+    this.followUpForm = this.fb.group({
+      message: ['', [Validators.required]],
     });
   }
 
@@ -95,5 +101,31 @@ export class DatasetQuery {
       indentation: '  ', // 2 spaces
       collapseContent: true,
     })
+  }
+
+
+
+  openDialog() {
+    this.dialog.nativeElement.showModal(); // opens dialog as modal
+  }
+
+  closeDialog() {
+    this.dialog.nativeElement.close(); // closes dialog
+  }
+
+  onFollowUpSubmit() {
+    if (!this.followUpForm.valid || !this.datasetQueryResponse?.requestId) {
+      return;
+    }
+
+    const formValues = this.followUpForm.value;
+
+    const message = formValues.message;
+    const requestId = this.datasetQueryResponse.requestId;
+
+    this.http.post("/api/v1/follow-up", {
+      requestId: requestId,
+      message: message
+    }).subscribe();
   }
 }
