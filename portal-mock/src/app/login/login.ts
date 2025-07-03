@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +12,12 @@ import {AuthService} from '../auth/auth.service';
 })
 export class Login {
   public readonly loginForm: FormGroup;
+  public loginError: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private readonly http: HttpClient,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly router: Router,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -30,7 +31,17 @@ export class Login {
     }
 
     const formData = this.loginForm.value;
-
-    this.authService.login(formData.email, formData.password)
+    this.authService.login(formData.email, formData.password).subscribe({
+        next: () => {
+          this.loginError = null; // Clear any previous error
+          // Redirect user to identifiers search page
+          this.router.navigate(['/identifiers-search']);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+          this.loginError = error.message || 'An unknown error occurred. Please try again.';
+        }
+      }
+    )
   }
 }

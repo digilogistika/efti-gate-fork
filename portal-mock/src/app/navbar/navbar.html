@@ -1,0 +1,22 @@
+<nav>
+  @if (isAuthenticated) {
+    <a routerLink="identifiers-search">
+      Identifiers Search
+    </a>
+    <a [routerLink]="['/dataset-query', '', '', '']">
+      Dataset Query
+    </a>
+    <button (click)="logout()">
+      logout
+    </button>
+  }
+
+  @if (isAdminSecretActivated) {
+    <a routerLink="admin">
+      Admin
+    </a>
+    <a routerLink="login">
+      Login
+    </a>
+  }
+</nav>

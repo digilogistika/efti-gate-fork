@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {catchError, map, Observable, of, tap} from "rxjs";
+import {catchError, map, Observable, of, tap, throwError} from "rxjs";
+import {Router} from '@angular/router';
 
 interface JwtDto {
     token: string
@@ -14,27 +15,39 @@ export class AuthService {
     private isAuthenticated = false;
     private readonly LOCALSTORAGE_KEY = 'jwt-token';
 
-    constructor(private readonly http: HttpClient) {
+    constructor(
+      private readonly http: HttpClient,
+      private readonly router: Router
+    ) {
         this.isAuthenticated = !!localStorage.getItem(this.LOCALSTORAGE_KEY);
     }
 
     login(email: string, password: string) {
-        this.http
-            .post<JwtDto>("/api/public/authority-user/verify", {email, password})
-            .subscribe(value => {
-                localStorage.setItem(this.LOCALSTORAGE_KEY, value.token)
-                this.isAuthenticated = true;
-            })
+      return this.http
+        .post<JwtDto>("/api/public/authority-user/verify", {email, password})
+        .pipe(
+          map((value) => {
+            localStorage.setItem(this.LOCALSTORAGE_KEY, value.token);
+            this.isAuthenticated = true;
+            return true;
+          }),
+          catchError((error) => {
+            console.error('Login failed:', error);
+
+            let errorMessage = 'Error when logging in user. Please try again.';
+
+            this.isAuthenticated = false;
+            return throwError(() => new Error(errorMessage));
+          })
+        );
     }
 
     isAuthenticatedUser(): Observable<boolean> {
         const jwt = localStorage.getItem(this.LOCALSTORAGE_KEY);
 
         if (!jwt) {
-            this.logout();
             return of(false); // Immediately return false if no JWT is found
         }
-
         return this.http.post("/api/public/authority-user/validate", jwt, { observe: "response" }).pipe(
             map(response => {
                 // If the request succeeds (status 2xx), the JWT is considered valid
@@ -43,8 +56,8 @@ export class AuthService {
             }),
             catchError(error => {
                 // If the request errors (e.g., 401, 403), the JWT is invalid
-                this.logout();
                 this.isAuthenticated = false; // Update internal state
+                localStorage.removeItem(this.LOCALSTORAGE_KEY);
                 return of(false); // Return an observable of false
             }),
             // Optional: If you want to update the internal isAuthenticated state
@@ -62,5 +75,7 @@ export class AuthService {
     logout(): void {
         localStorage.removeItem(this.LOCALSTORAGE_KEY);
         this.isAuthenticated = false;
+        // route to login
+        this.router.navigate(['/login'], { replaceUrl: true });
     }
 }

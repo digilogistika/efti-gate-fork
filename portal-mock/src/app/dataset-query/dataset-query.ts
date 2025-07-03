@@ -21,6 +21,7 @@ export class DatasetQuery {
   protected readonly selectedSubsets = new Set<string>();
   protected isLoading: boolean = false;
   protected datasetQueryResponse: DatasetResponse | null = null;
+  protected datasetQueryErrorMessage: string | null = null;
   protected followUpForm: FormGroup;
   protected showSuccessMessageForFollowUp: boolean = false;
 
@@ -58,11 +59,19 @@ export class DatasetQuery {
 
     this.isLoading = true;
     this.http.get<DatasetResponse>(identifiersQuery)
-      .subscribe(v => {
-        this.datasetQueryResponse = v;
-        this.isLoading = false;
-        this.subsetDetails.nativeElement.open = false;
-      })
+      .subscribe({
+        next: (v) => {
+          this.datasetQueryResponse = v;
+          this.isLoading = false;
+          this.subsetDetails.nativeElement.open = false;
+          this.datasetQueryErrorMessage = null; // Clear any previous error message
+        },
+        error: (error) => {
+          console.error('Error fetching dataset:', error);
+          this.isLoading = false;
+          this.datasetQueryErrorMessage = 'Error fetching dataset. Please try again.';
+        }
+      });
   }
 
   getAvailableSubsets() {
