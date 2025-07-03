@@ -5,6 +5,7 @@ import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import xmlFormatter from 'xml-formatter';
+import {timeout} from 'rxjs';
 
 @Component({
   selector: 'app-dataset-query',
@@ -20,6 +21,7 @@ export class DatasetQuery {
   protected isLoading: boolean = false;
   protected datasetQueryResponse: DatasetResponse | null = null;
   protected followUpForm: FormGroup;
+  protected showSuccessMessageForFollowUp: boolean = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -126,6 +128,14 @@ export class DatasetQuery {
     this.http.post("/api/v1/follow-up", {
       requestId: requestId,
       message: message
-    }).subscribe();
+    }).subscribe(() => {
+      this.followUpForm.reset();
+      this.showSuccessMessageForFollowUp = true;
+
+      // Clear the success message after 2 seconds
+      setTimeout(() => {
+        this.showSuccessMessageForFollowUp = false;
+      }, 2000);
+    });
   }
 }

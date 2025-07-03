@@ -116,66 +116,6 @@
       </form>
     </div>
 
-    <!-- Subsets Selection -->
-    <details class="bg-white/60 backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden">
-      <summary class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
-        <div>
-          <h2 class="text-lg font-semibold text-gray-800">
-            Select Subsets for Query
-            <span class="text-sm text-red-600 font-semibold">*</span>
-          </h2>
-          <p class="text-sm text-gray-600 mt-1">Please select at least one member state subset to query.</p>
-        </div>
-        <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-        </svg>
-      </summary>
-
-      <div class="p-6">
-        <ul class="space-y-4">
-          @for (memberState of getAvailableSubsets(); track memberState.isoCode) {
-            <li class="border border-gray-200/50 rounded-xl overflow-hidden bg-white/40 backdrop-blur-sm">
-              <details class="group">
-                <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50/50 transition-all duration-200">
-                  <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-sm font-bold">
-                      {{memberState.isoCode}}
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-800">
-                      {{memberState.name}}
-                    </h3>
-                  </div>
-                  <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                  </svg>
-                </summary>
-
-                <div class="px-4 pb-4 pt-2 bg-gray-50/50 border-t border-gray-200/30">
-                  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    @for (subset of memberState.subsets; track $index) {
-                      <li>
-                        <label class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 transition-all duration-200 cursor-pointer group">
-                          <input
-                            type="checkbox"
-                            [value]="subset"
-                            (change)="onSubsetsChange(subset, $event)"
-                            class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
-                          >
-                          <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                          {{ subset }}
-                        </span>
-                        </label>
-                      </li>
-                    }
-                  </ul>
-                </div>
-              </details>
-            </li>
-          }
-        </ul>
-      </div>
-    </details>
-
     <!-- Query Results -->
     @if (datasetQueryResponse != null) {
       <div class="bg-white/60 backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden mt-8">
@@ -264,6 +204,66 @@
         </div>
       </div>
     }
+
+    <!-- Subsets Selection -->
+    <details class="bg-white/60 backdrop-blur-xl mt-8 rounded-2xl shadow-xl overflow-hidden">
+      <summary class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">
+            Select Subsets for Query
+            <span class="text-sm text-red-600 font-semibold">*</span>
+          </h2>
+          <p class="text-sm text-gray-600 mt-1">Please select at least one member state subset to query.</p>
+        </div>
+        <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+      </summary>
+
+      <div class="p-6">
+        <ul class="space-y-4">
+          @for (memberState of getAvailableSubsets(); track memberState.isoCode) {
+            <li class="border border-gray-200/50 rounded-xl overflow-hidden bg-white/40 backdrop-blur-sm">
+              <details class="group">
+                <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50/50 transition-all duration-200">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-sm font-bold">
+                      {{memberState.isoCode}}
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">
+                      {{memberState.name}}
+                    </h3>
+                  </div>
+                  <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+
+                <div class="px-4 pb-4 pt-2 bg-gray-50/50 border-t border-gray-200/30">
+                  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    @for (subset of memberState.subsets; track $index) {
+                      <li>
+                        <label class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 transition-all duration-200 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            [value]="subset"
+                            (change)="onSubsetsChange(subset, $event)"
+                            class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
+                          >
+                          <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
+                          {{ subset }}
+                        </span>
+                        </label>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </details>
+            </li>
+          }
+        </ul>
+      </div>
+    </details>
   </div>
 </div>
 
@@ -318,6 +318,9 @@
             Message
           </div>
         </div>
+        @if (showSuccessMessageForFollowUp) {
+          <span class="text-green-500">Message was sent successfully</span>
+        }
       </div>
 
       <!-- Action Buttons -->
