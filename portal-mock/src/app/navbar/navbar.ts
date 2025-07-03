@@ -1,14 +1,13 @@
 import {Component, HostListener} from '@angular/core';
 import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {AuthService} from '../auth/auth.service';
-import {filter, Observable} from 'rxjs';
-import {AsyncPipe, NgOptimizedImage} from '@angular/common';
+import {filter} from 'rxjs';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     RouterLink,
-    AsyncPipe,
     NgOptimizedImage
   ],
   templateUrl: './navbar.html'
