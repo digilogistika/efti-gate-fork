@@ -2,19 +2,21 @@ import {Component, HostListener} from '@angular/core';
 import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {AuthService} from '../auth/auth.service';
 import {filter, Observable} from 'rxjs';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     RouterLink,
-    AsyncPipe
+    AsyncPipe,
+    NgOptimizedImage
   ],
   templateUrl: './navbar.html'
 })
 export class Navbar {
   protected isAdminSecretActivated: boolean = false;
   protected isAuthenticated = false;
+  protected burgerMenuOpen: boolean = false;
   private keySequence: string[] = [];
   private readonly adminSequence = ['a', 'd', 'm', 'i', 'n'];
 
@@ -53,5 +55,9 @@ export class Navbar {
       this.isAdminSecretActivated = true;
       this.keySequence = []; // reset
     }
+  }
+
+  burgerMenuToggle() {
+    this.burgerMenuOpen = !this.burgerMenuOpen;
   }
 }
