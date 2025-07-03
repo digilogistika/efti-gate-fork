@@ -1,11 +1,11 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import { Location } from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import xmlFormatter from 'xml-formatter';
-import {timeout} from 'rxjs';
 
 @Component({
   selector: 'app-dataset-query',
@@ -16,6 +16,7 @@ import {timeout} from 'rxjs';
 })
 export class DatasetQuery {
   @ViewChild('myDialog') dialog!: ElementRef<HTMLDialogElement>;
+  @ViewChild('subsetDetails') subsetDetails!: ElementRef<HTMLDetailsElement>
   protected datasetQueryForm: FormGroup;
   protected readonly selectedSubsets = new Set<string>();
   protected isLoading: boolean = false;
@@ -26,7 +27,8 @@ export class DatasetQuery {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly fb: FormBuilder,
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
+    private readonly location: Location
   ) {
     const gateId = this.activatedRoute.snapshot.paramMap.get('gateId');
     const platformId = this.activatedRoute.snapshot.paramMap.get('platformId');
@@ -59,6 +61,7 @@ export class DatasetQuery {
       .subscribe(v => {
         this.datasetQueryResponse = v;
         this.isLoading = false;
+        this.subsetDetails.nativeElement.open = false;
       })
   }
 
@@ -105,8 +108,6 @@ export class DatasetQuery {
     })
   }
 
-
-
   openDialog() {
     this.dialog.nativeElement.showModal(); // opens dialog as modal
   }
@@ -137,5 +138,9 @@ export class DatasetQuery {
         this.showSuccessMessageForFollowUp = false;
       }, 2000);
     });
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 }
