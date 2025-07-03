@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -48,6 +50,11 @@ public class GateApiController {
                     )
                     .map(String::trim)
                     .toList();
+
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            assert attributes != null;
+            log.info(attributes.getRequest().getRequestURL().toString());
+            log.info(attributes.getRequest().getQueryString());
             final SupplyChainConsignment supplyChainConsignment = readerService.readFromFile(gateProperties.getCdaPath() + datasetId, subsets);
             if (supplyChainConsignment != null) {
                 var xml = serializeUtils.mapDocToXmlString(EftiSchemaUtils.mapCommonObjectToDoc(serializeUtils, supplyChainConsignment));

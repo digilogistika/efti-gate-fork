@@ -40,7 +40,7 @@ public class DatasetController implements DatasetControllerApi {
                 .port(gateProperties.getBaseUrl().getPort())
                 .pathSegment("v1", "dataset", gateId, platformId, datasetId)
                 .query("subsets={subsets}")
-                .buildAndExpand(subsetIds)
+                .buildAndExpand(String.join(",", subsetIds))
                 .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
