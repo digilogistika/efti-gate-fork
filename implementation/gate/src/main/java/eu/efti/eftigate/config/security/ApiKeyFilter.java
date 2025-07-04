@@ -63,7 +63,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         }
 
         // platform api endpoints validation
-        if ((path.startsWith("/v1/identifiers") && req.getMethod().equals("POST"))
+        if (path.startsWith("/v1/identifiers") && req.getMethod().equals("POST")
                 || path.startsWith("/api/platform/v0/whoami")
         ) {
             try {
@@ -76,9 +76,11 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         }
 
         // authority access point validation
-        if (path.startsWith("/v1/dataset") ||
-                (path.startsWith("/v1/identifiers") && (req.getMethod().equals("POST") || req.getMethod().equals("GET"))) ||
-                path.startsWith("/v1/follow-up")) {
+        if (
+                path.startsWith("/v1/dataset") && req.getMethod().equals("GET") ||
+                        path.startsWith("/v1/identifiers") && req.getMethod().equals("GET") ||
+                        path.startsWith("/v1/follow-up") && req.getMethod().equals("POST")
+        ) {
             try {
                 if (superApiKey.equals(xApiKeyHeader)) {
                     chain.doFilter(req, res);
