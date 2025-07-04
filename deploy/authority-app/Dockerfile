@@ -1,4 +1,4 @@
-FROM node:18-alpine AS angular-build
+FROM node:22-alpine AS angular-build
 
 WORKDIR /app/frontend
 
@@ -8,7 +8,7 @@ RUN npm ci
 
 COPY ./portal-mock/ .
 
-RUN npm run build-prod
+RUN npm run build
 
 
 FROM maven:3.8-openjdk-17 AS java-builder
