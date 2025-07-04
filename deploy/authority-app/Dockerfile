@@ -18,7 +18,7 @@ WORKDIR /build
 COPY ./implementation ./implementation 
 COPY ./schema ./schema
 
-COPY --from=angular-build /app/frontend/dist/ ./implementation/authority-app/src/main/resources/static/
+COPY --from=angular-build /app/frontend/dist/portal-mock/browser ./implementation/authority-app/src/main/resources/static/
 
 RUN mvn -B clean -f ./implementation/pom.xml -DskipTests
 RUN mvn -B package -f ./implementation/pom.xml -DskipTests
