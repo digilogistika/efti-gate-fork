@@ -34,18 +34,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResolver(new PathResourceResolver() {
                     @Override
                     protected Resource getResource(@NotNull String resourcePath, @NotNull Resource location) throws IOException {
-                        // Exclude API paths
-                        if (resourcePath.startsWith("api/") ||
-                                resourcePath.startsWith("v1/") ||
-                                resourcePath.startsWith("v3/") ||
-                                resourcePath.startsWith("actuator/") ||
-                                resourcePath.startsWith("swagger-ui/") ||
-                                resourcePath.startsWith("swagger/") ||
-                                resourcePath.startsWith("ws/")
-                        ) {
-                            return null;
-                        }
-
                         Resource requestedResource = location.createRelative(resourcePath);
                         return requestedResource.exists() && requestedResource.isReadable() ? requestedResource :
                                 new ClassPathResource("/static/index.html");
