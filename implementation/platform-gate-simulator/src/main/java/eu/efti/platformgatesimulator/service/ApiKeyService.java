@@ -3,34 +3,35 @@ package eu.efti.platformgatesimulator.service;
 import eu.efti.platformgatesimulator.config.GateProperties;
 import eu.efti.platformgatesimulator.dto.PlatformRegistrationRequestDto;
 import eu.efti.platformgatesimulator.dto.PlatformRegistrationResponseDto;
+import kotlin.random.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @Slf4j
 public class ApiKeyService {
     private final GateProperties gateProperties;
-    private final String filePath;
+    private String apiKey = null;
 
     public ApiKeyService(GateProperties gateProperties) {
         this.gateProperties = gateProperties;
-        filePath = "./api-key-" + gateProperties.getOwner() + ".txt";
     }
 
-    private void fetchApiKeyAndSave() {
+    private String fetchApiKey() {
         RestClient restClient = RestClient.builder().build();
 
         PlatformRegistrationRequestDto body = new PlatformRegistrationRequestDto();
-        body.setRequestBaseUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v0/consignments");
-        body.setPlatformId(gateProperties.getOwner());
+        body.setRequestBaseUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v1/dataset");
+
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formattedDate = today.format(formatter);
+        body.setPlatformId(gateProperties.getOwner() + "-" + formattedDate + "-" + Random.Default.nextInt(10, 100));
 
         ResponseEntity<PlatformRegistrationResponseDto> response = restClient.post()
                 .uri(gateProperties.getGateBaseUrl() + "/api/admin/platform/register")
@@ -41,56 +42,19 @@ public class ApiKeyService {
 
         if (response.getBody() != null) {
             PlatformRegistrationResponseDto responseBody = response.getBody();
-            saveApiKeyToFile(responseBody.getApiKey());
-            log.info("API key successfully fetched and saved for: {}", gateProperties.getOwner());
+            log.info("API key successfully fetched: {}", gateProperties.getOwner());
+            return responseBody.getApiKey();
         } else {
             log.error("Failed to fetch API key: response body is null");
         }
+        return formattedDate;
     }
 
-    private void saveApiKeyToFile(String apiKey) {
-        try {
-            Path filePath = Paths.get(this.filePath);
-            Files.writeString(filePath, apiKey, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-            log.info("API key saved to file: {}", filePath.toAbsolutePath());
-        } catch (IOException e) {
-            log.error("Failed to save API key to file", e);
-        }
-    }
-
-    private boolean isApiKeyInFile() {
-        try {
-            Path filePath = Paths.get(this.filePath);
-            if (Files.exists(filePath)) {
-                String content = Files.readString(filePath);
-                if (content.isEmpty()) {
-                    log.error("API key file is empty");
-                    return false;
-                } else {
-                    log.info("API key file found with content: {}", content);
-                    return true;
-                }
-            } else {
-                log.warn("API key file not found");
-                return false;
-            }
-        } catch (IOException e) {
-            log.error("Failed to read API key from file", e);
-            return false;
-        }
-    }
 
     public String getApiKey() {
-        if (!isApiKeyInFile()) {
-            fetchApiKeyAndSave();
+        if (this.apiKey == null) {
+            this.apiKey = fetchApiKey();
         }
-
-        try {
-            Path filePath = Paths.get(this.filePath);
-            return Files.readString(filePath);
-        } catch (IOException e) {
-            log.error("Failed to read API key from file", e);
-            return null;
-        }
+        return this.apiKey;
     }
 }

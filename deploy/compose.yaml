@@ -168,8 +168,6 @@ services:
     environment:
       - GATE=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
-    volumes:
-      - efti_platform:/usr/src/myapp
     restart: on-failure
     labels:
       traefik.http.routers.efti-platform.rule: "${DOMAIN}"

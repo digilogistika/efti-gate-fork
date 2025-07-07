@@ -35,12 +35,12 @@ public class GateApiController {
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;
 
-    @GetMapping("v0/consignments/{datasetId}")
+    @GetMapping("v1/dataset/{datasetId}")
     public ResponseEntity<Object> getConsignmentSubsets(
             @PathVariable("datasetId") String datasetId,
             @RequestParam(value = "subsetId") Set<String> subsetId
     ) {
-        log.info("GET on /api/gate-api/v0/consignments/{}?subsetId={}", datasetId, subsetId);
+        log.info("GET on /api/gate-api/v1/dataset/{}?subsetId={}", datasetId, subsetId);
         try {
             List<String> subsets = Arrays
                     .stream(subsetId
@@ -67,12 +67,12 @@ public class GateApiController {
         }
     }
 
-    @PostMapping("v0/consignments/{datasetId}/follow-up")
+    @PostMapping("v1/dataset/{datasetId}/follow-up")
     public ResponseEntity<Void> postConsignmentFollowup(
             @PathVariable("datasetId") String datasetId,
             @RequestBody String body
     ) {
-        log.info("POST on /api/gate-api/v0/consignments/{}/follow-up with body {}", datasetId, body);
+        log.info("POST on /api/gate-api/v1/dataset/{}/follow-up with body {}", datasetId, body);
         return null;
     }
 }
