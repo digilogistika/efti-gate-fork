@@ -61,7 +61,7 @@ public class PlatformApiService {
 
             String uri = platformIdentityService.getRequestBaseUrl(platformId) +
                     "/" + datasetId +
-                    "?" + "&subsetId=" + subsetIds;
+                    "?" + "&subsetId=" + String.join(",", subsetIds);
 
             List<PlatformHeaderDto> headers = platformIdentityService.getPlatformRequestHeaders(platformId);
 

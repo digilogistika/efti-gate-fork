@@ -1,40 +1,32 @@
 import { Routes } from '@angular/router';
-import {IdentifiersSearchComponent} from "./pages/identifiers-search/identifiers-search.component";
-import {authGuard} from "./core/guard/auth.guard";
-import {postLoginGuard} from "./core/guard/post-login.guard";
-import {LoginComponent} from "./pages/login/login.component";
-import {IdentifiersDisplayComponent} from "./pages/identifiers-display/identifiers-display.component";
-import {UilSearchComponent} from "./pages/uil-search/uil-search.component";
-import {AdminComponent} from "./pages/admin/admin.component";
+import {Login} from './login/login';
+import {Admin} from './admin/admin';
+import {IdentifiersSearch} from './identifiers-search/identifiers-search';
+import {AuthGuard} from './auth/auth.guard';
+import {DatasetQuery} from './dataset-query/dataset-query';
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'identifiers',
-    pathMatch: 'full'
-  },
-  {
-    path: 'uil',
-    component: UilSearchComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'identifiers',
-    component: IdentifiersSearchComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'identifiers-display/:id',
-    component: IdentifiersDisplayComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    canActivate: [postLoginGuard]
+    path: "login",
+    component: Login
   },
   {
     path: 'admin',
-    component: AdminComponent
-  }
+    component: Admin
+  },
+  {
+    path: "identifiers-search",
+    component: IdentifiersSearch,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "dataset-query/:gateId/:platformId/:datasetId",
+    component: DatasetQuery,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "**",
+    redirectTo: "/login",
+    pathMatch: "full"
+  },
 ];

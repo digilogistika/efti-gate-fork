@@ -134,6 +134,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/dataset");
+        when(request.getMethod()).thenReturn("GET");
 
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);
@@ -163,7 +164,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/follow-up");
-
+        when(request.getMethod()).thenReturn("POST");
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);
 
@@ -177,6 +178,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/dataset");
+        when(request.getMethod()).thenReturn("GET");
 
         AuthorityUserEntity authorityUserEntity = new AuthorityUserEntity();
         authorityUserEntity.setSecret("hashed-authority-secret");
@@ -216,6 +218,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/follow-up");
+        when(request.getMethod()).thenReturn("POST");
 
         AuthorityUserEntity authorityUserEntity = new AuthorityUserEntity();
         authorityUserEntity.setSecret("hashed-authority-secret");
@@ -235,6 +238,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/dataset");
+        when(request.getMethod()).thenReturn("GET");
 
         AuthorityUserEntity authorityUserEntity = new AuthorityUserEntity();
         authorityUserEntity.setSecret("hashed-authority-secret");
@@ -254,6 +258,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
         when(request.getRequestURI()).thenReturn("/v1/dataset");
+        when(request.getMethod()).thenReturn("GET");
         when(authorityUserRepository.findByAuthorityId(AUTHORITY_ID)).thenReturn(Optional.empty());
 
         // When
@@ -396,6 +401,7 @@ class ApiKeyFilterTest {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(null);
         when(request.getRequestURI()).thenReturn("/v1/dataset");
+        when(request.getMethod()).thenReturn("GET");
 
         // When
         apiKeyFilter.doFilterInternal(request, response, filterChain);

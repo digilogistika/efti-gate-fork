@@ -1,0 +1,392 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-50/90 via-white/80 to-cyan-50/90 sm:p-6 lg:p-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Back Button -->
+    <button (click)="navigateBack()"
+            class="flex cursor-pointer hover:text-gray-900 items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 g-white/60 backdrop-blur-xl rounded-md">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </svg>
+      Back
+    </button>
+
+    <!-- Header Section -->
+    <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl p-6 mb-8">
+      <div class="flex items-center gap-3">
+        <div
+          class="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M4 7v10c0 2.21 3.79 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.79 4 8 4s8-1.79 8-4M4 7c0-2.21 3.79-4 8-4s8 1.79 8 4"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Dataset Query
+          </h1>
+          <p class="text-sm text-gray-600 mt-1">Query datasets and select subsets for analysis</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Query Form -->
+    <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden mb-8">
+      <div
+        class="flex flex-row justify-between bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
+        <h2 class="text-lg font-semibold text-gray-800">Query Parameters</h2>
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-semibold text-gray-700">Edit UIL Query</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input (change)="onUILEditToggleChange($event)" class="sr-only peer" type="checkbox">
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-indigo-500 peer-checked:to-purple-600"></div>
+          </label>
+        </div>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" [formGroup]="datasetQueryForm" class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Gate ID -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2" for="gateId">
+              Gate ID
+              <span class="text-sm text-red-600 font-semibold">*</span>
+            </label>
+            <div class="relative">
+              <input
+                class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
+                formControlName="gateId"
+                id="gateId"
+                placeholder="Enter gate ID..."
+                type="text"
+              >
+            </div>
+          </div>
+
+          <!-- Platform ID -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2" for="platformId">
+              Platform ID
+              <span class="text-sm text-red-600 font-semibold">*</span>
+            </label>
+            <div class="relative">
+              <input
+                class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
+                formControlName="platformId"
+                id="platformId"
+                placeholder="Enter platform ID..."
+                type="text"
+              >
+            </div>
+          </div>
+
+          <!-- Dataset ID -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2" for="datasetId">
+              Dataset ID
+              <span class="text-sm text-red-600 font-semibold">*</span>
+            </label>
+            <div class="relative">
+              <input
+                class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
+                formControlName="datasetId"
+                id="datasetId"
+                placeholder="Enter dataset ID..."
+                type="text"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end items-center gap-2 mt-8 ">
+          <div class="flex flex-col">
+            @if (datasetQueryForm.controls['subsetIds'].value.size <= 0) {
+              <small class="text-red-600">
+                Please selected at least 1 subset for the query
+              </small>
+            }
+            @if (datasetQueryErrorMessage) {
+              <small class="text-red-600">
+                {{datasetQueryErrorMessage}}
+              </small>
+            }
+          </div>
+
+          <!-- Submit Button -->
+          <div>
+            <button
+              [disabled]="isLoading || datasetQueryForm.invalid"
+              class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100"
+              type="submit"
+            >
+            <span class="flex items-center gap-2">
+              @if (isLoading) {
+                <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <span>Searching...</span>
+              } @else {
+                <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none"
+                     stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <span>Query Dataset</span>
+              }
+            </span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Query Results -->
+    @if (datasetQueryResponse != null) {
+      <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden mt-8">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
+          <div class="flex flex-col gap-2 sm:flex-row items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                </svg>
+              </div>
+              <h1
+                class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                Dataset Query Response
+              </h1>
+            </div>
+            <div class="flex items-center gap-2 px-3 py-1 bg-gray-100/50 rounded-full">
+              <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <small class="text-xs font-medium text-gray-600">
+                ID: {{ datasetQueryResponse.requestId }}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          @if (datasetQueryResponse.errorCode != null || datasetQueryResponse.errorDescription != null) {
+            <!-- Error State -->
+            <div class="bg-red-50/80 border border-red-200/50 rounded-xl p-6">
+              <div class="flex items-start gap-3">
+                <div class="flex-shrink-0">
+                  <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                          stroke-linejoin="round" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold text-red-800 mb-3">Query Error</h3>
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-medium text-red-700">Error Code:</span>
+                      <span class="px-2 py-1 bg-red-100 text-red-800 text-sm font-mono rounded">
+                    {{ datasetQueryResponse.errorCode }}
+                  </span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                      <span class="text-sm font-medium text-red-700 mt-0.5">Description:</span>
+                      <span class="text-sm text-red-600 leading-relaxed">
+                    {{ datasetQueryResponse.errorDescription }}
+                  </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <!-- Success State -->
+            <div class="space-y-6">
+              <div class="flex flex-row justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="flex-shrink-0">
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2"/>
+                    </svg>
+                  </div>
+                  <h2 class="text-lg font-semibold text-gray-800">Retrieved Dataset</h2>
+                </div>
+                <button (click)="openDialog()"
+                        class="group relative px-2 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
+                  <span class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="w-5 h-5">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>Follow up</span>
+                  </span>
+                </button>
+              </div>
+
+              <textarea
+                class="w-full h-96 p-4 bg-gray-50/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 font-mono text-sm text-gray-700 resize-none backdrop-blur-sm"
+                [value]="getFormattedXml(datasetQueryResponse.data)"
+                readonly
+                placeholder="Dataset content will appear here..."
+              ></textarea>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Subsets Selection -->
+    <details #subsetDetails class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden">
+      <summary
+        class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">
+            Select Subsets for Query
+            <span class="text-sm text-red-600 font-semibold">*</span>
+          </h2>
+          <p class="text-sm text-gray-600 mt-1">Please select at least one member state subset to query.</p>
+        </div>
+        <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none"
+             stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+      </summary>
+
+      <div class="p-6">
+        <ul class="space-y-4">
+          @for (memberState of getAvailableSubsets(); track memberState.isoCode) {
+            <li class="border border-gray-200/50 rounded-xl overflow-hidden bg-white/40 backdrop-blur-sm">
+              <details class="group">
+                <summary
+                  class="flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50/50 transition-all duration-200">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-sm font-bold">
+                      {{ memberState.isoCode }}
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">
+                      {{ memberState.name }}
+                    </h3>
+                  </div>
+                  <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none"
+                       stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+
+                <div class="px-4 pb-4 pt-2 bg-gray-50/50 border-t border-gray-200/30">
+                  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    @for (subset of memberState.subsets; track $index) {
+                      <li>
+                        <label
+                          class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 transition-all duration-200 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            [value]="subset"
+                            (change)="onSubsetsChange(subset, $event)"
+                            class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
+                          >
+                          <span
+                            class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
+                          {{ subset }}
+                        </span>
+                        </label>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </details>
+            </li>
+          }
+        </ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+
+<dialog #myDialog
+        class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 m-0 backdrop:bg-black/50 backdrop:backdrop-blur-sm bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-0 w-full max-w-2xl">
+  <!-- Header -->
+  <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+        </div>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          Send Message to Platform
+        </h1>
+      </div>
+      <button
+        (click)="closeDialog()"
+        class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-lg transition-all duration-200"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-6">
+    <form (submit)="onFollowUpSubmit()" [formGroup]="followUpForm" class="space-y-6">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3" for="message">
+          Message Content
+          <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative">
+          <textarea
+            class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm resize-none"
+            cols="30"
+            formControlName="message"
+            id="message"
+            name="message"
+            placeholder="Enter your message about the data..."
+            rows="8"
+          ></textarea>
+          <div class="absolute bottom-3 right-3 text-xs text-gray-400">
+            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            </svg>
+            Message
+          </div>
+        </div>
+        @if (showSuccessMessageForFollowUp) {
+          <span class="text-green-500">Message was sent successfully</span>
+        }
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-3 pt-4 border-t border-gray-200/50">
+        <button
+          (click)="closeDialog()"
+          class="px-6 py-2.5 text-gray-600 bg-gray-100/50 hover:bg-gray-200/50 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          type="submit"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+          Send Message
+        </button>
+      </div>
+    </form>
+  </div>
+</dialog>
