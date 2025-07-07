@@ -27,8 +27,7 @@ jobs:
             git pull
             cd deploy 
             echo "Removing old images to force rebuild"
-            docker compose --profile platform --profile proxy down --rmi all
-            docker system prune -f
+            docker compose --profile platform --profile proxy down
             echo "Building and starting latest version for gate applications"
             docker compose --profile platform --profile proxy up -d --build
             
