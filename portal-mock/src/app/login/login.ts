@@ -39,7 +39,7 @@ export class Login {
         },
         error: (error) => {
           console.error('Login failed:', error);
-          this.loginError = error.message || $localize`:A generic error message displayed on the login page when an API call fails without a specific error message.:An unknown error occurred. Please try again.`;
+          this.loginError = error.message || 'An unknown error occurred. Please try again.';
         }
       }
     )

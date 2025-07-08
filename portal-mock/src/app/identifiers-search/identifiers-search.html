@@ -9,10 +9,10 @@
           </svg>
         </div>
         <div class="min-w-0">
-          <h1 i18n="Page Title|The main title of the search page" class="text-lg sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 class="text-lg sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
             Identifier Search
           </h1>
-          <p i18n="Page Description|A short description explaining the purpose of the page" class="text-xs sm:text-sm text-gray-600 mt-1">Search for transport identifiers across the network</p>
+          <p class="text-xs sm:text-sm text-gray-600 mt-1">Search for transport identifiers across the network</p>
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
     <!-- Search Form -->
     <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden mb-8">
       <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
-        <h2 i18n="Section Title|Title for the search filter section" class="text-lg font-semibold text-gray-800">Search Filters</h2>
+        <h2 class="text-lg font-semibold text-gray-800">Search Filters</h2>
       </div>
 
       <form (ngSubmit)="onSubmit()" [formGroup]="identifiersSearchForm" class="p-4 sm:p-6">
@@ -28,7 +28,7 @@
           <!-- Identifier Field -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2" for="identifier">
-              <ng-container i18n="Form Label|Label for the main identifier input field">Identifier</ng-container>
+              Identifier
               <span class="text-red-500 ml-1">*</span>
             </label>
             <div class="relative">
@@ -36,7 +36,6 @@
                 class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
                 formControlName="identifier"
                 id="identifier"
-                i18n-placeholder="Placeholder Text|Placeholder text for the identifier input"
                 placeholder="Enter identifier..."
                 type="text"
               >
@@ -51,14 +50,14 @@
           <!-- Non required search parameters --->
           <details>
             <summary class="mb-6">
-              <span i18n="Section Toggle|Label for the toggle to show optional search parameters" class="text-sm font-semibold text-gray-700 cursor-pointer">
+              <span class="text-sm font-semibold text-gray-700 cursor-pointer">
                 Additional Search Parameters (optional)
               </span>
             </summary>
             <div class="flex flex-col gap-2">
               <!-- Transportation Mode -->
               <div>
-                <label i18n="Form Label|Label for the transportation mode dropdown" class="block text-sm font-semibold text-gray-700 mb-2" for="modeCode">
+                <label class="block text-sm font-semibold text-gray-700 mb-2" for="modeCode">
                   Transportation Mode
                 </label>
                 <select
@@ -66,17 +65,17 @@
                   formControlName="modeCode"
                   id="modeCode"
                 >
-                  <option i18n="Dropdown Placeholder|Placeholder option in the transportation mode dropdown" disabled value="">Select mode...</option>
-                  <option i18n="Dropdown Option|Waterway transport mode" value="1">🚢 Waterway</option>
-                  <option i18n="Dropdown Option|Railway transport mode" value="2">🚂 Railway</option>
-                  <option i18n="Dropdown Option|Road transport mode" value="3">🚛 Road</option>
-                  <option i18n="Dropdown Option|Air transport mode" value="4">✈️ Air</option>
+                  <option disabled value="">Select mode...</option>
+                  <option value="1">🚢 Waterway</option>
+                  <option value="2">🚂 Railway</option>
+                  <option value="3">🚛 Road</option>
+                  <option value="4">✈️ Air</option>
                 </select>
               </div>
 
               <!-- Registration Country Code -->
               <div>
-                <label i18n="Form Label|Label for the registration country dropdown" class="block text-sm font-semibold text-gray-700 mb-2" for="registrationCountryCode">
+                <label class="block text-sm font-semibold text-gray-700 mb-2" for="registrationCountryCode">
                   Registration Country
                 </label>
                 <select
@@ -84,7 +83,7 @@
                   formControlName="registrationCountryCode"
                   id="registrationCountryCode"
                 >
-                  <option i18n="Dropdown Placeholder|Placeholder option in the registration country dropdown" disabled value="">Select country...</option>
+                  <option disabled value="">Select country...</option>
                   @for (country of euCountries; track country.isoCode) {
                     <option [value]="country.isoCode">{{ country.isoCode }}</option>
                   }
@@ -93,7 +92,7 @@
 
               <!-- Identifier Type (Custom Multi-Select) -->
               <div>
-                <label i18n="Form Label|Label for the identifier type checkboxes" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Identifier Type
                 </label>
                 <div class="relative">
@@ -106,7 +105,7 @@
                           type="checkbox"
                           value="means"
                         >
-                        <span i18n="Checkbox Label|Identifier type: Means of transport" class="ml-2 text-sm text-gray-700">Means</span>
+                        <span class="ml-2 text-sm text-gray-700">Means</span>
                       </label>
                       <label class="inline-flex items-center">
                         <input
@@ -115,7 +114,7 @@
                           type="checkbox"
                           value="equipment"
                         >
-                        <span i18n="Checkbox Label|Identifier type: Equipment" class="ml-2 text-sm text-gray-700">Equipment</span>
+                        <span class="ml-2 text-sm text-gray-700">Equipment</span>
                       </label>
                       <label class="inline-flex items-center">
                         <input
@@ -124,7 +123,7 @@
                           type="checkbox"
                           value="carried"
                         >
-                        <span i18n="Checkbox Label|Identifier type: Carried item" class="ml-2 text-sm text-gray-700">Carried</span>
+                        <span class="ml-2 text-sm text-gray-700">Carried</span>
                       </label>
                     </div>
                   </div>
@@ -133,7 +132,7 @@
 
               <!-- Dangerous Goods Indicator -->
               <div>
-                <label i18n="Form Label|Label for the dangerous goods section" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Dangerous Goods
                 </label>
                 <div class="relative">
@@ -144,7 +143,7 @@
                       id="dangerousGoodsIndicator"
                       type="checkbox"
                     >
-                    <span i18n="Checkbox Label|Checkbox label indicating the transport contains dangerous goods" class="ml-3 text-sm text-gray-700">Contains dangerous goods</span>
+                    <span class="ml-3 text-sm text-gray-700">Contains dangerous goods</span>
                     <div class="ml-2">
                       <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -156,7 +155,7 @@
 
               <!-- Countries to Search (Custom Multi-Select) -->
               <div class="mb-6 md:col-span-2">
-                <label i18n="Form Label|Label for the multi-select list of countries to search in" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Countries to Search
                 </label>
                 <div class="relative">
@@ -194,12 +193,12 @@
                 <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
-                <span i18n="Button Text|Button text while the search is in progress">Searching...</span>
+                <span>Searching...</span>
               } @else {
                 <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                <span i18n="Button Text|Button text to initiate the search">Search Identifiers</span>
+                <span>Search Identifiers</span>
               }
             </span>
           </button>
@@ -211,3 +210,4 @@
     <app-identifiers-result [identifierResponse]="identifierResponse"></app-identifiers-result>
   </div>
 </div>
+
