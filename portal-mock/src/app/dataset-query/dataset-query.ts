@@ -67,9 +67,9 @@ export class DatasetQuery {
           this.datasetQueryErrorMessage = null; // Clear any previous error message
         },
         error: (error) => {
-          console.error('Error fetching dataset:', error);
+          console.error($localize`:Console error prefix when dataset fetch fails:Error fetching dataset:`, error);
           this.isLoading = false;
-          this.datasetQueryErrorMessage = 'Error fetching dataset. Please try again.';
+          this.datasetQueryErrorMessage = $localize`:Error message displayed to the user when the dataset query fails:Error fetching dataset. Please try again.`;
         }
       });
   }

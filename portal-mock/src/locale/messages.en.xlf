@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="3960677295304081193" datatype="html">
+        <source>Admin API Key</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/admin/admin.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+        <note priority="1" from="description">Admin API key field label</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="7260674644796661127" datatype="html">
+        <source>Email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/admin/admin.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+        <note priority="1" from="description">Email field label</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="586008989918588657" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/admin/admin.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+        <note priority="1" from="description">Password field label</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="1382648992163287363" datatype="html">
+        <source>Submit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/admin/admin.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+        <note priority="1" from="description">Submit button text</note>
+        <note priority="1" from="meaning">button action</note>
+      </trans-unit>
+      <trans-unit id="3171600068538081703" datatype="html">
+        <source>Back</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">9,12</context>
+        </context-group>
+        <note priority="1" from="description">Back button text</note>
+        <note priority="1" from="meaning">navigation</note>
+      </trans-unit>
+      <trans-unit id="6537606854878788722" datatype="html">
+        <source> Dataset Query </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+        <note priority="1" from="description">Main heading for dataset query page</note>
+        <note priority="1" from="meaning">page title</note>
+      </trans-unit>
+      <trans-unit id="7112597108879918600" datatype="html">
+        <source>Query datasets and select subsets for analysis</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">28,34</context>
+        </context-group>
+        <note priority="1" from="description">Description of dataset query functionality</note>
+        <note priority="1" from="meaning">page description</note>
+      </trans-unit>
+      <trans-unit id="7142392216808649444" datatype="html">
+        <source>Query Parameters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+        <note priority="1" from="description">Query parameters section title</note>
+        <note priority="1" from="meaning">form section</note>
+      </trans-unit>
+      <trans-unit id="5683098242951674011" datatype="html">
+        <source>Edit UIL Query</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+        <note priority="1" from="description">UIL query edit toggle label</note>
+        <note priority="1" from="meaning">toggle label</note>
+      </trans-unit>
+      <trans-unit id="1283330683290651714" datatype="html">
+        <source>Gate ID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">53,54</context>
+        </context-group>
+        <note priority="1" from="description">Gate ID field label</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="4927103519101256740" datatype="html">
+        <source>Enter gate ID...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">62,65</context>
+        </context-group>
+        <note priority="1" from="description">Gate ID input placeholder</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="4374744944077574854" datatype="html">
+        <source>Platform ID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+        <note priority="1" from="description">Platform ID field label</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="1264797410363128831" datatype="html">
+        <source>Enter platform ID...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">80,83</context>
+        </context-group>
+        <note priority="1" from="description">Platform ID input placeholder</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="1018972950409750540" datatype="html">
+        <source>Dataset ID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">89,90</context>
+        </context-group>
+        <note priority="1" from="description">Dataset ID field label</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="1703385888230391372" datatype="html">
+        <source>Enter dataset ID...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">98,101</context>
+        </context-group>
+        <note priority="1" from="description">Dataset ID input placeholder</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="1961864162738074537" datatype="html">
+        <source> Please selected at least 1 subset for the query </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">109,112</context>
+        </context-group>
+        <note priority="1" from="description">Subset selection required error</note>
+        <note priority="1" from="meaning">validation message</note>
+      </trans-unit>
+      <trans-unit id="4156959307326926747" datatype="html">
+        <source>Searching...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">132,134</context>
+        </context-group>
+        <note priority="1" from="description">Loading state for query button</note>
+        <note priority="1" from="meaning">button loading</note>
+      </trans-unit>
+      <trans-unit id="375516702852618248" datatype="html">
+        <source>Query Dataset</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">139,142</context>
+        </context-group>
+        <note priority="1" from="description">Query dataset button text</note>
+        <note priority="1" from="meaning">button action</note>
+      </trans-unit>
+      <trans-unit id="6755037296758996743" datatype="html">
+        <source> Dataset Query Response </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">166,169</context>
+        </context-group>
+        <note priority="1" from="description">Dataset query response section title</note>
+        <note priority="1" from="meaning">results section</note>
+      </trans-unit>
+      <trans-unit id="2492846865714234901" datatype="html">
+        <source>ID:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+        <note priority="1" from="description">Request ID label</note>
+        <note priority="1" from="meaning">status label</note>
+      </trans-unit>
+      <trans-unit id="4044361506236336985" datatype="html">
+        <source>Query Error</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">191,192</context>
+        </context-group>
+        <note priority="1" from="description">Query error heading</note>
+        <note priority="1" from="meaning">error section</note>
+      </trans-unit>
+      <trans-unit id="4481352008499087489" datatype="html">
+        <source>Error Code:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">194,195</context>
+        </context-group>
+        <note priority="1" from="description">Error code label</note>
+        <note priority="1" from="meaning">error label</note>
+      </trans-unit>
+      <trans-unit id="6005049552066351869" datatype="html">
+        <source>Description:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">200,201</context>
+        </context-group>
+        <note priority="1" from="description">Error description label</note>
+        <note priority="1" from="meaning">error label</note>
+      </trans-unit>
+      <trans-unit id="2890129382163905801" datatype="html">
+        <source>Retrieved Dataset</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">220,222</context>
+        </context-group>
+        <note priority="1" from="description">Retrieved dataset heading</note>
+        <note priority="1" from="meaning">success section</note>
+      </trans-unit>
+      <trans-unit id="443154859438809598" datatype="html">
+        <source>Follow up</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">230,232</context>
+        </context-group>
+        <note priority="1" from="description">Follow up button text</note>
+        <note priority="1" from="meaning">button action</note>
+      </trans-unit>
+      <trans-unit id="6916295867419037253" datatype="html">
+        <source>Dataset content will appear here...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">240,243</context>
+        </context-group>
+        <note priority="1" from="description">Dataset content placeholder</note>
+        <note priority="1" from="meaning">results area</note>
+      </trans-unit>
+      <trans-unit id="6241321652778687518" datatype="html">
+        <source>Select Subsets for Query</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">254,255</context>
+        </context-group>
+        <note priority="1" from="description">Subset selection heading</note>
+        <note priority="1" from="meaning">subset selection</note>
+      </trans-unit>
+      <trans-unit id="7418735500072528998" datatype="html">
+        <source>Please select at least one member state subset to query.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">257,259</context>
+        </context-group>
+        <note priority="1" from="description">Subset selection description</note>
+        <note priority="1" from="meaning">subset selection</note>
+      </trans-unit>
+      <trans-unit id="1196374365734035192" datatype="html">
+        <source> Send Message to Platform </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">333,337</context>
+        </context-group>
+        <note priority="1" from="description">Send message dialog title</note>
+        <note priority="1" from="meaning">dialog title</note>
+      </trans-unit>
+      <trans-unit id="292512178829587235" datatype="html">
+        <source>Message Content</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">352,353</context>
+        </context-group>
+        <note priority="1" from="description">Message content field label</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="3976513521215257313" datatype="html">
+        <source>Enter your message about the data...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">363,366</context>
+        </context-group>
+        <note priority="1" from="description">Message content placeholder</note>
+        <note priority="1" from="meaning">form field</note>
+      </trans-unit>
+      <trans-unit id="6958322094709073897" datatype="html">
+        <source>Message</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">371,374</context>
+        </context-group>
+        <note priority="1" from="description">Message input hint</note>
+        <note priority="1" from="meaning">form hint</note>
+      </trans-unit>
+      <trans-unit id="3736495054294643341" datatype="html">
+        <source>Message was sent successfully</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">375,379</context>
+        </context-group>
+        <note priority="1" from="description">Message sent success</note>
+        <note priority="1" from="meaning">success message</note>
+      </trans-unit>
+      <trans-unit id="4173429293919537291" datatype="html">
+        <source> Cancel </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">387,390</context>
+        </context-group>
+        <note priority="1" from="description">Cancel button text</note>
+        <note priority="1" from="meaning">button action</note>
+      </trans-unit>
+      <trans-unit id="7750235812294230832" datatype="html">
+        <source>Send Message</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.html</context>
+          <context context-type="linenumber">396,400</context>
+        </context-group>
+        <note priority="1" from="description">Send message button text</note>
+        <note priority="1" from="meaning">button action</note>
+      </trans-unit>
+      <trans-unit id="7046689570977695647" datatype="html">
+        <source>Error fetching dataset:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+        <note priority="1" from="description">Console error prefix when dataset fetch fails</note>
+      </trans-unit>
+      <trans-unit id="5276147245924241958" datatype="html">
+        <source>Error fetching dataset. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/dataset-query/dataset-query.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+        <note priority="1" from="description">Error message displayed to the user when the dataset query fails</note>
+      </trans-unit>
+      <trans-unit id="150511395779879312" datatype="html">
+        <source> Results </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+        <note priority="1" from="description">The main title of the results page</note>
+        <note priority="1" from="meaning">Results page title</note>
+      </trans-unit>
+      <trans-unit id="807610577582124266" datatype="html">
+        <source>Request ID: <x id="INTERPOLATION" equiv-text="{{identifierResponse.requestId}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+        <note priority="1" from="description">Label for displaying the unique request identifier</note>
+        <note priority="1" from="meaning">Request ID label</note>
+      </trans-unit>
+      <trans-unit id="8470065995504674940" datatype="html">
+        <source>Error Occurred</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">21,23</context>
+        </context-group>
+        <note priority="1" from="description">Title for a generic error message box</note>
+        <note priority="1" from="meaning">Error message title</note>
+      </trans-unit>
+      <trans-unit id="5753438440561640069" datatype="html">
+        <source>Identifier Error</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">67,69</context>
+        </context-group>
+        <note priority="1" from="description">Title for an error related to a specific identifier</note>
+        <note priority="1" from="meaning">Identifier specific error title</note>
+      </trans-unit>
+      <trans-unit id="8131497254478473951" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {Consignments [0]} =1 {Consignment [1]} other {Consignments [<x id="INTERPOLATION"/>]}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">85,88</context>
+        </context-group>
+        <note priority="1" from="description">Header showing the number of consignments</note>
+        <note priority="1" from="meaning">Consignment count</note>
+      </trans-unit>
+      <trans-unit id="4974288554780657365" datatype="html">
+        <source> Dataset </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">111,113</context>
+        </context-group>
+        <note priority="1" from="description">Label for a button that navigates to the dataset details</note>
+        <note priority="1" from="meaning">Button label</note>
+      </trans-unit>
+      <trans-unit id="7178992527826679662" datatype="html">
+        <source>Carrier Acceptance Date</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">130,132</context>
+        </context-group>
+        <note priority="1" from="description">Label for the carrier acceptance date</note>
+        <note priority="1" from="meaning">Date label</note>
+      </trans-unit>
+      <trans-unit id="3546473258676760342" datatype="html">
+        <source>Delivery Event Occurrence</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">142,144</context>
+        </context-group>
+        <note priority="1" from="description">Label for the delivery event occurrence date</note>
+        <note priority="1" from="meaning">Date label</note>
+      </trans-unit>
+      <trans-unit id="6749317381778705802" datatype="html">
+        <source>Main Carriage</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">162,163</context>
+        </context-group>
+        <note priority="1" from="description">Title for the main carriage section</note>
+        <note priority="1" from="meaning">Section title</note>
+      </trans-unit>
+      <trans-unit id="8154286836606893498" datatype="html">
+        <source>The primary leg of transportation for the consignment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">163,165</context>
+        </context-group>
+        <note priority="1" from="description">Description for the main carriage section</note>
+        <note priority="1" from="meaning">Section description</note>
+      </trans-unit>
+      <trans-unit id="2589341256307396496" datatype="html">
+        <source>Carrying Dangerous Goods</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">180,182</context>
+        </context-group>
+        <note priority="1" from="description">A label indicating the cargo contains dangerous goods</note>
+        <note priority="1" from="meaning">Indicator label</note>
+      </trans-unit>
+      <trans-unit id="4451527864632866797" datatype="html">
+        <source>Registration Number:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">185,186</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">229,230</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">261,262</context>
+        </context-group>
+        <note priority="1" from="description">Label for a registration number field</note>
+        <note priority="1" from="meaning">Field label</note>
+      </trans-unit>
+      <trans-unit id="4738014916381613956" datatype="html">
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Agency:<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> <x id="INTERPOLATION" equiv-text="{{ mainCarriage.schemeAgencyId }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">189,190</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">233,234</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">265,266</context>
+        </context-group>
+        <note priority="1" from="description">Label for an agency field</note>
+        <note priority="1" from="meaning">Field label</note>
+      </trans-unit>
+      <trans-unit id="5837294234628006613" datatype="html">
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Country:<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> <x id="INTERPOLATION" equiv-text="{{ mainCarriage.registrationCountryCode }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">190,191</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">234,235</context>
+        </context-group>
+        <note priority="1" from="description">Label for a country field</note>
+        <note priority="1" from="meaning">Field label</note>
+      </trans-unit>
+      <trans-unit id="5514985015475725961" datatype="html">
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Mode:<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> <x id="INTERPOLATION" equiv-text="{{ mainCarriage.modeCode }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">191,192</context>
+        </context-group>
+        <note priority="1" from="description">Label for a transport mode field</note>
+        <note priority="1" from="meaning">Field label</note>
+      </trans-unit>
+      <trans-unit id="4037353554286974311" datatype="html">
+        <source>Transportation Equipment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">209,210</context>
+        </context-group>
+        <note priority="1" from="description">Title for the transportation equipment section</note>
+        <note priority="1" from="meaning">Section title</note>
+      </trans-unit>
+      <trans-unit id="8503860660574335374" datatype="html">
+        <source>Equipment used for transporting this consignment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">210,213</context>
+        </context-group>
+        <note priority="1" from="description">Description for the transportation equipment section</note>
+        <note priority="1" from="meaning">Section description</note>
+      </trans-unit>
+      <trans-unit id="3899599062371687017" datatype="html">
+        <source>Equipment #<x id="INTERPOLATION" equiv-text="{{ equipment.sequenceNumber }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">224,225</context>
+        </context-group>
+        <note priority="1" from="description">Label identifying a piece of equipment by its number</note>
+        <note priority="1" from="meaning">Equipment label</note>
+      </trans-unit>
+      <trans-unit id="5758263969348336565" datatype="html">
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Category:<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> <x id="INTERPOLATION" equiv-text="{{ equipment.categoryCode }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">235,236</context>
+        </context-group>
+        <note priority="1" from="description">Label for a category field</note>
+        <note priority="1" from="meaning">Field label</note>
+      </trans-unit>
+      <trans-unit id="387766558993374319" datatype="html">
+        <source>Carried Equipment on <x id="INTERPOLATION" equiv-text="{{ equipment.id }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">247,248</context>
+        </context-group>
+        <note priority="1" from="description">Title for a section listing equipment carried on a parent piece of equipment</note>
+        <note priority="1" from="meaning">Nested section title</note>
+      </trans-unit>
+      <trans-unit id="6246865213132216996" datatype="html">
+        <source>No Consignments were found for the given eFTI gate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">280,285</context>
+        </context-group>
+        <note priority="1" from="description">Message shown when no consignments are found for a specific gate</note>
+        <note priority="1" from="meaning">Empty state message</note>
+      </trans-unit>
+      <trans-unit id="1402525711417689057" datatype="html">
+        <source>No identifiers found for the given search criteria.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-result/identifiers-result.html</context>
+          <context context-type="linenumber">288,296</context>
+        </context-group>
+        <note priority="1" from="description">Message shown when no identifiers are found for the search criteria</note>
+        <note priority="1" from="meaning">Empty state message</note>
+      </trans-unit>
+      <trans-unit id="9054366315716173140" datatype="html">
+        <source> Identifier Search </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">13,15</context>
+        </context-group>
+        <note priority="1" from="description">The main title of the search page</note>
+        <note priority="1" from="meaning">Page Title</note>
+      </trans-unit>
+      <trans-unit id="5239271091371780120" datatype="html">
+        <source>Search for transport identifiers across the network</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">15,21</context>
+        </context-group>
+        <note priority="1" from="description">A short description explaining the purpose of the page</note>
+        <note priority="1" from="meaning">Page Description</note>
+      </trans-unit>
+      <trans-unit id="238763316435031540" datatype="html">
+        <source>Search Filters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">23,26</context>
+        </context-group>
+        <note priority="1" from="description">Title for the search filter section</note>
+        <note priority="1" from="meaning">Section Title</note>
+      </trans-unit>
+      <trans-unit id="3571750315260465717" datatype="html">
+        <source>Identifier</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+        <note priority="1" from="description">Label for the main identifier input field</note>
+        <note priority="1" from="meaning">Form Label</note>
+      </trans-unit>
+      <trans-unit id="6975515266147810908" datatype="html">
+        <source>Enter identifier...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">40,43</context>
+        </context-group>
+        <note priority="1" from="description">Placeholder text for the identifier input</note>
+        <note priority="1" from="meaning">Placeholder Text</note>
+      </trans-unit>
+      <trans-unit id="1342362826294425095" datatype="html">
+        <source> Additional Search Parameters (optional) </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">55,58</context>
+        </context-group>
+        <note priority="1" from="description">Label for the toggle to show optional search parameters</note>
+        <note priority="1" from="meaning">Section Toggle</note>
+      </trans-unit>
+      <trans-unit id="4360987982771662703" datatype="html">
+        <source> Transportation Mode </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">62,64</context>
+        </context-group>
+        <note priority="1" from="description">Label for the transportation mode dropdown</note>
+        <note priority="1" from="meaning">Form Label</note>
+      </trans-unit>
+      <trans-unit id="5334708658976998562" datatype="html">
+        <source>Select mode...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+        <note priority="1" from="description">Placeholder option in the transportation mode dropdown</note>
+        <note priority="1" from="meaning">Dropdown Placeholder</note>
+      </trans-unit>
+      <trans-unit id="7261426283264516550" datatype="html">
+        <source>🚢 Waterway</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+        <note priority="1" from="description">Waterway transport mode</note>
+        <note priority="1" from="meaning">Dropdown Option</note>
+      </trans-unit>
+      <trans-unit id="6504448017396207946" datatype="html">
+        <source>🚂 Railway</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+        <note priority="1" from="description">Railway transport mode</note>
+        <note priority="1" from="meaning">Dropdown Option</note>
+      </trans-unit>
+      <trans-unit id="2483390930970617711" datatype="html">
+        <source>🚛 Road</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">72,73</context>
+        </context-group>
+        <note priority="1" from="description">Road transport mode</note>
+        <note priority="1" from="meaning">Dropdown Option</note>
+      </trans-unit>
+      <trans-unit id="5732302314022218528" datatype="html">
+        <source>✈️ Air</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">73,75</context>
+        </context-group>
+        <note priority="1" from="description">Air transport mode</note>
+        <note priority="1" from="meaning">Dropdown Option</note>
+      </trans-unit>
+      <trans-unit id="4075575081782873726" datatype="html">
+        <source> Registration Country </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">80,83</context>
+        </context-group>
+        <note priority="1" from="description">Label for the registration country dropdown</note>
+        <note priority="1" from="meaning">Form Label</note>
+      </trans-unit>
+      <trans-unit id="8138669923764723090" datatype="html">
+        <source>Select country...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">87,89</context>
+        </context-group>
+        <note priority="1" from="description">Placeholder option in the registration country dropdown</note>
+        <note priority="1" from="meaning">Dropdown Placeholder</note>
+      </trans-unit>
+      <trans-unit id="7860040395982486724" datatype="html">
+        <source> Identifier Type </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">97,99</context>
+        </context-group>
+        <note priority="1" from="description">Label for the identifier type checkboxes</note>
+        <note priority="1" from="meaning">Form Label</note>
+      </trans-unit>
+      <trans-unit id="7403396339168507027" datatype="html">
+        <source>Means</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">109,111</context>
+        </context-group>
+        <note priority="1" from="description">Identifier type: Means of transport</note>
+        <note priority="1" from="meaning">Checkbox Label</note>
+      </trans-unit>
+      <trans-unit id="1376859332096963501" datatype="html">
+        <source>Equipment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">118,120</context>
+        </context-group>
+        <note priority="1" from="description">Identifier type: Equipment</note>
+        <note priority="1" from="meaning">Checkbox Label</note>
+      </trans-unit>
+      <trans-unit id="41956720438108324" datatype="html">
+        <source>Carried</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">127,129</context>
+        </context-group>
+        <note priority="1" from="description">Identifier type: Carried item</note>
+        <note priority="1" from="meaning">Checkbox Label</note>
+      </trans-unit>
+      <trans-unit id="6283681504050692152" datatype="html">
+        <source> Dangerous Goods </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">137,139</context>
+        </context-group>
+        <note priority="1" from="description">Label for the dangerous goods section</note>
+        <note priority="1" from="meaning">Form Label</note>
+      </trans-unit>
+      <trans-unit id="2757052095816854934" datatype="html">
+        <source>Contains dangerous goods</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">147,149</context>
+        </context-group>
+        <note priority="1" from="description">Checkbox label indicating the transport contains dangerous goods</note>
+        <note priority="1" from="meaning">Checkbox Label</note>
+      </trans-unit>
+      <trans-unit id="8652073373668483695" datatype="html">
+        <source> Countries to Search </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">160,162</context>
+        </context-group>
+        <note priority="1" from="description">Label for the multi-select list of countries to search in</note>
+        <note priority="1" from="meaning">Form Label</note>
+      </trans-unit>
+      <trans-unit id="7788676841293926808" datatype="html">
+        <source>Searching...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">197,199</context>
+        </context-group>
+        <note priority="1" from="description">Button text while the search is in progress</note>
+        <note priority="1" from="meaning">Button Text</note>
+      </trans-unit>
+      <trans-unit id="2805882151368093833" datatype="html">
+        <source>Search Identifiers</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/identifiers-search/identifiers-search.html</context>
+          <context context-type="linenumber">202,205</context>
+        </context-group>
+        <note priority="1" from="description">Button text to initiate the search</note>
+        <note priority="1" from="meaning">Button Text</note>
+      </trans-unit>
+      <trans-unit id="6978401639366320522" datatype="html">
+        <source>Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.html</context>
+          <context context-type="linenumber">6,9</context>
+        </context-group>
+        <note priority="1" from="description">The title of the login form section</note>
+        <note priority="1" from="meaning">Login form header</note>
+      </trans-unit>
+      <trans-unit id="5466345753555849007" datatype="html">
+        <source> Email <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-red-500 ml-1&quot;&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+        <note priority="1" from="description">The label for the user&apos;s email address input field</note>
+        <note priority="1" from="meaning">Label for email input field</note>
+      </trans-unit>
+      <trans-unit id="4230159761431578946" datatype="html">
+        <source>Enter your email...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.html</context>
+          <context context-type="linenumber">23,26</context>
+        </context-group>
+        <note priority="1" from="description">An example to guide the user to enter their email</note>
+        <note priority="1" from="meaning">Placeholder for email input</note>
+      </trans-unit>
+      <trans-unit id="3494999511050262858" datatype="html">
+        <source> Password <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-red-500 ml-1&quot;&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+        <note priority="1" from="description">The label for the user&apos;s password input field</note>
+        <note priority="1" from="meaning">Label for password input field</note>
+      </trans-unit>
+      <trans-unit id="8742223545259913224" datatype="html">
+        <source>Enter your password...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.html</context>
+          <context context-type="linenumber">46,49</context>
+        </context-group>
+        <note priority="1" from="description">An example to guide the user to enter their password</note>
+        <note priority="1" from="meaning">Placeholder for password input</note>
+      </trans-unit>
+      <trans-unit id="4749530811171649886" datatype="html">
+        <source> Sign In </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.html</context>
+          <context context-type="linenumber">65,70</context>
+        </context-group>
+        <note priority="1" from="description">The text on the main button to submit the login form</note>
+        <note priority="1" from="meaning">Button text for login submission</note>
+      </trans-unit>
+      <trans-unit id="7058784173687895044" datatype="html">
+        <source>An unknown error occurred. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <note priority="1" from="description">A generic error message displayed on the login page when an API call fails without a specific error message.</note>
+      </trans-unit>
+      <trans-unit id="6002216510067673763" datatype="html">
+        <source>DLK logo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+        <note priority="1" from="description">Logo alt text for main company branding</note>
+        <note priority="1" from="meaning">company logo</note>
+      </trans-unit>
+      <trans-unit id="3972384042693215558" datatype="html">
+        <source>EFTI4EU logo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+        <note priority="1" from="description">Logo alt text for EFTI4EU project</note>
+        <note priority="1" from="meaning">project logo</note>
+      </trans-unit>
+      <trans-unit id="771212558141708278" datatype="html">
+        <source>EU cofunding logo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+        <note priority="1" from="description">Logo alt text for EU cofunding acknowledgment</note>
+        <note priority="1" from="meaning">funding logo</note>
+      </trans-unit>
+      <trans-unit id="7227420526667390850" datatype="html">
+        <source>Pikker logo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+        <note priority="1" from="description">Logo alt text for Pikker partner company</note>
+        <note priority="1" from="meaning">partner logo</note>
+      </trans-unit>
+      <trans-unit id="8348534389932283289" datatype="html">
+        <source>Identifiers Search</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">60,64</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">140,144</context>
+        </context-group>
+        <note priority="1" from="description">Link text for identifiers search functionality</note>
+        <note priority="1" from="meaning">navigation link</note>
+      </trans-unit>
+      <trans-unit id="1335281973865602823" datatype="html">
+        <source>Dataset Query</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">71,75</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">151,155</context>
+        </context-group>
+        <note priority="1" from="description">Link text for dataset query functionality</note>
+        <note priority="1" from="meaning">navigation link</note>
+      </trans-unit>
+      <trans-unit id="4011192506993045879" datatype="html">
+        <source>Logout</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">81,85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">161,165</context>
+        </context-group>
+        <note priority="1" from="description">Button text for user logout action</note>
+        <note priority="1" from="meaning">action button</note>
+      </trans-unit>
+      <trans-unit id="5256454730221418647" datatype="html">
+        <source>Admin</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">95,99</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">175,179</context>
+        </context-group>
+        <note priority="1" from="description">Link text for admin panel access</note>
+        <note priority="1" from="meaning">navigation link</note>
+      </trans-unit>
+      <trans-unit id="81846275637910077" datatype="html">
+        <source>Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">106,109</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">186,191</context>
+        </context-group>
+        <note priority="1" from="description">Link text for user login page</note>
+        <note priority="1" from="meaning">navigation link</note>
+      </trans-unit>
+      <trans-unit id="5803324064969503755" datatype="html">
+        <source>Open menu</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/navbar/navbar.html</context>
+          <context context-type="linenumber">116,117</context>
+        </context-group>
+        <note priority="1" from="description">Aria label for mobile menu toggle button</note>
+        <note priority="1" from="meaning">accessibility</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
