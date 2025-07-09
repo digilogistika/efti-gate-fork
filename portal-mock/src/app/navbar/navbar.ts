@@ -2,7 +2,7 @@ import {Component, HostListener} from '@angular/core';
 import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {AuthService} from '../auth/auth.service';
 import {filter} from 'rxjs';
-import {NgOptimizedImage} from '@angular/common';
+import {NgOptimizedImage, UpperCasePipe} from '@angular/common';
 import {TranslatePipe, TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 @Component({
@@ -11,7 +11,8 @@ import {TranslatePipe, TranslateService, LangChangeEvent} from '@ngx-translate/c
     RouterLink,
     NgOptimizedImage,
     TranslatePipe,
-    RouterLinkActive
+    RouterLinkActive,
+    UpperCasePipe
   ],
   templateUrl: './navbar.html'
 })
@@ -19,6 +20,7 @@ export class Navbar {
   protected isAdminSecretActivated: boolean = false;
   protected isAuthenticated = false;
   protected burgerMenuOpen: boolean = false;
+  protected languageDropdownOpen: boolean = false;
   private keySequence: string[] = [];
   private readonly adminSequence = ['a', 'd', 'm', 'i', 'n'];
   public currentLanguage: string;
@@ -26,7 +28,7 @@ export class Navbar {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly translate: TranslateService
+    protected readonly translate: TranslateService
   ) {
     this.updateAuthStatus();
     this.router.events.pipe(
@@ -39,6 +41,7 @@ export class Navbar {
       this.currentLanguage = event.lang;
     });
   }
+  protected readonly localStorage = localStorage;
 
   updateAuthStatus(): void {
     this.authService.isAuthenticatedUser().subscribe({
@@ -67,11 +70,21 @@ export class Navbar {
 
   burgerMenuToggle() {
     this.burgerMenuOpen = !this.burgerMenuOpen;
+    if (this.burgerMenuOpen) {
+      this.languageDropdownOpen = false;
+    }
   }
 
-  onLanguageChange(event: Event) {
-    const lang = (event.target as HTMLSelectElement).value;
+  toggleLanguageDropdown() {
+    this.languageDropdownOpen = !this.languageDropdownOpen;
+    if (this.languageDropdownOpen) {
+      this.burgerMenuOpen = false;
+    }
+  }
+
+  selectLanguage(lang: string) {
     this.translate.use(lang);
-    localStorage.setItem('language', lang);
+    this.localStorage.setItem('language', lang);
+    this.languageDropdownOpen = false;
   }
 }
