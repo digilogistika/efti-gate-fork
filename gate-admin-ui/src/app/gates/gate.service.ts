@@ -10,8 +10,13 @@ import { environment } from "../../environments/environment";
 export class GateService {
   registerUrl = environment.apiUrl.registerGate;
   deleteUrl = environment.apiUrl.deleteGate;
+  gatesUrl = environment.apiUrl.getGates;
 
   private readonly http = inject(HttpClient);
+
+  getGates(): Observable<Gate[]> {
+    return this.http.get<Gate[]>(this.gatesUrl);
+  }
 
   registerGate(gate: Gate): Observable<HttpResponse<Text>> {
     return this.http.post<Text>(this.registerUrl, gate, {

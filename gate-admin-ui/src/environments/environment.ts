@@ -7,5 +7,6 @@ export const environment = {
     registerAuthority: "/api/admin/authority/register",
     deleteGate: "/api/admin/gate/delete",
     health: "/actuator/health",
+    getGates: "/api/admin/gates",
   },
 };

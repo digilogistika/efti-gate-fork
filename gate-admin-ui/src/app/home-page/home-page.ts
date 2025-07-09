@@ -1,9 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { RouterLink } from "@angular/router";
 import { interval, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
+
+// Import what we need
+import { GateService } from "../gates/gate.service";
+import { Gate } from "../gates/gate.model";
 
 @Component({
   selector: "app-home-page",
@@ -17,14 +21,39 @@ export class HomePage implements OnInit, OnDestroy {
   private healthCheckSubscription?: Subscription;
   private readonly HEALTH_CHECK_INTERVAL = 5000;
 
-  constructor(private http: HttpClient) {}
+  // Gate List Properties
+  gates: Gate[] = [];
+  gateCount = 0;
+  isLoadingGates = true;
+  fetchError: string | null = null;
+
+  private http = inject(HttpClient);
+  private gateService = inject(GateService);
 
   ngOnInit() {
+    this.fetchGates();
     this.startHealthCheck();
   }
 
   ngOnDestroy() {
     this.stopHealthCheck();
+  }
+
+  fetchGates(): void {
+    this.isLoadingGates = true;
+    this.fetchError = null;
+    this.gateService.getGates().subscribe({
+      next: (data: Gate[]) => {
+        this.gates = data;
+        this.gateCount = data.length;
+        this.isLoadingGates = false;
+      },
+      error: (err: any) => {
+        this.fetchError = "Failed to load gates.";
+        this.isLoadingGates = false;
+        console.error("Error fetching gates:", err);
+      },
+    });
   }
 
   private startHealthCheck() {

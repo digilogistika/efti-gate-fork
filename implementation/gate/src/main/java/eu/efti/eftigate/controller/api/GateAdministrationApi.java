@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "Gate administration api", description = "API for gate's administrator.")
 @RequestMapping("/api/admin")
 public interface GateAdministrationApi {
@@ -64,4 +66,15 @@ public interface GateAdministrationApi {
     ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
             @RequestBody @Validated PlatformRegistrationRequestDto platformRegistrationRequestDto
     );
+
+    @Operation(
+            summary = "Get all gates.",
+            description = "Get all registered gates from the database."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Gates successfully retrieved.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = GateDto.class)))
+    })
+    @GetMapping("/gates")
+    ResponseEntity<List<GateDto>> getGates();
 }

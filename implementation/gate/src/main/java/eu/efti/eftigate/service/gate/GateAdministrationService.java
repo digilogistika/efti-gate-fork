@@ -13,6 +13,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -62,5 +65,18 @@ public class GateAdministrationService {
             log.warn("Gate {} does not exist", gateId);
             throw new GateDoesNotExistException("Gate with this ID does not exist");
         }
+    }
+
+    public List<GateDto> getGates() {
+        return gateRepository.findAll().stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    private GateDto mapToDto(final GateEntity gateEntity) {
+        return GateDto.builder()
+                .gateId(gateEntity.getGateId())
+                .country(gateEntity.getCountry())
+                .build();
     }
 }
