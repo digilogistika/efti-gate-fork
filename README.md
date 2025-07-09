@@ -66,7 +66,6 @@ a summary:
     - [Authority App](implementation/authority-app/README.md)
 - [Schemas](schema/README.md)
     - [Data models](schema/xsd/README.md)
-    - [API definitions](schema/api-schemas/README.md)
 - [Deployment](deploy/README.md)
     - [Local Deployment](deploy/local/README.md)
 - [Utils](utils/README.md)
