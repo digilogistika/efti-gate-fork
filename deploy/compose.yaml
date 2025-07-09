@@ -1,4 +1,14 @@
 services:
+  java-builder:
+    build:
+      context: ../
+      dockerfile: ./deploy/builder.Dockerfile
+      target: java-builder
+      args:
+        OWNER_VALUE: ${COMPOSE_PROJECT_NAME}
+    image: java-builder:latest
+    command: ["echo", "Builder completed"]
+
   reverse-proxy:
     image: traefik:v3.4
     profiles: [ "proxy" ]
@@ -78,6 +88,7 @@ services:
       traefik.http.services.harmony.loadbalancer.server.port: "8080"
       traefik.http.routers.harmony.tls: "true"
       traefik.http.routers.harmony.tls.certresolver: "myresolver"
+
   harmony-db:
     image: mysql:8
     environment:
@@ -107,8 +118,6 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/gate/Dockerfile
-      args:
-        OWNER_VALUE: ${COMPOSE_PROJECT_NAME}
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8880/actuator/health || exit 1" ]
       interval: 5s
@@ -117,6 +126,7 @@ services:
     depends_on:
       - efti-psql
       - efti-rabbitmq
+      - java-builder
     environment:
       - OWNER=${COMPOSE_PROJECT_NAME}
       - COUNTRY=${COUNTRY}
@@ -144,6 +154,8 @@ services:
         condition: service_started
       efti-gate:
         condition: service_healthy
+      java-builder:
+        condition: service_completed_successfully
     environment:
       - GATE-NAME=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
@@ -165,6 +177,7 @@ services:
     profiles: [ "platform" ]
     depends_on:
       - efti-psql
+      - java-builder
     environment:
       - GATE=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
