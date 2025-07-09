@@ -51,7 +51,16 @@
     "mainCarriageDescription": "Główny etap transportu przesyłki",
     "transportationEquipment": "Sprzęt transportowy",
     "transportationEquipmentDescription": "Sprzęt używany do transportu tej przesyłki",
-    "carriedEquipment": "Przewożony sprzęt na"
+    "carriedEquipment": "Przewożony sprzęt na",
+    "noConsignmentsFound": "Nie znaleziono przesyłek dla podanej bramki eFTI.",
+    "noIdentifiersFound": "Nie znaleziono identyfikatorów dla podanych kryteriów wyszukiwania.",
+    "dangerousGoodsIndicator": "Przewóz towarów niebezpiecznych",
+    "registrationNumber": "Numer rejestracyjny:",
+    "agency": "Agencja:",
+    "country": "Kraj:",
+    "mode": "Tryb:",
+    "equipmentNumber": "Numer sprzętu",
+    "category": "Kategoria:"
   },
   "identifiersSearch": {
     "header": "Wyszukiwanie identyfikatorów",
@@ -72,7 +81,11 @@
     "containsDangerousGoods": "Zawiera towary niebezpieczne",
     "countriesToSearch": "Kraje do przeszukania",
     "searchIdentifiers": "Wyszukaj identyfikatory",
-    "searching": "Wyszukiwanie..."
+    "searching": "Wyszukiwanie...",
+    "waterway": "Droga wodna",
+    "railway": "Kolej",
+    "road": "Droga",
+    "air": "Transport lotniczy"
   },
   "login": {
     "header": "Logowanie",

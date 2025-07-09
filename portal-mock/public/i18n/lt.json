@@ -51,7 +51,16 @@
     "mainCarriageDescription": "Pagrindinis siuntos transportavimo etapas",
     "transportationEquipment": "Transportavimo įranga",
     "transportationEquipmentDescription": "Įranga, naudojama šios siuntos transportavimui",
-    "carriedEquipment": "Gabenama įranga ant"
+    "carriedEquipment": "Gabenama įranga ant",
+    "noConsignmentsFound": "Pagal nurodytus eFTI vartus siuntų nerasta.",
+    "noIdentifiersFound": "Pagal nurodytus paieškos kriterijus identifikatorių nerasta.",
+    "dangerousGoodsIndicator": "Gabenami pavojingi kroviniai",
+    "registrationNumber": "Registracijos numeris:",
+    "agency": "Agentūra:",
+    "country": "Šalis:",
+    "mode": "Režimas:",
+    "equipmentNumber": "Įrangos Nr.",
+    "category": "Kategorija:"
   },
   "identifiersSearch": {
     "header": "Identifikatorių paieška",
@@ -72,7 +81,11 @@
     "containsDangerousGoods": "Turi pavojingų krovinių",
     "countriesToSearch": "Paieškos šalys",
     "searchIdentifiers": "Ieškoti identifikatorių",
-    "searching": "Ieškoma..."
+    "searching": "Ieškoma...",
+    "waterway": "Vandens kelias",
+    "railway": "Geležinkelis",
+    "road": "Kelias",
+    "air": "Oras"
   },
   "login": {
     "header": "Prisijungimas",

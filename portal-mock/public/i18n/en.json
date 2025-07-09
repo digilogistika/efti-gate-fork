@@ -51,7 +51,16 @@
     "mainCarriageDescription": "The primary leg of transportation for the consignment",
     "transportationEquipment": "Transportation Equipment",
     "transportationEquipmentDescription": "Equipment used for transporting this consignment",
-    "carriedEquipment": "Carried Equipment on"
+    "carriedEquipment": "Carried Equipment on",
+    "noConsignmentsFound": "No Consignments were found for the given eFTI gate",
+    "noIdentifiersFound": "No identifiers found for the given search criteria.",
+    "dangerousGoodsIndicator": "Carrying Dangerous Goods",
+    "registrationNumber": "Registration Number:",
+    "agency": "Agency:",
+    "country": "Country:",
+    "mode": "Mode:",
+    "equipmentNumber": "Equipment #",
+    "category": "Category:"
   },
   "identifiersSearch": {
     "header": "Identifier Search",
@@ -72,7 +81,11 @@
     "containsDangerousGoods": "Contains dangerous goods",
     "countriesToSearch": "Countries to Search",
     "searchIdentifiers": "Search Identifiers",
-    "searching": "Searching..."
+    "searching": "Searching...",
+    "waterway": "Waterway",
+    "railway": "Railway",
+    "road": "Road",
+    "air": "Air"
   },
   "login": {
     "header": "Login",
@@ -90,4 +103,4 @@
     "admin": "Admin",
     "login": "Login"
   }
-} 
+}

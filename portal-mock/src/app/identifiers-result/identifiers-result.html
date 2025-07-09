@@ -3,9 +3,9 @@
     <div class="max-w-7xl mx-auto">
       <div>
         <h1 class="text-4xl font-bold text-gray-800">
-          Results
+          {{ 'identifiersResult.results' | translate }}
         </h1>
-        <small class="text-gray-400">Request ID: {{identifierResponse.requestId}}</small>
+        <small class="text-gray-400">{{ 'identifiersResult.requestId' | translate }} {{identifierResponse.requestId}}</small>
       </div>
 
       @if (identifierResponse.errorCode || identifierResponse.errorDescription) {
@@ -18,7 +18,7 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-lg font-semibold text-red-800 mb-2">Error Occurred</h3>
+              <h3 class="text-lg font-semibold text-red-800 mb-2">{{ 'identifiersResult.errorOccurred' | translate }}</h3>
               <p class="text-red-700">
                 <span class="font-mono font-semibold">{{ identifierResponse.errorCode }}</span>
                 @if (identifierResponse.errorDescription) {
@@ -64,7 +64,7 @@
                         </svg>
                       </div>
                       <div>
-                        <h4 class="font-semibold text-red-800 mb-1">Identifier Error</h4>
+                        <h4 class="font-semibold text-red-800 mb-1">{{ 'identifiersResult.identifierError' | translate }}</h4>
                         <p class="text-red-700 text-sm">
                           <span class="font-mono">{{ identifier.errorCode }}</span>
                           @if (identifier.errorDescription) {
@@ -82,7 +82,7 @@
                     <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
-                    <h3 class="text-lg font-semibold text-gray-800">Consignments [{{identifier.consignments.length}}]</h3>
+                    <h3 class="text-lg font-semibold text-gray-800">{{ 'identifiersResult.consignments' | translate }} [{{identifier.consignments.length}}]</h3>
                   </div>
 
                   <div class="space-y-6">
@@ -177,18 +177,18 @@
                                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                                         </svg>
                                       </div>
-                                      <span class="text-sm font-medium text-red-800 bg-red-100 px-2 py-1 rounded-full">Carrying Dangerous Goods</span>
+                                      <span class="text-sm font-medium text-red-800 bg-red-100 px-2 py-1 rounded-full">{{ 'identifiersResult.dangerousGoodsIndicator' | translate }}</span>
                                     </div>
                                   }
                                   <div class="space-y-2">
                                     <div>
-                                      <span class="text-sm font-medium text-gray-700">Registration Number:</span>
+                                      <span class="text-sm font-medium text-gray-700">{{ 'identifiersResult.registrationNumber' | translate }}</span>
                                       <span class="ml-2 font-mono font-semibold text-indigo-600">{{ mainCarriage.id }}</span>
                                     </div>
                                     <div class="flex flex-wrap gap-4 text-sm text-gray-600">
-                                      <span><strong>Agency:</strong> {{ mainCarriage.schemeAgencyId }}</span>
-                                      <span><strong>Country:</strong> {{ mainCarriage.registrationCountryCode }}</span>
-                                      <span><strong>Mode:</strong> {{ mainCarriage.modeCode }}</span>
+                                      <span><strong>{{ 'identifiersResult.agency' | translate }}</strong> {{ mainCarriage.schemeAgencyId }}</span>
+                                      <span><strong>{{ 'identifiersResult.country' | translate }}</strong> {{ mainCarriage.registrationCountryCode }}</span>
+                                      <span><strong>{{ 'identifiersResult.mode' | translate }}</strong> {{ mainCarriage.modeCode }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -221,18 +221,18 @@
                                     <span class="inline-flex items-center justify-center w-6 h-6 bg-cyan-500 text-white rounded-full text-xs font-semibold">
                                       {{ equipment.sequenceNumber }}
                                     </span>
-                                    <span class="text-sm font-medium text-gray-700">Equipment #{{ equipment.sequenceNumber }}</span>
+                                    <span class="text-sm font-medium text-gray-700">{{ 'identifiersResult.equipmentNumber' | translate }}{{ equipment.sequenceNumber }}</span>
                                   </div>
 
                                   <div class="space-y-2 mb-4">
                                     <div>
-                                      <span class="text-sm font-medium text-gray-700">Registration Number:</span>
+                                      <span class="text-sm font-medium text-gray-700">{{ 'identifiersResult.registrationNumber' | translate }}</span>
                                       <span class="ml-2 font-mono font-semibold text-cyan-600">{{ equipment.id }}</span>
                                     </div>
                                     <div class="flex flex-wrap gap-4 text-sm text-gray-600">
-                                      <span><strong>Agency:</strong> {{ equipment.schemeAgencyId }}</span>
-                                      <span><strong>Country:</strong> {{ equipment.registrationCountry }}</span>
-                                      <span><strong>Category:</strong> {{ equipment.categoryCode }}</span>
+                                      <span><strong>{{ 'identifiersResult.agency' | translate }}</strong> {{ equipment.schemeAgencyId }}</span>
+                                      <span><strong>{{ 'identifiersResult.country' | translate }}</strong> {{ equipment.registrationCountry }}</span>
+                                      <span><strong>{{ 'identifiersResult.category' | translate }}</strong> {{ equipment.categoryCode }}</span>
                                     </div>
                                   </div>
 
@@ -258,11 +258,11 @@
                                             </span>
                                             <div>
                                               <div>
-                                                <span class="text-sm font-medium text-gray-700">Registration Number:</span>
+                                                <span class="text-sm font-medium text-gray-700">{{ 'identifiersResult.registrationNumber' | translate }}</span>
                                                 <span class="ml-2 font-mono font-semibold text-cyan-600">{{ carriedEquipment.id }}</span>
                                               </div>
                                               <div class="flex flex-wrap gap-4 text-sm text-gray-600">
-                                                <span><strong>Agency:</strong> {{ carriedEquipment.schemeAgencyId }}</span>
+                                                <span><strong>{{ 'identifiersResult.agency' | translate }}</strong> {{ carriedEquipment.schemeAgencyId }}</span>
                                               </div>
                                             </div>
                                           </div>
@@ -277,7 +277,7 @@
                         </div>
                       </div>
                     } @empty {
-                      <p class="text-gray-600">No Consignments where found for the given eFTI gate</p>
+                      <p class="text-gray-600">{{ 'identifiersResult.noConsignmentsFound' | translate }}</p>
                     }
                   </div>
                 </div>
@@ -285,7 +285,7 @@
             </div>
           } @empty {
             <div class="bg-white/60 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 text-center">
-              <p class="text-gray-600">No identifiers found for the given search criteria.</p>
+              <p class="text-gray-600">{{ 'identifiersResult.noIdentifiersFound' | translate }}</p>
             </div>
           }
         </div>

@@ -51,7 +51,16 @@
     "mainCarriageDescription": "Saadetise peamine transpordi etapp",
     "transportationEquipment": "Transpordivarustus",
     "transportationEquipmentDescription": "Selle saadetise transportimiseks kasutatav varustus",
-    "carriedEquipment": "Veetav varustus"
+    "carriedEquipment": "Veetav varustus",
+    "noConsignmentsFound": "Antud eFTI värava kohta saadetisi ei leitud.",
+    "noIdentifiersFound": "Antud otsingukriteeriumitele vastavaid tunnuseid ei leitud.",
+    "dangerousGoodsIndicator": "Ohtlike kaupade vedu",
+    "registrationNumber": "Registreerimisnumber:",
+    "agency": "Agentuur:",
+    "country": "Riik:",
+    "mode": "Transpordiliik:",
+    "equipmentNumber": "Seadme nr",
+    "category": "Kategooria:"
   },
   "identifiersSearch": {
     "header": "Identifikaatorite otsing",
@@ -72,7 +81,11 @@
     "containsDangerousGoods": "Sisaldab ohtlikke kaupu",
     "countriesToSearch": "Otsitavad riigid",
     "searchIdentifiers": "Otsi identifikaatoreid",
-    "searching": "Otsin..."
+    "searching": "Otsin...",
+    "waterway": "Veetee",
+    "railway": "Raudtee",
+    "road": "Maantee",
+    "air": "Õhutransport"
   },
   "login": {
     "header": "Sisselogimine",
