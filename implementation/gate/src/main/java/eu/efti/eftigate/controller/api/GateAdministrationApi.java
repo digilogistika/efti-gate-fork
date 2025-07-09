@@ -68,13 +68,8 @@ public interface GateAdministrationApi {
     );
 
     @Operation(
-            summary = "Get all gates.",
-            description = "Get all registered gates from the database."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Gates successfully retrieved.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = GateDto.class)))
-    })
-    @GetMapping("/gates")
-    ResponseEntity<List<GateDto>> getGates();
+            summary = "Get system metadata.",
+            description = "Retrieves lists of all registered gate IDs, platform IDs, and authority names.")
+    @GetMapping("/metadata")
+    ResponseEntity<MetaDataDto> getMetadata();
 }

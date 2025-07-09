@@ -2,6 +2,7 @@ import { HttpClient, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Gate } from "./gate.model";
+import { MetaData } from './metadata.model';
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -10,12 +11,12 @@ import { environment } from "../../environments/environment";
 export class GateService {
   registerUrl = environment.apiUrl.registerGate;
   deleteUrl = environment.apiUrl.deleteGate;
-  gatesUrl = environment.apiUrl.getGates;
+  metaDataUrl = environment.apiUrl.getMetaData;
 
   private readonly http = inject(HttpClient);
 
-  getGates(): Observable<Gate[]> {
-    return this.http.get<Gate[]>(this.gatesUrl);
+  getMetaData(): Observable<MetaData> {
+    return this.http.get<MetaData>(this.metaDataUrl);
   }
 
   registerGate(gate: Gate): Observable<HttpResponse<Text>> {

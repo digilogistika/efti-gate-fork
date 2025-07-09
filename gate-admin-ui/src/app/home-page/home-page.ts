@@ -7,7 +7,7 @@ import { CommonModule } from "@angular/common";
 
 // Import what we need
 import { GateService } from "../gates/gate.service";
-import { Gate } from "../gates/gate.model";
+import { MetaData } from "../gates/metadata.model";
 
 @Component({
   selector: "app-home-page",
@@ -21,39 +21,38 @@ export class HomePage implements OnInit, OnDestroy {
   private healthCheckSubscription?: Subscription;
   private readonly HEALTH_CHECK_INTERVAL = 5000;
 
-  // Gate List Properties
-  gates: Gate[] = [];
-  gateCount = 0;
-  isLoadingGates = true;
   fetchError: string | null = null;
+  gateCount = 0;
+  platformCount = 0;
+  authorityCount = 0;
+  isLoadingStats = false;
 
   private http = inject(HttpClient);
   private gateService = inject(GateService);
 
+  fetchStats(): void {
+    this.isLoadingStats = true;
+    this.gateService.getMetadata().subscribe({
+      next: (data: Metadata) => {
+        this.gateCount = data.gateIds.length;
+        this.platformCount = data.platformIds.length;
+        this.authorityCount = data.authorityNames.length;
+        this.isLoadingStats = false;
+      },
+      error: (err) => {
+        console.error("Error fetching metadata stats:", err);
+        this.isLoadingStats = false;
+      }
+    });
+  }
+
   ngOnInit() {
-    this.fetchGates();
+    this.fetchStats();
     this.startHealthCheck();
   }
 
   ngOnDestroy() {
     this.stopHealthCheck();
-  }
-
-  fetchGates(): void {
-    this.isLoadingGates = true;
-    this.fetchError = null;
-    this.gateService.getGates().subscribe({
-      next: (data: Gate[]) => {
-        this.gates = data;
-        this.gateCount = data.length;
-        this.isLoadingGates = false;
-      },
-      error: (err: any) => {
-        this.fetchError = "Failed to load gates.";
-        this.isLoadingGates = false;
-        console.error("Error fetching gates:", err);
-      },
-    });
   }
 
   private startHealthCheck() {

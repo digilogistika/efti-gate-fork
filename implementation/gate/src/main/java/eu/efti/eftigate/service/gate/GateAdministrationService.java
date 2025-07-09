@@ -3,10 +3,15 @@ package eu.efti.eftigate.service.gate;
 import eu.efti.commons.enums.CountryIndicator;
 import eu.efti.eftigate.config.GateProperties;
 import eu.efti.eftigate.dto.GateDto;
+import eu.efti.eftigate.dto.MetaDataDto;
+import eu.efti.eftigate.entity.AuthorityUserEntity;
 import eu.efti.eftigate.entity.GateEntity;
+import eu.efti.eftigate.entity.PlatformEntity;
 import eu.efti.eftigate.exception.GateAlreadyExistsException;
 import eu.efti.eftigate.exception.GateDoesNotExistException;
+import eu.efti.eftigate.repository.AuthorityUserRepository;
 import eu.efti.eftigate.repository.GateRepository;
+import eu.efti.eftigate.repository.PlatformRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -22,6 +27,9 @@ import java.util.stream.Collectors;
 public class GateAdministrationService {
     private final GateRepository gateRepository;
     private final GateProperties gateProperties;
+    private final PlatformRepository platformRepository;
+    private final AuthorityUserRepository authorityUserRepository;
+
 
     @EventListener(ApplicationReadyEvent.class)
     public void setSelfIndicator() {
@@ -67,16 +75,25 @@ public class GateAdministrationService {
         }
     }
 
-    public List<GateDto> getGates() {
-        return gateRepository.findAll().stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-    }
+    public MetaDataDto getMetadata() {
+        log.info("Fetching metadata (IDs and names)");
 
-    private GateDto mapToDto(final GateEntity gateEntity) {
-        return GateDto.builder()
-                .gateId(gateEntity.getGateId())
-                .country(gateEntity.getCountry())
+        List<String> gateIds = gateRepository.findAll().stream()
+                .map(GateEntity::getGateId)
+                .collect(Collectors.toList());
+
+        List<String> platformIds = platformRepository.findAll().stream()
+                .map(PlatformEntity::getPlatformId)
+                .collect(Collectors.toList());
+
+        List<String> authorityNames = authorityUserRepository.findAll().stream()
+                .map(AuthorityUserEntity::getAuthorityId)
+                .collect(Collectors.toList());
+
+        return MetaDataDto.builder()
+                .gateIds(gateIds)
+                .platformIds(platformIds)
+                .authorityNames(authorityNames)
                 .build();
     }
 }

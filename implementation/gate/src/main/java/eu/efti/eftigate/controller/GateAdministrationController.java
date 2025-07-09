@@ -49,8 +49,8 @@ public class GateAdministrationController implements GateAdministrationApi {
     }
 
     @Override
-    public ResponseEntity<List<GateDto>> getGates() {
-        log.info("GET on /api/admin/gates");
-        return ResponseEntity.ok(gateAdministrationService.getGates());
+    public ResponseEntity<MetaDataDto> getMetadata() {
+        log.info("GET on /api/admin/metadata");
+        return ResponseEntity.ok(gateAdministrationService.getMetadata());
     }
 }
