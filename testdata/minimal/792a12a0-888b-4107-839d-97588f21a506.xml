@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<consignment xmlns="http://efti.eu/v1/consignment/common">
+    <!--
+    Näiteandmed mida platform ei pea saatma metaandmetena väravale.
+    Juhul kui värav küsib platformilt andmeid selle dataseti kohta tuleb ka need andmed tagastada
+    (hetkel tuleb kogu dataset tagastada kuna subsettimise loogikat ei ole implementeeritud).
+
+    Need on vaid mõningad näidisandmed, mida ei pea saatma. eFTI regulatsioon defineerib sadu selliseid
+    välju, mida platform saab hoida.
+    -->
+
+    <!--
+    Volume units used in Efti from UNECE Recommendation 20 (UNECE (UN/EDIFACT) codes 6411)
+    See https://unece.org/trade/uncefact/cl-recommendations
+    -->
+    <grossVolume unitId="LTR">0.37</grossVolume>
+    <information>Information, expressed as text, for this supply chain consignment.</information>
+
+
+    <!--
+    Andmed, mida värav peab saatma platformile metaandmetena.
+    Juhul kui värav küsib platformilt andmeid selle dataseti kohta tuleb ka need andmed tagastada.
+    Nende põhjal saab politsei või mõni muu ametiasutus teha päringuid väravale et saada dataseti id-d.
+
+    Need on mõningad metaandmed mida peaks saatma väravale. nendest piisab et politsei saaks küsida auto numbrit
+    ning hiljem ka selle auto consignment andmeid.
+    -->
+
+    <!-- A main carriage logistics transport movement for this supply chain consignment. -->
+    <!-- The main carriage is the primary (main) leg of transportation used for the carriage of the consignment of goods from one place to another. -->
+    <mainCarriageTransportMovement>
+        <dangerousGoodsIndicator>false</dangerousGoodsIndicator>
+        <modeCode>4</modeCode>
+        <usedTransportMeans>
+            <id schemeAgencyId="UN">AAS501</id>
+            <registrationCountry>
+                <code>EE</code>
+            </registrationCountry>
+        </usedTransportMeans>
+    </mainCarriageTransportMovement>
+
+
+    <!-- Logistics transport equipment utilized for this supply chain consignment. -->
+    <!-- The transport equipment used for transporting this consignment. -->
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">MMG947</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>0</sequenceNumber>
+    </usedTransportEquipment>
+
+    <!-- Logistics transport equipment utilized for this supply chain consignment. -->
+    <!-- The transport equipment used for transporting this consignment. -->
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">EOP443</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>1</sequenceNumber>
+    </usedTransportEquipment>
+</consignment>
