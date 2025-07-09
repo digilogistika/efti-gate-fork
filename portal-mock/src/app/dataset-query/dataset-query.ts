@@ -5,14 +5,16 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
-import xmlFormatter from 'xml-formatter';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import { XmlNode } from '../xml-viewer/xml-node';
+import { XmlViewer } from '../xml-viewer/xml-viwer';
 
 @Component({
   selector: 'app-dataset-query',
   imports: [
     ReactiveFormsModule,
-    TranslatePipe
+    TranslatePipe,
+    XmlViewer,
   ],
   templateUrl: './dataset-query.html',
 })
@@ -26,6 +28,7 @@ export class DatasetQuery {
   protected datasetQueryErrorMessage: string | null = null;
   protected followUpForm: FormGroup;
   protected showSuccessMessageForFollowUp: boolean = false;
+  protected parsedXmlData: XmlNode[] | null = null;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -68,6 +71,10 @@ export class DatasetQuery {
           this.isLoading = false;
           this.subsetDetails.nativeElement.open = false;
           this.datasetQueryErrorMessage = null; // Clear any previous error message
+
+          if (v.data) {
+            this.parseAndSetXml(v.data);
+          }
         },
         error: (error) => {
           console.error('Error fetching dataset:', error);
@@ -111,13 +118,43 @@ export class DatasetQuery {
     });
   }
 
-  getFormattedXml(base64Xml: string): string {
-    const rawXml = atob(base64Xml);
+  private parseAndSetXml(base64Xml: string): void {
+    try {
+      const xmlString = atob(base64Xml);
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, "application/xml");
 
-    return xmlFormatter(rawXml, {
-      indentation: '  ', // 2 spaces
-      collapseContent: true,
-    })
+      if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+        console.error("Error parsing XML.");
+        this.parsedXmlData = null;
+        return;
+      }
+
+      const rootNode = this.convertNodeToJson(xmlDoc.documentElement);
+      this.parsedXmlData = rootNode.children;
+
+    } catch (e) {
+      console.error("Failed to decode or parse XML", e);
+      this.parsedXmlData = null;
+    }
+  }
+
+  private convertNodeToJson(node: Element): XmlNode {
+    const children = Array.from(node.children).map(child => this.convertNodeToJson(child));
+    const attributes = Array.from(node.attributes).map(attr => ({ key: attr.name, value: attr.value }));
+
+    const textValue = Array.from(node.childNodes)
+      .filter(child => child.nodeType === Node.TEXT_NODE && child.textContent?.trim())
+      .map(child => child.textContent?.trim())
+      .join(' ');
+
+    return {
+      name: node.localName,
+      attributes: attributes,
+      children: children,
+      value: textValue || undefined,
+      isExpanded: true
+    };
   }
 
   openDialog() {
