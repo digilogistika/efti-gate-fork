@@ -51,7 +51,16 @@
     "mainCarriageDescription": "Sūtījuma galvenais transportēšanas posms",
     "transportationEquipment": "Transportēšanas aprīkojums",
     "transportationEquipmentDescription": "Aprīkojums, kas izmantots šī sūtījuma transportēšanai",
-    "carriedEquipment": "Pārvadātais aprīkojums"
+    "carriedEquipment": "Pārvadātais aprīkojums",
+    "noConsignmentsFound": "Dotajai eFTI vārtejai sūtījumi netika atrasti.",
+    "noIdentifiersFound": "Pēc dotajiem meklēšanas kritērijiem identifikatori netika atrasti.",
+    "dangerousGoodsIndicator": "Bīstamo kravu pārvadāšana",
+    "registrationNumber": "Reģistrācijas numurs:",
+    "agency": "Aģentūra:",
+    "country": "Valsts:",
+    "mode": "Veids:",
+    "equipmentNumber": "Iekārtas Nr.",
+    "category": "Kategorija:"
   },
   "identifiersSearch": {
     "header": "Identifikatoru meklēšana",
@@ -72,7 +81,11 @@
     "containsDangerousGoods": "Satur bīstamas kravas",
     "countriesToSearch": "Valstis, kurās meklēt",
     "searchIdentifiers": "Meklēt identifikatorus",
-    "searching": "Meklē..."
+    "searching": "Meklē...",
+    "waterway": "Ūdensceļš",
+    "railway": "Dzelzceļš",
+    "road": "Autoceļš",
+    "air": "Gaiss"
   },
   "login": {
     "header": "Pieslēgšanās",

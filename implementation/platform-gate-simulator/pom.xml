@@ -268,54 +268,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-api-for-gate</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/../../schema/api-schemas/platform-api-for-gate.yaml
-                            </inputSpec>
-                            <generatorName>spring</generatorName>
-                            <configOptions>
-                                <interfaceOnly>true</interfaceOnly>
-                                <documentationProvider>none</documentationProvider>
-                                <useBeanValidation>false</useBeanValidation>
-                                <openApiNullable>false</openApiNullable>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <withXml>true</withXml>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
-                            <apiPackage>eu.efti.platformgatesimulator.controller.api</apiPackage>
-                            <modelPackage>eu.efti.platformgatesimulator.dto</modelPackage>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>generate-client-for-gate</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/../../schema/api-schemas/gate-api-for-platform.yaml</inputSpec>
-                            <generatorName>java</generatorName>
-                            <library>resttemplate</library>
-                            <configOptions>
-                                <openApiNullable>false</openApiNullable>
-                                <useJakartaEe>true</useJakartaEe>
-                                <withXml>true</withXml>
-                            </configOptions>
-                            <apiPackage>eu.efti.platformgatesimulator.service.client</apiPackage>
-                            <modelPackage>eu.efti.platformgatesimulator.dto</modelPackage>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
