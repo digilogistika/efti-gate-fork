@@ -108,7 +108,7 @@
                           </div>
                           <a class="flex flex-row gap-2 group relative px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100" [routerLink]="['/dataset-query', consignment.gateId, consignment.platformId, consignment.datasetId]">
                             <span>
-                              Dataset
+                              {{ 'identifiersResult.dataset' | translate }}
                             </span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
                               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -127,7 +127,7 @@
                               <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                               </svg>
-                              <span class="text-sm font-medium text-gray-700">Carrier Acceptance Date</span>
+                              <span class="text-sm font-medium text-gray-700">{{ 'identifiersResult.carrierAcceptanceDate' | translate }}</span>
                             </div>
                             <time class="text-sm text-gray-900 font-mono bg-green-50 px-2 py-1 rounded" [dateTime]="consignment.carrierAcceptanceDatetime">
                               {{ consignment.carrierAcceptanceDatetime | date: 'short' }}
@@ -139,7 +139,7 @@
                               <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                               </svg>
-                              <span class="text-sm font-medium text-gray-700">Delivery Event Occurrence</span>
+                              <span class="text-sm font-medium text-gray-700">{{ 'identifiersResult.deliveryEventOccurrence' | translate }}</span>
                             </div>
                             <time class="text-sm text-gray-900 font-mono bg-blue-50 px-2 py-1 rounded" [dateTime]="consignment.deliveryEventActualOccurrenceDatetime">
                               {{ consignment.deliveryEventActualOccurrenceDatetime | date: 'short' }}
@@ -159,8 +159,8 @@
                                   </svg>
                                 </div>
                                 <div>
-                                  <h5 class="font-semibold text-gray-800">Main Carriage</h5>
-                                  <p class="text-xs text-gray-600">The primary leg of transportation for the consignment</p>
+                                  <h5 class="font-semibold text-gray-800">{{ 'identifiersResult.mainCarriage' | translate }}</h5>
+                                  <p class="text-xs text-gray-600">{{ 'identifiersResult.mainCarriageDescription' | translate }}</p>
                                 </div>
                               </div>
                               <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,8 +206,8 @@
                                   </svg>
                                 </div>
                                 <div>
-                                  <h5 class="font-semibold text-gray-800">Transportation Equipment</h5>
-                                  <p class="text-xs text-gray-600">Equipment used for transporting this consignment</p>
+                                  <h5 class="font-semibold text-gray-800">{{ 'identifiersResult.transportationEquipment' | translate }}</h5>
+                                  <p class="text-xs text-gray-600">{{ 'identifiersResult.transportationEquipmentDescription' | translate }}</p>
                                 </div>
                               </div>
                               <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +244,7 @@
                                           <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a1.994 1.994 0 01-1.414.586H7a4 4 0 01-4-4V7a4 4 0 014-4z"/>
                                           </svg>
-                                          <span class="text-sm font-medium text-gray-700">Carried Equipment on {{ equipment.id }}</span>
+                                          <span class="text-sm font-medium text-gray-700">{{ 'identifiersResult.carriedEquipment' | translate }} {{ equipment.id }}</span>
                                         </div>
                                         <svg class="w-4 h-4 text-gray-400 group-open/carried:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>

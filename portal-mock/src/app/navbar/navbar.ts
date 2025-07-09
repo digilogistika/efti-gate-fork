@@ -1,14 +1,17 @@
 import {Component, HostListener} from '@angular/core';
-import {NavigationEnd, Router, RouterLink} from '@angular/router';
+import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {AuthService} from '../auth/auth.service';
 import {filter} from 'rxjs';
 import {NgOptimizedImage} from '@angular/common';
+import {TranslatePipe, TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     RouterLink,
-    NgOptimizedImage
+    NgOptimizedImage,
+    TranslatePipe,
+    RouterLinkActive
   ],
   templateUrl: './navbar.html'
 })
@@ -18,13 +21,22 @@ export class Navbar {
   protected burgerMenuOpen: boolean = false;
   private keySequence: string[] = [];
   private readonly adminSequence = ['a', 'd', 'm', 'i', 'n'];
+  public currentLanguage: string;
 
-  constructor(private readonly authService: AuthService, private readonly router: Router) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly translate: TranslateService
+  ) {
     this.updateAuthStatus();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.updateAuthStatus();
+    });
+    this.currentLanguage = this.translate.currentLang;
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLanguage = event.lang;
     });
   }
 
@@ -42,21 +54,24 @@ export class Navbar {
 
   @HostListener('document:keydown', ['$event'])
   activateAdminSecret(event: KeyboardEvent): void {
-    if (event.ctrlKey || event.altKey) return; // ignore modifier combos
-
+    if (event.ctrlKey || event.altKey) return;
     this.keySequence.push(event.key.toLowerCase());
-
     if (this.keySequence.length > this.adminSequence.length) {
-      this.keySequence.shift(); // remove oldest key
+      this.keySequence.shift();
     }
-
     if (JSON.stringify(this.keySequence) === JSON.stringify(this.adminSequence)) {
       this.isAdminSecretActivated = true;
-      this.keySequence = []; // reset
+      this.keySequence = [];
     }
   }
 
   burgerMenuToggle() {
     this.burgerMenuOpen = !this.burgerMenuOpen;
+  }
+
+  onLanguageChange(event: Event) {
+    const lang = (event.target as HTMLSelectElement).value;
+    this.translate.use(lang);
+    localStorage.setItem('language', lang);
   }
 }

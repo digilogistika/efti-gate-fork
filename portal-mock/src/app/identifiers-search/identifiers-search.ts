@@ -5,6 +5,7 @@ import {MatFormField, MatLabel, MatOption, MatSelect} from '@angular/material/se
 import {IdentifierResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import {IdentifiersResult} from '../identifiers-result/identifiers-result';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-identifiers-search',
@@ -12,6 +13,7 @@ import {IdentifiersResult} from '../identifiers-result/identifiers-result';
     FormsModule,
     ReactiveFormsModule,
     IdentifiersResult,
+    TranslatePipe,
   ],
   templateUrl: './identifiers-search.html',
 })

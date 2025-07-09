@@ -3,7 +3,7 @@
     <!-- Login Form -->
     <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl w-full shadow-xl overflow-hidden mb-8">
       <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
-        <h2 class="text-lg font-semibold text-gray-800">Login</h2>
+        <h2 class="text-lg font-semibold text-gray-800">{{ 'login.header' | translate }}</h2>
       </div>
 
       <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="p-4 sm:p-6">
@@ -11,7 +11,7 @@
           <!-- Email Field -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2" for="email">
-              Email
+              {{ 'login.email' | translate }}
               <span class="text-red-500 ml-1">*</span>
             </label>
             <div class="relative">
@@ -19,7 +19,7 @@
                 class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
                 formControlName="email"
                 id="email"
-                placeholder="Enter your email..."
+                [placeholder]="'login.enterEmail' | translate"
                 type="email"
               >
               <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -33,7 +33,7 @@
           <!-- Password Field -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2" for="password">
-              Password
+              {{ 'login.password' | translate }}
               <span class="text-red-500 ml-1">*</span>
             </label>
             <div class="relative">
@@ -41,7 +41,7 @@
                 class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
                 formControlName="password"
                 id="password"
-                placeholder="Enter your password..."
+                [placeholder]="'login.enterPassword' | translate"
                 type="password"
               >
               <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -59,7 +59,7 @@
               class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl disabled:shadow-md transition-all duration-300 transform hover:scale-[1.02] disabled:hover:scale-100"
               type="submit"
             >
-              Sign In
+              {{ 'login.signIn' | translate }}
             </button>
           </div>
 

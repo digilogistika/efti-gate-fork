@@ -1,19 +1,22 @@
 import {
   ApplicationConfig,
-  LOCALE_ID,
   provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection
+  provideZoneChangeDetection,
+  importProvidersFrom,
+  provideAppInitializer,
+  inject
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
-import {provideHttpClient, withInterceptors} from '@angular/common/http';
-import {requestInterceptor} from './request-interceptor';
-import {registerLocaleData} from '@angular/common';
+import { provideHttpClient, withInterceptors, HttpClient } from '@angular/common/http';
+import { requestInterceptor } from './request-interceptor';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { firstValueFrom } from 'rxjs';
 
-import localeEt from '@angular/common/locales/et';
-
-registerLocaleData(localeEt);
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/i18n/', '.json');
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,10 +24,23 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([
-        requestInterceptor
-      ])
+      withInterceptors([requestInterceptor])
     ),
-    {provide: LOCALE_ID, useValue: 'et' }
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        defaultLanguage: 'en',
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      })
+    ),
+
+    provideAppInitializer(() => {
+      const translateService = inject(TranslateService);
+      const langToSet = localStorage.getItem('language') ?? translateService.getDefaultLang();
+      return firstValueFrom(translateService.use(langToSet));
+    })
   ]
 };
