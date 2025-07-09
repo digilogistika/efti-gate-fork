@@ -28,6 +28,8 @@
     "@angular/material": "^20.0.4",
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
+    "@ngx-translate/core": "^16.0.4",
+    "@ngx-translate/http-loader": "^16.0.1",
     "@tailwindcss/postcss": "^4.1.11",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",

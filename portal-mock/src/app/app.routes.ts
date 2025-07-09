@@ -25,6 +25,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: "dataset-query",
+    component: DatasetQuery,
+    canActivate: [AuthGuard]
+  },
+  {
     path: "**",
     redirectTo: "/login",
     pathMatch: "full"

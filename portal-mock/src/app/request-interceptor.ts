@@ -8,8 +8,10 @@ export const requestInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // no checking for public or admin endpoint (has different auth mechanism)
-  if (req.url.startsWith("/api/public") || req.url.startsWith("/api/admin")) {
+  // Allow public endpoints, admin endpoints, and static assets (like translation files)
+  if (req.url.startsWith("/api/public") ||
+    req.url.startsWith("/api/admin") ||
+    req.url.startsWith("/i18n/")) {
     return next(req);
   }
 
@@ -35,4 +37,3 @@ export const requestInterceptor: HttpInterceptorFn = (req, next) => {
     })
   );
 };
-

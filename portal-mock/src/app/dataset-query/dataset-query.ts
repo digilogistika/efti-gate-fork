@@ -6,11 +6,13 @@ import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import xmlFormatter from 'xml-formatter';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dataset-query',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './dataset-query.html',
 })
@@ -29,7 +31,8 @@ export class DatasetQuery {
     private readonly activatedRoute: ActivatedRoute,
     private readonly fb: FormBuilder,
     private readonly http: HttpClient,
-    private readonly location: Location
+    private readonly location: Location,
+    private readonly translate: TranslateService
   ) {
     const gateId = this.activatedRoute.snapshot.paramMap.get('gateId');
     const platformId = this.activatedRoute.snapshot.paramMap.get('platformId');
@@ -69,7 +72,7 @@ export class DatasetQuery {
         error: (error) => {
           console.error('Error fetching dataset:', error);
           this.isLoading = false;
-          this.datasetQueryErrorMessage = 'Error fetching dataset. Please try again.';
+          this.datasetQueryErrorMessage = this.translate.instant('datasetQuery.errorFetchingDataset');
         }
       });
   }

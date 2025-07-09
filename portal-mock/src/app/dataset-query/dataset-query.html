@@ -6,7 +6,7 @@
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
       </svg>
-      Back
+      {{ 'datasetQuery.back' | translate }}
     </button>
 
     <!-- Header Section -->
@@ -22,9 +22,9 @@
         </div>
         <div>
           <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            Dataset Query
+            {{ 'datasetQuery.header' | translate }}
           </h1>
-          <p class="text-sm text-gray-600 mt-1">Query datasets and select subsets for analysis</p>
+          <p class="text-sm text-gray-600 mt-1">{{ 'datasetQuery.description' | translate }}</p>
         </div>
       </div>
     </div>
@@ -33,9 +33,9 @@
     <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden mb-8">
       <div
         class="flex flex-row justify-between bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
-        <h2 class="text-lg font-semibold text-gray-800">Query Parameters</h2>
+        <h2 class="text-lg font-semibold text-gray-800">{{ 'datasetQuery.queryParameters' | translate }}</h2>
         <div class="flex items-center gap-3">
-          <span class="text-sm font-semibold text-gray-700">Edit UIL Query</span>
+          <span class="text-sm font-semibold text-gray-700">{{ 'datasetQuery.editUILQuery' | translate }}</span>
           <label class="relative inline-flex items-center cursor-pointer">
             <input (change)="onUILEditToggleChange($event)" class="sr-only peer" type="checkbox">
             <div
@@ -49,7 +49,7 @@
           <!-- Gate ID -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2" for="gateId">
-              Gate ID
+              {{ 'datasetQuery.gateId' | translate }}
               <span class="text-sm text-red-600 font-semibold">*</span>
             </label>
             <div class="relative">
@@ -57,7 +57,7 @@
                 class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
                 formControlName="gateId"
                 id="gateId"
-                placeholder="Enter gate ID..."
+                [placeholder]="'datasetQuery.enterGateId' | translate"
                 type="text"
               >
             </div>
@@ -66,7 +66,7 @@
           <!-- Platform ID -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2" for="platformId">
-              Platform ID
+              {{ 'datasetQuery.platformId' | translate }}
               <span class="text-sm text-red-600 font-semibold">*</span>
             </label>
             <div class="relative">
@@ -74,7 +74,7 @@
                 class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
                 formControlName="platformId"
                 id="platformId"
-                placeholder="Enter platform ID..."
+                [placeholder]="'datasetQuery.enterPlatformId' | translate"
                 type="text"
               >
             </div>
@@ -83,7 +83,7 @@
           <!-- Dataset ID -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2" for="datasetId">
-              Dataset ID
+              {{ 'datasetQuery.datasetId' | translate }}
               <span class="text-sm text-red-600 font-semibold">*</span>
             </label>
             <div class="relative">
@@ -91,7 +91,7 @@
                 class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
                 formControlName="datasetId"
                 id="datasetId"
-                placeholder="Enter dataset ID..."
+                [placeholder]="'datasetQuery.enterDatasetId' | translate"
                 type="text"
               >
             </div>
@@ -102,7 +102,7 @@
           <div class="flex flex-col">
             @if (datasetQueryForm.controls['subsetIds'].value.size <= 0) {
               <small class="text-red-600">
-                Please selected at least 1 subset for the query
+                {{ 'datasetQuery.selectAtLeastOneSubset' | translate }}
               </small>
             }
             @if (datasetQueryErrorMessage) {
@@ -125,14 +125,14 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
-                <span>Searching...</span>
+                <span>{{ 'datasetQuery.searching' | translate }}</span>
               } @else {
                 <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none"
                      stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                <span>Query Dataset</span>
+                <span>{{ 'datasetQuery.queryDataset' | translate }}</span>
               }
             </span>
             </button>
@@ -158,7 +158,7 @@
               </div>
               <h1
                 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Dataset Query Response
+                {{ 'datasetQuery.retrievedDataset' | translate }}
               </h1>
             </div>
             <div class="flex items-center gap-2 px-3 py-1 bg-gray-100/50 rounded-full">
@@ -192,7 +192,7 @@
                   </span>
                     </div>
                     <div class="flex items-start gap-2">
-                      <span class="text-sm font-medium text-red-700 mt-0.5">Description:</span>
+                      <span class="text-sm font-medium text-red-700 mt-0.5">{{ 'datasetQuery.descriptionLabel' | translate }}</span>
                       <span class="text-sm text-red-600 leading-relaxed">
                     {{ datasetQueryResponse.errorDescription }}
                   </span>
@@ -222,7 +222,7 @@
                          class="w-5 h-5">
                       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    <span>Follow up</span>
+                    <span>{{ 'datasetQuery.followUp' | translate }}</span>
                   </span>
                 </button>
               </div>
@@ -231,7 +231,7 @@
                 class="w-full h-96 p-4 bg-gray-50/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 font-mono text-sm text-gray-700 resize-none backdrop-blur-sm"
                 [value]="getFormattedXml(datasetQueryResponse.data)"
                 readonly
-                placeholder="Dataset content will appear here..."
+                [placeholder]="'datasetQuery.datasetContentPlaceholder' | translate"
               ></textarea>
             </div>
           }
@@ -245,10 +245,10 @@
         class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
         <div>
           <h2 class="text-lg font-semibold text-gray-800">
-            Select Subsets for Query
+            {{ 'datasetQuery.selectSubsets' | translate }}
             <span class="text-sm text-red-600 font-semibold">*</span>
           </h2>
-          <p class="text-sm text-gray-600 mt-1">Please select at least one member state subset to query.</p>
+          <p class="text-sm text-gray-600 mt-1">{{ 'datasetQuery.selectAtLeastOneSubset' | translate }}</p>
         </div>
         <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none"
              stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +323,7 @@
           </svg>
         </div>
         <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-          Send Message to Platform
+          {{ 'datasetQuery.sendMessageToPlatform' | translate }}
         </h1>
       </div>
       <button
@@ -342,7 +342,7 @@
     <form (submit)="onFollowUpSubmit()" [formGroup]="followUpForm" class="space-y-6">
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-3" for="message">
-          Message Content
+          {{ 'datasetQuery.messageContent' | translate }}
           <span class="text-red-500 ml-1">*</span>
         </label>
         <div class="relative">
@@ -352,7 +352,7 @@
             formControlName="message"
             id="message"
             name="message"
-            placeholder="Enter your message about the data..."
+            [placeholder]="'datasetQuery.enterMessage' | translate"
             rows="8"
           ></textarea>
           <div class="absolute bottom-3 right-3 text-xs text-gray-400">
@@ -360,11 +360,11 @@
               <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
             </svg>
-            Message
+            {{ 'datasetQuery.message' | translate }}
           </div>
         </div>
         @if (showSuccessMessageForFollowUp) {
-          <span class="text-green-500">Message was sent successfully</span>
+          <span class="text-green-500">{{ 'datasetQuery.messageSent' | translate }}</span>
         }
       </div>
 
@@ -375,7 +375,7 @@
           class="px-6 py-2.5 text-gray-600 bg-gray-100/50 hover:bg-gray-200/50 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
           type="button"
         >
-          Cancel
+          {{ 'datasetQuery.cancel' | translate }}
         </button>
         <button
           class="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -384,7 +384,7 @@
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
           </svg>
-          Send Message
+          {{ 'datasetQuery.sendMessage' | translate }}
         </button>
       </div>
     </form>

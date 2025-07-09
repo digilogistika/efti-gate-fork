@@ -3,12 +3,14 @@ import {IdentifierResponse} from '../core/types';
 import {DatePipe, JsonPipe} from '@angular/common';
 import {euCountries} from '../core/countries';
 import {RouterLink} from '@angular/router';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-identifiers-result',
   imports: [
     DatePipe,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './identifiers-result.html',
 })
