@@ -2,7 +2,6 @@ package eu.efti.eftigate.controller;
 
 import eu.efti.commons.dto.SaveIdentifiersRequestWrapper;
 import eu.efti.commons.utils.SerializeUtils;
-import eu.efti.eftigate.dto.GetWhoami200Response;
 import eu.efti.eftigate.service.PlatformIdentityService;
 import eu.efti.eftigate.service.request.ValidationService;
 import eu.efti.identifiersregistry.service.IdentifiersService;
@@ -63,22 +62,5 @@ public class PlatformApiController {
         identifiersService.createOrUpdate(new SaveIdentifiersRequestWrapper(platformId, saveIdentifiersRequest));
 
         return ResponseEntity.ok().build();
-    }
-
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/v0/whoami",
-            produces = {"application/xml"}
-    )
-    public ResponseEntity<GetWhoami200Response> getWhoami() {
-        log.info("POST on /api/platform/v0/whoami");
-
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        assert attributes != null;
-        String apiKey = attributes.getRequest().getHeader("X-API-Key");
-
-        String name = platformIdentityService.getPlatformIdFromHeader(apiKey);
-
-        return ResponseEntity.ok(new GetWhoami200Response(name, "PLATFORM"));
     }
 }
