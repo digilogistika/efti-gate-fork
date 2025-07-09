@@ -226,13 +226,13 @@
                   </span>
                 </button>
               </div>
-
-              <textarea
-                class="w-full h-96 p-4 bg-gray-50/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 font-mono text-sm text-gray-700 resize-none backdrop-blur-sm"
-                [value]="getFormattedXml(datasetQueryResponse.data)"
-                readonly
-                [placeholder]="'datasetQuery.datasetContentPlaceholder' | translate"
-              ></textarea>
+            </div>
+            <div class="w-full min-h-48 p-6 bg-gray-50/80 border border-gray-200/50 rounded-xl backdrop-blur-sm overflow-x-auto mt-6">
+              @if(parsedXmlData) {
+                <app-xml-viewer [nodes]="parsedXmlData"></app-xml-viewer>
+              } @else {
+                <span class="text-gray-500">{{ 'datasetQuery.datasetContentPlaceholder' | translate }}</span>
+              }
             </div>
           }
         </div>
