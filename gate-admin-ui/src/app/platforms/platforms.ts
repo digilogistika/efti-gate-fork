@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import {
   FormArray,
   FormControl,
@@ -7,23 +7,32 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { Platform } from "./platform.model";
-import { catchError, of } from "rxjs";
+import { catchError, of, Subject, takeUntil } from "rxjs";
 import { PlatformService } from "./platform.service";
 import { NotificationService } from "../notification/notification.service";
 import { Clipboard } from "@angular/cdk/clipboard";
-import { CommonModule } from '@angular/common';
 import { GateService } from '../gates/gate.service';
+
 @Component({
   selector: "app-platforms",
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule],
   templateUrl: "./platforms.html",
 })
-export class Platforms {
+export class Platforms implements OnInit, OnDestroy {
   apiKeyResponse: string | undefined = undefined;
+
+  // Master list from the API
   platformIds: string[] = [];
+  // List to be displayed in the template
+  filteredPlatformIds: string[] = [];
+
   isLoading = true;
   error: string | null = null;
+
+  // A control for our new search input
+  searchControl = new FormControl('');
+  private destroy$ = new Subject<void>();
 
   registerPlatformForm = new FormGroup({
     platformId: new FormControl(""),
@@ -40,6 +49,18 @@ export class Platforms {
 
   ngOnInit(): void {
     this.fetchData();
+
+    // Listen for changes in the search input and filter the list
+    this.searchControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.filterPlatforms(value || '');
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   fetchData(): void {
@@ -48,6 +69,8 @@ export class Platforms {
     this.gateService.getMetaData().subscribe({
       next: (data) => {
         this.platformIds = data.platformIds;
+        // Initially, the filtered list is the same as the full list
+        this.filteredPlatformIds = data.platformIds;
         this.isLoading = false;
       },
       error: (err) => {
@@ -56,6 +79,18 @@ export class Platforms {
         console.error(err);
       }
     });
+  }
+
+  private filterPlatforms(searchTerm: string): void {
+    const filterValue = searchTerm.toLowerCase().trim();
+    if (!filterValue) {
+      this.filteredPlatformIds = this.platformIds;
+      return;
+    }
+
+    this.filteredPlatformIds = this.platformIds.filter(id =>
+      id.toLowerCase().includes(filterValue)
+    );
   }
 
   get headers() {
@@ -95,7 +130,7 @@ export class Platforms {
       .subscribe((res) => {
         if (res?.status === 200) {
           this.registerPlatformForm.reset();
-          this.headers.clear(); // Clear the headers array
+          this.headers.clear();
           this.notificationService.showSuccess(
             "Platform registered successfully",
           );

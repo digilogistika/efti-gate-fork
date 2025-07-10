@@ -9,7 +9,6 @@
 
     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
-      <!-- Left Column: Register Authority Form (Appears first on mobile) -->
       <div class="w-full lg:w-5/12 lg:order-2">
         <div
           class="group relative bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] hover:bg-white/80">
@@ -87,7 +86,6 @@
               </button>
             </form>
           } @else {
-            <!-- Success State -->
             <div class="text-center space-y-6 sm:space-y-8">
               <div class="mb-6 sm:mb-8">
                 <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-green-500 to-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
@@ -175,7 +173,7 @@
         </div>
       </div>
 
-      <!-- Right Column: Registered Authorities List (Appears second on mobile) -->
+      <!-- Registered Authorities List -->
       <div class="w-full lg:w-7/12 lg:order-1">
         <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl h-full">
           <div class="flex items-center gap-3 mb-6">
@@ -183,6 +181,20 @@
               <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             </div>
             <h2 class="text-xl font-bold text-gray-800">Registered Authorities</h2>
+          </div>
+
+          <div class="mb-6 relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <input
+              type="text"
+              [formControl]="searchControl"
+              placeholder="Search by Authority Name..."
+              class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 text-gray-700 bg-gray-50/50 hover:bg-white/80"
+            />
           </div>
 
           @if (isLoading) {
@@ -198,9 +210,16 @@
                 </tr>
                 </thead>
                 <tbody class="bg-white/50 divide-y divide-gray-200">
-                  @for (name of authorityNames; track name) {
+                  @for (name of filteredAuthorityNames; track name) {
                     <tr class="hover:bg-gray-50/70 transition-colors">
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ name }}</td>
+                    </tr>
+                  }
+                  @if (filteredAuthorityNames.length === 0) {
+                    <tr>
+                      <td class="text-center text-gray-500 py-6 px-6">
+                        No authorities found matching your search.
+                      </td>
                     </tr>
                   }
                 </tbody>

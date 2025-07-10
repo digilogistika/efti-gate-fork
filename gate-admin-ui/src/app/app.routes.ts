@@ -38,6 +38,6 @@ export const routes: Routes = [
   // The guard on the parent route will handle redirecting to login if necessary.
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'login'
   }
 ];

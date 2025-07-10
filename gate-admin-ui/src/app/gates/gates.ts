@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { GateService } from "./gate.service";
 import { Gate } from "./gate.model";
 import { NotificationService } from "../notification/notification.service";
-import { catchError, of } from "rxjs";
+import { catchError, of, Subject, takeUntil } from "rxjs";
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,10 +12,15 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: "./gates.html",
 })
-export class Gates {
+export class Gates implements OnInit, OnDestroy {
   gateIds: string[] = [];
+  filteredGateIds: string[] = [];
+
   isLoading = true;
   error: string | null = null;
+
+  searchControl = new FormControl('');
+  private destroy$ = new Subject<void>();
 
   countries: string[] = [
     'AT', 'BE', 'BG', 'BO', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI',
@@ -28,12 +33,33 @@ export class Gates {
     gateId: new FormControl<string | null>("", [Validators.required]),
   });
 
+  constructor(
+    private readonly gateService: GateService,
+    private readonly notificationService: NotificationService,
+  ) {}
+
+  ngOnInit(): void {
+    this.fetchData();
+
+    this.searchControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.filterGates(value || '');
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   fetchData(): void {
     this.isLoading = true;
     this.error = null;
     this.gateService.getMetaData().subscribe({
       next: (data) => {
         this.gateIds = data.gateIds;
+        this.filteredGateIds = data.gateIds;
         this.isLoading = false;
       },
       error: (err) => {
@@ -44,14 +70,18 @@ export class Gates {
     });
   }
 
-  constructor(
-    private readonly gateService: GateService,
-    private readonly notificationService: NotificationService,
-  ) {}
+  private filterGates(searchTerm: string): void {
+    const filterValue = searchTerm.toLowerCase().trim();
+    if (!filterValue) {
+      this.filteredGateIds = this.gateIds;
+      return;
+    }
 
-  ngOnInit(): void {
-    this.fetchData();
+    this.filteredGateIds = this.gateIds.filter(id =>
+      id.toLowerCase().includes(filterValue)
+    );
   }
+
   onRegisterGateSubmit() {
     if (this.registerGateForm.invalid) {
       this.notificationService.showError("Please fill out all required fields.");
@@ -78,10 +108,6 @@ export class Gates {
     });
   }
 
-  deleteGateForm = new FormGroup({
-    gateId: new FormControl(""),
-  });
-
   deleteGate(gateId: string): void {
     if (!confirm(`Are you sure you want to delete gate: ${gateId}?`)) {
       return;
@@ -100,6 +126,7 @@ export class Gates {
       if (res?.status === 200) {
         this.notificationService.showSuccess("Gate deleted successfully");
         this.fetchData();
+        this.searchControl.reset();
       }
     });
   }
