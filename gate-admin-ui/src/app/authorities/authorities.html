@@ -10,7 +10,7 @@
     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
       <!-- Left Column: Register Authority Form (Appears first on mobile) -->
-      <div class="w-full lg:w-5/12">
+      <div class="w-full lg:w-5/12 lg:order-2">
         <div
           class="group relative bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] hover:bg-white/80">
           @if (!apiKeyResponse) {
@@ -176,7 +176,7 @@
       </div>
 
       <!-- Right Column: Registered Authorities List (Appears second on mobile) -->
-      <div class="w-full lg:w-7/12">
+      <div class="w-full lg:w-7/12 lg:order-1">
         <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl h-full">
           <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center">
