@@ -33,16 +33,14 @@
                 Country
               </span>
             </label>
-            <select
+            <ng-select
               id="add-country"
+              [items]="countries"
               formControlName="country"
-              class="w-full px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 text-gray-700 bg-gray-50/50 hover:bg-white/80 text-sm sm:text-base appearance-none"
-            >
-              <option [ngValue]="null" disabled selected>Select a country...</option>
-              @for (country of countries; track country) {
-                <option [value]="country">{{ country }}</option>
-              }
-            </select>
+              placeholder="Select a country..."
+              [searchable]="true"
+              class="custom-ng-select">
+            </ng-select>
           </div>
 
           <div class="space-y-2 mb-8">

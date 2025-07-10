@@ -5,11 +5,12 @@ import { Gate } from "./gate.model";
 import { NotificationService } from "../notification/notification.service";
 import { catchError, of, Subject, takeUntil } from "rxjs";
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: "app-gates",
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule,NgSelectModule],
   templateUrl: "./gates.html",
 })
 export class Gates implements OnInit, OnDestroy {
