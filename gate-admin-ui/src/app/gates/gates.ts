@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { GateService } from "./gate.service";
 import { Gate } from "./gate.model";
 import { NotificationService } from "../notification/notification.service";
@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: "app-gates",
+  standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: "./gates.html",
 })
@@ -16,12 +17,15 @@ export class Gates {
   isLoading = true;
   error: string | null = null;
 
-  registerGateForm = new FormGroup<{
-    country: FormControl<string | null>;
-    gateId: FormControl<string | null>;
-  }>({
-    country: new FormControl(""),
-    gateId: new FormControl(""),
+  countries: string[] = [
+    'AT', 'BE', 'BG', 'BO', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI',
+    'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LI', 'LT', 'LU', 'LV', 'MT',
+    'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'SY'
+  ];
+
+  registerGateForm = new FormGroup({
+    country: new FormControl<string | null>(null, [Validators.required]),
+    gateId: new FormControl<string | null>("", [Validators.required]),
   });
 
   fetchData(): void {
@@ -29,7 +33,7 @@ export class Gates {
     this.error = null;
     this.gateService.getMetaData().subscribe({
       next: (data) => {
-        this.gateIds = data.gateIds; // Store the array of strings
+        this.gateIds = data.gateIds;
         this.isLoading = false;
       },
       error: (err) => {
@@ -49,6 +53,10 @@ export class Gates {
     this.fetchData();
   }
   onRegisterGateSubmit() {
+    if (this.registerGateForm.invalid) {
+      this.notificationService.showError("Please fill out all required fields.");
+      return;
+    }
     const gate: Gate = this.registerGateForm.value as Gate;
     this.gateService.registerGate(gate).pipe(
       catchError(error => {
