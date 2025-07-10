@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -13,15 +13,20 @@ import { AuthorityService } from "./authority.service";
 import { catchError, of } from "rxjs";
 import { NotificationService } from "../notification/notification.service";
 import { Clipboard } from "@angular/cdk/clipboard";
+import { GateService } from '../gates/gate.service';
 
 @Component({
   selector: "app-authorities",
+  standalone: true,
   imports: [ReactiveFormsModule, TitleCasePipe, CommonModule, FormsModule],
   templateUrl: "./authorities.html",
 })
 export class Authorities {
   permissionLevel = PermissionLevel;
   apiKeyResponse: string | undefined = undefined;
+  authorityNames: string[] = [];
+  isLoading = true;
+  error: string | null = null;
 
   permissionLevelKeys = Object.keys(PermissionLevel).filter((key) =>
     isNaN(Number(key)),
@@ -35,11 +40,32 @@ export class Authorities {
     ),
   });
 
+  private readonly gateService = inject(GateService);
   constructor(
     private readonly authorityService: AuthorityService,
     private readonly notificationService: NotificationService,
     private clipboard: Clipboard,
   ) {}
+
+  ngOnInit(): void {
+    this.fetchData();
+  }
+
+  fetchData(): void {
+    this.isLoading = true;
+    this.error = null;
+    this.gateService.getMetaData().subscribe({
+      next: (data) => {
+        this.authorityNames = data.authorityNames;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = "Failed to load the list of authorities.";
+        this.isLoading = false;
+        console.error(err);
+      }
+    });
+  }
 
   formatPermissionLevel(level: string): string {
     return level.replace(/_/g, " ");
@@ -70,6 +96,7 @@ export class Authorities {
             "Authority registered successfully",
           );
           this.apiKeyResponse = res.body?.apiKey;
+          this.fetchData();
         }
       });
   }
