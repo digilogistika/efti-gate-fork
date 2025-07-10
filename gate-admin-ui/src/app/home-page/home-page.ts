@@ -32,8 +32,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   fetchStats(): void {
     this.isLoadingStats = true;
-    this.gateService.getMetadata().subscribe({
-      next: (data: Metadata) => {
+    this.gateService.getMetaData().subscribe({
+      next: (data: MetaData) => {
         this.gateCount = data.gateIds.length;
         this.platformCount = data.platformIds.length;
         this.authorityCount = data.authorityNames.length;
@@ -41,8 +41,10 @@ export class HomePage implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error("Error fetching metadata stats:", err);
-        this.isLoadingStats = false;
-      }
+        this.gateCount = 0;
+        this.platformCount = 0;
+        this.authorityCount = 0;
+        this.isLoadingStats = false;      }
     });
   }
 
