@@ -1,3 +1,6 @@
-<app-header></app-header>
-<app-notification></app-notification>
-<router-outlet />
+@if (authService.isAuthenticated$ | async) {
+  <app-header />
+}
+<main class="flex-grow">
+  <router-outlet />
+</main>

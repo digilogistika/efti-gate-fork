@@ -8,23 +8,8 @@ import { CommonModule } from '@angular/common';
   selector: "app-root",
   standalone: true,
   imports: [RouterOutlet, Header, CommonModule],
-  template: `
-    @if (authService.isAuthenticated$ | async) {
-      <app-header />
-    }
-    <main class="flex-grow">
-      <router-outlet />
-    </main>
-  `,
-  styles: [`
-    :host {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-  `]
+  templateUrl: './app.html',
 })
 export class App {
-  protected title = "gate-admin-ui";
   public authService = inject(AuthService);
 }
