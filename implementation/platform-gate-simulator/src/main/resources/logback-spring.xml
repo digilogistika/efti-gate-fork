@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xml>
 <configuration>
     <springProperty scope="context" name="APPLICATION_NAME"
                     source="spring.application.name" />
