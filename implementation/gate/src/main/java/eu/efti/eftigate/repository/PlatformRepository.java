@@ -4,6 +4,8 @@ import eu.efti.eftigate.entity.PlatformEntity;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.repository.Repository;
 
+import java.util.List;
+
 
 public interface PlatformRepository extends Repository<PlatformEntity, Long> {
     boolean existsByPlatformId(@NotNull String platformId);
@@ -11,4 +13,6 @@ public interface PlatformRepository extends Repository<PlatformEntity, Long> {
     void save(PlatformEntity platformEntity);
 
     PlatformEntity findByPlatformId(String platformId);
+
+    List<PlatformEntity> findAll();
 }

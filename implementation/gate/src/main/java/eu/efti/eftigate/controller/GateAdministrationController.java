@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -44,5 +46,11 @@ public class GateAdministrationController implements GateAdministrationApi {
         log.info("POST on /api/admin/platform/register");
         PlatformRegistrationResponseDto platformRegistrationResponseDto = platformIdentityService.registerPlatform(platformRegistrationRequestDto);
         return ResponseEntity.ok(platformRegistrationResponseDto);
+    }
+
+    @Override
+    public ResponseEntity<MetaDataDto> getMetadata() {
+        log.info("GET on /api/admin/metadata");
+        return ResponseEntity.ok(gateAdministrationService.getMetadata());
     }
 }

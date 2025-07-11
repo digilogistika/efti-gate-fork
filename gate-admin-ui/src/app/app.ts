@@ -1,14 +1,15 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { Header } from "./header/header";
-import { Notification } from "./notification/notification";
+import { AuthService } from './authentication/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, Header, Notification],
-  templateUrl: "./app.html",
+  imports: [RouterOutlet, Header, CommonModule],
+  templateUrl: './app.html',
 })
 export class App {
-  protected title = "gate-admin-ui";
+  public authService = inject(AuthService);
 }
