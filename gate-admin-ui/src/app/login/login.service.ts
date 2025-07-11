@@ -36,8 +36,6 @@ export class LoginComponent implements OnDestroy {
       )
       .subscribe(success => {
         if (success) {
-          // Navigate to the main page after successful login.
-          // The AuthGuard will now allow access.
           this.router.navigate(['/']);
         } else {
           this.errorMessage = 'Invalid API Key. Please check the key and try again.';

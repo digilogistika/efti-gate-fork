@@ -34,8 +34,6 @@ export const routes: Routes = [
       }
     ]
   },
-  // Wildcard route to redirect any unknown paths to the home page.
-  // The guard on the parent route will handle redirecting to login if necessary.
   {
     path: '**',
     redirectTo: 'login'

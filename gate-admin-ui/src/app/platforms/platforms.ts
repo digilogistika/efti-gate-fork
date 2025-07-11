@@ -22,15 +22,12 @@ import { GateService } from '../gates/gate.service';
 export class Platforms implements OnInit, OnDestroy {
   apiKeyResponse: string | undefined = undefined;
 
-  // Master list from the API
   platformIds: string[] = [];
-  // List to be displayed in the template
   filteredPlatformIds: string[] = [];
 
   isLoading = true;
   error: string | null = null;
 
-  // A control for our new search input
   searchControl = new FormControl('');
   private destroy$ = new Subject<void>();
 
@@ -49,8 +46,6 @@ export class Platforms implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchData();
-
-    // Listen for changes in the search input and filter the list
     this.searchControl.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(value => {
@@ -69,7 +64,6 @@ export class Platforms implements OnInit, OnDestroy {
     this.gateService.getMetaData().subscribe({
       next: (data) => {
         this.platformIds = data.platformIds;
-        // Initially, the filtered list is the same as the full list
         this.filteredPlatformIds = data.platformIds;
         this.isLoading = false;
       },

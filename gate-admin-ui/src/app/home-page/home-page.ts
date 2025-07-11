@@ -4,8 +4,6 @@ import { environment } from "../../environments/environment";
 import { RouterLink } from "@angular/router";
 import { interval, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
-
-// Import what we need
 import { GateService } from "../gates/gate.service";
 import { MetaData } from "../gates/metadata.model";
 
@@ -21,7 +19,6 @@ export class HomePage implements OnInit, OnDestroy {
   private healthCheckSubscription?: Subscription;
   private readonly HEALTH_CHECK_INTERVAL = 5000;
 
-  fetchError: string | null = null;
   gateCount = 0;
   platformCount = 0;
   authorityCount = 0;

@@ -1,6 +1,5 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-slate-100">
   <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-2xl shadow-indigo-100/50 border border-gray-200/50">
-    <!-- Logo and Title -->
     <div class="text-center">
       <div class="inline-block w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform hover:scale-110 transition-transform duration-300">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,14 +24,11 @@
           placeholder="••••••••••••••••••••••••"
         />
       </div>
-
-      <!-- Error Message -->
       @if (errorMessage) {
         <div class="p-3 text-sm font-medium text-red-700 bg-red-100 rounded-lg" role="alert">
           {{ errorMessage }}
         </div>
       }
-
       <div>
         <button
           type="submit"

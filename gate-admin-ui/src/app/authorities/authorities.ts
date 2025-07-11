@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -46,11 +46,11 @@ export class Authorities implements OnInit, OnDestroy {
     ),
   });
 
-  private readonly gateService = inject(GateService);
   constructor(
     private readonly authorityService: AuthorityService,
     private readonly notificationService: NotificationService,
     private clipboard: Clipboard,
+    private readonly gateService: GateService
   ) {}
 
   ngOnInit(): void {
