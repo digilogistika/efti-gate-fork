@@ -135,7 +135,7 @@ services:
       - EFTI_POSTGRES_PASSWORD=${EFTI_POSTGRES_PASSWORD}
       - EFTI_META_POSTGRES_PASSWORD=${EFTI_META_POSTGRES_PASSWORD}
     volumes:
-      - ./logs/efti-gate.log:/var/log/javapp/efti-gate.log
+      - ./gate-logs:/var/log/javapp
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: on-failure
@@ -184,7 +184,7 @@ services:
       - GATE=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
     volumes:
-      - ./logs/efti-platform.log:/var/log/javapp/efti-platform.log
+      - ./platform-logs:/var/log/javapp
     restart: on-failure
     labels:
       traefik.http.routers.efti-platform.rule: "${DOMAIN}"
