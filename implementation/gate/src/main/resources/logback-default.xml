@@ -124,6 +124,7 @@
 
 
     <root level="INFO" additivity="false">
+        <appender-ref ref="RollingFile-Appender"/>
         <appender-ref ref="RollingFile-Stats-Appender"/>
         <appender-ref ref="RollingFile-Request-Appender"/>
         <appender-ref ref="RollingFile-Registry-Appender"/>
