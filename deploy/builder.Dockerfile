@@ -33,6 +33,19 @@ FROM maven:3.8-openjdk-17 AS java-builder
 
 WORKDIR /build
 
+COPY ./implementation/pom.xml ./implementation/
+COPY ./implementation/authority-app/pom.xml ./implementation/authority-app/
+COPY ./implementation/commons/pom.xml ./implementation/commons/
+COPY ./implementation/edelivery-ap-connector/pom.xml ./implementation/edelivery-ap-connector/
+COPY ./implementation/efti-logger/pom.xml ./implementation/efti-logger/
+COPY ./implementation/efti-ws-plugin/pom.xml ./implementation/efti-ws-plugin/
+COPY ./implementation/gate/pom.xml ./implementation/gate/
+COPY ./implementation/platform-gate-simulator/pom.xml ./implementation/platform-gate-simulator/
+COPY ./implementation/registry-of-identifiers/pom.xml ./implementation/registry-of-identifiers/
+COPY ./implementation/test-support/pom.xml ./implementation/test-support/
+
+RUN mvn -B dependency:go-offline -f ./implementation/pom.xml
+
 COPY ./implementation ./implementation
 COPY ./schema ./schema
 
