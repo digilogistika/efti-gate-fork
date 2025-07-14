@@ -31,7 +31,7 @@ public class ApiKeyService {
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String formattedDate = today.format(formatter);
-        body.setPlatformId(gateProperties.getOwner() + "-" + formattedDate + "-" + Random.Default.nextInt(10, 100));
+        body.setPlatformId(gateProperties.getOwner());
 
         ResponseEntity<PlatformRegistrationResponseDto> response = restClient.post()
                 .uri(gateProperties.getGateBaseUrl() + "/api/admin/platform/register")

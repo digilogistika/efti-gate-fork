@@ -5,7 +5,6 @@ import eu.efti.eftigate.dto.PlatformRegistrationRequestDto;
 import eu.efti.eftigate.dto.PlatformRegistrationResponseDto;
 import eu.efti.eftigate.entity.PlatformEntity;
 import eu.efti.eftigate.entity.PlatformHeaderEntity;
-import eu.efti.eftigate.exception.PlatformAlreadyExistsException;
 import eu.efti.eftigate.mapper.MapperUtils;
 import eu.efti.eftigate.repository.PlatformHeaderRepository;
 import eu.efti.eftigate.repository.PlatformRepository;
