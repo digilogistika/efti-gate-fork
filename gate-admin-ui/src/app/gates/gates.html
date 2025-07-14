@@ -6,17 +6,14 @@
       </h1>
     </div>
 
-    <!-- Forms Container -->
-    <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-12 items-start justify-center">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
-      <!-- Add Gate Form -->
-      <div class="w-full lg:w-auto lg:flex-1 lg:max-w-md">
+      <div class="w-full lg:w-5/12 lg:order-2">
         <form
           [formGroup]="registerGateForm"
           (ngSubmit)="onRegisterGateSubmit()"
           class="group relative bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:bg-white/80"
         >
-          <!-- Form Header -->
           <div class="text-center mb-6 sm:mb-8">
             <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:rotate-6 transition-transform duration-500">
               <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,7 +24,6 @@
             <p class="text-gray-500 text-sm">Create a new gate entry</p>
           </div>
 
-          <!-- Country Input -->
           <div class="space-y-2 mb-6">
             <label for="add-country" class="block text-sm font-semibold text-gray-700 mb-2">
               <span class="flex items-center gap-2">
@@ -37,16 +33,16 @@
                 Country
               </span>
             </label>
-            <input
+            <ng-select
               id="add-country"
-              type="text"
+              [items]="countries"
               formControlName="country"
-              class="w-full px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80 text-sm sm:text-base"
-              placeholder="e.g., EE"
-            >
+              placeholder="Select a country..."
+              [searchable]="true"
+              class="custom-ng-select">
+            </ng-select>
           </div>
 
-          <!-- Gate ID Input -->
           <div class="space-y-2 mb-8">
             <label for="add-gateId" class="block text-sm font-semibold text-gray-700 mb-2">
               <span class="flex items-center gap-2">
@@ -65,7 +61,6 @@
             >
           </div>
 
-          <!-- Submit Button -->
           <button
             type="submit"
             class="group/btn w-full bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-600 hover:to-blue-700 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl transition-all duration-300 focus:ring-4 focus:ring-emerald-500/20 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm sm:text-base"
@@ -80,61 +75,69 @@
         </form>
       </div>
 
-      <!-- Divider for large screens -->
-      <div class="hidden lg:flex items-center justify-center">
-        <div class="w-px h-64 bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
-      </div>
+      <!-- Registered Gates List -->
+      <div class="w-full lg:w-7/12 lg:order-1">
+        <div class="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl h-full">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+            </div>
+            <h2 class="text-xl font-bold text-gray-800">Registered Gates</h2>
+          </div>
 
-      <!-- Delete Gate Form -->
-      <div class="w-full lg:w-auto lg:flex-1 lg:max-w-md">
-        <form
-          [formGroup]="deleteGateForm"
-          (ngSubmit)="onDeleteGateSubmit()"
-          class="group relative bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] hover:bg-white/80"
-        >
-          <!-- Form Header -->
-          <div class="text-center mb-6 sm:mb-8">
-            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-red-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:rotate-6 transition-transform duration-500">
-              <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          <div class="mb-6 relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Delete Gate</h2>
-            <p class="text-gray-500 text-sm">Remove an existing gate</p>
-          </div>
-
-          <!-- Gate ID Input -->
-          <div class="space-y-2 mb-8">
-            <label for="delete-gateId" class="block text-sm font-semibold text-gray-700 mb-2">
-              <span class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                </svg>
-                Gate ID to Delete
-              </span>
-            </label>
             <input
-              id="delete-gateId"
               type="text"
-              formControlName="gateId"
-              class="w-full px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all duration-300 placeholder-gray-400 text-gray-700 bg-gray-50/50 hover:bg-white/80 text-sm sm:text-base"
-              placeholder="e.g., eu-ee11"
-            >
+              [formControl]="searchControl"
+              placeholder="Search by Gate ID..."
+              class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-300 text-gray-700 bg-gray-50/50 hover:bg-white/80"
+            />
           </div>
 
-          <!-- Submit Button -->
-          <button
-            type="submit"
-            class="group/btn w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-semibold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl transition-all duration-300 focus:ring-4 focus:ring-red-500/20 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm sm:text-base"
-          >
-            <span class="flex items-center justify-center gap-2">
-              <svg class="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-              </svg>
-              Delete Gate
-            </span>
-          </button>
-        </form>
+          @if (isLoading) {
+            <p class="text-center text-gray-500 py-4">Loading gates...</p>
+          } @else if (error) {
+            <p class="text-center text-red-600 bg-red-100 p-4 rounded-lg">{{ error }}</p>
+          } @else if (gateIds.length > 0) {
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50/50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gate ID</th>
+                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white/50 divide-y divide-gray-200">
+                  @for (id of filteredGateIds; track id) {
+                    <tr class="hover:bg-gray-50/70 transition-colors">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ id }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button (click)="deleteGate(id)"
+                                class="bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:from-red-600 hover:to-pink-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-300">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                  @if (filteredGateIds.length === 0) {
+                    <tr>
+                      <td colspan="2" class="text-center text-gray-500 py-6 px-6">
+                        No gates found matching your search.
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="text-center text-gray-500 py-4">No gates have been registered yet.</p>
+          }
+        </div>
       </div>
     </div>
   </div>

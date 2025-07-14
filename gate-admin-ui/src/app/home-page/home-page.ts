@@ -1,9 +1,11 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { RouterLink } from "@angular/router";
 import { interval, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
+import { GateService } from "../gates/gate.service";
+import { MetaData } from "../gates/metadata.model";
 
 @Component({
   selector: "app-home-page",
@@ -17,9 +19,34 @@ export class HomePage implements OnInit, OnDestroy {
   private healthCheckSubscription?: Subscription;
   private readonly HEALTH_CHECK_INTERVAL = 5000;
 
-  constructor(private http: HttpClient) {}
+  gateCount = 0;
+  platformCount = 0;
+  authorityCount = 0;
+  isLoadingStats = false;
+
+  private http = inject(HttpClient);
+  private gateService = inject(GateService);
+
+  fetchStats(): void {
+    this.isLoadingStats = true;
+    this.gateService.getMetaData().subscribe({
+      next: (data: MetaData) => {
+        this.gateCount = data.gateIds.length;
+        this.platformCount = data.platformIds.length;
+        this.authorityCount = data.authorityNames.length;
+        this.isLoadingStats = false;
+      },
+      error: (err) => {
+        console.error("Error fetching metadata stats:", err);
+        this.gateCount = 0;
+        this.platformCount = 0;
+        this.authorityCount = 0;
+        this.isLoadingStats = false;      }
+    });
+  }
 
   ngOnInit() {
+    this.fetchStats();
     this.startHealthCheck();
   }
 

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import {
   FormArray,
   FormControl,
@@ -7,18 +7,29 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { Platform } from "./platform.model";
-import { catchError, of } from "rxjs";
+import { catchError, of, Subject, takeUntil } from "rxjs";
 import { PlatformService } from "./platform.service";
 import { NotificationService } from "../notification/notification.service";
 import { Clipboard } from "@angular/cdk/clipboard";
+import { GateService } from '../gates/gate.service';
 
 @Component({
   selector: "app-platforms",
+  standalone: true,
   imports: [ReactiveFormsModule, FormsModule],
   templateUrl: "./platforms.html",
 })
-export class Platforms {
+export class Platforms implements OnInit, OnDestroy {
   apiKeyResponse: string | undefined = undefined;
+
+  platformIds: string[] = [];
+  filteredPlatformIds: string[] = [];
+
+  isLoading = true;
+  error: string | null = null;
+
+  searchControl = new FormControl('');
+  private destroy$ = new Subject<void>();
 
   registerPlatformForm = new FormGroup({
     platformId: new FormControl(""),
@@ -26,11 +37,55 @@ export class Platforms {
     headers: new FormArray([]),
   });
 
+  private readonly gateService = inject(GateService);
   constructor(
     private readonly platformService: PlatformService,
     private readonly notificationService: NotificationService,
     private clipboard: Clipboard,
   ) {}
+
+  ngOnInit(): void {
+    this.fetchData();
+    this.searchControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.filterPlatforms(value || '');
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  fetchData(): void {
+    this.isLoading = true;
+    this.error = null;
+    this.gateService.getMetaData().subscribe({
+      next: (data) => {
+        this.platformIds = data.platformIds;
+        this.filteredPlatformIds = data.platformIds;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = "Failed to load the list of platforms.";
+        this.isLoading = false;
+        console.error(err);
+      }
+    });
+  }
+
+  private filterPlatforms(searchTerm: string): void {
+    const filterValue = searchTerm.toLowerCase().trim();
+    if (!filterValue) {
+      this.filteredPlatformIds = this.platformIds;
+      return;
+    }
+
+    this.filteredPlatformIds = this.platformIds.filter(id =>
+      id.toLowerCase().includes(filterValue)
+    );
+  }
 
   get headers() {
     return this.registerPlatformForm.get("headers") as FormArray;
@@ -69,10 +124,12 @@ export class Platforms {
       .subscribe((res) => {
         if (res?.status === 200) {
           this.registerPlatformForm.reset();
+          this.headers.clear();
           this.notificationService.showSuccess(
             "Platform registered successfully",
           );
           this.apiKeyResponse = res.body?.apiKey;
+          this.fetchData();
         }
       });
   }
