@@ -33,8 +33,8 @@ public class PlatformIdentityService {
         log.info("Registering platform with ID: {}", platformRegistrationRequestDto.getPlatformId());
 
         if (platformRepository.existsByPlatformId(platformRegistrationRequestDto.getPlatformId())) {
-            log.warn("Registration failed: platform with platformId {} already exists", platformRegistrationRequestDto.getPlatformId());
-            throw new PlatformAlreadyExistsException("Platform with this platformId already exists");
+            log.info("Overwriting platform");
+            platformRepository.deleteByPlatformId(platformRegistrationRequestDto.getPlatformId());
         }
 
         byte[] randomBytes = new byte[128];

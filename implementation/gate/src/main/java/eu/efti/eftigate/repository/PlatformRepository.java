@@ -3,6 +3,7 @@ package eu.efti.eftigate.repository;
 import eu.efti.eftigate.entity.PlatformEntity;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.repository.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface PlatformRepository extends Repository<PlatformEntity, Long> {
     PlatformEntity findByPlatformId(String platformId);
 
     List<PlatformEntity> findAll();
+
+    @Transactional
+    void deleteByPlatformId(String platformId);
 }
