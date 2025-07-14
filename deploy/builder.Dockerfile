@@ -42,7 +42,6 @@ COPY ./implementation/efti-ws-plugin/pom.xml ./implementation/efti-ws-plugin/
 COPY ./implementation/gate/pom.xml ./implementation/gate/
 COPY ./implementation/platform-gate-simulator/pom.xml ./implementation/platform-gate-simulator/
 COPY ./implementation/registry-of-identifiers/pom.xml ./implementation/registry-of-identifiers/
-COPY ./implementation/test-support/pom.xml ./implementation/test-support/
 
 RUN mvn -B dependency:go-offline -f ./implementation/pom.xml
 
