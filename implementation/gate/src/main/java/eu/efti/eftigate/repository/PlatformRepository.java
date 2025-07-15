@@ -17,6 +17,5 @@ public interface PlatformRepository extends Repository<PlatformEntity, Long> {
 
     List<PlatformEntity> findAll();
 
-    @Transactional
     void deleteByPlatformId(String platformId);
 }
