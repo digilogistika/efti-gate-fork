@@ -109,12 +109,8 @@ export class Platforms implements OnInit, OnDestroy {
       .registerPlatform(platform)
       .pipe(
         catchError((error) => {
-          if (error.status === 409) {
-            this.notificationService.showError("Platform already exists");
-          } else if (error.status === 400) {
-            this.notificationService.showError(
-              "Invalid platform data provided",
-            );
+          if (error.status === 400) {
+            this.notificationService.showError("Invalid platform data provided");
           } else {
             throw error;
           }

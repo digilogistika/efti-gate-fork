@@ -5,7 +5,6 @@ import eu.efti.eftigate.dto.PlatformRegistrationRequestDto;
 import eu.efti.eftigate.dto.PlatformRegistrationResponseDto;
 import eu.efti.eftigate.entity.PlatformEntity;
 import eu.efti.eftigate.entity.PlatformHeaderEntity;
-import eu.efti.eftigate.exception.PlatformAlreadyExistsException;
 import eu.efti.eftigate.mapper.MapperUtils;
 import eu.efti.eftigate.repository.PlatformHeaderRepository;
 import eu.efti.eftigate.repository.PlatformRepository;
@@ -33,8 +32,8 @@ public class PlatformIdentityService {
         log.info("Registering platform with ID: {}", platformRegistrationRequestDto.getPlatformId());
 
         if (platformRepository.existsByPlatformId(platformRegistrationRequestDto.getPlatformId())) {
-            log.warn("Registration failed: platform with platformId {} already exists", platformRegistrationRequestDto.getPlatformId());
-            throw new PlatformAlreadyExistsException("Platform with this platformId already exists");
+            log.info("Overwriting platform");
+            platformRepository.deleteByPlatformId(platformRegistrationRequestDto.getPlatformId());
         }
 
         byte[] randomBytes = new byte[128];
