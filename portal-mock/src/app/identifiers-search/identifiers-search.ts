@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {euCountries} from '../core/countries';
-import {MatFormField, MatLabel, MatOption, MatSelect} from '@angular/material/select';
 import {IdentifierResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import {IdentifiersResult} from '../identifiers-result/identifiers-result';
 import {TranslatePipe} from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-identifiers-search',
@@ -17,7 +17,7 @@ import {TranslatePipe} from '@ngx-translate/core';
   ],
   templateUrl: './identifiers-search.html',
 })
-export class IdentifiersSearch {
+export class IdentifiersSearch implements OnInit {
   public readonly identifiersSearchForm: FormGroup;
   protected readonly euCountries;
 
@@ -28,7 +28,8 @@ export class IdentifiersSearch {
 
   constructor(
     private fb: FormBuilder,
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
+    private readonly route: ActivatedRoute
   ) {
     this.identifiersSearchForm = this.fb.group({
       identifier: ['', [Validators.required]],
@@ -39,6 +40,19 @@ export class IdentifiersSearch {
       eftiGateIndicator: [[]]
     });
     this.euCountries = euCountries;
+  }
+
+  ngOnInit(): void {
+    // Check for identifier in URL query parameters
+    this.route.queryParams.subscribe(params => {
+      if (params['identifier']) {
+        // Set the identifier value in the form
+        this.identifiersSearchForm.patchValue({
+          identifier: params['identifier']
+        });
+        this.onSubmit();
+      }
+    });
   }
 
   onSubmit() {
