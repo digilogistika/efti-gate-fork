@@ -29,9 +29,4 @@ public class AuthorityUserController implements AuthorityUserControllerApi {
     public ResponseEntity<Void> validateAuthorityUser(final @RequestBody String jwt) {
         return authorityUserService.validateAuthorityUser(jwt);
     }
-
-    @GetMapping("/validate-session")
-    public ResponseEntity<Void> validateSession() {
-        return ResponseEntity.ok().build();
-    }
 }

@@ -7,27 +7,23 @@ export const requestInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
   // Allow public endpoints, admin endpoints, and static assets (like translation files)
-  if (req.url.startsWith("/api/public") ||
+  if (req.url.startsWith("/api/public/authority-user/verify") ||
     req.url.startsWith("/api/admin") ||
     req.url.startsWith("/i18n/")) {
     return next(req);
   }
 
-  const apiKey = authService.getApiKey();
   const jwtToken = authService.getJwtToken();
   let authReq = req;
 
-  if (apiKey) {
-    authReq = req.clone({
-      setHeaders: { 'X-API-Key': apiKey }
-    });
-  }
-  else if (jwtToken) {
+  if (jwtToken) {
     authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${jwtToken}`,
       },
-    });
+    }
+    );
+    console.log(authReq);
   }
 
   return next(authReq).pipe(

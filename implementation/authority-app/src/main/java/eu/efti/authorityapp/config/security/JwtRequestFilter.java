@@ -28,7 +28,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final SecretKey key;
     private static final String URL_API_KEY = "cak0130dLkXMC9"; // Hardcoded API key
-    private static final String API_KEY_HEADER_NAME = "X-API-Key";
 
     @Override
     protected void doFilterInternal(
@@ -41,31 +40,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        String requestUri = request.getRequestURI();
-
-        if (requestUri.startsWith("/api/admin")) {
-            log.info("Skipping JWT authentication for admin API");
-            chain.doFilter(request, response);
-            return;
-        }
-
-        final String apiKeyFromHeader = request.getHeader(API_KEY_HEADER_NAME);
-        if (apiKeyFromHeader != null && apiKeyFromHeader.equals(URL_API_KEY)) {
-            log.info("Authenticating user via URL API key");
-            SecurityContext context = SecurityContextHolder.getContext();
-            context.setAuthentication(buildApiKeyAuthToken());
-            chain.doFilter(request, response);
-            return;
-        }
-
-        Optional<String> token = getToken(request);
-        if (token.isPresent()) {
-            try {
-                Claims tokenBody = parseToken(token.get());
-                SecurityContext context = SecurityContextHolder.getContext();
-                context.setAuthentication(buildAuthToken(tokenBody));
-            } catch (Exception e) {
-                log.warn("Invalid JWT token: {}", e.getMessage());
+        Optional<String> tokenOpt = getToken(request); // This gets the content of "Bearer <token>"
+        log.info("tere" + tokenOpt);
+        log.info("Request" + request + response);
+        if (tokenOpt.isPresent()) {
+            String token = tokenOpt.get();
+            log.info("Comparing token from header: '{}' with hardcoded API key: '{}'", token, URL_API_KEY);
+            if (URL_API_KEY.equals(token)) {
+                log.info("Authenticating user via API key passed as a Bearer token.");
+                SecurityContextHolder.getContext().setAuthentication(buildApiKeyAuthToken());
+            } else {
+                try {
+                    Claims tokenBody = parseToken(token);
+                    SecurityContextHolder.getContext().setAuthentication(buildAuthToken(tokenBody));
+                } catch (Exception e) {
+                    log.warn("Invalid JWT token: {}", e.getMessage());
+                }
             }
         }
 
