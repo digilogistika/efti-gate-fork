@@ -6,29 +6,32 @@ export const languageRedirectGuard: CanActivateFn = (route: ActivatedRouteSnapsh
   const router = inject(Router);
   const translateService = inject(TranslateService);
   const supportedLanguages = ['en', 'et', 'lt', 'lv', 'pl'];
+  const defaultLanguage = translateService.getDefaultLang();
 
   const lang = route.params['lang'];
+
+  // Build the path for redirection
+  const remainingSegments = route.url.slice(1);
+  let newPath = '';
+
+  if (remainingSegments.length > 0) {
+    newPath = remainingSegments.map(segment => segment.path).join('/');
+  } else if (route.params['0']) {
+    newPath = route.params['0'];
+  }
+
   if (supportedLanguages.includes(lang)) {
     localStorage.setItem('language', lang);
     translateService.use(lang);
-
-    const remainingSegments = route.url.slice(1);
-
-    let newPath = '';
-
-    if (remainingSegments.length > 0) {
-      newPath = remainingSegments.map(segment => segment.path).join('/');
-    } else if (route.params['0']) {
-      newPath = route.params['0'];
-    }
-
-    router.navigate([`/${newPath}`], {
-      replaceUrl: true,
-      queryParams: route.queryParams
-    });
-
-    return false;
+  } else {
+    localStorage.setItem('language', defaultLanguage);
+    translateService.use(defaultLanguage);
   }
 
-  return true;
+  router.navigate([`/${newPath}`], {
+    replaceUrl: true,
+    queryParams: route.queryParams
+  });
+
+  return false;
 };
