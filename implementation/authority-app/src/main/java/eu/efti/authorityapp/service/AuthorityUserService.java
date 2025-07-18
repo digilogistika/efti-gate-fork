@@ -22,6 +22,8 @@ import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.Map;
 
+import static eu.efti.authorityapp.config.security.JwtRequestFilter.URL_API_KEY;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Lazy))
 @Slf4j
@@ -80,7 +82,7 @@ public class AuthorityUserService {
     public ResponseEntity<Void> validateAuthorityUser(String jwt) {
         log.info("Validating JWT token");
 
-        if ("cak0130dLkXMC9".equals(jwt)) {
+        if (URL_API_KEY.equals(jwt)) {
             log.info("Valid API key provided");
             return ResponseEntity.ok().build();
         }

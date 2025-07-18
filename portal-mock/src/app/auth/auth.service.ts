@@ -27,7 +27,6 @@ export class AuthService {
       const searchParams = new URLSearchParams(window.location.search);
       const keyFromUrl = searchParams.get('key');
       if (keyFromUrl) {
-        console.log('API Key found using URLSearchParams:', keyFromUrl);
         localStorage.setItem(this.LOCALSTORAGE_KEY, keyFromUrl);
         this.isAuthenticated = true;
 
@@ -40,8 +39,6 @@ export class AuthService {
           replaceUrl: true,
           queryParams: allParams
         });
-      } else {
-        console.log('No API Key found in URL.');
       }
     }
 
@@ -82,7 +79,6 @@ export class AuthService {
         );
       }
 
-      // If no API key and no JWT, the user is not authenticated.
       return of(false);
     }
 

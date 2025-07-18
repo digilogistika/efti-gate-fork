@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,7 +26,7 @@ import java.util.Optional;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final SecretKey key;
-    private static final String URL_API_KEY = "cak0130dLkXMC9"; // Hardcoded API key
+    public static final String URL_API_KEY = "cak0130dLkXMC9"; // Hardcoded API key
 
     @Override
     protected void doFilterInternal(
@@ -41,8 +40,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         Optional<String> tokenOpt = getToken(request); // This gets the content of "Bearer <token>"
-        log.info("tere" + tokenOpt);
-        log.info("Request" + request + response);
         if (tokenOpt.isPresent()) {
             String token = tokenOpt.get();
             log.info("Comparing token from header: '{}' with hardcoded API key: '{}'", token, URL_API_KEY);
