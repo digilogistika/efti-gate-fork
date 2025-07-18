@@ -1,13 +1,16 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+// portal-mock/src/app/dataset-query/dataset-query.ts
+
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {LangChangeEvent, TranslatePipe, TranslateService} from '@ngx-translate/core';
 import { XmlNode } from '../xml-viewer/xml-node';
 import { XmlViewer } from '../xml-viewer/xml-viwer';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-dataset-query',
@@ -18,7 +21,7 @@ import { XmlViewer } from '../xml-viewer/xml-viwer';
   ],
   templateUrl: './dataset-query.html',
 })
-export class DatasetQuery {
+export class DatasetQuery implements OnInit, OnDestroy {
   @ViewChild('myDialog') dialog!: ElementRef<HTMLDialogElement>;
   @ViewChild('subsetDetails') subsetDetails!: ElementRef<HTMLDetailsElement>
   protected datasetQueryForm: FormGroup;
@@ -29,6 +32,10 @@ export class DatasetQuery {
   protected followUpForm: FormGroup;
   protected showSuccessMessageForFollowUp: boolean = false;
   protected parsedXmlData: XmlNode[] | null = null;
+  protected availableSubsets: any[] = [];
+  protected isEnglishLanguage: boolean = true;
+  private langChangeSubscription!: Subscription;
+  protected isUilEditMode: boolean = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -53,6 +60,19 @@ export class DatasetQuery {
     });
   }
 
+  ngOnInit(): void {
+    this.filterSubsetsByLanguage();
+    this.langChangeSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.filterSubsetsByLanguage();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.langChangeSubscription) {
+      this.langChangeSubscription.unsubscribe();
+    }
+  }
+
   onSubmit() {
     if (!this.datasetQueryForm.valid) {
       return
@@ -69,7 +89,9 @@ export class DatasetQuery {
         next: (v) => {
           this.datasetQueryResponse = v;
           this.isLoading = false;
-          this.subsetDetails.nativeElement.open = false;
+          if (this.subsetDetails) {
+            this.subsetDetails.nativeElement.open = false;
+          }
           this.datasetQueryErrorMessage = null; // Clear any previous error message
 
           if (v.data) {
@@ -84,13 +106,34 @@ export class DatasetQuery {
       });
   }
 
-  getAvailableSubsets() {
-    // TODO in the real world the police of one country is only interested of the subsets of their country.
-    // For now we return all subsets and let the user pick form them.
-    return memberStateSubsets;
+  private filterSubsetsByLanguage(): void {
+    this.selectedSubsets.clear();
+    this.datasetQueryForm.get('subsetIds')?.setValue(this.selectedSubsets);
+
+    const currentLang = this.translate.currentLang;
+    this.isEnglishLanguage = currentLang === 'en';
+
+    if (this.isEnglishLanguage) {
+      this.availableSubsets = memberStateSubsets;
+    } else {
+      let countryCode = '';
+      switch (currentLang) {
+        case 'et': countryCode = 'EE'; break;
+        case 'lv': countryCode = 'LV'; break;
+        case 'lt': countryCode = 'LT'; break;
+        case 'pl': countryCode = 'PL'; break;
+        default:
+          this.availableSubsets = memberStateSubsets;
+          return;
+      }
+      const filtered = memberStateSubsets.find(ms => ms.isoCode === countryCode);
+      this.availableSubsets = filtered ? [filtered] : [];
+    }
   }
 
   onUILEditToggleChange(event: any) {
+    this.isUilEditMode = event.target.checked;
+
     if (event.target.checked) {
       // Enable the fields
       this.datasetQueryForm.get('gateId')?.enable();
