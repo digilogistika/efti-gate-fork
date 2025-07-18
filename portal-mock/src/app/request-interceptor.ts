@@ -1,38 +1,37 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import {HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import {inject} from '@angular/core';
 import {AuthService} from './auth/auth.service';
-import {catchError, switchMap, throwError} from 'rxjs';
-import {Router} from '@angular/router';
+import {catchError, throwError} from 'rxjs';
 
 export const requestInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const router = inject(Router);
 
   // Allow public endpoints, admin endpoints, and static assets (like translation files)
-  if (req.url.startsWith("/api/public") ||
+  if (req.url.startsWith("/api/public/authority-user/verify") ||
     req.url.startsWith("/api/admin") ||
     req.url.startsWith("/i18n/")) {
     return next(req);
   }
 
-  return authService.isAuthenticatedUser().pipe(
-    switchMap(isAuthenticated => {
-      const jwtToken = authService.getJwtToken();
+  const jwtToken = authService.getJwtToken();
+  let authReq = req;
 
-      if (!isAuthenticated || jwtToken === null) {
-        router.navigate(['/login']);
-        return throwError(() => new Error('User is not authenticated'));
-      }
+  if (jwtToken) {
+    authReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+    );
+    console.log(authReq);
+  }
 
-      const authReq = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      });
-
-      return next(authReq);
-    }),
+  return next(authReq).pipe(
     catchError(error => {
+      if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+        console.error('Authentication error from interceptor, logging out.', error);
+        authService.logout();
+      }
       return throwError(() => error);
     })
   );

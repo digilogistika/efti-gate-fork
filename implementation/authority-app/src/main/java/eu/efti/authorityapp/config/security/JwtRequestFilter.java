@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,6 +26,7 @@ import java.util.Optional;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final SecretKey key;
+    public static final String URL_API_KEY = "cak0130dLkXMC9"; // Hardcoded API key
 
     @Override
     protected void doFilterInternal(
@@ -39,22 +39,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        String requestUri = request.getRequestURI();
-
-        if (requestUri.startsWith("/api/admin")) {
-            log.info("Skipping JWT authentication for admin API");
-            chain.doFilter(request, response);
-            return;
-        }
-
-        Optional<String> token = getToken(request);
-        if (token.isPresent()) {
-            try {
-                Claims tokenBody = parseToken(token.get());
-                SecurityContext context = SecurityContextHolder.getContext();
-                context.setAuthentication(buildAuthToken(tokenBody));
-            } catch (Exception e) {
-                log.warn("Invalid JWT token: {}", e.getMessage());
+        Optional<String> tokenOpt = getToken(request); // This gets the content of "Bearer <token>"
+        if (tokenOpt.isPresent()) {
+            String token = tokenOpt.get();
+            log.info("Comparing token from header: '{}' with hardcoded API key: '{}'", token, URL_API_KEY);
+            if (URL_API_KEY.equals(token)) {
+                log.info("Authenticating user via API key passed as a Bearer token.");
+                SecurityContextHolder.getContext().setAuthentication(buildApiKeyAuthToken());
+            } else {
+                try {
+                    Claims tokenBody = parseToken(token);
+                    SecurityContextHolder.getContext().setAuthentication(buildAuthToken(tokenBody));
+                } catch (Exception e) {
+                    log.warn("Invalid JWT token: {}", e.getMessage());
+                }
             }
         }
 
@@ -78,6 +76,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private Authentication buildAuthToken(Claims tokenBody) {
         return new UsernamePasswordAuthenticationToken(
                 tokenBody.getSubject(), null, List.of(new SimpleGrantedAuthority("USER"))
+        );
+    }
+
+    private Authentication buildApiKeyAuthToken() {
+        return new UsernamePasswordAuthenticationToken(
+                "api-key-user", null, List.of(new SimpleGrantedAuthority("USER"))
         );
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {catchError, map, Observable, of, tap, throwError} from "rxjs";
+import {catchError, map, Observable, of, throwError} from "rxjs";
 import {Router} from '@angular/router';
 
 interface JwtDto {
@@ -19,7 +19,27 @@ export class AuthService {
       private readonly http: HttpClient,
       private readonly router: Router
     ) {
-        this.isAuthenticated = !!localStorage.getItem(this.LOCALSTORAGE_KEY);
+      this.isAuthenticated = !!localStorage.getItem(this.LOCALSTORAGE_KEY)
+      this.storeKeyAsJwtIfPresent();
+    }
+
+    private storeKeyAsJwtIfPresent() {
+      const searchParams = new URLSearchParams(window.location.search);
+      const keyFromUrl = searchParams.get('key');
+      if (keyFromUrl) {
+        localStorage.setItem(this.LOCALSTORAGE_KEY, keyFromUrl);
+        this.isAuthenticated = true;
+
+        const allParams = Object.fromEntries(searchParams.entries());
+        delete allParams['key'];
+
+        const currentPath = window.location.pathname;
+
+        this.router.navigate([currentPath], {
+          replaceUrl: true,
+          queryParams: allParams
+        });
+      }
     }
 
     login(email: string, password: string) {
@@ -43,29 +63,23 @@ export class AuthService {
     }
 
     isAuthenticatedUser(): Observable<boolean> {
-        const jwt = localStorage.getItem(this.LOCALSTORAGE_KEY);
+      const jwt = this.getJwtToken();
 
-        if (!jwt) {
-            return of(false); // Immediately return false if no JWT is found
-        }
-        return this.http.post("/api/public/authority-user/validate", jwt, { observe: "response" }).pipe(
-            map(response => {
-                // If the request succeeds (status 2xx), the JWT is considered valid
-                this.isAuthenticated = true;
-                return true;
-            }),
-            catchError(error => {
-                // If the request errors (e.g., 401, 403), the JWT is invalid
-                this.isAuthenticated = false; // Update internal state
-                localStorage.removeItem(this.LOCALSTORAGE_KEY);
-                return of(false); // Return an observable of false
-            }),
-            // Optional: If you want to update the internal isAuthenticated state
-            // but still return the observable without affecting the map/catchError
-            tap(isValid => {
-                this.isAuthenticated = isValid;
-            })
+      if (jwt) {
+        return this.http.post("/api/public/authority-user/validate", jwt).pipe(
+          map(() => {
+            this.isAuthenticated = true;
+            return true;
+          }),
+          catchError(error => {
+            this.isAuthenticated = false;
+            localStorage.removeItem(this.LOCALSTORAGE_KEY);
+            return of(false);
+          })
         );
+      }
+
+      return of(false);
     }
 
     getJwtToken(): string | null {
@@ -75,7 +89,6 @@ export class AuthService {
     logout(): void {
         localStorage.removeItem(this.LOCALSTORAGE_KEY);
         this.isAuthenticated = false;
-        // route to login
         this.router.navigate(['/login'], { replaceUrl: true });
     }
 }
