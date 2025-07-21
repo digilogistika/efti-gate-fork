@@ -30,7 +30,6 @@ import java.util.Optional;
 @Slf4j
 public class ReaderService {
     public static final String XML_FILE_TYPE = "xml";
-    public static final String JSON_FILE_TYPE = "json";
     private final GateProperties gateProperties;
     private final ResourceLoader resourceLoader;
 

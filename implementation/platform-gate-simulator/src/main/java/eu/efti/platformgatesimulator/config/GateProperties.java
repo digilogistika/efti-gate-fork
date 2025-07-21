@@ -13,7 +13,6 @@ public class GateProperties {
     private String owner;
     private String cdaPath;
     private String gate;
-    private ApConfig ap;
 
     private String gateSuperApiKey;
     private String gateBaseUrl;
@@ -21,12 +20,4 @@ public class GateProperties {
 
     private int minSleep;
     private int maxSleep;
-
-    @Data
-    @Builder
-    public static final class ApConfig {
-        private String url;
-        private String username;
-        private String password;
-    }
 }
