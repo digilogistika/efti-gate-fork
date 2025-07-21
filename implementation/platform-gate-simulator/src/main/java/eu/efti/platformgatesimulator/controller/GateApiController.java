@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/gate-api")
 @AllArgsConstructor
 @Slf4j
 public class GateApiController implements GateApiControllerApi {
@@ -36,12 +34,12 @@ public class GateApiController implements GateApiControllerApi {
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;
 
-    @GetMapping("v1/dataset/{datasetId}")
+    @GetMapping("/v1/dataset/{datasetId}")
     public ResponseEntity<Object> getConsignmentSubsets(
             @PathVariable("datasetId") String datasetId,
             @RequestParam(value = "subsetId") Set<String> subsetId
     ) {
-        log.info("GET on /api/gate-api/v1/dataset/{}?subsetId={}", datasetId, subsetId);
+        log.info("GET on /v1/dataset/{}?subsetId={}", datasetId, subsetId);
         try {
             List<String> subsets = Arrays
                     .stream(subsetId
@@ -73,7 +71,7 @@ public class GateApiController implements GateApiControllerApi {
             @PathVariable("datasetId") String datasetId,
             @RequestBody String body
     ) {
-        log.info("POST on /api/gate-api/v1/dataset/{}/follow-up with body {}", datasetId, body);
+        log.info("POST on /v1/dataset/{}/follow-up with body {}", datasetId, body);
         return null;
     }
 }

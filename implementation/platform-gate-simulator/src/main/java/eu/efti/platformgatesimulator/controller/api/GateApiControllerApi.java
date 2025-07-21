@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Set;
 
 @Tag(name = "Gate API controller", description = "Interfaces implemented by the platform for the eFTI Gate to request datasets from. These endpoints must be implemented by the platform developers for integration into eFTI Gate.")
-@RequestMapping("/api/gate-api")
 public interface GateApiControllerApi {
 
     @Operation(
