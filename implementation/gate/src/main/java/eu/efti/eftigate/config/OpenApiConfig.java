@@ -5,15 +5,19 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
 @Configuration
-public class OpenAPISecurityConfig {
+@AllArgsConstructor
+public class OpenApiConfig {
 
     private static final String API_KEY_SCHEME_NAME = "X-API-Key";
+
+    private final GateProperties properties;
 
     @Bean
     public OpenAPI openAPI() {
@@ -22,8 +26,8 @@ public class OpenAPISecurityConfig {
                         .addSecuritySchemes(API_KEY_SCHEME_NAME, createAPIKeyScheme()))
                 .addSecurityItem(new SecurityRequirement().addList(API_KEY_SCHEME_NAME))
                 .info(new Info()
-                        .title("eFTI Gate")
-                        .description("eFTI Gate used for research and testing purposes. Can integrate 3 key stakeholders: eFTI platforms, Authority access points and other eFTI Gates.")
+                        .title("eFTI Gate: " + properties.getOwner() + " [" + properties.getCountry() + "]")
+                        .description(properties.getDescription().orElse("eFTI Gate used for research and testing purposes. Can integrate 3 key stakeholders: eFTI platforms, Authority access points and other eFTI Gates."))
                         .version("1.0"));
     }
 

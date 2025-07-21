@@ -10,4 +10,5 @@ gate:
   gateBaseUrl: http://${GATE}-efti-gate-1:8880
   platformBaseUrl: http://${GATE}-efti-platform-1:${server.port}
   gateSuperApiKey: ${ADMIN_API_KEY}
+  description: ${PROJECT_DESCRIPTION}
 

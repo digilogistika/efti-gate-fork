@@ -5,15 +5,18 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
 @Configuration
+@AllArgsConstructor
 public class OpenApiConfig {
 
     private static final String API_KEY_SCHEME_NAME = "X-API-Key";
+    private final GateProperties properties;
 
     @Bean
     public OpenAPI openAPI() {
@@ -22,8 +25,8 @@ public class OpenApiConfig {
                         .addSecuritySchemes(API_KEY_SCHEME_NAME, createAPIKeyScheme()))
                 .addSecurityItem(new SecurityRequirement().addList(API_KEY_SCHEME_NAME))
                 .info(new Info()
-                        .title("Efti Mock Platform")
-                        .description("Efti Mock Platform to showcase and test the functionality of a working eFTI platform. It can be used as a reference for other platforms who want to integrate into the eFTI system.")
+                        .title("Efti Mock Platform " + properties.getOwner())
+                        .description(properties.getDescription().orElse("Efti Mock Platform to showcase and test the functionality of a working eFTI platform. It can be used as a reference for other platforms who want to integrate into the eFTI system."))
                         .version("1.0"));
     }
 

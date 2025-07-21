@@ -29,5 +29,6 @@ gate:
     url: https://localhost:8443/services/wsplugin
     username: service_account
     password: Azerty59*1234567
+  description: Estonia gate project
 server:
   port: 8881
