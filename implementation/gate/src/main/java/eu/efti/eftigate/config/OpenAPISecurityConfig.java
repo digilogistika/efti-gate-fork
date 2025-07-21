@@ -22,8 +22,8 @@ public class OpenAPISecurityConfig {
                         .addSecuritySchemes(API_KEY_SCHEME_NAME, createAPIKeyScheme()))
                 .addSecurityItem(new SecurityRequirement().addList(API_KEY_SCHEME_NAME))
                 .info(new Info()
-                        .title("Efti Gate")
-                        .description("Efti gate")
+                        .title("eFTI Gate")
+                        .description("eFTI Gate used for research and testing purposes. Can integrate 3 key stakeholders: eFTI platforms, Authority access points and other eFTI Gates.")
                         .version("1.0"));
     }
 
