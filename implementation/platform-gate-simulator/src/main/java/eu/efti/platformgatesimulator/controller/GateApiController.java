@@ -4,6 +4,7 @@ import eu.efti.commons.exception.TechnicalException;
 import eu.efti.commons.utils.EftiSchemaUtils;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.platformgatesimulator.config.GateProperties;
+import eu.efti.platformgatesimulator.controller.api.GateApiControllerApi;
 import eu.efti.platformgatesimulator.service.ReaderService;
 import eu.efti.v1.consignment.common.SupplyChainConsignment;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ import java.util.Set;
 @RequestMapping("/api/gate-api")
 @AllArgsConstructor
 @Slf4j
-public class GateApiController {
+public class GateApiController implements GateApiControllerApi {
     private final ReaderService readerService;
     private final GateProperties gateProperties;
     private final SerializeUtils serializeUtils;

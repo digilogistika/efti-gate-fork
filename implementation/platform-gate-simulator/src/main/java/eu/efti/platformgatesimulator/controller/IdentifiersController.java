@@ -5,6 +5,7 @@ import eu.efti.commons.utils.EftiSchemaUtils;
 import eu.efti.commons.utils.MappingException;
 import eu.efti.commons.utils.SerializeUtils;
 import eu.efti.datatools.schema.EftiSchemas;
+import eu.efti.platformgatesimulator.controller.api.IdentifiersControllerApi;
 import eu.efti.platformgatesimulator.exception.UploadException;
 import eu.efti.platformgatesimulator.service.GateIntegrationService;
 import eu.efti.platformgatesimulator.service.ReaderService;
@@ -28,7 +29,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/identifiers")
 @AllArgsConstructor
 @Slf4j
-public class IdentifiersController {
+public class IdentifiersController implements IdentifiersControllerApi {
     private static final Pattern datasetIdPattern = Pattern.compile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}");
     private final ReaderService readerService;
     private final SerializeUtils serializeUtils;
@@ -41,8 +42,7 @@ public class IdentifiersController {
             throw new TechnicalException("Error while reading attachment", e);
         }
     }
-
-
+    
     @PutMapping("/upload/consignment/{datasetId}")
     public ResponseEntity<String> uploadConsignment(
             @PathVariable String datasetId,
