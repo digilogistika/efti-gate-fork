@@ -15,7 +15,7 @@ log_success() {
 }
 
 log_info "Starting the development environment..."
-docker compose up -d
+docker compose up -d --build
 
 log_info "Waiting for harmonies..."
 
