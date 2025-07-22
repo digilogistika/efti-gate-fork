@@ -5,12 +5,7 @@ import eu.efti.edeliveryapconnector.dto.NotificationDto;
 import eu.efti.eftigate.service.request.IdentifiersRequestService;
 import eu.efti.eftigate.service.request.NotesRequestService;
 import eu.efti.eftigate.service.request.UilRequestService;
-import eu.efti.v1.edelivery.IdentifierQuery;
-import eu.efti.v1.edelivery.IdentifierResponse;
-import eu.efti.v1.edelivery.PostFollowUpRequest;
-import eu.efti.v1.edelivery.SaveIdentifiersRequest;
-import eu.efti.v1.edelivery.UILQuery;
-import eu.efti.v1.edelivery.UILResponse;
+import eu.efti.v1.edelivery.*;
 import jakarta.xml.bind.annotation.XmlType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -38,14 +33,21 @@ public class EDeliveryMessageRouter {
     }
 
     public void process(final NotificationDto notificationDto) {
-        resolve(notificationDto).ifPresentOrElse(res -> invoke(notificationDto, res), () -> { throw new TechnicalException(); } );
+        resolve(notificationDto).ifPresentOrElse(res -> invoke(notificationDto, res), () -> {
+            throw new TechnicalException();
+        });
     }
 
     private Optional<Map.Entry<Class<?>, Consumer<Object>>> resolve(final NotificationDto notificationDto) {
+        String xmlBody = StringUtils.trim(notificationDto.getContent().getBody());
+
         return routingMap.entrySet().stream().filter(entry -> {
             final XmlType rootAnnotation = entry.getKey().getAnnotation(XmlType.class);
-            if(rootAnnotation != null) {
-                return StringUtils.containsIgnoreCase(StringUtils.trim(notificationDto.getContent().getBody()), rootAnnotation.name());
+            if (rootAnnotation != null) {
+                String tagName = rootAnnotation.name();
+                log.info("{}\n{}", xmlBody, tagName);
+                return StringUtils.containsIgnoreCase(xmlBody, "<" + tagName + ">") ||
+                        StringUtils.containsIgnoreCase(xmlBody, "<" + tagName + " ");
             }
             return false;
         }).findFirst();
