@@ -29,6 +29,6 @@ gate:
   owner: borduria
   apikey: SuperSecretSecret123
   ap:
-    url: https://localhost:9443/services/wsplugin
+    url: http://localhost:9443/services/wsplugin
     username: service_account
     password: Azerty59*1234567

@@ -63,7 +63,7 @@ docker cp "$OUTPUT_DIR/borduria/borduria_tls_cert.pem" "$ESTONIA_CONTAINER_ID:/t
 
 if ! docker compose exec "$ESTONIA_UTIL_CONTAINER" python main.py connect \
     --peer-name borduria \
-    --peer-url https://borduria-harmony-1:8443 \
+    --peer-url http://borduria-harmony-1:8080 \
     --peer-truststore-cert /tmp/connect/peer_truststore.pem \
     --peer-tls-cert /tmp/connect/peer_tls.pem; then
     log_error "Failed to connect Estonia to Borduria"
@@ -80,7 +80,7 @@ docker cp "$OUTPUT_DIR/estonia/estonia_tls_cert.pem" "$BORDURIA_CONTAINER_ID:/tm
 
 if ! docker compose exec "$BORDURIA_UTIL_CONTAINER" python main.py connect \
     --peer-name estonia \
-    --peer-url https://estonia-harmony-1:8443 \
+    --peer-url http://estonia-harmony-1:8080 \
     --peer-truststore-cert /tmp/connect/peer_truststore.pem \
     --peer-tls-cert /tmp/connect/peer_tls.pem; then
     log_error "Failed to connect Borduria to Estonia"

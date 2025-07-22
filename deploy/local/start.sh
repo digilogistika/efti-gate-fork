@@ -20,7 +20,7 @@ docker compose up -d
 log_info "Waiting for harmonies..."
 
 while true; do
-  if curl -k -s -o /dev/null -w "%{http_code}" "https://localhost:8443/" 2>/dev/null | grep -q "200"; then
+  if curl -k -s -o /dev/null -w "%{http_code}" "http://localhost:8443/" 2>/dev/null | grep -q "200"; then
     log_info "Harmonies are ready."
     break
   else
@@ -36,8 +36,8 @@ log_info "Setting up connections"
 log_success "Local development environment started successfully!"
 log_info ""
 log_info "Harmony instances:"
-log_info "  - Estonia Harmony: https://localhost:8443"
-log_info "  - Borduria Harmony: https://localhost:9443"
+log_info "  - Estonia Harmony: http://localhost:8443"
+log_info "  - Borduria Harmony: http://localhost:9443"
 log_info ""
 log_info "Shared services:"
 log_info "  - RabbitMQ: localhost:5672"
