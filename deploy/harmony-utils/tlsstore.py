@@ -55,7 +55,10 @@ def extract_tls_certificate_to_pem(url: str, output_filename: str) -> bool:
             os.makedirs("tmp_tls_dir", exist_ok=True)
             extracted_tls_certificates: dict[str, str] = download_and_extract_tls_truststore_certs(url, "tmp_tls_dir")
 
-            assert len(extracted_tls_certificates) == 1
+            if len(extracted_tls_certificates) > 1:
+                logger.info("certificates have been configured. Doing nothing")
+                return True
+            
             for alias, cert_path in extracted_tls_certificates.items():
                 shutil.copy2(cert_path, output_filename)
                 logger.info(f"Successfully extracted and saved TLS certificate to {output_filename}")
