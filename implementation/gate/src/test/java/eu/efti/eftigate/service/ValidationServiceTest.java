@@ -80,14 +80,14 @@ class ValidationServiceTest {
                 
                  <!-- eFTI39 -->
                 
-                 <carrierAcceptanceDateTime>202401010000</carrierAcceptanceDateTime>
+                 <carrierAcceptanceDateTime formatId="205">202401010000</carrierAcceptanceDateTime>
                 
                                
                  <deliveryEvent>
                 
                    <!-- eFTI188 -->
                 
-                   <actualOccurrenceDateTime>202401020000</actualOccurrenceDateTime>
+                   <actualOccurrenceDateTime formatId="205">202401020000</actualOccurrenceDateTime>
                 
                  </deliveryEvent>
                 
@@ -181,7 +181,7 @@ class ValidationServiceTest {
                 
                  <!-- eFTI39 -->
                 
-                 <carrierAcceptanceDateTime>202402010000</carrierAcceptanceDateTime>
+                 <carrierAcceptanceDateTime formatId="205">202402010000</carrierAcceptanceDateTime>
                 
                                
                                
@@ -189,7 +189,7 @@ class ValidationServiceTest {
                 
                    <!-- eFTI188 -->
                 
-                   <actualOccurrenceDateTime>202402020000+0000</actualOccurrenceDateTime>
+                   <actualOccurrenceDateTime formatId="205">202402020000+0000</actualOccurrenceDateTime>
                 
                  </deliveryEvent>
                 
@@ -286,7 +286,9 @@ class ValidationServiceTest {
         String body = """
                                   <postFollowUpRequest requestId="67fe38bd-6bf7-4b06-b20e-206264bd639c" xmlns="http://efti.eu/v1/edelivery"
                 
-                                  xmlns:ns2="http://efti.eu/v1/consignment/identifier">
+                                  xmlns:ns2="http://efti.eu/v1/consignment/identifier"
+                                  
+                                  uilQueryRequestId="d59ba2f6-494c-4cde-8f78-140ab07d6760">
                 
                  <uil>
                 
