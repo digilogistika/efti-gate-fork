@@ -35,5 +35,4 @@ public class SearchWithIdentifiersRequestDto implements ValidatableDto {
     private Boolean dangerousGoodsIndicator;
     @JsonProperty("eftiGateIndicator")
     private List<@Valid @ValueOfEnum(enumClass = CountryIndicator.class, message = "GATE_INDICATOR_INCORRECT") String> eftiGateIndicator;
-    private Boolean callback;
 }

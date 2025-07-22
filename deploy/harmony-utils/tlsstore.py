@@ -1,14 +1,15 @@
+import os
+import re
+import shutil
 import socket
 import ssl
-import os
-import tempfile
 import subprocess
-import re
-from urllib.parse import urlparse
-
+import tempfile
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
+from urllib.parse import urlparse
+
 from config import TLS_TRUSTSTORE_PASSWORD, logger
 from session import get_session, DEFAULT_VERIFY
 
@@ -28,14 +29,14 @@ def upload_tls_truststore(harmony_host: str, p12_file_path: str):
             )
             response.raise_for_status()
             logger.info(f"""TLS truststore uploaded successfully to {
-                        harmony_host}""")
+            harmony_host}""")
         except Exception as e:
             logger.error(f"""Failed to upload TLS truststore to {
-                         harmony_host}: {e}""")
+            harmony_host}: {e}""")
             if hasattr(e, "response") and e.response is not None:
                 logger.error(
                     f"""Response status: {e.response.status_code}, body: {
-                        e.response.text
+                    e.response.text
                     }"""
                 )
             raise
@@ -48,9 +49,21 @@ def extract_tls_certificate_to_pem(url: str, output_filename: str) -> bool:
         port = parsed_url.port or (443 if parsed_url.scheme == "https" else 80)
 
         if not hostname or parsed_url.scheme != "https":
-            logger.error(
-                f"Invalid HTTPS URL for TLS certificate extraction: {url}")
-            return False
+            logger.warn(f"Invalid HTTPS URL for TLS certificate extraction: {url}")
+            logger.info("Extracting certificates from the truststore instead")
+
+            os.makedirs("tmp_tls_dir", exist_ok=True)
+            extracted_tls_certificates: dict[str, str] = download_and_extract_tls_truststore_certs(url, "tmp_tls_dir")
+
+            if len(extracted_tls_certificates) > 1:
+                logger.info("certificates have been configured. Doing nothing")
+                return True
+            
+            for alias, cert_path in extracted_tls_certificates.items():
+                shutil.copy2(cert_path, output_filename)
+                logger.info(f"Successfully extracted and saved TLS certificate to {output_filename}")
+
+            return True
 
         logger.info(f"Extracting TLS certificate from {hostname}:{port}")
 
@@ -64,7 +77,7 @@ def extract_tls_certificate_to_pem(url: str, output_filename: str) -> bool:
                 if not der_cert:
                     logger.error(
                         f"""No TLS certificate returned from {
-                            hostname}:{port}"""
+                        hostname}:{port}"""
                     )
                     return False
 
@@ -75,7 +88,7 @@ def extract_tls_certificate_to_pem(url: str, output_filename: str) -> bool:
                     f.write(cert.public_bytes(serialization.Encoding.PEM))
                 logger.info(
                     f"""Successfully extracted and saved TLS certificate to {
-                        output_filename
+                    output_filename
                     }"""
                 )
                 return True
@@ -104,15 +117,15 @@ def download_tls_truststore(harmony_host: str, output_path: str):
             f.write(response.content)
 
         logger.info(f"""TLS truststore downloaded successfully from {
-                    harmony_host}""")
+        harmony_host}""")
         return response.content
     except Exception as e:
         logger.error(f"""Failed to download TLS truststore from {
-                     harmony_host}: {e}""")
+        harmony_host}: {e}""")
         if hasattr(e, "response") and e.response is not None:
             logger.error(
                 f"""Response status: {e.response.status_code}, body: {
-                    e.response.text
+                e.response.text
                 }"""
             )
         return None

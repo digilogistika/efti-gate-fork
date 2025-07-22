@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,20 +15,14 @@ public class GateProperties {
     private String owner;
     private String cdaPath;
     private String gate;
-    private ApConfig ap;
-
+    private String description;
     private String gateSuperApiKey;
     private String gateBaseUrl;
     private String platformBaseUrl;
-
     private int minSleep;
     private int maxSleep;
 
-    @Data
-    @Builder
-    public static final class ApConfig {
-        private String url;
-        private String username;
-        private String password;
+    public Optional<String> getDescription() {
+        return Optional.ofNullable(description);
     }
 }

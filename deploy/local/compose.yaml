@@ -16,9 +16,9 @@ services:
       - SECURITY_TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=estonia-harmony-1
+      - EXTERNAL_LB=true
     ports:
-      - "8443:8443"
+      - "8443:8080"
     volumes:
       - estonia_ap_data_gate:/var/opt/harmony-ap
       - ./harmony/ws-plugin-ee.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -64,7 +64,7 @@ services:
       - TLS_TRUSTSTORE_PASSWORD=changeit
       - HARMONY_GATE_SERVICE_NAME=estonia-harmony-1
       - HARMONY_GATE_PARTY_NAME=estonia
-      - HARMONY_SERVICE_PORT=8443
+      - HARMONY_SERVICE_PORT=8080
       - PYTHONUNBUFFERED=1
     networks:
       - app-network
@@ -86,9 +86,9 @@ services:
       - SECURITY_TRUSTSTORE_PASSWORD=changeit
       - TLS_KEYSTORE_PASSWORD=changeit
       - TLS_TRUSTSTORE_PASSWORD=changeit
-      - SERVER_FQDN=borduria-harmony-1
+      - EXTERNAL_LB=true
     ports:
-      - "9443:8443"
+      - "9443:8080"
     volumes:
       - borduria_ap_data_gate:/var/opt/harmony-ap
       - ./harmony/ws-plugin-bo.properties:/var/opt/harmony-ap/etc/plugins/config/ws-plugin.properties
@@ -134,7 +134,7 @@ services:
       - TLS_TRUSTSTORE_PASSWORD=changeit
       - HARMONY_GATE_SERVICE_NAME=borduria-harmony-1
       - HARMONY_GATE_PARTY_NAME=borduria
-      - HARMONY_SERVICE_PORT=8443
+      - HARMONY_SERVICE_PORT=8080
       - PYTHONUNBUFFERED=1
     networks:
       - app-network

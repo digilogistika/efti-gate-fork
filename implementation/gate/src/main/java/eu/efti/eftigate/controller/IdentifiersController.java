@@ -29,12 +29,11 @@ public class IdentifiersController implements IdentifiersControllerApi {
             List<String> identifierType,
             String registrationCountryCode,
             Boolean dangerousGoodsIndicator,
-            List<String> eftiGateIndicator,
-            Boolean callback) {
-        log.info("GET on /v1/identifiers on gates {} with params, identifier: {}, identifierType:{}, modeCode: {}, registrationCountryCode: {}, dangerousGoodsIndicator: {}, callback: {}",
+            List<String> eftiGateIndicator) {
+        log.info("GET on /v1/identifiers on gates {} with params, identifier: {}, identifierType:{}, modeCode: {}, registrationCountryCode: {}, dangerousGoodsIndicator: {}",
                 StringUtils.join(eftiGateIndicator, ","), identifier,
                 StringUtils.join(identifierType, ","), modeCode,
-                registrationCountryCode, dangerousGoodsIndicator, callback);
+                registrationCountryCode, dangerousGoodsIndicator);
 
         SearchWithIdentifiersRequestDto dto = SearchWithIdentifiersRequestDto
                 .builder()
@@ -44,7 +43,6 @@ public class IdentifiersController implements IdentifiersControllerApi {
                 .registrationCountryCode(registrationCountryCode)
                 .dangerousGoodsIndicator(dangerousGoodsIndicator)
                 .eftiGateIndicator(eftiGateIndicator)
-                .callback(callback)
                 .build();
         return new ResponseEntity<>(identifiersSearchService.searchIdentifiers(dto), HttpStatus.OK);
     }

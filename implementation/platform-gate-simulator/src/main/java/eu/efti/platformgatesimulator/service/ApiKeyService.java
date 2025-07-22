@@ -3,7 +3,6 @@ package eu.efti.platformgatesimulator.service;
 import eu.efti.platformgatesimulator.config.GateProperties;
 import eu.efti.platformgatesimulator.dto.PlatformRegistrationRequestDto;
 import eu.efti.platformgatesimulator.dto.PlatformRegistrationResponseDto;
-import kotlin.random.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class ApiKeyService {
         RestClient restClient = RestClient.builder().build();
 
         PlatformRegistrationRequestDto body = new PlatformRegistrationRequestDto();
-        body.setRequestBaseUrl(gateProperties.getPlatformBaseUrl() + "/api/gate-api/v1/dataset");
+        body.setRequestBaseUrl(gateProperties.getPlatformBaseUrl() + "/v1/dataset");
 
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");

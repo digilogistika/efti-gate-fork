@@ -25,6 +25,7 @@ gate:
   owner: ${OWNER}
   country: ${COUNTRY}
   apikey: ${ADMIN_API_KEY}
+  description: ${PROJECT_DESCRIPTION}
   ap:
     url: http://${OWNER}-harmony-1:8080/services/wsplugin
     username: service_account

@@ -26,8 +26,9 @@ gate:
   owner: estonia
   apikey: SuperSecretSecret123
   ap:
-    url: https://localhost:8443/services/wsplugin
+    url: http://localhost:8443/services/wsplugin
     username: service_account
     password: Azerty59*1234567
+  description: Estonia gate project
 server:
   port: 8881
