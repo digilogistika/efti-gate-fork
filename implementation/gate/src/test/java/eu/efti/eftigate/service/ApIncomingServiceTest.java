@@ -21,10 +21,7 @@ import java.util.Optional;
 
 import static eu.efti.edeliveryapconnector.dto.ReceivedNotificationDto.SUBMIT_MESSAGE;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ApIncomingServiceTest extends BaseServiceTest {
@@ -91,7 +88,7 @@ class ApIncomingServiceTest extends BaseServiceTest {
         final NotificationDto notificationDto = NotificationDto.builder()
                 .content(NotificationContentDto.builder()
                         .messageId(messageId)
-                        .body("<UILQuery")
+                        .body("<UILQuery></UILQuery>")
                         .build())
                 .notificationType(NotificationType.RECEIVED)
                 .build();
@@ -111,7 +108,7 @@ class ApIncomingServiceTest extends BaseServiceTest {
         final NotificationDto notificationDto = NotificationDto.builder()
                 .content(NotificationContentDto.builder()
                         .messageId(messageId)
-                        .body("<saveIdentifiersRequest")
+                        .body("<saveIdentifiersRequest></saveIdentifiersRequest>")
                         .build())
                 .notificationType(NotificationType.RECEIVED)
                 .build();
