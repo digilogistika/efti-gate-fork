@@ -7,7 +7,7 @@ services:
       args:
         OWNER_VALUE: ${COMPOSE_PROJECT_NAME}
     image: java-builder:latest
-    command: ["echo", "Builder completed"]
+    command: [ "echo", "Builder completed" ]
 
   reverse-proxy:
     image: traefik:v3.4
@@ -134,6 +134,7 @@ services:
       - GATE_PLUGIN_USER_PASSWORD=${GATE_PLUGIN_USER_PASSWORD}
       - EFTI_POSTGRES_PASSWORD=${EFTI_POSTGRES_PASSWORD}
       - EFTI_META_POSTGRES_PASSWORD=${EFTI_META_POSTGRES_PASSWORD}
+      - PROJECT_DESCRIPTION=${PROJECT_DESCRIPTION}
     volumes:
       - ./gate-logs:/var/log/javapp
     extra_hosts:
