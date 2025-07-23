@@ -71,6 +71,7 @@ def setup_single_party(party_name, party_url):
 def do_initial_setup():
     logger.info("--- Starting Initial Setup ---")
     success = True
+    setup_before = False
 
     logger.info("Waiting for Gate harmony to be ready...")
     while True:
@@ -91,11 +92,14 @@ def do_initial_setup():
             }"""
         )
         set_plugin_user(HARMONY_GATE_URL, HARMONY_GATE_PARTY_NAME)
-    except Exception as e:
-        logger.error(f"Failed to set plugin user for Gate: {e}")
+    except Exception:
+        setup_before = True
 
-    if not setup_single_party(HARMONY_GATE_PARTY_NAME, HARMONY_GATE_URL):
-        success = False
+    if not setup_before:
+        if not setup_single_party(HARMONY_GATE_PARTY_NAME, HARMONY_GATE_URL):
+            success = False
+    else:
+        logger.info("Gate has been setup before. Not changing anything!")
 
     logger.info(
         f"--- Initial Setup Finished {'Successfully' if success else 'with Errors'} ---"
