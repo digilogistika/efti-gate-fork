@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - workflows_for_all_gates
 
 jobs:
   maven-test:
