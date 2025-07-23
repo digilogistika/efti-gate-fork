@@ -14,3 +14,4 @@ Here is gathered all the documentation related to the DLK eFTI project.
         - [1.2.1 HARMONY](ARCHITECTURE.md#121-harmony)
         - [1.2.2 RABBITMQ](ARCHITECTURE.md#122-rabbitmq)
         - [1.2.3 POSTGRESQL](ARCHITECTURE.md#123-postgresql)
+    - [1.3 DIAGRAMS](ARCHITECTURE.md#13-diagrams)
