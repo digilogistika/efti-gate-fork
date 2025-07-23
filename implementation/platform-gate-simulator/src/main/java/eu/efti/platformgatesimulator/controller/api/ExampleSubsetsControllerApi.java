@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Set;
 
-@Tag(name = "Example subsets [FOR TESTING]", description = "Allows integrator platform to get a better idea of what the subsets will look like that must be provided to the credible authority upon request.")
+@Tag(name = "Example subsets [FOR TESTING]", description = "Allows integrating platforms to get a better idea of what the subsets will look like that must be provided to the credible authority upon request.")
 @RequestMapping("/example")
 public interface ExampleSubsetsControllerApi {
     @Operation(
             summary = "Get Example Subsets endpoint",
-            description = "This endpoint is meant for use by integrating platforms who want to get a better idea of what the subsets will look like, that must be givet to CAs upon request. Subsets from this endpoint are extracted from one file that contains some fields that a subset consists of. WARNING results from this endpoint can be incomplete and/or contain non valid values. The responsibility of data validity is in the hands of the platform integrators. This API does not validate the subsets for business rules. More about business rules can be read here: <a href='https://svn.gefeg.com/svn/efti-publication/Draft/CDS/br1.htm'>https://svn.gefeg.com/svn/efti-publication/Draft/CDS/br1.htm</a>")
+            description = "This endpoint is meant for use by integrating platforms who want to get a better idea of what the subsets will look like, that must be given to CAs upon request. Subsets from this endpoint are extracted from one file that contains fields that a subset consists of. Full file can be requested by using the subset 'full'. WARNING results from this endpoint can be incomplete and/or contain non valid values. The responsibility of data validity is in the hands of the platform integrators. This API does not validate the subsets for business rules. More about business rules can be read here: <a href='https://svn.gefeg.com/svn/efti-publication/Draft/CDS/br1.htm'>https://svn.gefeg.com/svn/efti-publication/Draft/CDS/br1.htm</a>")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Subsets extracted from a consignment master file", content = {
                     @Content(
