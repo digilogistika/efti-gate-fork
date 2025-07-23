@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   maven-test:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +24,7 @@ jobs:
         run: mvn -B package --file implementation/pom.xml
 
   xml-validation:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +34,7 @@ jobs:
         run: utils/validate-examples.sh
 
   deploy-multi:
+    if: github.event_name == 'push'
     needs: [ maven-test, xml-validation ]
     name: Deploy to multiple environments
     runs-on: ubuntu-latest
