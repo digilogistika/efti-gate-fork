@@ -1,0 +1,76 @@
+name: "eFTI gate main workflow"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  maven-test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Maven package
+        run: mvn -B package --file implementation/pom.xml
+
+  xml-validation:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up
+        run: sudo apt-get install -y xmlstarlet
+      - name: Validate
+        run: utils/validate-examples.sh
+
+  deploy-multi:
+    if: github.event_name == 'push'
+    needs: [ maven-test, xml-validation ]
+    name: Deploy to multiple environments
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [ eu-ee12, eu-ee21, eu-lv21 ]
+        include:
+          - environment: eu-ee12
+            host_secret: HOST_EU_EE12
+            username_secret: USERNAME_EU_EE12
+            key_secret: KEY_EU_EE12
+          - environment: eu-ee21
+            host_secret: HOST_EU_EE21
+            username_secret: USERNAME_EU_EE21
+            key_secret: KEY_EU_EE21
+          - environment: eu-lv21
+            host_secret: HOST_EU_LV21
+            username_secret: USERNAME_EU_LV21
+            key_secret: KEY_EU_LV21
+    steps:
+      - name: Deploy to ${{ matrix.environment }}
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets[matrix.host_secret] }}
+          username: ${{ secrets[matrix.username_secret] }}
+          key: ${{ secrets[matrix.key_secret] }}
+          port: 22
+          command_timeout: '30m'
+          script: |
+            cd efti-gate
+            echo "Pulling updates from github"
+            git checkout main
+            git restore .
+            git pull
+            cd deploy 
+            echo "Shutting down current gate applications"
+            docker compose --profile platform --profile proxy down
+            echo "Building and starting latest version for gate applications"
+            docker compose --profile platform --profile proxy up -d --build
