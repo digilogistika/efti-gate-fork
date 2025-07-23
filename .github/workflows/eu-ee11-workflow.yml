@@ -14,10 +14,10 @@ jobs:
       - name: Update build and run the gate application
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
+          host: ${{ secrets.HOST_EU_EE11 }}
+          username: ${{ secrets.USERNAME_EU_EE11 }}
+          key: ${{ secrets.KEY_EU_EE11 }}
+          port: 22
           command_timeout: '30m'
           script: |
             cd efti-gate
