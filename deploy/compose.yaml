@@ -184,6 +184,7 @@ services:
     environment:
       - GATE=${COMPOSE_PROJECT_NAME}
       - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - PROJECT_DESCRIPTION=${PROJECT_DESCRIPTION}
     volumes:
       - ./platform-logs:/var/log/javapp
     restart: on-failure
