@@ -92,9 +92,6 @@ public class DatasetController implements DatasetControllerApi {
         try {
             final byte[] pdfBytes = pdfGenerationService.generatePdf(
                     datasetDto.getRequestId(),
-                    gateId,
-                    platformId,
-                    datasetId,
                     datasetDto.getData());
 
             final HttpHeaders headers = new HttpHeaders();

@@ -23,9 +23,6 @@ public class PdfGenerationService {
 
     public byte[] generatePdf(
             final String requestId,
-            final String gateId,
-            final String platformId,
-            final String datasetId,
             final byte[] xmlData) {
 
         try {
@@ -45,20 +42,29 @@ public class PdfGenerationService {
 
             // Step 3: Populate the parameters map from the CmrDto
             final Map<String, Object> parameters = new HashMap<>();
-            parameters.put("GATE_ID", gateId);
-            parameters.put("PLATFORM_ID", platformId);
-            parameters.put("DATASET_ID", datasetId);
 
             if (cmrDto.getConsignor() != null) {
-                parameters.put("CONSIGNOR_NAME", cmrDto.getConsignor().getName());
+                parameters.put("consignorName", cmrDto.getConsignor().getName());
                 if (cmrDto.getConsignor().getPostalAddress() != null) {
                     CmrDto.PostalAddress address = cmrDto.getConsignor().getPostalAddress();
-                    parameters.put("CONSIGNOR_STREET", address.getStreetName());
-                    parameters.put("CONSIGNOR_CITY", address.getCityName());
-                    parameters.put("CONSIGNOR_POSTCODE", address.getPostcode());
-                    parameters.put("CONSIGNOR_COUNTRY", address.getCountryCode());
+                    parameters.put("consignorStreet", address.getStreetName());
+                    parameters.put("consignorCity", address.getCityName());
+                    parameters.put("consignorPostcode", address.getPostcode());
+                    parameters.put("consignorCountry", address.getCountryCode());
                 }
             }
+
+            if (cmrDto.getConsignee() != null) {
+                parameters.put("consigneeName", cmrDto.getConsignee().getName());
+                if (cmrDto.getConsignor().getPostalAddress() != null) {
+                    CmrDto.PostalAddress address = cmrDto.getConsignor().getPostalAddress();
+                    parameters.put("consigneeStreet", address.getStreetName());
+                    parameters.put("consigneeCity", address.getCityName());
+                    parameters.put("consigneePostcode", address.getPostcode());
+                    parameters.put("consigneeCountry", address.getCountryCode());
+                }
+            }
+
             log.info("Populated report parameters.");
 
             // Step 4: Fill the report using the parameters and an EMPTY data source

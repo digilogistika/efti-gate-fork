@@ -7,8 +7,6 @@ import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import {LangChangeEvent, TranslatePipe, TranslateService} from '@ngx-translate/core';
-import { XmlNode } from '../xml-viewer/xml-node';
-import { XmlViewer } from '../xml-viewer/xml-viewer';
 import {Subscription} from 'rxjs';
 import {PdfViewer} from '../pdf-viewer/pdf-viewer';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -18,7 +16,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   imports: [
     ReactiveFormsModule,
     TranslatePipe,
-    XmlViewer,
     PdfViewer,
   ],
   templateUrl: './dataset-query.html',
@@ -33,7 +30,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
   protected datasetQueryErrorMessage: string | null = null;
   protected followUpForm: FormGroup;
   protected showSuccessMessageForFollowUp: boolean = false;
-  protected parsedXmlData: XmlNode[] | null = null;
   protected availableSubsets: any[] = [];
   protected isEnglishLanguage: boolean = true;
   private langChangeSubscription!: Subscription;
@@ -83,7 +79,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
       return
     }
     this.pdfUrl = null;
-    // request the identifiers endpoint for results
     const formValues = this.datasetQueryForm.getRawValue();
 
     let identifiersQuery: string = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}`;
@@ -98,10 +93,11 @@ export class DatasetQuery implements OnInit, OnDestroy {
           if (this.subsetDetails) {
             this.subsetDetails.nativeElement.open = false;
           }
-          this.datasetQueryErrorMessage = null; // Clear any previous error message
+          this.datasetQueryErrorMessage = null;
 
-          if (v.data) {
-            this.parseAndSetXml(v.data);
+          // If the initial data query is successful, automatically fetch the PDF
+          if (!v.errorCode) {
+            this.viewPdf();
           }
         },
         error: (error) => {
@@ -141,12 +137,10 @@ export class DatasetQuery implements OnInit, OnDestroy {
     this.isUilEditMode = event.target.checked;
 
     if (event.target.checked) {
-      // Enable the fields
       this.datasetQueryForm.get('gateId')?.enable();
       this.datasetQueryForm.get('platformId')?.enable();
       this.datasetQueryForm.get('datasetId')?.enable();
     } else {
-      // Disable the fields
       this.datasetQueryForm.get('gateId')?.disable();
       this.datasetQueryForm.get('platformId')?.disable();
       this.datasetQueryForm.get('datasetId')?.disable();
@@ -159,59 +153,15 @@ export class DatasetQuery implements OnInit, OnDestroy {
     } else {
       this.selectedSubsets.delete(subset);
     }
-    this.datasetQueryForm.setValue({
-      gateId: this.datasetQueryForm.get('gateId')?.value,
-      platformId: this.datasetQueryForm.get('platformId')?.value,
-      datasetId: this.datasetQueryForm.get('datasetId')?.value,
-      subsetIds: this.selectedSubsets
-    });
-  }
-
-  private parseAndSetXml(base64Xml: string): void {
-    try {
-      const xmlString = atob(base64Xml);
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlString, "application/xml");
-
-      if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
-        console.error("Error parsing XML.");
-        this.parsedXmlData = null;
-        return;
-      }
-
-      const rootNode = this.convertNodeToJson(xmlDoc.documentElement);
-      this.parsedXmlData = rootNode.children;
-
-    } catch (e) {
-      console.error("Failed to decode or parse XML", e);
-      this.parsedXmlData = null;
-    }
-  }
-
-  private convertNodeToJson(node: Element): XmlNode {
-    const children = Array.from(node.children).map(child => this.convertNodeToJson(child));
-    const attributes = Array.from(node.attributes).map(attr => ({ key: attr.name, value: attr.value }));
-
-    const textValue = Array.from(node.childNodes)
-      .filter(child => child.nodeType === Node.TEXT_NODE && child.textContent?.trim())
-      .map(child => child.textContent?.trim())
-      .join(' ');
-
-    return {
-      name: node.localName,
-      attributes: attributes,
-      children: children,
-      value: textValue || undefined,
-      isExpanded: true
-    };
+    this.datasetQueryForm.get('subsetIds')?.setValue(this.selectedSubsets);
   }
 
   openDialog() {
-    this.dialog.nativeElement.showModal(); // opens dialog as modal
+    this.dialog.nativeElement.showModal();
   }
 
   closeDialog() {
-    this.dialog.nativeElement.close(); // closes dialog
+    this.dialog.nativeElement.close();
   }
 
   onFollowUpSubmit() {
@@ -220,18 +170,14 @@ export class DatasetQuery implements OnInit, OnDestroy {
     }
 
     const formValues = this.followUpForm.value;
-
-    const message = formValues.message;
     const requestId = this.datasetQueryResponse.requestId;
 
     this.http.post("/api/v1/follow-up", {
       requestId: requestId,
-      message: message
+      message: formValues.message
     }).subscribe(() => {
       this.followUpForm.reset();
       this.showSuccessMessageForFollowUp = true;
-
-      // Clear the success message after 2 seconds
       setTimeout(() => {
         this.showSuccessMessageForFollowUp = false;
       }, 2000);
@@ -242,21 +188,19 @@ export class DatasetQuery implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  viewPdf() {
+  private viewPdf() {
     if (!this.datasetQueryForm.valid) {
       return;
     }
     const formValues = this.datasetQueryForm.getRawValue();
-    console.log("values" + formValues);
     let pdfQuery: string = `/api/v1/dataset/pdf/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}`;
     pdfQuery += "?subsets=" + Array.from(formValues.subsetIds).join(",");
 
     this.isPdfLoading = true;
-    this.pdfUrl = null; // Clear previous PDF before fetching a new one
+    this.pdfUrl = null;
 
     this.http.get(pdfQuery, { responseType: 'blob' }).subscribe({
       next: (pdfBlob: Blob) => {
-        // Create a safe URL from the returned blob
         const objectUrl = URL.createObjectURL(pdfBlob);
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
         this.isPdfLoading = false;
@@ -264,7 +208,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
       error: (error) => {
         console.error('Error fetching PDF:', error);
         this.isPdfLoading = false;
-        // Optionally, you could set a user-facing error message here
       }
     });
   }

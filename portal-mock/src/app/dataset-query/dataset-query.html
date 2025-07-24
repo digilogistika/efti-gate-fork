@@ -268,19 +268,6 @@
                 </div>
                 <!-- Action Buttons Container -->
                 <div class="flex items-center gap-2">
-                  <!-- View PDF Button -->
-                  <button (click)="viewPdf()" [disabled]="isPdfLoading"
-                          class="group relative px-2 py-2 sm:px-8 sm:py-3 bg-white border border-indigo-500 text-indigo-500 font-semibold rounded-xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
-                    <span class="flex items-center gap-2">
-                      @if (isPdfLoading) {
-                        <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        <span>Loading PDF...</span>
-                      } @else {
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span>View PDF</span>
-                      }
-                    </span>
-                  </button>
                   <!-- Follow Up Button -->
                   <button (click)="openDialog()"
                           class="group relative px-2 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
@@ -296,18 +283,16 @@
                 </div>
               </div>
             </div>
-            <div class="w-full min-h-48 p-6 bg-gray-50/80 border border-gray-200/50 rounded-xl backdrop-blur-sm overflow-x-auto mt-6">
-              @if(parsedXmlData) {
-                <app-xml-viewer [nodes]="parsedXmlData"></app-xml-viewer>
-              } @else {
-                <span class="text-gray-500">{{ 'datasetQuery.datasetContentPlaceholder' | translate }}</span>
-              }
-            </div>
 
             <!-- PDF Viewer Section -->
+            @if (isPdfLoading) {
+              <div class="flex justify-center items-center h-96">
+                <svg class="animate-spin w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span class="ml-3 text-gray-600">Loading Document...</span>
+              </div>
+            }
             @if (pdfUrl) {
               <div class="mt-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">PDF Document</h3>
                 <div class="w-full h-[800px] bg-gray-50/80 border border-gray-200/50 rounded-xl backdrop-blur-sm overflow-hidden">
                   <app-pdf-viewer [pdfUrl]="pdfUrl"></app-pdf-viewer>
                 </div>
