@@ -1,14 +1,10 @@
 {
-  "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/github",
-    [
-      "@semantic-release/exec",
-      {
-        "prepareCmd": "set-version ${nextRelease.version}",
-        "publishCmd": "publish-package"
-      }
-    ]
-  ]
+  "name": "efti-gate",
+  "version": "0.0.0-development",
+  "devDependencies": {
+    "semantic-release": "^21.0.0",
+    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/git": "^10.0.0",
+    "@semantic-release/github": "^9.0.0"
+  }
 }
