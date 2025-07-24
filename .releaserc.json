@@ -9,7 +9,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "mvn versions:set -DnewVersion=${nextRelease.version} -DgenerateBackupPoms=false"
+        "prepareCmd": "cd ./implementation && mvn versions:set -DnewVersion=${nextRelease.version} -DgenerateBackupPoms=false"
       }
     ],
     [
