@@ -1,0 +1,896 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<consignment xmlns="http://efti.eu/v1/consignment/common">
+
+    <!-- A logistic service charge applicable to this supply chain consignment, such as freight or insurance charges. -->
+    <applicableServiceCharge>
+        <appliedAmount currencyId="EUR">250.00</appliedAmount>
+        <calculationBasisPrice>
+            <basisQuantity>1</basisQuantity>
+            <categoryTypeCode>S</categoryTypeCode>
+            <unitAmount currencyId="EUR">16.42</unitAmount>
+        </calculationBasisPrice>
+        <id>FRC</id>
+        <payingPartyRoleCode>CN</payingPartyRoleCode>
+        <paymentArrangementCode>PPD</paymentArrangementCode>
+    </applicableServiceCharge>
+
+    <!-- Any document associated with this consignment, such as a certificate of origin, despatch note or dangerous goods note. -->
+    <associatedDocument>
+        <id>PL-789</id>
+        <typeCode>PL</typeCode>
+    </associatedDocument>
+
+    <!-- A trade party associated with this consignment. -->
+    <associatedParty>
+        <name>Customs Broker Inc.</name>
+        <postalAddress>
+            <cityName>Rotterdam</cityName>
+            <countryCode>NL</countryCode>
+            <postcode>3011AB</postcode>
+            <streetName>Havenstraat 5</streetName>
+        </postalAddress>
+    </associatedParty>
+
+    <!-- The monetary value of the Cash On Delivery (COD) amount to be collected by the carrier upon delivery of this supply chain consignment. -->
+    <cODAmount currencyId="EUR">150.00</cODAmount>
+
+    <!-- Cargo insurance instructions for this supply chain consignment. -->
+    <cargoInsuranceInstructions>Insure for a total value of 50000 EUR</cargoInsuranceInstructions>
+
+    <!-- The carrier party for this supply chain consignment. -->
+    <carrier>
+        <name>ColliCare Logistics BV</name>
+        <postalAddress>
+            <cityName>Groningen</cityName>
+            <countryCode>NL</countryCode>
+            <postcode>9744TS</postcode>
+            <streetName>Manchesterweg 101</streetName>
+        </postalAddress>
+    </carrier>
+
+    <!-- The consignment carrier acceptance date/time. -->
+    <carrierAcceptanceDateTime formatId="205">202707081834+0000</carrierAcceptanceDateTime>
+
+    <!-- The location where this consignment will be, or has been, accepted by the carrier. -->
+    <carrierAcceptanceLocation>
+        <name>Amsterdam</name>
+        <postalAddress>
+            <countryCode>NL</countryCode>
+        </postalAddress>
+    </carrierAcceptanceLocation>
+
+    <!-- A connecting carrier party for this supply chain consignment. -->
+    <connectingCarrier>
+        <name>Subcontractor Logistics GmbH</name>
+        <postalAddress>
+            <cityName>Hamburg</cityName>
+            <countryCode>DE</countryCode>
+            <postcode>20095</postcode>
+            <streetName>Industriestrasse 10</streetName>
+        </postalAddress>
+    </connectingCarrier>
+
+    <!-- The consignee party for this supply chain consignment. -->
+    <consignee>
+        <name>ColliCare Logistics AS</name>
+        <postalAddress>
+            <cityName>Kløfta</cityName>
+            <countryCode>NO</countryCode>
+            <postcode>2040</postcode>
+            <streetName>Dyrskuevegen 46</streetName>
+        </postalAddress>
+    </consignee>
+
+    <!-- The location at which this supply chain consignment will be or has been received by the consignee. -->
+    <consigneeReceiptLocation>
+        <name>Oslo Terminal</name>
+        <postalAddress>
+            <cityName>Oslo</cityName>
+            <countryCode>NO</countryCode>
+            <postcode>0155</postcode>
+            <streetName>Terminalveien 1</streetName>
+        </postalAddress>
+    </consigneeReceiptLocation>
+
+    <!-- The consignor party for this supply chain consignment. -->
+    <consignor>
+        <name>123Candy BV</name>
+        <postalAddress>
+            <cityName>Amsterdam</cityName>
+            <countryCode>NL</countryCode>
+            <postcode>1234AB</postcode>
+            <streetName>Suikerlaan 12</streetName>
+        </postalAddress>
+    </consignor>
+
+    <!-- Border clearance instructions provided by the consignor for this supply chain consignment. -->
+    <consignorProvidedBorderClearanceInstructions>
+        <description>Handle with care. All customs documents are attached.</description>
+    </consignorProvidedBorderClearanceInstructions>
+
+    <!-- Information, expressed as text, provided by the consignor for this supply chain consignment. -->
+    <consignorProvidedInformationText>Ref: 012345678</consignorProvidedInformationText>
+
+    <!-- Information related to contract terms and conditions, expressed as text, for this supply chain consignment. -->
+    <contractTermsText>Goods must be stored between 15-20 degrees Celsius.</contractTermsText>
+
+    <!-- Dangerous goods applicable to the transport of this supply chain consignment. -->
+    <dangerousGoods>
+        <applicableRegulatoryExemption>
+            <id schemeAgencyId="pchmry">neigpd</id>
+            <reportableExemptionCalculation>
+                <hazardCategoryCode>jggr</hazardCategoryCode>
+                <reportableQuantity>8537</reportableQuantity>
+            </reportableExemptionCalculation>
+            <typeCode>hrze</typeCode>
+        </applicableRegulatoryExemption>
+        <controlTemperature>
+            <conditionMeasure unitId="nnqe">8.97</conditionMeasure>
+            <conditionMeasure unitId="ezqz">6.69</conditionMeasure>
+            <typeCode>clzf</typeCode>
+        </controlTemperature>
+        <dangerousGoodsLogisticsPackage>
+            <information>mmhq</information>
+            <information>yshx</information>
+            <itemQuantity>9309</itemQuantity>
+            <referencedDocument>
+                <attachedBinaryFile>
+                    <id schemeAgencyId="fnmsfw">yvutyk</id>
+                    <includedBinaryObject>aGxpb2F5</includedBinaryObject>
+                    <includedBinaryObject>aWl4ZXV5</includedBinaryObject>
+                </attachedBinaryFile>
+                <attachedBinaryObject>eG1odWF6</attachedBinaryObject>
+                <contractualClause>
+                    <contentText>gkep</contentText>
+                </contractualClause>
+                <contractualClause>
+                    <contentText>vuia</contentText>
+                </contractualClause>
+                <formattedIssueDateTime formatId="205">203606302037+0000</formattedIssueDateTime>
+                <id schemeAgencyId="cgvzzj">yzlc</id>
+                <issueLocation>
+                    <geographicalCoordinates>
+                        <latitude unitId="fsls">8.79</latitude>
+                        <longitude unitId="pzsk">0.99</longitude>
+                    </geographicalCoordinates>
+                    <id schemeAgencyId="lihxkk">jzxkzi</id>
+                    <name>ecgg</name>
+                    <postalAddress>
+                        <additionalStreetName>wxgy</additionalStreetName>
+                        <buildingNumber>uupo</buildingNumber>
+                        <cityName>rfnd</cityName>
+                        <countryCode>CX</countryCode>
+                        <countrySubDivisionName>vmjm</countrySubDivisionName>
+                        <departmentName>jwkv</departmentName>
+                        <postOfficeBox>rfmv</postOfficeBox>
+                        <postcode>hzkm</postcode>
+                        <postcode>dlxe</postcode>
+                        <streetName>hznp</streetName>
+                    </postalAddress>
+                </issueLocation>
+                <issuer>
+                    <agreedContract>
+                        <durationMeasure unitId="DAY">4.68</durationMeasure>
+                        <durationMeasure unitId="DAY">3.64</durationMeasure>
+                        <issueDateTime formatId="205">203511250651+0000</issueDateTime>
+                        <signedLocation>
+                            <name>hizb</name>
+                            <name>gvop</name>
+                        </signedLocation>
+                    </agreedContract>
+                    <applicableLicence>
+                        <id schemeAgencyId="cigqgq">rvbbmz</id>
+                        <typeCode>xxoj</typeCode>
+                    </applicableLicence>
+                    <authoritativeSignatoryPerson>
+                        <id schemeAgencyId="vcrlya">apgieq</id>
+                        <name>axho</name>
+                    </authoritativeSignatoryPerson>
+                    <confirmedDocumentAuthentication>
+                        <actualDateTime formatId="205">202611020745+0000</actualDateTime>
+                        <statementCode>sqdn</statementCode>
+                    </confirmedDocumentAuthentication>
+                    <definedContactDetails>
+                        <emailAddress>
+                            <completeNumber>mrkp</completeNumber>
+                            <uRI schemeAgencyId="yobhlg">akdn</uRI>
+                        </emailAddress>
+                        <fax>
+                            <completeNumber>tgxr</completeNumber>
+                            <uRI schemeAgencyId="nnzzem">fjtp</uRI>
+                        </fax>
+                        <fax>
+                            <completeNumber>nlwl</completeNumber>
+                            <uRI schemeAgencyId="stfpmt">aito</uRI>
+                        </fax>
+                        <personName>ikat</personName>
+                        <telephone>
+                            <completeNumber>jcwi</completeNumber>
+                            <uRI schemeAgencyId="ceujud">navg</uRI>
+                        </telephone>
+                    </definedContactDetails>
+                    <id schemeAgencyId="pivynn">fdldpt</id>
+                    <name>cmwf</name>
+                    <ownedCreditorFinancialAccount>
+                        <proprietaryID schemeAgencyId="vqevgg">nvpmqa</proprietaryID>
+                    </ownedCreditorFinancialAccount>
+                    <postalAddress>
+                        <additionalStreetName>fyqu</additionalStreetName>
+                        <buildingNumber>decv</buildingNumber>
+                        <cityName>makb</cityName>
+                        <cityName>rzhq</cityName>
+                        <countryCode>LA</countryCode>
+                        <countrySubDivisionName>bgpv</countrySubDivisionName>
+                        <departmentName>qtrv</departmentName>
+                        <postOfficeBox>wucn</postOfficeBox>
+                        <postcode>lzwa</postcode>
+                        <postcode>degf</postcode>
+                        <postcode>pryh</postcode>
+                        <streetName>tdak</streetName>
+                    </postalAddress>
+                    <representativePerson>
+                        <name>qdjq</name>
+                    </representativePerson>
+                    <roleCode>idis</roleCode>
+                    <specifiedContactPerson>
+                        <familyName>qahd</familyName>
+                        <givenName>paax</givenName>
+                    </specifiedContactPerson>
+                    <specifiedContactPerson>
+                        <familyName>yjfw</familyName>
+                        <givenName>hioh</givenName>
+                    </specifiedContactPerson>
+                    <taxRegistration>
+                        <id schemeAgencyId="dwstrl">awjx</id>
+                    </taxRegistration>
+                </issuer>
+                <referenceTypeCode>elzq</referenceTypeCode>
+                <subtypeCode>dlfk</subtypeCode>
+                <subtypeCode>nsgw</subtypeCode>
+                <typeCode>jozq</typeCode>
+                <uRI schemeAgencyId="ikwlaj">gzye</uRI>
+            </referencedDocument>
+            <referencedDocument>
+                <attachedBinaryFile>
+                    <id schemeAgencyId="khuwvj">spfrmj</id>
+                    <includedBinaryObject>dm16YWVn</includedBinaryObject>
+                </attachedBinaryFile>
+                <attachedBinaryObject>eHNramV3</attachedBinaryObject>
+                <contractualClause>
+                    <contentText>korj</contentText>
+                </contractualClause>
+                <formattedIssueDateTime formatId="205">203608152337+0000</formattedIssueDateTime>
+                <id schemeAgencyId="gbeznn">osuh</id>
+                <issueLocation>
+                    <geographicalCoordinates>
+                        <latitude unitId="ugzi">9.52</latitude>
+                        <longitude unitId="ausx">7.49</longitude>
+                    </geographicalCoordinates>
+                    <id schemeAgencyId="ipofep">eauepg</id>
+                    <name>pyeh</name>
+                    <name>wwlo</name>
+                    <postalAddress>
+                        <additionalStreetName>vdjm</additionalStreetName>
+                        <buildingNumber>kfvv</buildingNumber>
+                        <cityName>coyz</cityName>
+                        <countryCode>TV</countryCode>
+                        <countrySubDivisionName>iyxg</countrySubDivisionName>
+                        <departmentName>kqud</departmentName>
+                        <postOfficeBox>nywz</postOfficeBox>
+                        <postcode>ltme</postcode>
+                        <streetName>hnan</streetName>
+                        <streetName>tfer</streetName>
+                    </postalAddress>
+                </issueLocation>
+                <issuer>
+                    <agreedContract>
+                        <durationMeasure unitId="DAY">2.42</durationMeasure>
+                        <issueDateTime formatId="205">203111171110+0000</issueDateTime>
+                        <signedLocation>
+                            <name>fvrr</name>
+                        </signedLocation>
+                    </agreedContract>
+                    <agreedContract>
+                        <durationMeasure unitId="DAY">7.05</durationMeasure>
+                        <issueDateTime formatId="205">203609011639+0000</issueDateTime>
+                        <signedLocation>
+                            <name>ckid</name>
+                        </signedLocation>
+                    </agreedContract>
+                    <agreedContract>
+                        <durationMeasure unitId="DAY">5.47</durationMeasure>
+                        <durationMeasure unitId="DAY">0.01</durationMeasure>
+                        <issueDateTime formatId="205">202207080500+0000</issueDateTime>
+                        <signedLocation>
+                            <name>morq</name>
+                            <name>bpvq</name>
+                            <name>jcsk</name>
+                        </signedLocation>
+                    </agreedContract>
+                    <applicableLicence>
+                        <id schemeAgencyId="zazdxh">dzbxdc</id>
+                        <typeCode>gkum</typeCode>
+                    </applicableLicence>
+                    <authoritativeSignatoryPerson>
+                        <id schemeAgencyId="fnxkem">gkiffj</id>
+                        <name>jnlk</name>
+                    </authoritativeSignatoryPerson>
+                    <authoritativeSignatoryPerson>
+                        <id schemeAgencyId="zoyidy">kksbbu</id>
+                        <name>zbxs</name>
+                    </authoritativeSignatoryPerson>
+                    <confirmedDocumentAuthentication>
+                        <actualDateTime formatId="205">203006090355+0000</actualDateTime>
+                        <statementCode>lnuu</statementCode>
+                    </confirmedDocumentAuthentication>
+                    <definedContactDetails>
+                        <emailAddress>
+                            <completeNumber>wafu</completeNumber>
+                            <uRI schemeAgencyId="kgxacb">qnvz</uRI>
+                        </emailAddress>
+                        <fax>
+                            <completeNumber>vgto</completeNumber>
+                            <uRI schemeAgencyId="ytupwj">unxx</uRI>
+                        </fax>
+                        <fax>
+                            <completeNumber>donz</completeNumber>
+                            <uRI schemeAgencyId="jchvlh">gngz</uRI>
+                        </fax>
+                        <personName>nsej</personName>
+                        <personName>sner</personName>
+                        <telephone>
+                            <completeNumber>mbag</completeNumber>
+                            <uRI schemeAgencyId="tvnvth">oaxq</uRI>
+                        </telephone>
+                    </definedContactDetails>
+                    <definedContactDetails>
+                        <emailAddress>
+                            <completeNumber>fimo</completeNumber>
+                            <uRI schemeAgencyId="syggav">hqqa</uRI>
+                        </emailAddress>
+                        <fax>
+                            <completeNumber>ozku</completeNumber>
+                            <uRI schemeAgencyId="uhtxew">pyth</uRI>
+                        </fax>
+                        <fax>
+                            <completeNumber>talf</completeNumber>
+                            <uRI schemeAgencyId="jbwipv">dodx</uRI>
+                        </fax>
+                        <personName>nqfu</personName>
+                        <telephone>
+                            <completeNumber>mukq</completeNumber>
+                            <uRI schemeAgencyId="zjflkh">cfuy</uRI>
+                        </telephone>
+                        <telephone>
+                            <completeNumber>hvwj</completeNumber>
+                            <uRI schemeAgencyId="ehhxvr">zdva</uRI>
+                        </telephone>
+                    </definedContactDetails>
+                    <definedContactDetails>
+                        <emailAddress>
+                            <completeNumber>eohy</completeNumber>
+                            <uRI schemeAgencyId="mnlsww">edar</uRI>
+                        </emailAddress>
+                        <fax>
+                            <completeNumber>cncw</completeNumber>
+                            <uRI schemeAgencyId="crvupf">hmkj</uRI>
+                        </fax>
+                        <fax>
+                            <completeNumber>dgqf</completeNumber>
+                            <uRI schemeAgencyId="olhblk">rpsd</uRI>
+                        </fax>
+                        <personName>sgln</personName>
+                        <telephone>
+                            <completeNumber>jzst</completeNumber>
+                            <uRI schemeAgencyId="nsrcfp">euao</uRI>
+                        </telephone>
+                    </definedContactDetails>
+                    <id schemeAgencyId="vagyqh">vrsrzj</id>
+                    <name>hyse</name>
+                    <name>rcoi</name>
+                    <ownedCreditorFinancialAccount>
+                        <proprietaryID schemeAgencyId="xlahoo">rlrfro</proprietaryID>
+                    </ownedCreditorFinancialAccount>
+                    <postalAddress>
+                        <additionalStreetName>nyjn</additionalStreetName>
+                        <buildingNumber>ihjb</buildingNumber>
+                        <cityName>kqis</cityName>
+                        <cityName>yftu</cityName>
+                        <cityName>vyet</cityName>
+                        <countryCode>PL</countryCode>
+                        <countrySubDivisionName>mbrs</countrySubDivisionName>
+                        <countrySubDivisionName>oyfk</countrySubDivisionName>
+                        <departmentName>kpwo</departmentName>
+                        <postOfficeBox>ruhz</postOfficeBox>
+                        <postcode>xtve</postcode>
+                        <streetName>thbu</streetName>
+                    </postalAddress>
+                    <representativePerson>
+                        <name>tiqu</name>
+                    </representativePerson>
+                    <roleCode>happ</roleCode>
+                    <specifiedContactPerson>
+                        <familyName>ldvg</familyName>
+                        <givenName>yfps</givenName>
+                    </specifiedContactPerson>
+                    <specifiedContactPerson>
+                        <familyName>xhpx</familyName>
+                        <givenName>nykz</givenName>
+                    </specifiedContactPerson>
+                    <specifiedContactPerson>
+                        <familyName>suvx</familyName>
+                        <familyName>yiph</familyName>
+                        <givenName>juec</givenName>
+                    </specifiedContactPerson>
+                    <taxRegistration>
+                        <id schemeAgencyId="qejcjb">vodp</id>
+                    </taxRegistration>
+                    <taxRegistration>
+                        <id schemeAgencyId="noxchu">nyls</id>
+                    </taxRegistration>
+                </issuer>
+                <referenceTypeCode>qhgo</referenceTypeCode>
+                <subtypeCode>akyy</subtypeCode>
+                <typeCode>qxfp</typeCode>
+                <uRI schemeAgencyId="uirnix">ebkp</uRI>
+            </referencedDocument>
+            <shippingMarks>
+                <markingText>bapd</markingText>
+            </shippingMarks>
+            <statedCondition>
+                <actionCode>jyap</actionCode>
+                <actionDateTime formatId="205">203602060834+0000</actionDateTime>
+                <actionDateTime formatId="205">203610010938+0000</actionDateTime>
+                <calibratedMeasurement>
+                    <valueMeasure unitId="lzhl">5.75</valueMeasure>
+                </calibratedMeasurement>
+                <statementCode>fcwx</statementCode>
+                <statementCode>dlit</statementCode>
+                <statementText>lhcb</statementText>
+                <subjectTypeCode>tsip</subjectTypeCode>
+                <valueMeasure unitId="lsct">5.73</valueMeasure>
+            </statedCondition>
+            <statedCondition>
+                <actionCode>qobr</actionCode>
+                <actionCode>uiuc</actionCode>
+                <actionDateTime formatId="205">202806050405+0000</actionDateTime>
+                <calibratedMeasurement>
+                    <valueMeasure unitId="gpov">0.75</valueMeasure>
+                </calibratedMeasurement>
+                <statementCode>qpgi</statementCode>
+                <statementCode>pcvw</statementCode>
+                <statementText>mlln</statementText>
+                <subjectTypeCode>daov</subjectTypeCode>
+                <subjectTypeCode>dmtj</subjectTypeCode>
+                <valueMeasure unitId="smlf">1.07</valueMeasure>
+                <valueMeasure unitId="lacs">8.47</valueMeasure>
+                <valueMeasure unitId="srkl">9.35</valueMeasure>
+            </statedCondition>
+            <typeCode>wgau</typeCode>
+            <typeCode>ntyp</typeCode>
+            <typeText>mtqo</typeText>
+        </dangerousGoodsLogisticsPackage>
+        <densityMeasure unitId="xzrv">8.62</densityMeasure>
+        <emergencyTemperature>
+            <conditionMeasure unitId="rqrr">9.12</conditionMeasure>
+            <conditionMeasure unitId="lubx">3.67</conditionMeasure>
+            <typeCode>shbc</typeCode>
+            <typeCode>cuyv</typeCode>
+        </emergencyTemperature>
+        <explosiveCargoNetWeight unitId="KGM">3.93</explosiveCargoNetWeight>
+        <grossVolume unitId="MTQ">0.97</grossVolume>
+        <grossWeight unitId="TNE">5.22</grossWeight>
+        <hazardCategoryCode>eoqb</hazardCategoryCode>
+        <hazardClassificationID schemeAgencyId="qtkltv">zefz</hazardClassificationID>
+        <hazardTypeCode>gury</hazardTypeCode>
+        <hazardTypeCode>aggr</hazardTypeCode>
+        <includedFuel>
+            <typeCode>yiyj</typeCode>
+            <volumeMeasure unitId="LTR">0.71</volumeMeasure>
+            <volumeMeasure unitId="MTQ">8.11</volumeMeasure>
+            <weightMeasure unitId="TNE">2.83</weightMeasure>
+            <workingPressureMeasure unitId="etih">0.41</workingPressureMeasure>
+        </includedFuel>
+        <information>bans</information>
+        <labelTypeCode>ruyv</labelTypeCode>
+        <labelTypeCode>fkte</labelTypeCode>
+        <labelTypeCode>pooi</labelTypeCode>
+        <limitedQuantityCode>ojat</limitedQuantityCode>
+        <meltingPointTemperatureMeasure unitId="xftv">0.13</meltingPointTemperatureMeasure>
+        <meltingPointTemperatureMeasure unitId="usrl">7.19</meltingPointTemperatureMeasure>
+        <netWeight unitId="GRM">9.03</netWeight>
+        <packagingDangerLevelCode>uyiz</packagingDangerLevelCode>
+        <previousCargoInformation>bidp</previousCargoInformation>
+        <previousCargoInformation>zuhd</previousCargoInformation>
+        <previousCargoInformation>weyu</previousCargoInformation>
+        <properShippingName>zlqv</properShippingName>
+        <radioactiveMaterial>
+            <applicableRadioactiveIsotope>
+                <activityLevelMeasure unitId="nndh">3.51</activityLevelMeasure>
+                <name>gjxc</name>
+                <name>igmu</name>
+                <name>hpik</name>
+            </applicableRadioactiveIsotope>
+            <applicableRadioactiveIsotope>
+                <activityLevelMeasure unitId="oeau">2.67</activityLevelMeasure>
+                <name>avsh</name>
+                <name>bxyx</name>
+            </applicableRadioactiveIsotope>
+            <applicableRadioactiveIsotope>
+                <activityLevelMeasure unitId="zbbj">8.71</activityLevelMeasure>
+                <activityLevelMeasure unitId="wzdj">9.59</activityLevelMeasure>
+                <name>qaqm</name>
+                <name>bijy</name>
+            </applicableRadioactiveIsotope>
+            <fissileCriticalitySafetyIndexNumber>2.15</fissileCriticalitySafetyIndexNumber>
+            <radioactivePackageTransportIndexCode>ukrx</radioactivePackageTransportIndexCode>
+            <radioactivePackageTransportIndexCode>ftyi</radioactivePackageTransportIndexCode>
+            <radioactivePackageTransportIndexCode>njui</radioactivePackageTransportIndexCode>
+            <specialFormInformation>tvxe</specialFormInformation>
+        </radioactiveMaterial>
+        <regulatoryAuthorityName>vbul</regulatoryAuthorityName>
+        <relatedDocument>
+            <attachedBinaryFile>
+                <id schemeAgencyId="zhtthu">mqszzz</id>
+                <includedBinaryObject>b2JuZHd0</includedBinaryObject>
+            </attachedBinaryFile>
+            <attachedBinaryObject>ZnFubnJi</attachedBinaryObject>
+            <attachedBinaryObject>eWRsa2lr</attachedBinaryObject>
+            <attachedBinaryObject>Ym13YW13</attachedBinaryObject>
+            <contractualClause>
+                <contentText>ytqa</contentText>
+                <contentText>teyu</contentText>
+            </contractualClause>
+            <formattedIssueDateTime formatId="205">203007122251+0000</formattedIssueDateTime>
+            <id schemeAgencyId="avrzre">mefc</id>
+            <issueLocation>
+                <geographicalCoordinates>
+                    <latitude unitId="wuxp">3.89</latitude>
+                    <longitude unitId="ugho">9.71</longitude>
+                </geographicalCoordinates>
+                <id schemeAgencyId="jjqolr">ztmtnw</id>
+                <name>awdl</name>
+                <name>meev</name>
+                <postalAddress>
+                    <additionalStreetName>incn</additionalStreetName>
+                    <buildingNumber>uarc</buildingNumber>
+                    <cityName>wbbi</cityName>
+                    <cityName>ktyq</cityName>
+                    <countryCode>SX</countryCode>
+                    <countrySubDivisionName>xgjh</countrySubDivisionName>
+                    <departmentName>zsih</departmentName>
+                    <postOfficeBox>gxwu</postOfficeBox>
+                    <postcode>gsmh</postcode>
+                    <streetName>gwcr</streetName>
+                    <streetName>itji</streetName>
+                </postalAddress>
+            </issueLocation>
+            <issuer>
+                <agreedContract>
+                    <durationMeasure unitId="DAY">9.19</durationMeasure>
+                    <issueDateTime formatId="205">202405230243+0000</issueDateTime>
+                    <signedLocation>
+                        <name>kdfp</name>
+                    </signedLocation>
+                    <signedLocation>
+                        <name>gnms</name>
+                        <name>ldgr</name>
+                    </signedLocation>
+                </agreedContract>
+                <applicableLicence>
+                    <id schemeAgencyId="copdho">ytctid</id>
+                    <typeCode>kizh</typeCode>
+                </applicableLicence>
+                <applicableLicence>
+                    <id schemeAgencyId="zzvcdt">fiomdu</id>
+                    <typeCode>vbdg</typeCode>
+                    <typeCode>tpit</typeCode>
+                </applicableLicence>
+                <authoritativeSignatoryPerson>
+                    <id schemeAgencyId="nnngry">bdwbgs</id>
+                    <name>xzvj</name>
+                </authoritativeSignatoryPerson>
+                <authoritativeSignatoryPerson>
+                    <id schemeAgencyId="hxaipr">bnnsyp</id>
+                    <name>dlzp</name>
+                </authoritativeSignatoryPerson>
+                <confirmedDocumentAuthentication>
+                    <actualDateTime formatId="205">202905250046+0000</actualDateTime>
+                    <statementCode>uumj</statementCode>
+                </confirmedDocumentAuthentication>
+                <confirmedDocumentAuthentication>
+                    <actualDateTime formatId="205">202908072233+0000</actualDateTime>
+                    <statementCode>zhph</statementCode>
+                </confirmedDocumentAuthentication>
+                <definedContactDetails>
+                    <emailAddress>
+                        <completeNumber>pwpz</completeNumber>
+                        <uRI schemeAgencyId="frbxqb">zmeh</uRI>
+                    </emailAddress>
+                    <fax>
+                        <completeNumber>sxok</completeNumber>
+                        <uRI schemeAgencyId="jfxpig">jkgv</uRI>
+                    </fax>
+                    <personName>hgnl</personName>
+                    <telephone>
+                        <completeNumber>vsmc</completeNumber>
+                        <uRI schemeAgencyId="aslbyf">avbj</uRI>
+                    </telephone>
+                    <telephone>
+                        <completeNumber>bmbi</completeNumber>
+                        <uRI schemeAgencyId="lqqavh">cfsh</uRI>
+                    </telephone>
+                </definedContactDetails>
+                <id schemeAgencyId="zubbeh">bvuayb</id>
+                <name>zgna</name>
+                <ownedCreditorFinancialAccount>
+                    <proprietaryID schemeAgencyId="alquet">pctgzl</proprietaryID>
+                </ownedCreditorFinancialAccount>
+                <postalAddress>
+                    <additionalStreetName>msvq</additionalStreetName>
+                    <buildingNumber>wasb</buildingNumber>
+                    <cityName>coae</cityName>
+                    <countryCode>SG</countryCode>
+                    <countrySubDivisionName>ndci</countrySubDivisionName>
+                    <countrySubDivisionName>goaf</countrySubDivisionName>
+                    <departmentName>ehsf</departmentName>
+                    <postOfficeBox>cotk</postOfficeBox>
+                    <postcode>bank</postcode>
+                    <streetName>oadp</streetName>
+                </postalAddress>
+                <representativePerson>
+                    <name>ftfr</name>
+                </representativePerson>
+                <roleCode>pypy</roleCode>
+                <roleCode>uvri</roleCode>
+                <specifiedContactPerson>
+                    <familyName>ctmq</familyName>
+                    <familyName>foez</familyName>
+                    <givenName>vvkq</givenName>
+                </specifiedContactPerson>
+                <specifiedContactPerson>
+                    <familyName>rpdl</familyName>
+                    <givenName>wxzv</givenName>
+                </specifiedContactPerson>
+                <taxRegistration>
+                    <id schemeAgencyId="gpjlgg">gaud</id>
+                </taxRegistration>
+                <taxRegistration>
+                    <id schemeAgencyId="vyfesi">bhui</id>
+                </taxRegistration>
+            </issuer>
+            <referenceTypeCode>xuxk</referenceTypeCode>
+            <subtypeCode>kqij</subtypeCode>
+            <typeCode>vbhk</typeCode>
+            <uRI schemeAgencyId="kfpqun">otyd</uRI>
+        </relatedDocument>
+        <reportableQuantity>4214</reportableQuantity>
+        <specialProvisionID schemeAgencyId="mwxpsx">zoahcz</specialProvisionID>
+        <statedCondition>
+            <actionCode>unnd</actionCode>
+            <actionDateTime formatId="205">203308090932+0000</actionDateTime>
+            <calibratedMeasurement>
+                <valueMeasure unitId="ztsz">1.30</valueMeasure>
+            </calibratedMeasurement>
+            <statementCode>mrfl</statementCode>
+            <statementText>drhd</statementText>
+            <subjectTypeCode>ryku</subjectTypeCode>
+            <subjectTypeCode>zlzr</subjectTypeCode>
+            <subjectTypeCode>qyym</subjectTypeCode>
+            <valueMeasure unitId="dsga">0.39</valueMeasure>
+            <valueMeasure unitId="hxys">1.04</valueMeasure>
+        </statedCondition>
+        <statedCondition>
+            <actionCode>yjbs</actionCode>
+            <actionCode>jrud</actionCode>
+            <actionDateTime formatId="205">203503301944+0000</actionDateTime>
+            <actionDateTime formatId="205">202312210623+0000</actionDateTime>
+            <calibratedMeasurement>
+                <valueMeasure unitId="bzbg">3.28</valueMeasure>
+            </calibratedMeasurement>
+            <calibratedMeasurement>
+                <valueMeasure unitId="jxdf">7.45</valueMeasure>
+            </calibratedMeasurement>
+            <statementCode>ppck</statementCode>
+            <statementCode>jmmn</statementCode>
+            <statementText>vvpq</statementText>
+            <statementText>ovyp</statementText>
+            <subjectTypeCode>blho</subjectTypeCode>
+            <subjectTypeCode>xxcd</subjectTypeCode>
+            <valueMeasure unitId="dphl">4.17</valueMeasure>
+            <valueMeasure unitId="ljku">4.13</valueMeasure>
+        </statedCondition>
+        <statedCondition>
+            <actionCode>pwsi</actionCode>
+            <actionDateTime formatId="205">203804050255+0000</actionDateTime>
+            <calibratedMeasurement>
+                <valueMeasure unitId="kzgb">5.10</valueMeasure>
+            </calibratedMeasurement>
+            <calibratedMeasurement>
+                <valueMeasure unitId="tial">5.14</valueMeasure>
+            </calibratedMeasurement>
+            <calibratedMeasurement>
+                <valueMeasure unitId="dewo">8.49</valueMeasure>
+            </calibratedMeasurement>
+            <statementCode>ntba</statementCode>
+            <statementCode>fxnu</statementCode>
+            <statementText>hmva</statementText>
+            <statementText>rore</statementText>
+            <statementText>zbea</statementText>
+            <subjectTypeCode>ucxs</subjectTypeCode>
+            <valueMeasure unitId="uanl">8.50</valueMeasure>
+        </statedCondition>
+        <supplementaryInformation>unor</supplementaryInformation>
+        <technicalName>yltr</technicalName>
+        <tunnelRestrictionCode>zqfm</tunnelRestrictionCode>
+        <uNDGID>hydd</uNDGID>
+    </dangerousGoods>
+
+    <!-- The monetary value of this supply chain consignment as declared by the shipper or his agent for the purpose of varying the carrier's level of liability from that provided in the contract of carriage, in case of loss or damage to goods or delayed delivery. -->
+    <declaredValueForCarriageAmount currencyId="EUR">45000.00</declaredValueForCarriageAmount>
+
+    <!-- The delivery event for this supply chain consignment. -->
+    <deliveryEvent>
+        <actualOccurrenceDateTime formatId="102">20220826</actualOccurrenceDateTime>
+        <occurrenceLocation>
+            <name>Kløfta</name>
+            <postalAddress>
+                <countryCode>NO</countryCode>
+            </postalAddress>
+        </occurrenceLocation>
+    </deliveryEvent>
+
+    <!-- The delivery information, expressed as text, for this supply chain consignment. -->
+    <deliveryInformation>Taillift needed for delivery.</deliveryInformation>
+
+    <!-- The freight forwarder party for this supply chain consignment. -->
+    <freightForwarder>
+        <name>Global Freight Solutions</name>
+        <postalAddress>
+            <cityName>Antwerp</cityName>
+            <countryCode>BE</countryCode>
+            <postcode>2000</postcode>
+            <streetName>Dokweg 1</streetName>
+        </postalAddress>
+    </freightForwarder>
+
+    <!-- A measure of the gross volume, normally calculated by multiplying the maximum length, width and height of this supply chain consignment. -->
+    <grossVolume unitId="MTQ">15.216</grossVolume>
+
+    <!-- A measure of the gross weight (mass) of this supply chain consignment which includes the weight of packaging but which excludes the weight of any transport equipment. -->
+    <grossWeight unitId="KGM">1049.60</grossWeight>
+
+    <!-- A consignment item included in this supply chain consignment. -->
+    <includedConsignmentItem>
+        <dimensions>
+            <description>Dimensions 120 x 80 x 190</description>
+        </dimensions>
+    </includedConsignmentItem>
+
+    <!-- Information, expressed as text, for this supply chain consignment. -->
+    <information>One carton slightly damaged upon receipt, contents appear intact.</information>
+
+    <!-- A result of a logistics risk analysis calculation specified for this supply chain consignment. -->
+    <logisticsRiskAnalysisResult>
+        <consignmentRiskRelatedCode>lol</consignmentRiskRelatedCode>
+        <description>Low risk of damage based on physical inspection.</description>
+        <levelCode>LO</levelCode>
+        <screeningMethodCode>PHS</screeningMethodCode>
+    </logisticsRiskAnalysisResult>
+
+    <!-- A main carriage logistics transport movement for this supply chain consignment. -->
+    <mainCarriageTransportMovement>
+        <dangerousGoodsIndicator>true</dangerousGoodsIndicator>
+        <modeCode>4</modeCode>
+        <usedTransportMeans>
+            <id schemeAgencyId="UN">AAS501</id>
+            <registrationCountry>
+                <code>EE</code>
+            </registrationCountry>
+        </usedTransportMeans>
+    </mainCarriageTransportMovement>
+
+    <!-- Transport cargo details of this supply chain consignment sufficient to identify its nature for customs, statistical or transport purposes. -->
+    <natureIdentificationCargo>
+        <identificationText>Packaged Confectionery / Foodstuffs</identificationText>
+    </natureIdentificationCargo>
+
+    <!-- A measure of the net weight (mass) of this consignment which excludes the weight of packaging of this supply chain consignment and that of any transport equipment. -->
+    <netWeight unitId="KGM">1000.00</netWeight>
+
+    <!-- Transportation waste material notified for this supply chain consignment. -->
+    <notifiedWasteMaterial>
+        <id>WASTE-001</id>
+    </notifiedWasteMaterial>
+
+    <!-- The number of packages within this supply chain consignment. -->
+    <numberOfPackages>10</numberOfPackages>
+
+    <!-- An on-carriage logistics transport movement for this supply chain consignment. -->
+    <onCarriageTransportMovement>
+        <modeCode>3</modeCode>
+    </onCarriageTransportMovement>
+
+    <!-- The code specifying the payment arrangements for this supply chain consignment. -->
+    <paymentArrangementCode>PPD</paymentArrangementCode>
+
+    <!-- A pre-carriage logistics transport movement for this supply chain consignment. -->
+    <preCarriageTransportMovement>
+        <modeCode>3</modeCode>
+    </preCarriageTransportMovement>
+
+    <!-- A cross-border regulatory procedure applicable to this supply chain consignment. -->
+    <regulatoryProcedure>
+        <exportCustomsOfficeLocation>
+            <id>NLRTMA</id>
+        </exportCustomsOfficeLocation>
+        <importCustomsOfficeLocation>
+            <id>NOOSL</id>
+        </importCustomsOfficeLocation>
+    </regulatoryProcedure>
+
+    <!-- A logistics transport movement specified for this supply chain consignment. -->
+    <specifiedTransportMovement>
+        <modeCode>1</modeCode>
+    </specifiedTransportMovement>
+
+    <!-- The referenced transport contract document for this supply chain consignment, such as an airwaybill or a seawaybill. -->
+    <transportContractDocument>
+        <id>AWB-123-45678901</id>
+    </transportContractDocument>
+
+    <!-- A number of pieces of transport equipment, such as containers or similar unit load devices, in this supply chain consignment. -->
+    <transportEquipmentQuantity>2</transportEquipmentQuantity>
+
+    <!-- An event occurring during the transport of this supply chain consignment. -->
+    <transportEvent>
+        <estimatedOccurrenceDateTime formatId="102">20220825</estimatedOccurrenceDateTime>
+        <occurrenceLocation>
+            <name>Hamburg Port</name>
+        </occurrenceLocation>
+    </transportEvent>
+
+    <!-- Transport packages for this supply chain consignment. -->
+    <transportPackage>
+        <itemQuantity>102</itemQuantity>
+        <typeCode>CT</typeCode>
+        <typeText>Cartons on Pallets</typeText>
+    </transportPackage>
+
+    <!-- A transport service for this supply chain consignment. -->
+    <transportService>
+        <description>Loading Meter: 3.20 LDM</description>
+    </transportService>
+
+    <!-- A transshipment location for this supply chain consignment. -->
+    <transshipmentLocation>
+        <name>Hamburg Port</name>
+        <postalAddress>
+            <cityName>Hamburg</cityName>
+            <countryCode>DE</countryCode>
+            <postcode>21129</postcode>
+            <streetName>Am Hafen</streetName>
+        </postalAddress>
+    </transshipmentLocation>
+
+    <!-- The indication of whether or not transshipment is permitted for this supply chain consignment. -->
+    <transshipmentPermittedIndicator>true</transshipmentPermittedIndicator>
+
+    <!-- Logistics transport equipment utilized for this supply chain consignment. -->
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">MMG947</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>0</sequenceNumber>
+    </usedTransportEquipment>
+
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">EOP443</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>1</sequenceNumber>
+    </usedTransportEquipment>
+
+</consignment>
