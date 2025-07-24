@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/digilogistika/efti-gate/compare/v1.0.0...v1.0.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* semantic versioning finalize ([88e0558](https://github.com/digilogistika/efti-gate/commit/88e05584b31b4affd2a6513ea6e64a74fc375a20))
+
 # 1.0.0 (2025-07-24)
 
 
