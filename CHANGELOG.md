@@ -1,3 +1,11 @@
+## [0.7.3](https://github.com/digilogistika/efti-gate/compare/v0.7.2...v0.7.3) (2025-07-25)
+
+
+### Bug Fixes
+
+* deployment after release version pump ([01803d7](https://github.com/digilogistika/efti-gate/commit/01803d797a73bd090fb1feb3ace83a4ed23b1ec2))
+* mvn quickfix ([21c83eb](https://github.com/digilogistika/efti-gate/commit/21c83eb358cefe1589a402d0a535d68c14ea1dd5))
+
 ## [0.7.2](https://github.com/digilogistika/efti-gate/compare/v0.7.1...v0.7.2) (2025-07-25)
 
 

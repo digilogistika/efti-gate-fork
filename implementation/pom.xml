@@ -12,7 +12,7 @@
     <groupId>eu.efti</groupId>
     <artifactId>gate-parent</artifactId>
     <packaging>pom</packaging>
-    <version>${revision}</version>
+    <version>0.7.3</version>
     <name>gate-parent</name>
     <description>gate</description>
 
