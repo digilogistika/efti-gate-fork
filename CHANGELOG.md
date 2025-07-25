@@ -1,3 +1,10 @@
+## [0.7.5](https://github.com/digilogistika/efti-gate/compare/v0.7.4...v0.7.5) (2025-07-25)
+
+
+### Bug Fixes
+
+* version info showing in frontend ([#193](https://github.com/digilogistika/efti-gate/issues/193)) ([60775e8](https://github.com/digilogistika/efti-gate/commit/60775e8f336552e8df1cdb9b9cb85ad192d1ff37))
+
 ## [0.7.4](https://github.com/digilogistika/efti-gate/compare/v0.7.3...v0.7.4) (2025-07-25)
 
 
