@@ -59,8 +59,6 @@ public class DatasetController implements DatasetControllerApi {
             );
 
             log.info("Received response from gate with status: {}", response.getStatusCode());
-            byte[] base64Bytes = Objects.requireNonNull(response.getBody()).getData();
-            log.info("response body bytes: {}", base64Bytes);
             return ResponseEntity
                     .status(response.getStatusCode())
                     .body(response.getBody());
@@ -88,7 +86,6 @@ public class DatasetController implements DatasetControllerApi {
                     datasetDto != null ? datasetDto.getStatus() : "null");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        log.info("HERE datasetDTO" + Arrays.toString(datasetDto.getData()));
         try {
             final byte[] pdfBytes = pdfGenerationService.generatePdf(
                     datasetDto.getRequestId(),

@@ -1,3 +1,4 @@
+// file: /home/kaspar/IdeaProjects/efti-gate/portal-mock/src/app/dataset-query/dataset-query.html
 <!-- file: portal-mock/src/app/dataset-query/dataset-query.html -->
 <div class="min-h-screen bg-gradient-to-br from-indigo-50/90 via-white/80 to-cyan-50/90 sm:p-6 lg:p-8">
   <div class="max-w-4xl mx-auto">
@@ -32,7 +33,7 @@
 
     @if (isEnglishLanguage) {
       <!-- English version -->
-      <details #subsetDetails open class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden">
+      <details #subsetDetails open class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden group">
         <summary
           class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
           <div class="flex-1">
@@ -49,6 +50,7 @@
                 class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-indigo-500 peer-checked:to-purple-600"></div>
             </label>
           </div>
+          <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </summary>
 
         @if (isUilEditMode) {
@@ -72,7 +74,24 @@
           </div>
         }
 
-        <div class="p-6">
+        <div class="px-5 pb-2 pt-5 border-t border-white/20">
+          <div class="flex flex-col items-center gap-2">
+            <button (click)="onSubmit()" [disabled]="isLoading || datasetQueryForm.invalid" class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105">
+                <span class="flex items-center gap-2">
+                  @if (isLoading) { <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>{{ 'datasetQuery.searching' | translate }}</span> }
+                  @else { <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>{{ 'datasetQuery.queryDataset' | translate }}</span> }
+                </span>
+            </button>
+            @if (datasetQueryForm.controls['subsetIds'].value.size <= 0) {
+              <small class="text-red-600">{{ 'datasetQuery.selectAtLeastOneSubset' | translate }}</small>
+            }
+            @if (datasetQueryErrorMessage) {
+              <small class="text-red-600">{{datasetQueryErrorMessage}}</small>
+            }
+          </div>
+        </div>
+
+        <div class="p-4">
           <ul class="space-y-4">
             @for (memberState of availableSubsets; track memberState.isoCode) {
               <li class="border border-gray-200/50 rounded-xl overflow-hidden bg-white/40 backdrop-blur-sm">
@@ -101,29 +120,13 @@
             }
           </ul>
         </div>
-
-        <div class="p-6 border-t border-white/20">
-          <div class="flex flex-col items-center gap-2">
-            <button (click)="onSubmit()" [disabled]="isLoading || datasetQueryForm.invalid" class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105">
-              <span class="flex items-center gap-2">
-                @if (isLoading) { <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>{{ 'datasetQuery.searching' | translate }}</span> }
-                @else { <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>{{ 'datasetQuery.queryDataset' | translate }}</span> }
-              </span>
-            </button>
-            @if (datasetQueryForm.controls['subsetIds'].value.size <= 0) {
-              <small class="text-red-600">{{ 'datasetQuery.selectAtLeastOneSubset' | translate }}</small>
-            }
-            @if (datasetQueryErrorMessage) {
-              <small class="text-red-600">{{datasetQueryErrorMessage}}</small>
-            }
-          </div>
-        </div>
       </details>
     } @else {
       <!-- Non-English version -->
-      <div class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden">
-        <div class="flex items-center justify-between p-4 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4">
-          <div>
+      <details #subsetDetails open class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden group">
+        <summary
+          class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
+          <div class="flex-1">
             <h2 class="text-lg font-semibold text-gray-800">
               {{ 'datasetQuery.selectSubsets' | translate }}
               <span class="text-sm text-red-600 font-semibold">*</span>
@@ -133,10 +136,12 @@
             <span class="text-sm font-semibold text-gray-700">{{ 'datasetQuery.editUILQuery' | translate }}</span>
             <label class="relative inline-flex items-center cursor-pointer">
               <input (change)="onUILEditToggleChange($event)" class="sr-only peer" type="checkbox">
-              <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-indigo-500 peer-checked:to-purple-600"></div>
+              <div
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-indigo-500 peer-checked:to-purple-600"></div>
             </label>
           </div>
-        </div>
+          <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
 
         @if (isUilEditMode) {
           <div class="border-t border-white/20">
@@ -174,7 +179,7 @@
           }
         </div>
 
-        <div class="p-6 border-t border-white/20">
+        <div class="pb-4 border-t border-white/20">
           <div class="flex flex-col items-center gap-2">
             <button (click)="onSubmit()" [disabled]="isLoading || datasetQueryForm.invalid" class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105">
               <span class="flex items-center gap-2">
@@ -190,7 +195,7 @@
             }
           </div>
         </div>
-      </div>
+      </details>
     }
 
     <!-- Query Results -->
@@ -257,15 +262,6 @@
             <!-- Success State -->
             <div class="space-y-6">
               <div class="flex flex-row justify-between items-center flex-wrap gap-4">
-                <div class="flex items-center gap-3">
-                  <div class="flex-shrink-0">
-                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2"/>
-                    </svg>
-                  </div>
-                  <h2 class="text-lg font-semibold text-gray-800">{{ 'datasetQuery.retrievedDataset' | translate }}</h2>
-                </div>
                 <!-- Action Buttons Container -->
                 <div class="flex items-center gap-2">
                   <!-- Follow Up Button -->
