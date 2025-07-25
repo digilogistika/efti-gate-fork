@@ -1,3 +1,10 @@
+## [0.7.4](https://github.com/digilogistika/efti-gate/compare/v0.7.3...v0.7.4) (2025-07-25)
+
+
+### Bug Fixes
+
+* readme update (test release pipeline) ([e60eb6c](https://github.com/digilogistika/efti-gate/commit/e60eb6ce135fd93a4134642d24a0e72a3a4a53ec))
+
 ## [0.7.3](https://github.com/digilogistika/efti-gate/compare/v0.7.2...v0.7.3) (2025-07-25)
 
 
