@@ -1,3 +1,10 @@
+## [0.7.2](https://github.com/digilogistika/efti-gate/compare/v0.7.1...v0.7.2) (2025-07-25)
+
+
+### Bug Fixes
+
+* semantic release change pom.xml version number ([114b916](https://github.com/digilogistika/efti-gate/commit/114b9162da784c476f85f293a30d3da7d85d4f3b))
+
 ## [0.7.1](https://github.com/digilogistika/efti-gate/compare/v0.7.0...v0.7.1) (2025-07-24)
 
 
