@@ -6,17 +6,16 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
-import {LangChangeEvent, TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
-import {PdfViewer} from '../pdf-viewer/pdf-viewer';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Pdfjs } from '../pdf-viewer/pdfjs';
 
 @Component({
   selector: 'app-dataset-query',
   imports: [
     ReactiveFormsModule,
     TranslatePipe,
-    PdfViewer,
+    Pdfjs,
   ],
   templateUrl: './dataset-query.html',
 })
@@ -34,7 +33,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
   protected isEnglishLanguage: boolean = true;
   private langChangeSubscription!: Subscription;
   protected isUilEditMode: boolean = false;
-  protected pdfUrl: SafeResourceUrl | null = null;
+  protected pdfData: Blob | null = null;
   protected isPdfLoading: boolean = false;
 
   constructor(
@@ -43,7 +42,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
     private readonly http: HttpClient,
     private readonly location: Location,
     private readonly translate: TranslateService,
-    private readonly sanitizer: DomSanitizer
   ) {
     const gateId = this.activatedRoute.snapshot.paramMap.get('gateId');
     const platformId = this.activatedRoute.snapshot.paramMap.get('platformId');
@@ -63,7 +61,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.filterSubsetsByLanguage();
-    this.langChangeSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.langChangeSubscription = this.translate.onLangChange.subscribe((_event: any) => {
       this.filterSubsetsByLanguage();
     });
   }
@@ -78,7 +76,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
     if (!this.datasetQueryForm.valid) {
       return
     }
-    this.pdfUrl = null;
+    this.pdfData = null;
     const formValues = this.datasetQueryForm.getRawValue();
 
     let identifiersQuery: string = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}`;
@@ -197,12 +195,13 @@ export class DatasetQuery implements OnInit, OnDestroy {
     pdfQuery += "?subsets=" + Array.from(formValues.subsetIds).join(",");
 
     this.isPdfLoading = true;
-    this.pdfUrl = null;
+    this.pdfData = null;
 
     this.http.get(pdfQuery, { responseType: 'blob' }).subscribe({
       next: (pdfBlob: Blob) => {
-        const objectUrl = URL.createObjectURL(pdfBlob);
-        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
+        const objectUrl = URL.createObjectURL(pdfBlob) + '#toolbar=0';
+        console.log("ObjectURl" + objectUrl);
+        this.pdfData = pdfBlob; // Simply assign the blob
         this.isPdfLoading = false;
       },
       error: (error) => {

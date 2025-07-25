@@ -1,4 +1,6 @@
-<jasperReport name="Blank_A4_1" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5644cb2a-585a-48bf-b6de-e267ac2a4811">
+<jasperReport name="Blank_A4_1" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail"
+              columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
+              uuid="5644cb2a-585a-48bf-b6de-e267ac2a4811" ignorePagination="true">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
     <property name="com.jaspersoft.studio.unit." value="pixel"/>
     <property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -1491,6 +1493,4 @@
             <property name="com.jaspersoft.studio.layout"/>
         </band>
     </detail>
-    <pageFooter height="36">
-    </pageFooter>
 </jasperReport>

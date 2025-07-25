@@ -31,6 +31,8 @@
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",
     "@tailwindcss/postcss": "^4.1.11",
+    "ng2-pdf-viewer": "^10.4.0",
+    "pdfjs-dist": "^5.3.93",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.11",

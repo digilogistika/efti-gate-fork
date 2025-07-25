@@ -264,7 +264,7 @@
                             stroke-linejoin="round" stroke-width="2"/>
                     </svg>
                   </div>
-                  <h2 class="text-lg font-semibold text-gray-800">Retrieved Dataset</h2>
+                  <h2 class="text-lg font-semibold text-gray-800">{{ 'datasetQuery.retrievedDataset' | translate }}</h2>
                 </div>
                 <!-- Action Buttons Container -->
                 <div class="flex items-center gap-2">
@@ -291,10 +291,10 @@
                 <span class="ml-3 text-gray-600">Loading Document...</span>
               </div>
             }
-            @if (pdfUrl) {
+            @if (pdfData) {
               <div class="mt-8">
-                <div class="w-full h-[800px] bg-gray-50/80 border border-gray-200/50 rounded-xl backdrop-blur-sm overflow-hidden">
-                  <app-pdf-viewer [pdfUrl]="pdfUrl"></app-pdf-viewer>
+                <div class="w-full h-[1150px] bg-gray-50/80 border border-gray-200/50 rounded-xl backdrop-blur-sm overflow-hidden">
+                  <app-pdfjs-viewer [pdfData]="pdfData"></app-pdfjs-viewer>
                 </div>
               </div>
             }
