@@ -3,6 +3,10 @@
     "target": "http://localhost:8880",
     "secure": false
   },
+  "/v3": {
+    "target": "http://localhost:8880",
+    "secure": false
+  },
   "/actuator": {
     "target": "http://localhost:8880",
     "secure": false

@@ -1,9 +1,13 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-slate-100">
-  <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-2xl shadow-indigo-100/50 border border-gray-200/50">
+  <div
+    class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-2xl shadow-indigo-100/50 border border-gray-200/50">
     <div class="text-center">
-      <div class="inline-block w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform hover:scale-110 transition-transform duration-300">
+      <div
+        class="inline-block w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg mb-4 transform hover:scale-110 transition-transform duration-300">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2"/>
         </svg>
       </div>
       <h2 class="text-3xl font-bold text-gray-800">Gate Admin Portal</h2>
@@ -11,17 +15,17 @@
     </div>
 
     <!-- Login Form -->
-    <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
       <div>
-        <label for="api-key" class="sr-only">Master API Key</label>
+        <label class="sr-only" for="api-key">Master API Key</label>
         <input
+          [(ngModel)]="apiKeyValue"
+          class="w-full px-4 py-3 text-gray-700 bg-gray-100 border-2 border-transparent rounded-xl focus:ring-4 focus:ring-indigo-500/30 focus:border-indigo-500 focus:bg-white transition-all duration-300 placeholder-gray-400"
           id="api-key"
           name="apiKey"
-          type="password"
-          [(ngModel)]="apiKeyValue"
-          required
-          class="w-full px-4 py-3 text-gray-700 bg-gray-100 border-2 border-transparent rounded-xl focus:ring-4 focus:ring-indigo-500/30 focus:border-indigo-500 focus:bg-white transition-all duration-300 placeholder-gray-400"
           placeholder="••••••••••••••••••••••••"
+          required
+          type="password"
         />
       </div>
       @if (errorMessage) {
@@ -31,14 +35,16 @@
       }
       <div>
         <button
-          type="submit"
           [disabled]="isLoading || !loginForm.valid"
           class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          type="submit"
         >
           @if (isLoading) {
-            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
             <span>Authenticating...</span>
           } @else {
@@ -48,4 +54,6 @@
       </div>
     </form>
   </div>
+
+  <span class="absolute bottom-0 text-gray-500 text-sm"> Project version: {{ version }}</span>
 </div>

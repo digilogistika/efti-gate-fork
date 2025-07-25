@@ -1,10 +1,11 @@
-import { Component, inject, OnDestroy } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { AuthService } from '../authentication/auth.service';
-import { Subject } from 'rxjs';
-import { takeUntil, finalize } from 'rxjs/operators';
+import {Component, inject, OnDestroy} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {AuthService} from '../authentication/auth.service';
+import {Subject} from 'rxjs';
+import {finalize, takeUntil} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +17,17 @@ export class LoginComponent implements OnDestroy {
   apiKeyValue = '';
   isLoading = false;
   errorMessage: string | null = null;
+  version: string = ""
 
   private authService = inject(AuthService);
   private router = inject(Router);
   private destroy$ = new Subject<void>();
+
+  constructor(private http: HttpClient) {
+    http.get<any>("/v3/api-docs").subscribe(apiDocs => {
+      this.version = apiDocs.info.version
+    })
+  }
 
   onSubmit(): void {
     if (!this.apiKeyValue.trim() || this.isLoading) {

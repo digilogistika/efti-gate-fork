@@ -20,6 +20,9 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI openAPI() {
+        String version = getClass().getPackage().getImplementationVersion();
+        version = version == null ? "version not available in local env" : version;
+
         return new OpenAPI()
                 .components(new Components()
                         .addSecuritySchemes(API_KEY_SCHEME_NAME, createAPIKeyScheme()))
@@ -27,7 +30,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Efti Mock Platform " + properties.getOwner())
                         .description(properties.getDescription().orElse("Efti Mock Platform to showcase and test the functionality of a working eFTI platform. It can be used as a reference for other platforms who want to integrate into the eFTI system."))
-                        .version("1.0"));
+                        .version(version));
     }
 
     @EventListener
