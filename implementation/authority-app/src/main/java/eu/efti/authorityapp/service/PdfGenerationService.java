@@ -25,19 +25,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Date;
 
 @Service
 @Slf4j
 public class PdfGenerationService {
 
-    private OffsetDateTime fromDateTime(eu.efti.authorityapp.dto.CmrDto.DateTime dateTime) {
-        if (dateTime == null || StringUtils.isBlank(dateTime.getValue())) return null;
+    private Date fromDateTime(eu.efti.authorityapp.dto.CmrDto.DateTime dateTime) {
+        if (dateTime == null || StringUtils.isBlank(dateTime.getValue())) {
+            return null;
+        }
+
         return switch (dateTime.getFormatId()) {
-            case "102" -> {
+            case "102" -> { // Format: yyyyMMdd
                 LocalDate localDate = LocalDate.parse(dateTime.getValue(), DateTimeFormatter.ofPattern("yyyyMMdd"));
-                yield localDate.atStartOfDay().atOffset(ZoneOffset.UTC);
+                yield Date.from(localDate.atStartOfDay().toInstant(ZoneOffset.UTC));
             }
-            case "205" -> OffsetDateTime.parse(dateTime.getValue(), DateTimeFormatter.ofPattern("yyyyMMddHHmmZ"));
+            case "205" -> { // Format: yyyyMMddHHmmZ
+                OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateTime.getValue(), DateTimeFormatter.ofPattern("yyyyMMddHHmmZ"));
+                yield Date.from(offsetDateTime.toInstant());
+            }
             default -> throw new UnsupportedOperationException("Unsupported formatId: " + dateTime.getFormatId());
         };
     }
@@ -98,7 +105,11 @@ public class PdfGenerationService {
                     parameters.put("carrierAcceptanceLocationCountryCode", address.getCountryCode());
                 });
             });
-            Optional.ofNullable(cmrDto.getCarrierAcceptanceDateTime()).ifPresent(dateTime -> parameters.put("carrierAcceptanceDateTime", dateTime));
+            Optional.ofNullable(cmrDto.getCarrierAcceptanceDateTime()).ifPresent(dateTime -> {
+                Date acceptanceDate = fromDateTime(dateTime);
+                parameters.put("carrierAcceptanceDateTime", acceptanceDate);
+                parameters.put("establishedOnDate", acceptanceDate);
+            });
 
             // Box 4: Delivery of the Goods
             Optional.ofNullable(cmrDto.getConsigneeReceiptLocation()).ifPresent(location -> {
@@ -234,8 +245,7 @@ public class PdfGenerationService {
             });
             Optional.ofNullable(cmrDto.getDeliveryEvent()).ifPresent(event -> {
                 Optional.ofNullable(event.getActualOccurrenceDateTime()).ifPresent(dt -> {
-                    fromDateTime(dt);
-                    parameters.put("deliveryEventDateTime", dt.getValue());
+                    parameters.put("deliveryEventDateTime", fromDateTime(dt));
                 });
                 Optional.ofNullable(event.getOccurrenceLocation()).ifPresent(loc -> {
                     parameters.put("deliveryEventLocationName", loc.getName());

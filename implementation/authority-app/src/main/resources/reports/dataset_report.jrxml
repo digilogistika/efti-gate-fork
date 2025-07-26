@@ -51,7 +51,7 @@
     <parameter name="consigneeCity" class="java.lang.String"/>
     <parameter name="consigneeCountryCode" class="java.lang.String"/>
     <parameter name="carrierAcceptanceLocationName" class="java.lang.String"/>
-    <parameter name="logisticsTimeOfArrivalDateTime" class="java.util.Date"/>
+    <parameter name="carrierAcceptanceDateTime" class="java.util.Date"/>
     <parameter name="logisticsTimeOfDepartureDateTime" class="java.util.Date"/>
     <parameter name="consigneeReceiptLocationName" class="java.lang.String"/>
     <parameter name="deliveryOfTheGoodsOpeningHours" class="java.lang.String"/>
@@ -62,20 +62,21 @@
     <parameter name="carrierPostcode" class="java.lang.String"/>
     <parameter name="carrierCity" class="java.lang.String"/>
     <parameter name="carrierCountryCode" class="java.lang.String"/>
-    <parameter name="carrierLicensePlate" class="java.lang.String"/>
+    <parameter name="mainCarriageTransportMeansId" class="java.lang.String"/>
     <parameter name="connectingCarrierCity" class="java.lang.String"/>
     <parameter name="connectingCarrierCountryCode" class="java.lang.String"/>
     <parameter name="connectingCarrierCompanyName" class="java.lang.String"/>
     <parameter name="connectingCarrierPersonName" class="java.lang.String"/>
     <parameter name="connectingCarrierPostcode" class="java.lang.String"/>
-    <parameter name="connectingCarrierStreetName" class="java.lang.String"/>
+    <parameter name="connectingCarrierStreet" class="java.lang.String"/>
     <parameter name="information" class="java.lang.String"/>
-    <parameter name="associatedDocument" class="java.lang.String"/>
+    <parameter name="associatedDocumentId" class="java.lang.String"/>
+    <parameter name="associatedDocumentTypeCode" class="java.lang.String"/>
     <parameter name="contractTermsText" class="java.lang.String"/>
     <parameter name="deliveryInformation" class="java.lang.String"/>
     <parameter name="codAmount" class="java.lang.Float"/>
     <parameter name="codAmountCurrency" class="java.lang.String"/>
-    <parameter name="customEstablishedDate" class="java.util.Date"/>
+    <parameter name="deliveryEventDateTime" class="java.util.Date"/>
     <parameter name="transportContractDocumentId" class="java.lang.String"/>
     <parameter name="customChargeCarriageValue" class="java.lang.Float"/>
     <parameter name="customChargeCarriagePayer" class="java.lang.String"/>
@@ -288,7 +289,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="9cb65690-1b9f-4e6c-9e98-58378a21dddc" x="70" y="30" width="208" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{logisticsTimeOfArrivalDateTime}]]></expression>
+                    <expression><![CDATA[$P{carrierAcceptanceDateTime}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -471,7 +472,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="01f467a3-4811-4d79-87c7-f130f33b8918" x="0" y="85" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{carrierLicensePlate}]]></expression>
+                    <expression><![CDATA[$P{mainCarriageTransportMeansId}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <box leftPadding="5"/>
@@ -576,7 +577,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="f2cb4176-ba2d-4472-ac60-19e9f10ba4b9" x="0" y="45" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{connectingCarrierStreetName}]]></expression>
+                    <expression><![CDATA[$P{connectingCarrierStreet}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
@@ -897,7 +898,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="3cb2846e-05cc-486c-af54-7b2be9229aa0" x="0" y="15" width="278" height="30" blankWhenNull="true">
-                    <expression><![CDATA[$P{associatedDocument}]]></expression>
+                    <expression><![CDATA[$P{associatedDocumentTypeCode} + " - " + $P{associatedDocumentId}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <rightPen lineWidth="0.5"/>
@@ -1297,7 +1298,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="bd8e9280-14ab-4d4f-864a-c2de53e917d9" x="390" y="0" width="162" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{customEstablishedDate}]]></expression>
+                    <expression><![CDATA[$P{deliveryEventDateTime}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
