@@ -38,44 +38,45 @@
         <field name="supplyChainConsignmentItemGrossWeight" class="java.lang.Float"/>
         <field name="supplyChainConsignmentItemGrossVolume" class="java.lang.Float"/>
     </dataset>
-    <parameter name="senderCompanyName" class="java.lang.String"/>
-    <parameter name="senderPersonName" class="java.lang.String"/>
-    <parameter name="senderStreet" class="java.lang.String"/>
-    <parameter name="senderPostCode" class="java.lang.String"/>
-    <parameter name="senderCity" class="java.lang.String"/>
-    <parameter name="senderCountry" class="java.lang.String"/>
+    <parameter name="consignorCompanyName" class="java.lang.String"/>
+    <parameter name="consignorPersonName" class="java.lang.String"/>
+    <parameter name="consignorStreet" class="java.lang.String"/>
+    <parameter name="consignorPostCode" class="java.lang.String"/>
+    <parameter name="consignorCity" class="java.lang.String"/>
+    <parameter name="consignorCountryCode" class="java.lang.String"/>
     <parameter name="consigneeCompanyName" class="java.lang.String"/>
     <parameter name="consigneePersonName" class="java.lang.String"/>
     <parameter name="consigneeStreet" class="java.lang.String"/>
     <parameter name="consigneePostcode" class="java.lang.String"/>
     <parameter name="consigneeCity" class="java.lang.String"/>
     <parameter name="consigneeCountryCode" class="java.lang.String"/>
-    <parameter name="takingOverTheGoodsPlace" class="java.lang.String"/>
+    <parameter name="carrierAcceptanceLocationName" class="java.lang.String"/>
     <parameter name="logisticsTimeOfArrivalDateTime" class="java.util.Date"/>
     <parameter name="logisticsTimeOfDepartureDateTime" class="java.util.Date"/>
-    <parameter name="deliveryOfTheGoodsPlace" class="java.lang.String"/>
+    <parameter name="consigneeReceiptLocationName" class="java.lang.String"/>
     <parameter name="deliveryOfTheGoodsOpeningHours" class="java.lang.String"/>
-    <parameter name="sendersInstructions" class="java.lang.String"/>
+    <parameter name="consignorProvidedBorderClearanceInstructions" class="java.lang.String"/>
     <parameter name="carrierCompanyName" class="java.lang.String"/>
-    <parameter name="carrierDriverName" class="java.lang.String"/>
+    <parameter name="carrierPersonName" class="java.lang.String"/>
     <parameter name="carrierStreet" class="java.lang.String"/>
     <parameter name="carrierPostcode" class="java.lang.String"/>
     <parameter name="carrierCity" class="java.lang.String"/>
-    <parameter name="carrierCountry" class="java.lang.String"/>
+    <parameter name="carrierCountryCode" class="java.lang.String"/>
     <parameter name="carrierLicensePlate" class="java.lang.String"/>
-    <parameter name="successiveCarrierCity" class="java.lang.String"/>
-    <parameter name="successiveCarrierCountryCode" class="java.lang.String"/>
-    <parameter name="successiveCarrierCompanyName" class="java.lang.String"/>
-    <parameter name="successiveCarrierDriverName" class="java.lang.String"/>
-    <parameter name="successiveCarrierPostcode" class="java.lang.String"/>
-    <parameter name="successiveCarrierStreetName" class="java.lang.String"/>
-    <parameter name="carrierReservationsObservations" class="java.lang.String"/>
-    <parameter name="documentsRemarks" class="java.lang.String"/>
-    <parameter name="customSpecialAgreement" class="java.lang.String"/>
-    <parameter name="customParticulars" class="java.lang.String"/>
-    <parameter name="customCashOnDelivery" class="java.lang.Float"/>
+    <parameter name="connectingCarrierCity" class="java.lang.String"/>
+    <parameter name="connectingCarrierCountryCode" class="java.lang.String"/>
+    <parameter name="connectingCarrierCompanyName" class="java.lang.String"/>
+    <parameter name="connectingCarrierPersonName" class="java.lang.String"/>
+    <parameter name="connectingCarrierPostcode" class="java.lang.String"/>
+    <parameter name="connectingCarrierStreetName" class="java.lang.String"/>
+    <parameter name="information" class="java.lang.String"/>
+    <parameter name="associatedDocument" class="java.lang.String"/>
+    <parameter name="contractTermsText" class="java.lang.String"/>
+    <parameter name="deliveryInformation" class="java.lang.String"/>
+    <parameter name="codAmount" class="java.lang.Float"/>
+    <parameter name="codAmountCurrency" class="java.lang.String"/>
     <parameter name="customEstablishedDate" class="java.util.Date"/>
-    <parameter name="customEstablishedIn" class="java.lang.String"/>
+    <parameter name="transportContractDocumentId" class="java.lang.String"/>
     <parameter name="customChargeCarriageValue" class="java.lang.Float"/>
     <parameter name="customChargeCarriagePayer" class="java.lang.String"/>
     <parameter name="customChargeCarriageCurrency" class="java.lang.String"/>
@@ -88,23 +89,18 @@
     <parameter name="customChargeOtherValue" class="java.lang.Float"/>
     <parameter name="customChargeOtherCurrency" class="java.lang.String"/>
     <parameter name="customChargeOtherPayer" class="java.lang.String"/>
-    <parameter name="consigneeTimeOfArrival" class="java.util.Date"/>
     <parameter name="consigneeTimeOfDeparture" class="java.util.Date"/>
     <parameter name="items" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
     <parameter name="consigneeSignatureImage" class="net.sf.jasperreports.renderers.Renderable"/>
-    <parameter name="senderSealText" class="java.lang.String"/>
+    <parameter name="consignorSealText" class="java.lang.String"/>
     <parameter name="carrierSealText" class="java.lang.String"/>
     <parameter name="consigneeSealText" class="java.lang.String"/>
-    <parameter name="consigneeSigningLocation" class="java.lang.String"/>
+    <parameter name="deliveryEventLocationName" class="java.lang.String"/>
     <parameter name="consigneeSignatureDate" class="java.util.Date"/>
     <parameter name="consigneeReservationsObservations" class="java.lang.String"/>
     <parameter name="nonContractualCarrierRemarks" class="java.lang.String"/>
-    <parameter name="referenceId" class="java.lang.String"/>
-    <parameter name="ecmrId" class="java.lang.String"/>
     <parameter name="EN_InternationalNationalTransport" class="java.lang.String"/>
     <parameter name="DE_InternationalNationalTransport" class="java.lang.String"/>
-    <parameter name="multiConsigneeShipmentNotice" class="java.lang.String"/>
-    <parameter name="watermark" class="net.sf.jasperreports.renderers.Renderable"/>
     <query language="sql"><![CDATA[]]></query>
     <detail>
         <band height="766" splitType="Stretch">
@@ -112,7 +108,7 @@
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="a476118f-78fa-4e34-aa3e-05ded909f741" x="0" y="0" width="278" height="15" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[1. Sender (name, address, country)]]></text>
+                    <text><![CDATA[1. Consignor (name, address, country)]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
                         <topPen lineWidth="0.25"/>
@@ -122,7 +118,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="5c408579-91cf-4d33-b278-365cfc413afb" x="0" y="15" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{senderCompanyName}]]></expression>
+                    <expression><![CDATA[$P{consignorCompanyName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
                         <pen lineWidth="0.0"/>
@@ -130,21 +126,21 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="69c8b762-42dc-4501-926e-bbd5643ce20b" x="0" y="30" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{senderPersonName}]]></expression>
+                    <expression><![CDATA[$P{consignorPersonName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="34de5190-4456-40e9-abf7-1bd0b84c0f35" x="0" y="45" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{senderStreet}]]></expression>
+                    <expression><![CDATA[$P{consignorStreet}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="f4eee314-abd7-4e0b-a223-22014f337551" x="0" y="70" width="92" height="15" blankWhenNull="true">
-                    <expression><![CDATA[$P{senderPostCode}]]></expression>
+                    <expression><![CDATA[$P{consignorPostCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5"/>
                 </element>
@@ -159,13 +155,13 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="ada317d4-5b58-497c-a8d1-eab9fce7c47e" x="92" y="70" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{senderCity}]]></expression>
+                    <expression><![CDATA[$P{consignorCity}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="3690a9b9-c1fd-4cb8-8ba3-93e72b1b282e" x="186" y="70" width="92" height="15" blankWhenNull="true">
-                    <expression><![CDATA[$P{senderCountry}]]></expression>
+                    <expression><![CDATA[$P{consignorCountryCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
@@ -261,14 +257,6 @@
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="9c524c83-775b-4185-8eb8-fa93ab2589c8" x="0" y="15" width="278" height="30" fontSize="8.0" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{multiConsigneeShipmentNotice}]]></expression>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                    <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <pen lineWidth="0.0"/>
-                        <bottomPen lineWidth="0.0"/>
-                    </box>
-                </element>
                 <box>
                     <topPen lineWidth="0.5"/>
                     <leftPen lineWidth="0.5"/>
@@ -292,7 +280,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="aa8cf8fc-a17d-47c2-ad40-c2d6814967c7" x="70" y="15" width="208" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{takingOverTheGoodsPlace}]]></expression>
+                    <expression><![CDATA[$P{carrierAcceptanceLocationName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -361,7 +349,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="02d140f4-7ed8-495b-9eb1-70d139a82081" x="70" y="15" width="208" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{deliveryOfTheGoodsPlace}]]></expression>
+                    <expression><![CDATA[$P{consigneeReceiptLocationName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -426,7 +414,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="10e59f6d-d8fa-4c92-b4a9-962709bd577f" x="0" y="30" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{carrierDriverName}]]></expression>
+                    <expression><![CDATA[$P{carrierPersonName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
@@ -475,7 +463,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="1cb10645-46c7-41c5-949a-69a2ceea272e" x="186" y="70" width="91" height="15" blankWhenNull="true">
-                    <expression><![CDATA[$P{carrierCountry}]]></expression>
+                    <expression><![CDATA[$P{carrierCountryCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -532,7 +520,7 @@
             <element kind="frame" uuid="9953306b-6dea-4152-bcbb-1080e19cbd96" x="0" y="275" width="278" height="55">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="e8add47f-111b-471d-abdb-5a48c164dc3d" x="0" y="0" width="278" height="15" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[5. Sender's instructions]]></text>
+                    <text><![CDATA[5. Consignor's instructions]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -544,7 +532,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="9bc2fe4e-f098-47ef-a4ee-b836e414c89b" x="0" y="15" width="278" height="40" blankWhenNull="true">
-                    <expression><![CDATA[$P{sendersInstructions}]]></expression>
+                    <expression><![CDATA[$P{consignorProvidedBorderClearanceInstructions}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <box leftPadding="5"/>
@@ -560,7 +548,7 @@
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <element kind="staticText" uuid="cd9bcf8f-5fb0-4ef5-aed3-836cbf967605" x="0" y="0" width="277" height="15" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[7. Successive Carriers (name, address, country)]]></text>
+                    <text><![CDATA[7. Connecting Carriers (name, address, country)]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -573,7 +561,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="30dfb198-f45e-4367-82af-cdabe0da224c" x="0" y="15" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{successiveCarrierCompanyName}]]></expression>
+                    <expression><![CDATA[$P{connectingCarrierCompanyName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
                         <pen lineWidth="0.0"/>
@@ -581,14 +569,14 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="ae461f45-2a6c-448a-823d-1d3c927b57df" x="0" y="30" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{successiveCarrierDriverName}]]></expression>
+                    <expression><![CDATA[$P{connectingCarrierPersonName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="f2cb4176-ba2d-4472-ac60-19e9f10ba4b9" x="0" y="45" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{successiveCarrierStreetName}]]></expression>
+                    <expression><![CDATA[$P{connectingCarrierStreetName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
@@ -617,7 +605,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="ced1ca8c-26ef-4266-b651-abd656913292" x="186" y="70" width="91" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{successiveCarrierCountryCode}]]></expression>
+                    <expression><![CDATA[$P{connectingCarrierCountryCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -625,14 +613,14 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="1541b95a-5cf4-40b3-959b-967cefc2d957" x="92" y="70" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{successiveCarrierCity}]]></expression>
+                    <expression><![CDATA[$P{connectingCarrierCity}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="d9b807dd-95aa-4deb-97b4-2c5803b5d94e" x="0" y="70" width="92" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{successiveCarrierPostcode}]]></expression>
+                    <expression><![CDATA[$P{connectingCarrierPostcode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
@@ -659,7 +647,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="73e0708c-02c5-40df-95b2-686aa40133ba" x="0" y="15" width="277" height="45" blankWhenNull="true">
-                    <expression><![CDATA[$P{carrierReservationsObservations}]]></expression>
+                    <expression><![CDATA[$P{information}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -897,7 +885,7 @@
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.layout"/>
                 <element kind="staticText" uuid="d097a138-02d9-4722-8ba9-ef6119719208" x="0" y="0" width="278" height="15" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[9. Documents handed to the carrier by the sender]]></text>
+                    <text><![CDATA[9. Documents handed to the carrier by the consignor]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -909,14 +897,14 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="3cb2846e-05cc-486c-af54-7b2be9229aa0" x="0" y="15" width="278" height="30" blankWhenNull="true">
-                    <expression><![CDATA[$P{documentsRemarks}]]></expression>
+                    <expression><![CDATA[$P{associatedDocument}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="staticText" uuid="5902bb14-3e55-4521-94bc-98c820159817" x="278" y="0" width="276" height="15" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[16. Special agreements between the sender and carrier]]></text>
+                    <text><![CDATA[16. Special agreements between consignor and carrier]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -928,7 +916,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="f0d9e74f-3001-4235-9ed1-4327dfdd7ddc" x="278" y="15" width="275" height="28" blankWhenNull="true">
-                    <expression><![CDATA[$P{customSpecialAgreement}]]></expression>
+                    <expression><![CDATA[$P{contractTermsText}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <leftPen lineWidth="0.5"/>
@@ -1224,7 +1212,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="2bbe08eb-27a7-4208-aaa2-451fe16fe942" x="0" y="16" width="275" height="30" blankWhenNull="true">
-                    <expression><![CDATA[$P{customParticulars}]]></expression>
+                    <expression><![CDATA[$P{deliveryInformation}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1245,7 +1233,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="ccea7f4a-75e1-4d17-a142-6d8ee2664c61" x="0" y="61" width="275" height="34" blankWhenNull="true">
-                    <expression><![CDATA[$P{customCashOnDelivery}]]></expression>
+                    <expression><![CDATA[$P{codAmount} + " " + $P{codAmountCurrency}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1302,7 +1290,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="894c3a99-1f32-4e8e-8f5e-a893f32d671a" x="140" y="0" width="220" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{customEstablishedIn}]]></expression>
+                    <expression><![CDATA[$P{transportContractDocumentId}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -1327,7 +1315,7 @@
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="84ebc0dd-6be8-4598-a29e-130003c28f88" x="0" y="-15" width="139" height="15" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[22. Sender Signature]]></text>
+                    <text><![CDATA[22. Consignor Signature]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1340,7 +1328,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="aeec8b09-30f6-424f-a9ce-12cbe3b4aabb" x="1" y="1" width="138" height="74" fontSize="10.0" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA[$P{senderSealText}]]></expression>
+                    <expression><![CDATA[$P{consignorSealText}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
@@ -1447,7 +1435,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="35409fc2-d24d-4a22-a239-cf81b7abaf91" x="30" y="0" width="246" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{consigneeSigningLocation}]]></expression>
+                    <expression><![CDATA[$P{deliveryEventLocationName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
