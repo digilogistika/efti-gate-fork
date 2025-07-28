@@ -116,7 +116,7 @@ public class PdfGenerationService {
 
             // Box 5: Consignor's instructions
             String instructions = (sc.getConsignorProvidedBorderClearanceInstructions() != null && !sc.getConsignorProvidedBorderClearanceInstructions().isEmpty() && sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription() != null)
-                    ? sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription().get(0).toString() : "";
+                    ? sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription().get(0) : "";
             parameters.put("consignorProvidedBorderClearanceInstructions", toStr(instructions));
 
             // Box 6: Carrier
@@ -152,8 +152,7 @@ public class PdfGenerationService {
                 natureOfGoodsText = String.valueOf(sc.getNatureIdentificationCargo().getIdentificationText().get(0).getValue());
             }
 
-            if (packages.isEmpty()) {
-            } else {
+            if (!packages.isEmpty()) {
                 for (LogisticsPackage pkg : packages) {
                     Map<String, Object> item = new HashMap<>();
                     String packageType = "";

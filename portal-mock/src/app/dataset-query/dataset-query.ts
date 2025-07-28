@@ -98,7 +98,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
           }
 
           if (v.pdfData) {
-            // Use fetch with a Data URI for safe Base64 decoding.
             fetch(`data:application/pdf;base64,${v.pdfData}`)
               .then(res => res.blob())
               .then(blob => {
@@ -145,16 +144,9 @@ export class DatasetQuery implements OnInit, OnDestroy {
 
   onUILEditToggleChange(event: any) {
     this.isUilEditMode = event.target.checked;
-
-    if (event.target.checked) {
-      this.datasetQueryForm.get('gateId')?.enable();
-      this.datasetQueryForm.get('platformId')?.enable();
-      this.datasetQueryForm.get('datasetId')?.enable();
-    } else {
-      this.datasetQueryForm.get('gateId')?.disable();
-      this.datasetQueryForm.get('platformId')?.disable();
-      this.datasetQueryForm.get('datasetId')?.disable();
-    }
+    this.datasetQueryForm.get('gateId')?.enable();
+    this.datasetQueryForm.get('platformId')?.enable();
+    this.datasetQueryForm.get('datasetId')?.enable();
   }
 
   onSubsetsChange(subset: string, event: any) {
