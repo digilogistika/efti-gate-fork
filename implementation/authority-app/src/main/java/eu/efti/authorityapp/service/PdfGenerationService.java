@@ -1,52 +1,63 @@
-// file: implementation/authority-app/src/main/java/eu/efti/authorityapp/service/PdfGenerationService.java
 package eu.efti.authorityapp.service;
 
-import eu.efti.authorityapp.dto.CmrDto;
+import eu.efti.v1.consignment.common.LogisticsPackage;
+import eu.efti.v1.consignment.common.ReferencedDocument;
 import eu.efti.v1.consignment.common.SupplyChainConsignment;
-import eu.efti.v1.types.DateTime;
+import eu.efti.v1.consignment.common.TradeAddress;
+import eu.efti.v1.consignment.common.TradeParty;
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
 public class PdfGenerationService {
 
-    private Date fromDateTime(eu.efti.authorityapp.dto.CmrDto.DateTime dateTime) {
-        if (dateTime == null || StringUtils.isBlank(dateTime.getValue())) {
-            return null;
-        }
-
+    private Date fromDateTime(eu.efti.v1.types.DateTime dateTime) {
+        if (dateTime == null || StringUtils.isBlank(dateTime.getValue())) { return null; }
         return switch (dateTime.getFormatId()) {
-            case "102" -> { // Format: yyyyMMdd
+            case "102" -> {
                 LocalDate localDate = LocalDate.parse(dateTime.getValue(), DateTimeFormatter.ofPattern("yyyyMMdd"));
                 yield Date.from(localDate.atStartOfDay().toInstant(ZoneOffset.UTC));
             }
-            case "205" -> { // Format: yyyyMMddHHmmZ
+            case "205" -> {
                 OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateTime.getValue(), DateTimeFormatter.ofPattern("yyyyMMddHHmmZ"));
                 yield Date.from(offsetDateTime.toInstant());
             }
-            default -> throw new UnsupportedOperationException("Unsupported formatId: " + dateTime.getFormatId());
+            default -> {
+                log.warn("Unsupported DateTime formatId: {}", dateTime.getFormatId());
+                yield null;
+            }
         };
+    }
+
+    // Helper to prevent "null" strings in the PDF
+    private String toStr(Object obj) {
+        return Objects.toString(obj, "");
     }
 
     public byte[] generatePdf(
@@ -56,283 +67,167 @@ public class PdfGenerationService {
         try {
             log.info("Starting PDF generation for request ID: {}", requestId);
 
-            SupplyChainConsignment supplyChainConsignment = new SupplyChainConsignment();
-
-            // Step 1: Parse the raw XML into our CmrDto object using JAXB
-            final JAXBContext jaxbContext = JAXBContext.newInstance(CmrDto.class);
+            final JAXBContext jaxbContext = JAXBContext.newInstance(SupplyChainConsignment.class);
             final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            final CmrDto cmrDto = (CmrDto) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(xmlData));
-            log.info("Successfully parsed XML data into CmrDto.");
+            XMLInputFactory xif = XMLInputFactory.newFactory();
+            xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            xif.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            XMLStreamReader xsr = xif.createXMLStreamReader(new ByteArrayInputStream(xmlData));
+            JAXBElement<SupplyChainConsignment> jaxbElement = jaxbUnmarshaller.unmarshal(xsr, SupplyChainConsignment.class);
+            final SupplyChainConsignment sc = jaxbElement.getValue();
+            log.info("Successfully parsed XML data into SupplyChainConsignment object.");
 
-            // Step 2: Load and compile the Jasper report template
-            log.info("Loading JRXML template from classpath: reports/dataset_report.jrxml");
             final InputStream reportStream = new ClassPathResource("reports/dataset_report.jrxml").getInputStream();
             final JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
             log.info("Report compiled successfully.");
 
-            // Step 3: Populate the report parameters from the CmrDto
             final Map<String, Object> parameters = new HashMap<>();
 
+            // --- PARAMETER MAPPING ---
+
             // Box 1: Consignor
-            Optional.ofNullable(cmrDto.getConsignor()).ifPresent(consignor -> {
-                parameters.put("consignorCompanyName", consignor.getName());
-                Optional.ofNullable(consignor.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("consignorStreet", address.getStreetName());
-                    parameters.put("consignorCity", address.getCityName());
-                    parameters.put("consignorPostcode", address.getPostcode());
-                    parameters.put("consignorCountryCode", address.getCountryCode());
-                });
-            });
+            TradeParty consignor = sc.getConsignor();
+            TradeAddress consignorAddress = (consignor != null) ? consignor.getPostalAddress() : null;
+            parameters.put("consignorCompanyName", toStr((consignor != null && consignor.getName() != null && !consignor.getName().isEmpty()) ? consignor.getName().get(0) : ""));
+            parameters.put("consignorStreet", toStr((consignorAddress != null && consignorAddress.getStreetName() != null && !consignorAddress.getStreetName().isEmpty()) ? consignorAddress.getStreetName().get(0) : ""));
+            parameters.put("consignorCity", toStr((consignorAddress != null && consignorAddress.getCityName() != null && !consignorAddress.getCityName().isEmpty()) ? consignorAddress.getCityName().get(0) : ""));
+            parameters.put("consignorPostCode", toStr((consignorAddress != null && consignorAddress.getPostcode() != null && !consignorAddress.getPostcode().isEmpty()) ? consignorAddress.getPostcode().get(0) : ""));
+            parameters.put("consignorCountryCode", toStr((consignorAddress != null && consignorAddress.getCountryCode() != null) ? consignorAddress.getCountryCode().value() : ""));
+            parameters.put("consignorPersonName", "");
 
             // Box 2: Consignee
-            Optional.ofNullable(cmrDto.getConsignee()).ifPresent(consignee -> {
-                parameters.put("consigneeCompanyName", consignee.getName());
-                Optional.ofNullable(consignee.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("consigneeStreet", address.getStreetName());
-                    parameters.put("consigneeCity", address.getCityName());
-                    parameters.put("consigneePostcode", address.getPostcode());
-                    parameters.put("consigneeCountryCode", address.getCountryCode());
-                });
-            });
+            TradeParty consignee = sc.getConsignee();
+            TradeAddress consigneeAddress = (consignee != null) ? consignee.getPostalAddress() : null;
+            parameters.put("consigneeCompanyName", toStr((consignee != null && consignee.getName() != null && !consignee.getName().isEmpty()) ? consignee.getName().get(0) : ""));
+            parameters.put("consigneeStreet", toStr((consigneeAddress != null && consigneeAddress.getStreetName() != null && !consigneeAddress.getStreetName().isEmpty()) ? consigneeAddress.getStreetName().get(0) : ""));
+            parameters.put("consigneeCity", toStr((consigneeAddress != null && consigneeAddress.getCityName() != null && !consigneeAddress.getCityName().isEmpty()) ? consigneeAddress.getCityName().get(0) : ""));
+            parameters.put("consigneePostcode", toStr((consigneeAddress != null && consigneeAddress.getPostcode() != null && !consigneeAddress.getPostcode().isEmpty()) ? consigneeAddress.getPostcode().get(0) : ""));
+            parameters.put("consigneeCountryCode", toStr((consigneeAddress != null && consigneeAddress.getCountryCode() != null) ? consigneeAddress.getCountryCode().value() : ""));
+            parameters.put("consigneePersonName", "");
 
             // Box 3: Taking over the Goods
-            Optional.ofNullable(cmrDto.getCarrierAcceptanceLocation()).ifPresent(location -> {
-                parameters.put("carrierAcceptanceLocationName", location.getName());
-                Optional.ofNullable(location.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("carrierAcceptanceLocationStreet", address.getStreetName());
-                    parameters.put("carrierAcceptanceLocationCity", address.getCityName());
-                    parameters.put("carrierAcceptanceLocationPostcode", address.getPostcode());
-                    parameters.put("carrierAcceptanceLocationCountryCode", address.getCountryCode());
-                });
-            });
-            Optional.ofNullable(cmrDto.getCarrierAcceptanceDateTime()).ifPresent(dateTime -> {
-                Date acceptanceDate = fromDateTime(dateTime);
-                parameters.put("carrierAcceptanceDateTime", acceptanceDate);
-                parameters.put("establishedOnDate", acceptanceDate);
-            });
+            parameters.put("carrierAcceptanceLocationName", toStr((sc.getCarrierAcceptanceLocation() != null && sc.getCarrierAcceptanceLocation().getName() != null && !sc.getCarrierAcceptanceLocation().getName().isEmpty()) ? sc.getCarrierAcceptanceLocation().getName().get(0) : ""));
+            parameters.put("carrierAcceptanceDateTime", fromDateTime(sc.getCarrierAcceptanceDateTime()));
+            parameters.put("logisticsTimeOfDepartureDateTime", null);
 
             // Box 4: Delivery of the Goods
-            Optional.ofNullable(cmrDto.getConsigneeReceiptLocation()).ifPresent(location -> {
-                parameters.put("consigneeReceiptLocationName", location.getName());
-                Optional.ofNullable(location.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("consigneeReceiptLocationStreet", address.getStreetName());
-                    parameters.put("consigneeReceiptLocationCity", address.getCityName());
-                    parameters.put("consigneeReceiptLocationPostcode", address.getPostcode());
-                    parameters.put("consigneeReceiptLocationCountryCode", address.getCountryCode());
-                });
-            });
+            parameters.put("consigneeReceiptLocationName", toStr((sc.getConsigneeReceiptLocation() != null && sc.getConsigneeReceiptLocation().getName() != null) ? sc.getConsigneeReceiptLocation().getName().get(0) : ""));
+            parameters.put("deliveryOfTheGoodsOpeningHours", "");
 
             // Box 5: Consignor's instructions
-            Optional.ofNullable(cmrDto.getConsignorProvidedInformationText()).ifPresent(text -> parameters.put("consignorProvidedInformationText", text));
+            String instructions = (sc.getConsignorProvidedBorderClearanceInstructions() != null && !sc.getConsignorProvidedBorderClearanceInstructions().isEmpty() && sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription() != null)
+                    ? sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription().get(0).toString() : "";
+            parameters.put("consignorProvidedBorderClearanceInstructions", toStr(instructions));
 
             // Box 6: Carrier
-            Optional.ofNullable(cmrDto.getCarrier()).ifPresent(carrier -> {
-                parameters.put("carrierCompanyName", carrier.getName());
-                Optional.ofNullable(carrier.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("carrierStreet", address.getStreetName());
-                    parameters.put("carrierCity", address.getCityName());
-                    parameters.put("carrierPostcode", address.getPostcode());
-                    parameters.put("carrierCountryCode", address.getCountryCode());
-                });
-            });
+            TradeParty carrier = sc.getCarrier();
+            TradeAddress carrierAddress = (carrier != null) ? carrier.getPostalAddress() : null;
+            parameters.put("carrierCompanyName", toStr((carrier != null && carrier.getName() != null && !carrier.getName().isEmpty()) ? carrier.getName().get(0) : ""));
+            parameters.put("carrierStreet", toStr((carrierAddress != null && carrierAddress.getStreetName() != null && !carrierAddress.getStreetName().isEmpty()) ? carrierAddress.getStreetName().get(0) : ""));
+            parameters.put("carrierCity", toStr((carrierAddress != null && carrierAddress.getCityName() != null && !carrierAddress.getCityName().isEmpty()) ? carrierAddress.getCityName().get(0) : ""));
+            parameters.put("carrierPostcode", toStr((carrierAddress != null && carrierAddress.getPostcode() != null && !carrierAddress.getPostcode().isEmpty()) ? carrierAddress.getPostcode().get(0) : ""));
+            parameters.put("carrierCountryCode", toStr((carrierAddress != null && carrierAddress.getCountryCode() != null) ? carrierAddress.getCountryCode().value() : ""));
+            parameters.put("carrierPersonName", "");
 
-
-
-            // Box 6: Carrier License Plate
-            Optional.ofNullable(cmrDto.getMainCarriageTransportMovement()).ifPresent(movement -> {
-                parameters.put("mainCarriageDangerousGoodsIndicator", movement.getDangerousGoodsIndicator());
-                parameters.put("mainCarriageModeCode", movement.getModeCode());
-                Optional.ofNullable(movement.getUsedTransportMeans()).ifPresent(means -> {
-                    Optional.ofNullable(means.getId()).ifPresent(id -> {
-                        parameters.put("mainCarriageTransportMeansId", id.getValue());
-                        parameters.put("mainCarriageTransportMeansIdScheme", id.getSchemeAgencyId());
-                    });
-                    Optional.ofNullable(means.getRegistrationCountry()).ifPresent(country -> {
-                        parameters.put("mainCarriageTransportMeansCountry", country.getCode());
-                    });
-                });
-            });
+            String transportMeansId = (sc.getMainCarriageTransportMovement() != null && !sc.getMainCarriageTransportMovement().isEmpty() && sc.getMainCarriageTransportMovement().get(0).getUsedTransportMeans() != null)
+                    ? sc.getMainCarriageTransportMovement().get(0).getUsedTransportMeans().getId().getValue() : "";
+            parameters.put("mainCarriageTransportMeansId", toStr(transportMeansId));
 
             // Box 7: Connecting Carriers
-            Optional.ofNullable(cmrDto.getConnectingCarrier()).ifPresent(carrier -> {
-                parameters.put("connectingCarrierCompanyName", carrier.getName());
-                Optional.ofNullable(carrier.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("connectingCarrierStreet", address.getStreetName());
-                    parameters.put("connectingCarrierCity", address.getCityName());
-                    parameters.put("connectingCarrierPostcode", address.getPostcode());
-                    parameters.put("connectingCarrierCountryCode", address.getCountryCode());
-                });
-            });
+            TradeParty connectingCarrier = (sc.getConnectingCarrier() != null && !sc.getConnectingCarrier().isEmpty()) ? sc.getConnectingCarrier().get(0) : null;
+            TradeAddress connectingCarrierAddress = (connectingCarrier != null) ? connectingCarrier.getPostalAddress() : null;
+            parameters.put("connectingCarrierCompanyName", toStr((connectingCarrier != null && connectingCarrier.getName() != null && !connectingCarrier.getName().isEmpty()) ? connectingCarrier.getName().get(0) : ""));
+            parameters.put("connectingCarrierStreet", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getStreetName() != null && !connectingCarrierAddress.getStreetName().isEmpty()) ? connectingCarrierAddress.getStreetName().get(0) : ""));
+            parameters.put("connectingCarrierCity", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCityName() != null && !connectingCarrierAddress.getCityName().isEmpty()) ? connectingCarrierAddress.getCityName().get(0) : ""));
+            parameters.put("connectingCarrierPostcode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getPostcode() != null && !connectingCarrierAddress.getPostcode().isEmpty()) ? connectingCarrierAddress.getPostcode().get(0) : ""));
+            parameters.put("connectingCarrierCountryCode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCountryCode() != null) ? connectingCarrierAddress.getCountryCode().value() : ""));
+            parameters.put("connectingCarrierPersonName", "");
 
-            // Box 8: Carrier's reservations and observations
-            Optional.ofNullable(cmrDto.getInformation()).ifPresent(info -> parameters.put("information", info));
+            // Box 10-15
+            final List<Map<String, Object>> items = new ArrayList<>();
+            List<LogisticsPackage> packages = sc.getTransportPackage() != null ? sc.getTransportPackage() : new ArrayList<>();
 
-            // Box 9: Documents handed to the carrier
-            Optional.ofNullable(cmrDto.getAssociatedDocument()).ifPresent(doc -> {
-                parameters.put("associatedDocumentId", doc.getId());
-                parameters.put("associatedDocumentTypeCode", doc.getTypeCode());
-            });
+            String natureOfGoodsText = "";
+            if (sc.getNatureIdentificationCargo() != null && sc.getNatureIdentificationCargo().getIdentificationText() != null && !sc.getNatureIdentificationCargo().getIdentificationText().isEmpty()) {
+                natureOfGoodsText = String.valueOf(sc.getNatureIdentificationCargo().getIdentificationText().get(0).getValue());
+            }
 
-            // Box 10-15: Consignment Item Details
-            Optional.ofNullable(cmrDto.getTransportPackage()).ifPresent(pkg -> {
-                parameters.put("transportPackageItemQuantity", pkg.getItemQuantity());
-                parameters.put("transportPackageTypeCode", pkg.getTypeCode());
-                parameters.put("transportPackageTypeText", pkg.getTypeText());
-            });
-            Optional.ofNullable(cmrDto.getNatureIdentificationCargo()).ifPresent(cargo -> parameters.put("natureIdentificationCargoText", cargo.getIdentificationText()));
-            Optional.ofNullable(cmrDto.getGrossWeight()).ifPresent(measure -> {
-                parameters.put("grossWeight", measure.getValue());
-                parameters.put("grossWeightUnit", measure.getUnitId());
-            });
-            Optional.ofNullable(cmrDto.getGrossVolume()).ifPresent(measure -> {
-                parameters.put("grossVolume", measure.getValue());
-                parameters.put("grossVolumeUnit", measure.getUnitId());
-            });
-            Optional.ofNullable(cmrDto.getNetWeight()).ifPresent(measure -> {
-                parameters.put("netWeight", measure.getValue());
-                parameters.put("netWeightUnit", measure.getUnitId());
-            });
-            Optional.ofNullable(cmrDto.getNumberOfPackages()).ifPresent(num -> parameters.put("numberOfPackages", num));
-            Optional.ofNullable(cmrDto.getIncludedConsignmentItem()).ifPresent(item -> Optional.ofNullable(item.getDimensions()).ifPresent(dims -> parameters.put("consignmentItemDimensionsDescription", dims.getDescription())));
+            if (packages.isEmpty()) {
+            } else {
+                for (LogisticsPackage pkg : packages) {
+                    Map<String, Object> item = new HashMap<>();
+                    String packageType = "";
+                    if (pkg.getTypeText() != null && !pkg.getTypeText().isEmpty() && pkg.getTypeText().get(0) != null) {
+                        packageType = pkg.getTypeText().get(0).getValue();
+                    } else if (pkg.getTypeCode() != null && !pkg.getTypeCode().isEmpty()) {
+                        packageType = String.join(", ", pkg.getTypeCode());
+                    }
+                    item.put("logisticsPackageType", packageType);
+                    item.put("logisticsPackageItemQuantity", pkg.getItemQuantity() != null ? pkg.getItemQuantity().intValue() : null);
+                    item.put("transportCargoIdentification", natureOfGoodsText);
+                    item.put("supplyChainConsignmentItemGrossWeight", (sc.getGrossWeight() != null && !sc.getGrossWeight().isEmpty() && sc.getGrossWeight().get(0).getValue() != null) ? sc.getGrossWeight().get(0).getValue().floatValue() : null);
+                    item.put("supplyChainConsignmentItemGrossVolume", (sc.getGrossVolume() != null && !sc.getGrossVolume().isEmpty() && sc.getGrossVolume().get(0).getValue() != null) ? sc.getGrossVolume().get(0).getValue().floatValue() : null);
+                    item.put("logisticsShippingMarksMarking", "");
+                    item.put("logisticsShippingMarksCustomBarcode", "");
+                    items.add(item);
+                }
+            }
+            parameters.put("items", new JRBeanCollectionDataSource(items));
 
-            // Box 16: Special agreements
-            Optional.ofNullable(cmrDto.getContractTermsText()).ifPresent(text -> parameters.put("contractTermsText", text));
+            String info = (sc.getInformation() != null && !sc.getInformation().isEmpty()) ? String.join(", ", sc.getInformation()) : "";
+            parameters.put("information", toStr(info));
 
-            // Box 18: Other useful particulars
-            Optional.ofNullable(cmrDto.getDeliveryInformation()).ifPresent(info -> parameters.put("deliveryInformation", info));
+            ReferencedDocument doc = (sc.getAssociatedDocument() != null && !sc.getAssociatedDocument().isEmpty()) ? sc.getAssociatedDocument().get(0) : null;
+            String associatedDocId = (doc != null && doc.getId() != null) ? doc.getId().getValue() : "";
+            String associatedDocType = (doc != null && doc.getTypeCode() != null) ? doc.getTypeCode() : "";
+            parameters.put("associatedDocumentId", toStr(associatedDocId));
+            parameters.put("associatedDocumentTypeCode", toStr(associatedDocType));
 
-            // Box 19: Cash on delivery
-            Optional.ofNullable(cmrDto.getCODAmount()).ifPresent(amount -> {
-                parameters.put("codAmount", amount.getValue().floatValue());
-                parameters.put("codAmountCurrency", amount.getCurrencyId());
-            });
+            String contractTerms = (sc.getContractTermsText() != null && !sc.getContractTermsText().isEmpty()) ? String.join(", ", sc.getContractTermsText()) : "";
+            parameters.put("contractTermsText", toStr(contractTerms));
 
-            // Box 21: Established In / Date
-            Optional.ofNullable(cmrDto.getTransportContractDocument()).ifPresent(doc -> parameters.put("transportContractDocumentId", doc.getId()));
+            parameters.put("customChargeCarriageValue", null);
+            parameters.put("customChargeCarriagePayer", "");
+            parameters.put("customChargeCarriageCurrency", "");
+            parameters.put("customChargeSupplementaryValue", null);
+            parameters.put("customChargeSupplementaryCurrency", "");
+            parameters.put("customChargeSupplementaryPayer", "");
+            parameters.put("customChargeCustomsDutiesValue", null);
+            parameters.put("customChargeCustomsDutiesCurrency", "");
+            parameters.put("customChargeCustomsDutiesPayer", "");
+            parameters.put("customChargeOtherValue", null);
+            parameters.put("customChargeOtherCurrency", "");
+            parameters.put("customChargeOtherPayer", "");
 
-            // --- Other XML Elements ---
-            Optional.ofNullable(cmrDto.getApplicableServiceCharge()).ifPresent(charge -> {
-                parameters.put("serviceChargeId", charge.getId());
-                parameters.put("serviceChargePayingPartyRoleCode", charge.getPayingPartyRoleCode());
-                parameters.put("serviceChargePaymentArrangementCode", charge.getPaymentArrangementCode());
-                Optional.ofNullable(charge.getAppliedAmount()).ifPresent(amount -> {
-                    parameters.put("serviceChargeAppliedAmount", amount.getValue());
-                    parameters.put("serviceChargeAppliedAmountCurrency", amount.getCurrencyId());
-                });
-                Optional.ofNullable(charge.getCalculationBasisPrice()).ifPresent(basis -> {
-                    parameters.put("serviceChargeBasisQuantity", basis.getBasisQuantity());
-                    parameters.put("serviceChargeCategoryTypeCode", basis.getCategoryTypeCode());
-                    Optional.ofNullable(basis.getUnitAmount()).ifPresent(amount -> {
-                        parameters.put("serviceChargeUnitAmount", amount.getValue());
-                        parameters.put("serviceChargeUnitAmountCurrency", amount.getCurrencyId());
-                    });
-                });
-            });
-//            Optional.ofNullable(cmrDto.getAssociatedParty()).ifPresent(party -> {
-//                parameters.put("associatedPartyName", party.getName());
-//                Optional.ofNullable(party.getPostalAddress()).ifPresent(address -> {
-//                    parameters.put("associatedPartyStreet", address.getStreetName());
-//                    parameters.put("associatedPartyCity", address.getCityName());
-//                    parameters.put("associatedPartyPostcode", address.getPostcode());
-//                    parameters.put("associatedPartyCountryCode", address.getCountryCode());
-//                });
-//            });
-            Optional.ofNullable(cmrDto.getCargoInsuranceInstructions()).ifPresent(text -> parameters.put("cargoInsuranceInstructions", text));
-            Optional.ofNullable(cmrDto.getConsignorProvidedBorderClearanceInstructions()).ifPresent(instructions -> parameters.put("consignorProvidedBorderClearanceInstructions", instructions.getDescription()));
-            Optional.ofNullable(cmrDto.getDeclaredValueForCarriageAmount()).ifPresent(amount -> {
-                parameters.put("declaredValueAmount", amount.getValue());
-                parameters.put("declaredValueAmountCurrency", amount.getCurrencyId());
-            });
-            Optional.ofNullable(cmrDto.getDeliveryEvent()).ifPresent(event -> {
-                Optional.ofNullable(event.getActualOccurrenceDateTime()).ifPresent(dt -> {
-                    parameters.put("deliveryEventDateTime", fromDateTime(dt));
-                });
-                Optional.ofNullable(event.getOccurrenceLocation()).ifPresent(loc -> {
-                    parameters.put("deliveryEventLocationName", loc.getName());
-                    Optional.ofNullable(loc.getPostalAddress()).ifPresent(address -> {
-                        parameters.put("deliveryEventLocationStreet", address.getStreetName());
-                        parameters.put("deliveryEventLocationCity", address.getCityName());
-                        parameters.put("deliveryEventLocationPostcode", address.getPostcode());
-                        parameters.put("deliveryEventLocationCountryCode", address.getCountryCode());
-                    });
-                });
-            });
-            Optional.ofNullable(cmrDto.getFreightForwarder()).ifPresent(party -> {
-                parameters.put("freightForwarderName", party.getName());
-                Optional.ofNullable(party.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("freightForwarderStreet", address.getStreetName());
-                    parameters.put("freightForwarderCity", address.getCityName());
-                    parameters.put("freightForwarderPostcode", address.getPostcode());
-                    parameters.put("freightForwarderCountryCode", address.getCountryCode());
-                });
-            });
-            Optional.ofNullable(cmrDto.getLogisticsRiskAnalysisResult()).ifPresent(risk -> {
-                parameters.put("riskAnalysisCode", risk.getConsignmentRiskRelatedCode());
-                parameters.put("riskAnalysisDescription", risk.getDescription());
-                parameters.put("riskAnalysisLevelCode", risk.getLevelCode());
-                parameters.put("riskAnalysisScreeningMethodCode", risk.getScreeningMethodCode());
-            });
-            Optional.ofNullable(cmrDto.getNotifiedWasteMaterial()).ifPresent(waste -> parameters.put("notifiedWasteMaterialId", waste.getId()));
-            Optional.ofNullable(cmrDto.getOnCarriageTransportMovement()).ifPresent(movement -> parameters.put("onCarriageModeCode", movement.getModeCode()));
-            Optional.ofNullable(cmrDto.getPaymentArrangementCode()).ifPresent(code -> parameters.put("paymentArrangementCode", code));
-            Optional.ofNullable(cmrDto.getPreCarriageTransportMovement()).ifPresent(movement -> parameters.put("preCarriageModeCode", movement.getModeCode()));
-            Optional.ofNullable(cmrDto.getRegulatoryProcedure()).ifPresent(proc -> {
-                Optional.ofNullable(proc.getExportCustomsOfficeLocation()).ifPresent(loc -> parameters.put("exportCustomsOfficeId", loc.getId()));
-                Optional.ofNullable(proc.getImportCustomsOfficeLocation()).ifPresent(loc -> parameters.put("importCustomsOfficeId", loc.getId()));
-            });
-            Optional.ofNullable(cmrDto.getSpecifiedTransportMovement()).ifPresent(movement -> parameters.put("specifiedTransportModeCode", movement.getModeCode()));
-            Optional.ofNullable(cmrDto.getTransportEquipmentQuantity()).ifPresent(quantity -> parameters.put("transportEquipmentQuantity", quantity));
-            Optional.ofNullable(cmrDto.getTransportEvent()).ifPresent(event -> {
-                Optional.ofNullable(event.getEstimatedOccurrenceDateTime()).ifPresent(dt -> {
-                    parameters.put("transportEventEstDateTime", dt.getValue());
-                    parameters.put("transportEventEstDateTimeFormat", dt.getFormatId());
-                });
-                Optional.ofNullable(event.getOccurrenceLocation()).ifPresent(loc -> {
-                    parameters.put("transportEventLocationName", loc.getName());
-                    Optional.ofNullable(loc.getPostalAddress()).ifPresent(address -> {
-                        parameters.put("transportEventLocationStreet", address.getStreetName());
-                        parameters.put("transportEventLocationCity", address.getCityName());
-                        parameters.put("transportEventLocationPostcode", address.getPostcode());
-                        parameters.put("transportEventLocationCountryCode", address.getCountryCode());
-                    });
-                });
-            });
-            Optional.ofNullable(cmrDto.getTransportService()).ifPresent(service -> parameters.put("transportServiceDescription", service.getDescription()));
-            Optional.ofNullable(cmrDto.getTransshipmentLocation()).ifPresent(loc -> {
-                parameters.put("transshipmentLocationName", loc.getName());
-                Optional.ofNullable(loc.getPostalAddress()).ifPresent(address -> {
-                    parameters.put("transshipmentLocationStreet", address.getStreetName());
-                    parameters.put("transshipmentLocationCity", address.getCityName());
-                    parameters.put("transshipmentLocationPostcode", address.getPostcode());
-                    parameters.put("transshipmentLocationCountryCode", address.getCountryCode());
-                });
-            });
-            Optional.ofNullable(cmrDto.getTransshipmentPermittedIndicator()).ifPresent(indicator -> parameters.put("transshipmentPermittedIndicator", indicator));
+            parameters.put("deliveryInformation", toStr(sc.getDeliveryInformation()));
+            parameters.put("codAmount", sc.getCODAmount() != null ? sc.getCODAmount().getValue().floatValue() : null);
+            parameters.put("codAmountCurrency", toStr(sc.getCODAmount() != null ? sc.getCODAmount().getCurrencyId().toString() : ""));
 
-            Optional.ofNullable(cmrDto.getUsedTransportEquipment()).ifPresent(equipmentList -> {
-                AtomicInteger i = new AtomicInteger(0);
-                equipmentList.forEach(equipment -> {
-                    int index = i.getAndIncrement();
-                    Optional.ofNullable(equipment.getId()).ifPresent(id -> {
-                        parameters.put("usedTransportEquipment_" + index + "_id", id.getValue());
-                        parameters.put("usedTransportEquipment_" + index + "_id_scheme", id.getSchemeAgencyId());
-                    });
-                    Optional.ofNullable(equipment.getRegistrationCountry()).ifPresent(country -> parameters.put("usedTransportEquipment_" + index + "_country", country.getCode()));
-                    Optional.ofNullable(equipment.getSequenceNumber()).ifPresent(seq -> parameters.put("usedTransportEquipment_" + index + "_sequence", seq));
-                });
-            });
+            String transportContractId = (sc.getTransportContractDocument() != null && sc.getTransportContractDocument().getId() != null) ? sc.getTransportContractDocument().getId().getValue() : "";
+            parameters.put("transportContractDocumentId", toStr(transportContractId));
 
-            log.info("Populated report parameters.");
-            log.info("All parameters." + parameters.toString());
-            // Step 4: Fill the report using the parameters and an empty data source for the main report
-            log.info("Filling the report with data...");
+            parameters.put("deliveryEventDateTime", (sc.getDeliveryEvent() != null) ? fromDateTime(sc.getDeliveryEvent().getActualOccurrenceDateTime()) : null);
+            parameters.put("consignorSealText", "");
+            parameters.put("carrierSealText", "");
+            parameters.put("consigneeSealText", "");
+            parameters.put("consigneeReservationsObservations", "");
+            parameters.put("consigneeSignatureImage", null);
+            parameters.put("deliveryEventLocationName", toStr((sc.getDeliveryEvent() != null && sc.getDeliveryEvent().getOccurrenceLocation() != null) ? sc.getDeliveryEvent().getOccurrenceLocation().getName().get(0) : ""));
+            parameters.put("consigneeSignatureDate", (sc.getDeliveryEvent() != null) ? fromDateTime(sc.getDeliveryEvent().getActualOccurrenceDateTime()) : null);
+            parameters.put("nonContractualCarrierRemarks", "");
+            parameters.put("EN_InternationalNationalTransport", "");
+            parameters.put("DE_InternationalNationalTransport", "");
+            parameters.put("consigneeTimeOfDeparture", null);
+
+            log.info("Populated report parameters successfully.");
+
             final byte[] pdfBytes = JasperRunManager.runReportToPdf(jasperReport, parameters, new JREmptyDataSource());
             log.info("Report filled and exported to PDF successfully.");
 
             return pdfBytes;
 
         } catch (final Exception e) {
-            log.error("Error during PDF generation for request ID: {}", requestId, e);
+            log.error("CRITICAL ERROR during PDF generation for request ID: {}", requestId, e);
             throw new RuntimeException("Failed to generate PDF report", e);
         }
     }

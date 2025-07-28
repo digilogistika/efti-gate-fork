@@ -245,6 +245,11 @@
         <typeText>Cartons on Pallets</typeText>
     </transportPackage>
 
+    <transportPackage>
+        <itemQuantity>123</itemQuantity>
+        <typeCode>CT</typeCode>
+        <typeText>Cartons on BEANS</typeText>
+    </transportPackage>
     <!-- A transport service for this supply chain consignment. -->
     <transportService>
         <description>Loading Meter: 3.20 LDM</description>
