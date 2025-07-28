@@ -15,9 +15,6 @@ import * as pdfjsLib from 'pdfjs-dist';
       max-width: 100%;
       height: auto;
       display: block;
-      margin: 0 auto 1rem; /* Center canvas and add space between pages */
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
   `]
 })
@@ -46,26 +43,24 @@ export class Pdfjs implements OnChanges {
     const loadingTask = pdfjsLib.getDocument(pdfArrayBuffer);
 
     const pdf = await loadingTask.promise;
-    const numPages = pdf.numPages;
 
-    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum);
-      const viewport = page.getViewport({ scale: 1.5 });
+    // Since the PDF is always one page, get the first page directly.
+    const page = await pdf.getPage(1);
+    const viewport = page.getViewport({ scale: 1.5 });
 
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      if (!context) continue;
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (!context) return;
 
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
 
-      container.appendChild(canvas);
+    container.appendChild(canvas);
 
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport
-      };
-      await page.render(renderContext).promise;
-    }
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport
+    };
+    await page.render(renderContext).promise;
   }
 }
