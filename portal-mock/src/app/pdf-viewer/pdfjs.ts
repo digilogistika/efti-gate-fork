@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as pdfjsLib from 'pdfjs-dist';
 
@@ -6,15 +6,12 @@ import * as pdfjsLib from 'pdfjs-dist';
   selector: 'app-pdfjs-viewer',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div #pdfContainer class="pdf-container"></div>
-  `,
+  template: '',
 })
 export class Pdfjs implements OnChanges {
   @Input() pdfData: Blob | null = null;
 
-  constructor(private viewContainerRef: ViewContainerRef) {
-    // Set the worker source for PDF.js
+  constructor(private elementRef: ElementRef<HTMLElement>) {
     pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.mjs';
   }
 
@@ -25,21 +22,16 @@ export class Pdfjs implements OnChanges {
   }
 
   private async renderPdf(pdfData: Blob): Promise<void> {
-    const container = this.viewContainerRef.element.nativeElement.querySelector('.pdf-container');
+    const container = this.elementRef.nativeElement;
     if (!container) return;
 
-    // Clear previous content
     container.innerHTML = '';
 
     const pdfArrayBuffer = await pdfData.arrayBuffer();
     const loadingTask = pdfjsLib.getDocument(pdfArrayBuffer);
-
     const pdf = await loadingTask.promise;
-
-    // Since the PDF is always one page, get the first page directly.
     const page = await pdf.getPage(1);
     const viewport = page.getViewport({ scale: 1.5 });
-
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     if (!context) return;
