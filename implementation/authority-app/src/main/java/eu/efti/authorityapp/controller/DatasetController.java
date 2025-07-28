@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -59,46 +56,30 @@ public class DatasetController implements DatasetControllerApi {
             );
 
             log.info("Received response from gate with status: {}", response.getStatusCode());
-            return ResponseEntity
-                    .status(response.getStatusCode())
-                    .body(response.getBody());
+            final DatasetDto datasetDto = response.getBody();
+
+            if (response.getStatusCode() != HttpStatus.OK || datasetDto == null || datasetDto.getData() == null) {
+                log.error("Dataset response is not OK or data is null. Status: {}", response.getStatusCode());
+                return response;
+            }
+
+
+            try {
+                log.info("Generating PDF for request ID: {}", datasetDto.getRequestId());
+                final byte[] pdfBytes = pdfGenerationService.generatePdf(
+                        datasetDto.getRequestId(),
+                        datasetDto.getData());
+                datasetDto.setPdfData(pdfBytes);
+                log.info("Successfully generated and embedded PDF into the response.");
+            } catch (final Exception e) {
+                log.error("PDF generation failed for datasetId: {}. Returning data without PDF.", datasetId, e);
+            }
+
+            return ResponseEntity.ok(datasetDto);
+
+
         } catch (Exception e) {
             log.error("Error querying gate for dataset", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @Override
-    @GetMapping(value = "/dataset/pdf/{gateId}/{platformId}/{datasetId}", produces = "application/pdf")
-    public ResponseEntity<byte[]> getDatasetAsPdf(String gateId, String platformId, String datasetId, List<String> subsetIds) {
-        log.info("Request received to generate PDF for dataset with gateId: {}, platformId: {}, datasetId: {}", gateId, platformId, datasetId);
-
-        final ResponseEntity<DatasetDto> datasetResponse = getDataset(gateId, platformId, datasetId, subsetIds);
-
-        if (datasetResponse.getStatusCode() != HttpStatus.OK || !datasetResponse.hasBody()) {
-            log.error("Failed to retrieve dataset data. Status: {}", datasetResponse.getStatusCode());
-            return ResponseEntity.status(datasetResponse.getStatusCode()).build();
-        }
-
-        final DatasetDto datasetDto = datasetResponse.getBody();
-        if (datasetDto == null || datasetDto.getData() == null) {
-            log.error("Dataset response is not OK or data is null. Status: {}",
-                    datasetDto != null ? datasetDto.getStatus() : "null");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        try {
-            final byte[] pdfBytes = pdfGenerationService.generatePdf(
-                    datasetDto.getRequestId(),
-                    datasetDto.getData());
-
-            final HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDisposition(ContentDisposition.builder("inline").filename("dataset_" + datasetId + ".pdf").build());
-
-            log.info("Successfully generated and returning PDF for datasetId: {}", datasetId);
-            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-        } catch (final Exception e) {
-            log.error("PDF generation failed for datasetId: {}", datasetId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

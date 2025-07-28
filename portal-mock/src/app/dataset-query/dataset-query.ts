@@ -1,4 +1,3 @@
-// portal-mock/src/app/dataset-query/dataset-query.ts
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -34,7 +33,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
   private langChangeSubscription!: Subscription;
   protected isUilEditMode: boolean = false;
   protected pdfData: Blob | null = null;
-  protected isPdfLoading: boolean = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -74,28 +72,42 @@ export class DatasetQuery implements OnInit, OnDestroy {
 
   onSubmit() {
     if (!this.datasetQueryForm.valid) {
-      return
+      return;
     }
     this.pdfData = null;
-    const formValues = this.datasetQueryForm.getRawValue();
-
-    let identifiersQuery: string = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}`;
-    identifiersQuery += "?subsets=" + Array.from(formValues.subsetIds).join(",");
-
+    this.datasetQueryResponse = null;
+    this.datasetQueryErrorMessage = null;
     this.isLoading = true;
+
+    const formValues = this.datasetQueryForm.getRawValue();
+    const identifiersQuery = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}?subsets=${Array.from(formValues.subsetIds).join(',')}`;
+
     this.http.get<DatasetResponse>(identifiersQuery)
       .subscribe({
         next: (v) => {
-          this.datasetQueryResponse = v;
           this.isLoading = false;
+          this.datasetQueryResponse = v;
+
           if (this.subsetDetails) {
             this.subsetDetails.nativeElement.open = false;
           }
-          this.datasetQueryErrorMessage = null;
 
-          // If the initial data query is successful, automatically fetch the PDF
-          if (!v.errorCode) {
-            this.viewPdf();
+          if (v.errorCode || !v.data) {
+            this.datasetQueryErrorMessage = v.errorDescription || this.translate.instant('datasetQuery.errorFetchingDataset');
+            return;
+          }
+
+          if (v.pdfData) {
+            // Use fetch with a Data URI for safe Base64 decoding.
+            fetch(`data:application/pdf;base64,${v.pdfData}`)
+              .then(res => res.blob())
+              .then(blob => {
+                this.pdfData = blob;
+              })
+              .catch(e => {
+                console.error('Error decoding Base64 PDF data:', e);
+                this.datasetQueryErrorMessage = this.translate.instant('datasetQuery.errorDecodingPdf');
+              });
           }
         },
         error: (error) => {
@@ -184,30 +196,5 @@ export class DatasetQuery implements OnInit, OnDestroy {
 
   navigateBack() {
     this.location.back();
-  }
-
-  private viewPdf() {
-    if (!this.datasetQueryForm.valid) {
-      return;
-    }
-    const formValues = this.datasetQueryForm.getRawValue();
-    let pdfQuery: string = `/api/v1/dataset/pdf/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}`;
-    pdfQuery += "?subsets=" + Array.from(formValues.subsetIds).join(",");
-
-    this.isPdfLoading = true;
-    this.pdfData = null;
-
-    this.http.get(pdfQuery, { responseType: 'blob' }).subscribe({
-      next: (pdfBlob: Blob) => {
-        const objectUrl = URL.createObjectURL(pdfBlob) + '#toolbar=0';
-        console.log("ObjectURl" + objectUrl);
-        this.pdfData = pdfBlob; // Simply assign the blob
-        this.isPdfLoading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching PDF:', error);
-        this.isPdfLoading = false;
-      }
-    });
   }
 }

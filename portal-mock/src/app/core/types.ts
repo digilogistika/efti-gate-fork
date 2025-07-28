@@ -55,4 +55,5 @@ export interface DatasetResponse {
   errorCode: string
   errorDescription: string
   data: string
+  pdfData?: string
 }
