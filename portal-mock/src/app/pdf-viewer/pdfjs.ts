@@ -1,4 +1,3 @@
-// src/app/pdfjs-viewer/pdfjs-viewer.component.ts
 import { Component, Input, OnChanges, SimpleChanges, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as pdfjsLib from 'pdfjs-dist';
@@ -10,13 +9,6 @@ import * as pdfjsLib from 'pdfjs-dist';
   template: `
     <div #pdfContainer class="pdf-container"></div>
   `,
-  styles: [`
-    .pdf-container ::ng-deep canvas {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-  `]
 })
 export class Pdfjs implements OnChanges {
   @Input() pdfData: Blob | null = null;
@@ -54,6 +46,7 @@ export class Pdfjs implements OnChanges {
 
     canvas.height = viewport.height;
     canvas.width = viewport.width;
+    canvas.className = 'max-w-full h-auto block';
 
     container.appendChild(canvas);
 
