@@ -114,6 +114,17 @@
             <version>7.0.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-pdf</artifactId>
+            <version>7.0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-jdt</artifactId>
+            <version>7.0.3</version>
+        </dependency>
         <!-- Required by JasperReports for processing XPath data sources -->
         <dependency>
             <groupId>jaxen</groupId>
@@ -133,13 +144,6 @@
             <artifactId>jaxb-runtime</artifactId>
             <version>4.0.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-pdf</artifactId>
-            <version>7.0.3</version>
-        </dependency>
-
     </dependencies>
 
     <build>
