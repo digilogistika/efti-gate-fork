@@ -44,7 +44,8 @@ export class Pdfjs implements OnChanges {
 
     const renderContext = {
       canvasContext: context,
-      viewport: viewport
+      viewport: viewport,
+      canvas: canvas
     };
     await page.render(renderContext).promise;
   }
