@@ -93,7 +93,6 @@
           <ul class="space-y-4">
             @for (memberState of availableSubsets; track memberState.isoCode) {
               <li class="border border-gray-200/50 rounded-xl overflow-hidden bg-white/40 backdrop-blur-sm">
-                <!-- FIX 1: The 'open' attribute has been REMOVED from this <details> tag -->
                 <details class="group">
                   <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50/50">
                     <div class="flex items-center gap-3">
@@ -112,28 +111,36 @@
                               <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset.subset }}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                              <!-- FIX 2: Replaced with a new, styled blue question mark button -->
                               <button (click)="openSubsetInfoDialog(subset); $event.preventDefault()"
                                       class="p-1 rounded-full hover:bg-blue-100 transition-colors duration-150">
                                 <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                                 </svg>
                               </button>
-                              <!-- Transport Mode Icon Button (Using the corrected icons from the previous step) -->
-                              <div class="p-1 rounded-md bg-gray-200/60 text-gray-600">
+                              <div class="p-1 rounded-md bg-gray-200/60">
                                 @switch (subset.transport) {
                                   @case ('Road') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5v-1.875a3.375 3.375 0 013.375-3.375h9.75a3.375 3.375 0 013.375 3.375v1.875m-17.25 4.5h16.5M6.375 6h11.25L18 10.5h-12L6.375 6z" />
-                                    </svg>
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
                                   }
                                   @case ('Rail') {
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                    <!-- NEW, RELIABLE TRAIN ICON -->
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M20 15.5c0 .83-.67 1.5-1.5 1.5h-13C4.67 17 4 16.33 4 15.5V12h16v3.5zM4 11V6c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4v5H4z"/>
+                                      <path d="M9.5 17v3M14.5 17v3"/>
+                                      <path d="M8 8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S10.33 10 9.5 10s-1.5-.67-1.5-1.5zM14.5 8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S15.33 10 14.5 10s-1.5-.67-1.5-1.5z"/>
                                     </svg>
                                   }
+                                  @case ('Inland Waterway') {
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"></circle><line x1="12" y1="22" x2="12" y2="8"></line><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path></svg>
+                                  }
+                                  @case ('Maritime') {
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"></circle><line x1="12" y1="22" x2="12" y2="8"></line><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path></svg>
+                                  }
+                                  @case ('Air') {
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                  }
                                   @default {
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-9.204 2.153l-1.32.879A7 7 0 0014.47 18.42l1.013-1.52-.963-.642a5.5 5.5 0 01-4.207-4.814l1.32-.88a5.5 5.5 0 014.68-1.14zM2.969 8.576a5.5 5.5 0 019.204-2.153l1.32-.879A7 7 0 005.53 1.58l-1.013 1.52.963.642a5.5 5.5 0 014.207 4.814l-1.32.88a5.5 5.5 0 01-4.68 1.14z" clip-rule="evenodd" /></svg>
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
                                   }
                                 }
                               </div>
@@ -203,34 +210,36 @@
                       <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset.subset }}</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <!-- Info Button -->
                       <button (click)="openSubsetInfoDialog(subset); $event.preventDefault()"
-                              class="p-1 rounded-md hover:bg-indigo-100 text-gray-500 hover:text-indigo-600 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A.75.75 0 008.5 13h3a.75.75 0 00.744-.63l.46-2.066a.25.25 0 01.244-.304H13a.75.75 0 000-1.5H9z" clip-rule="evenodd" />
+                              class="p-1 rounded-full hover:bg-blue-100 transition-colors duration-150">
+                        <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                         </svg>
                       </button>
-                      <!-- Transport Mode Icon Button -->
-                      <div class="p-1 rounded-md bg-gray-200/60 text-gray-600">
+                      <div class="p-1 rounded-md bg-gray-200/60">
                         @switch (subset.transport) {
                           @case ('Road') {
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M1.5 6.375c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v3.026a.75.75 0 01-1.5 0V6.375a.375.375 0 00-.375-.375H3.375a.375.375 0 00-.375.375v11.25c0 .207.168.375.375.375h17.25a.375.375 0 00.375-.375v-3.026a.75.75 0 011.5 0v3.026c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 17.625V6.375z" clip-rule="evenodd" /><path d="M10.077 8.183a.75.75 0 01.944-.265l5.25 2.625a.75.75 0 010 1.316l-5.25 2.625a.75.75 0 11-.679-1.316L14.23 12l-4.832-2.416a.75.75 0 01-.321-1.051z" /><path fill-rule="evenodd" d="M3 9.75a.75.75 0 01.75-.75h3a.75.75 0 010 1.5h-3a.75.75 0 01-.75-.75zm0 4.5a.75.75 0 01.75-.75h3a.75.75 0 010 1.5h-3a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg>
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
                           }
                           @case ('Rail') {
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M4.5 5.25a.75.75 0 01.75-.75h13.5a.75.75 0 010 1.5H5.25a.75.75 0 01-.75-.75z" /><path fill-rule="evenodd" d="M22.5 9.75A.75.75 0 0021.75 9h-19.5a.75.75 0 000 1.5h19.5a.75.75 0 00.75-.75zM3.893 12.215a.75.75 0 01.31-.629l4.5-3.75a.75.75 0 01.992.12l3.25 4.333a.75.75 0 01-.992 1.32l-2.03-2.707-3.01 2.508a.75.75 0 01-1.02-.722zM10.893 12.215a.75.75 0 01.31-.629l4.5-3.75a.75.75 0 01.992.12l3.25 4.333a.75.75 0 01-.992 1.32l-2.03-2.707-3.01 2.508a.75.75 0 01-1.02-.722z" clip-rule="evenodd" /><path d="M4.5 18.75a.75.75 0 01.75-.75h13.5a.75.75 0 010 1.5H5.25a.75.75 0 01-.75-.75z" /></svg>
+                            <!-- NEW, RELIABLE TRAIN ICON -->
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M20 15.5c0 .83-.67 1.5-1.5 1.5h-13C4.67 17 4 16.33 4 15.5V12h16v3.5zM4 11V6c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4v5H4z"/>
+                              <path d="M9.5 17v3M14.5 17v3"/>
+                              <path d="M8 8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S10.33 10 9.5 10s-1.5-.67-1.5-1.5zM14.5 8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S15.33 10 14.5 10s-1.5-.67-1.5-1.5z"/>
+                            </svg>
                           }
                           @case ('Inland Waterway') {
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M2.25 11.25a.75.75 0 000 1.5h19.5a.75.75 0 000-1.5H2.25z" /><path fill-rule="evenodd" d="M4.533 5.864A3.75 3.75 0 017.5 4.5h9A3.75 3.75 0 0120.25 7.5v6.25a.75.75 0 01-1.5 0V7.5a2.25 2.25 0 00-2.25-2.25h-9a2.25 2.25 0 00-2.25 2.25v10.5c0 .907.575 1.688 1.393 2.023.798.327 1.76.02 2.367-.655l2.25-2.5a.75.75 0 011.14.99l-2.25 2.5a3.75 3.75 0 01-4.26 1.127A3.75 3.75 0 014.533 18V5.864z" clip-rule="evenodd" /></svg>
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"></circle><line x1="12" y1="22" x2="12" y2="8"></line><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path></svg>
                           }
                           @case ('Maritime') {
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M2.25 11.25a.75.75 0 01.75-.75h18a.75.75 0 01.75.75v6a.75.75 0 01-.75.75h-18a.75.75 0 01-.75-.75v-6zM3 12.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h18a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75H3z" clip-rule="evenodd" /><path d="M3.75 2.25a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5H3.75zM3.75 6a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5H3.75zM12 9.75a.75.75 0 00-.75.75v1.5a.75.75 0 001.5 0v-1.5a.75.75 0 00-.75-.75z" /></svg>
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"></circle><line x1="12" y1="22" x2="12" y2="8"></line><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path></svg>
                           }
                           @case ('Air') {
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M11.25 3.25a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" /><path fill-rule="evenodd" d="M10.06 5.568a.75.75 0 00-1.29.914l-1.313 3.89a.75.75 0 00.413 1.002l5.038 1.959a.75.75 0 00.915-1.29l-1.313-3.89a.75.75 0 00-1.002-1.413l-1.442.824L11.25 3.25a.75.75 0 00-1.19-.682z" clip-rule="evenodd" /><path d="M12.99 8.25a.75.75 0 00-1.439.462l-1.442 4.327a.75.75 0 00.992 1.036l4.634-1.811a.75.75 0 00-.53-1.44l-3.203 1.252-1.442-4.326z" /><path fill-rule="evenodd" d="M12.75 18a.75.75 0 01.75.75v.01a.75.75 0 01-1.5 0V18.75a.75.75 0 01.75-.75zM15.75 15a.75.75 0 01.75.75v.01a.75.75 0 01-1.5 0V15.75a.75.75 0 01.75-.75zM9.75 15a.75.75 0 01.75.75v.01a.75.75 0 01-1.5 0V15.75a.75.75 0 01.75-.75zM12.75 12a.75.75 0 01.75.75v.01a.75.75 0 01-1.5 0V12.75a.75.75 0 01.75-.75zM8.25 18.75a.75.75 0 00-1.5 0v-.01a.75.75 0 001.5 0v.01zM18.75 18.75a.75.75 0 00-1.5 0v-.01a.75.75 0 001.5 0v.01z" clip-rule="evenodd" /></svg>
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                           }
                           @default {
-                            <!-- Default/Combined/Multi-modal Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-9.204 2.153l-1.32.879A7 7 0 0014.47 18.42l1.013-1.52-.963-.642a5.5 5.5 0 01-4.207-4.814l1.32-.88a5.5 5.5 0 014.68-1.14zM2.969 8.576a5.5 5.5 0 019.204-2.153l1.32-.879A7 7 0 005.53 1.58l-1.013 1.52.963.642a5.5 5.5 0 014.207 4.814l-1.32.88a5.5 5.5 0 01-4.68 1.14z" clip-rule="evenodd" /></svg>
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
                           }
                         }
                       </div>
@@ -364,51 +373,53 @@
         class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 m-0 backdrop:bg-black/50 backdrop:backdrop-blur-sm bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-0 w-full max-w-2xl">
   @if(selectedSubsetInfo) {
     <!-- Header -->
-    <div class="bg-gradient-to-r from-gray-500/10 to-gray-500/10 px-6 py-4 border-b border-white/20">
+    <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 bg-gradient-to-r from-gray-500 to-gray-600 rounded-lg flex items-center justify-center">
-            <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A.75.75 0 008.5 13h3a.75.75 0 00.744-.63l.46-2.066a.25.25 0 01.244-.304H13a.75.75 0 000-1.5H9z" clip-rule="evenodd" />
+          <!-- Correct Question Mark Icon -->
+          <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md">
+            <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
             </svg>
           </div>
-          <h1 class="text-xl font-bold bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent">
-            Subset: {{ selectedSubsetInfo.subset }}
+          <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Subset Details: {{ selectedSubsetInfo.subset }}
           </h1>
         </div>
-        <button
-          (click)="closeSubsetInfoDialog()"
-          class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-lg transition-all duration-200">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-          </svg>
+        <button (click)="closeSubsetInfoDialog()" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-lg transition-all duration-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
         </button>
       </div>
     </div>
     <!-- Content -->
-    <div class="p-6 space-y-4">
-      <div>
-        <h3 class="font-semibold text-gray-800 mb-1">Applicable Law:</h3>
-        <p class="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg border">{{ selectedSubsetInfo.law }}</p>
+    <div class="p-6 space-y-5">
+      <!-- Data Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-lg bg-white/60 border border-gray-200/50">
+          <dt class="text-sm font-semibold text-gray-500 mb-1">Transport Mode</dt>
+          <dd class="text-base font-medium text-gray-800">{{ selectedSubsetInfo.transport }}</dd>
+        </div>
+        <div class="p-4 rounded-lg bg-white/60 border border-gray-200/50">
+          <dt class="text-sm font-semibold text-gray-500 mb-1">Dangerous Goods</dt>
+          <dd>
+            <span [ngClass]="selectedSubsetInfo.dangerousGoods ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'"
+                  class="px-2.5 py-1 text-xs font-bold rounded-full">
+              {{ selectedSubsetInfo.dangerousGoods ? 'YES' : 'NO' }}
+            </span>
+          </dd>
+        </div>
       </div>
+      <!-- Law Section -->
       <div>
-        <h3 class="font-semibold text-gray-800 mb-1">Transport Mode:</h3>
-        <p class="text-sm text-gray-600">{{ selectedSubsetInfo.transport }}</p>
-      </div>
-      <div>
-        <h3 class="font-semibold text-gray-800 mb-1">Dangerous Goods:</h3>
-        <span [ngClass]="selectedSubsetInfo.dangerousGoods ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'"
-              class="px-2 py-1 text-xs font-medium rounded-full">
-          {{ selectedSubsetInfo.dangerousGoods ? 'Yes' : 'No' }}
-        </span>
+        <dt class="text-sm font-semibold text-gray-500 mb-1">Applicable Law</dt>
+        <dd class="text-sm text-gray-700 bg-indigo-50/70 p-4 rounded-lg border border-indigo-200/50 max-h-40 overflow-y-auto">
+          {{ selectedSubsetInfo.law }}
+        </dd>
       </div>
     </div>
     <!-- Footer -->
-    <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-200/50 flex justify-end">
-      <button
-        (click)="closeSubsetInfoDialog()"
-        class="px-6 py-2.5 text-gray-600 bg-gray-100 hover:bg-gray-200/80 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-        type="button">
+    <div class="px-6 py-4 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 border-t border-gray-200/50 flex justify-end">
+      <button (click)="closeSubsetInfoDialog()" class="px-6 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200/80 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400" type="button">
         Close
       </button>
     </div>
