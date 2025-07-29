@@ -23,4 +23,5 @@ public class DatasetDto {
     private String errorCode;
     private String errorDescription;
     private byte[] data;
+    private byte[] pdfData;
 }

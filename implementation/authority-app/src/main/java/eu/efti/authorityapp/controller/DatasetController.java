@@ -4,19 +4,15 @@ import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.DatasetControllerApi;
 import eu.efti.authorityapp.dto.DatasetDto;
 import eu.efti.authorityapp.service.ConfigService;
+import eu.efti.authorityapp.service.PdfGenerationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.util.List;
 
 @RestController
@@ -27,6 +23,7 @@ public class DatasetController implements DatasetControllerApi {
     private final GateProperties gateProperties;
     private final RestTemplate restTemplate;
     private final ConfigService configService;
+    private final PdfGenerationService pdfGenerationService;
 
     @Override
     @GetMapping("/dataset/{gateId}/{platformId}/{datasetId}")
@@ -57,11 +54,30 @@ public class DatasetController implements DatasetControllerApi {
                     requestEntity,
                     DatasetDto.class
             );
-            log.info("Received response from gate with status: {}", response.getStatusCode());
 
-            return ResponseEntity
-                    .status(response.getStatusCode())
-                    .body(response.getBody());
+            log.info("Received response from gate with status: {}", response.getStatusCode());
+            final DatasetDto datasetDto = response.getBody();
+
+            if (response.getStatusCode() != HttpStatus.OK || datasetDto == null || datasetDto.getData() == null) {
+                log.error("Dataset response is not OK or data is null. Status: {}", response.getStatusCode());
+                return response;
+            }
+
+
+            try {
+                log.info("Generating PDF for request ID: {}", datasetDto.getRequestId());
+                final byte[] pdfBytes = pdfGenerationService.generatePdf(
+                        datasetDto.getRequestId(),
+                        datasetDto.getData());
+                datasetDto.setPdfData(pdfBytes);
+                log.info("Successfully generated and embedded PDF into the response.");
+            } catch (final Exception e) {
+                log.error("PDF generation failed for datasetId: {}. Returning data without PDF.", datasetId, e);
+            }
+
+            return ResponseEntity.ok(datasetDto);
+
+
         } catch (Exception e) {
             log.error("Error querying gate for dataset", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

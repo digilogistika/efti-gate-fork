@@ -29,282 +29,268 @@
       </div>
     </div>
 
-    <!-- Query Form -->
-    <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden mb-8">
-      <div
-        class="flex flex-row justify-between bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
-        <h2 class="text-lg font-semibold text-gray-800">{{ 'datasetQuery.queryParameters' | translate }}</h2>
-        <div class="flex items-center gap-3">
-          <span class="text-sm font-semibold text-gray-700">{{ 'datasetQuery.editUILQuery' | translate }}</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input (change)="onUILEditToggleChange($event)" class="sr-only peer" type="checkbox">
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-indigo-500 peer-checked:to-purple-600"></div>
-          </label>
-        </div>
-      </div>
-
-      <form (ngSubmit)="onSubmit()" [formGroup]="datasetQueryForm" class="p-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Gate ID -->
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2" for="gateId">
-              {{ 'datasetQuery.gateId' | translate }}
+    @if (isEnglishLanguage) {
+      <!-- English version -->
+      <details #subsetDetails open class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden group">
+        <summary
+          class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
+          <div class="flex-1">
+            <h2 class="text-lg font-semibold text-gray-800">
+              {{ 'datasetQuery.selectSubsets' | translate }}
               <span class="text-sm text-red-600 font-semibold">*</span>
-            </label>
-            <div class="relative">
-              <input
-                class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
-                formControlName="gateId"
-                id="gateId"
-                [placeholder]="'datasetQuery.enterGateId' | translate"
-                type="text"
-              >
-            </div>
+            </h2>
           </div>
-
-          <!-- Platform ID -->
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2" for="platformId">
-              {{ 'datasetQuery.platformId' | translate }}
-              <span class="text-sm text-red-600 font-semibold">*</span>
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-semibold text-gray-700">{{ 'datasetQuery.editUILQuery' | translate }}</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input (change)="onUILEditToggleChange($event)" class="sr-only peer" type="checkbox">
+              <div
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-indigo-500 peer-checked:to-purple-600"></div>
             </label>
-            <div class="relative">
-              <input
-                class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
-                formControlName="platformId"
-                id="platformId"
-                [placeholder]="'datasetQuery.enterPlatformId' | translate"
-                type="text"
-              >
-            </div>
           </div>
+          <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
 
-          <!-- Dataset ID -->
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2" for="datasetId">
-              {{ 'datasetQuery.datasetId' | translate }}
-              <span class="text-sm text-red-600 font-semibold">*</span>
-            </label>
-            <div class="relative">
-              <input
-                class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm"
-                formControlName="datasetId"
-                id="datasetId"
-                [placeholder]="'datasetQuery.enterDatasetId' | translate"
-                type="text"
-              >
-            </div>
+        @if (isUilEditMode) {
+          <div class="border-t border-white/20">
+            <form [formGroup]="datasetQueryForm" class="p-4 sm:p-6">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2" for="gateId">{{ 'datasetQuery.gateId' | translate }}<span class="text-sm text-red-600 font-semibold">*</span></label>
+                  <input class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" formControlName="gateId" id="gateId" type="text">
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2" for="platformId">{{ 'datasetQuery.platformId' | translate }}<span class="text-sm text-red-600 font-semibold">*</span></label>
+                  <input class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" formControlName="platformId" id="platformId" type="text">
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2" for="datasetId">{{ 'datasetQuery.datasetId' | translate }}<span class="text-sm text-red-600 font-semibold">*</span></label>
+                  <input class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" formControlName="datasetId" id="datasetId" type="text">
+                </div>
+              </div>
+            </form>
           </div>
-        </div>
+        }
 
-        <div class="flex justify-end items-center gap-2 mt-8 ">
-          <div class="flex flex-col">
+        <div class="px-5 pb-2 pt-5 border-t border-white/20">
+          <div class="flex flex-col items-center gap-2">
+            <button (click)="onSubmit()" [disabled]="isLoading || datasetQueryForm.invalid" class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105">
+                <span class="flex items-center gap-2">
+                  @if (isLoading) { <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>{{ 'datasetQuery.searching' | translate }}</span> }
+                  @else { <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>{{ 'datasetQuery.queryDataset' | translate }}</span> }
+                </span>
+            </button>
             @if (datasetQueryForm.controls['subsetIds'].value.size <= 0) {
-              <small class="text-red-600">
-                {{ 'datasetQuery.selectAtLeastOneSubset' | translate }}
-              </small>
+              <small class="text-red-600">{{ 'datasetQuery.selectAtLeastOneSubset' | translate }}</small>
             }
             @if (datasetQueryErrorMessage) {
-              <small class="text-red-600">
-                {{datasetQueryErrorMessage}}
-              </small>
+              <small class="text-red-600">{{datasetQueryErrorMessage}}</small>
             }
           </div>
-
-          <!-- Submit Button -->
-          <div>
-            <button
-              [disabled]="isLoading || datasetQueryForm.invalid"
-              class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100"
-              type="submit"
-            >
-            <span class="flex items-center gap-2">
-              @if (isLoading) {
-                <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
-                <span>{{ 'datasetQuery.searching' | translate }}</span>
-              } @else {
-                <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none"
-                     stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-                <span>{{ 'datasetQuery.queryDataset' | translate }}</span>
-              }
-            </span>
-            </button>
-          </div>
         </div>
-      </form>
-    </div>
 
-    <!-- Query Results -->
-    @if (datasetQueryResponse != null) {
-      <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden mt-8">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
-          <div class="flex flex-col gap-2 sm:flex-row items-center justify-between">
-            <div class="flex items-center gap-3">
+        <div class="p-4">
+          <ul class="space-y-4">
+            @for (memberState of availableSubsets; track memberState.isoCode) {
+              <li class="border border-gray-200/50 rounded-xl overflow-hidden bg-white/40 backdrop-blur-sm">
+                <details class="group">
+                  <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50/50">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-sm font-bold">{{ memberState.isoCode }}</div>
+                      <h3 class="text-lg font-semibold text-gray-800">{{ memberState.name }}</h3>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </summary>
+                  <div class="px-4 pb-4 pt-2 bg-gray-50/50 border-t border-gray-200/30">
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      @for (subset of memberState.subsets; track $index) {
+                        <li>
+                          <label class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 cursor-pointer group">
+                            <input type="checkbox" [value]="subset" [checked]="selectedSubsets.has(subset)" (change)="onSubsetsChange(subset, $event)" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
+                            <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset }}</span>
+                          </label>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                </details>
+              </li>
+            }
+          </ul>
+        </div>
+      </details>
+    } @else {
+      <!-- Non-English version -->
+      <details #subsetDetails open class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden group">
+        <summary
+          class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
+          <div class="flex-1">
+            <h2 class="text-lg font-semibold text-gray-800">
+              {{ 'datasetQuery.selectSubsets' | translate }}
+              <span class="text-sm text-red-600 font-semibold">*</span>
+            </h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-semibold text-gray-700">{{ 'datasetQuery.editUILQuery' | translate }}</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input (change)="onUILEditToggleChange($event)" class="sr-only peer" type="checkbox">
               <div
-                class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-                </svg>
-              </div>
-              <h1
-                class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                {{ 'datasetQuery.retrievedDataset' | translate }}
-              </h1>
-            </div>
-            <div class="flex items-center gap-2 px-3 py-1 bg-gray-100/50 rounded-full">
-              <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <small class="text-xs font-medium text-gray-600">
-                ID: {{ datasetQueryResponse.requestId }}
-              </small>
-            </div>
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-indigo-500 peer-checked:to-purple-600"></div>
+            </label>
           </div>
+          <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+
+        @if (isUilEditMode) {
+          <div class="border-t border-white/20">
+            <form [formGroup]="datasetQueryForm" class="p-4 sm:p-6">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2" for="gateId">{{ 'datasetQuery.gateId' | translate }}<span class="text-sm text-red-600 font-semibold">*</span></label>
+                  <input class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" formControlName="gateId" id="gateId" type="text">
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2" for="platformId">{{ 'datasetQuery.platformId' | translate }}<span class="text-sm text-red-600 font-semibold">*</span></label>
+                  <input class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" formControlName="platformId" id="platformId" type="text">
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2" for="datasetId">{{ 'datasetQuery.datasetId' | translate }}<span class="text-sm text-red-600 font-semibold">*</span></label>
+                  <input class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" formControlName="datasetId" id="datasetId" type="text">
+                </div>
+              </div>
+            </form>
+          </div>
+        }
+
+        <div class="p-6">
+          @if(availableSubsets.length > 0) {
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              @for (subset of availableSubsets[0].subsets; track $index) {
+                <li>
+                  <label class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 cursor-pointer group">
+                    <input type="checkbox" [value]="subset" [checked]="selectedSubsets.has(subset)" (change)="onSubsetsChange(subset, $event)" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
+                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset }}</span>
+                  </label>
+                </li>
+              }
+            </ul>
+          }
         </div>
 
-        <!-- Content -->
-        <div class="p-6">
-          @if (datasetQueryResponse.errorCode != null || datasetQueryResponse.errorDescription != null) {
-            <!-- Error State -->
-            <div class="bg-red-50/80 border border-red-200/50 rounded-xl p-6">
-              <div class="flex items-start gap-3">
-                <div class="flex-shrink-0">
-                  <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-                          stroke-linejoin="round" stroke-width="2"/>
+        <div class="pb-4 border-t border-white/20">
+          <div class="flex flex-col items-center gap-2">
+            <button (click)="onSubmit()" [disabled]="isLoading || datasetQueryForm.invalid" class="group relative px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105">
+              <span class="flex items-center gap-2">
+                @if (isLoading) { <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>{{ 'datasetQuery.searching' | translate }}</span> }
+                @else { <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>{{ 'datasetQuery.queryDataset' | translate }}</span> }
+              </span>
+            </button>
+            @if (datasetQueryForm.controls['subsetIds'].value.size <= 0) {
+              <small class="text-red-600">{{ 'datasetQuery.selectAtLeastOneSubset' | translate }}</small>
+            }
+            @if (datasetQueryErrorMessage) {
+              <small class="text-red-600">{{datasetQueryErrorMessage}}</small>
+            }
+          </div>
+        </div>
+      </details>
+    }
+
+    <!-- Query Results and PDF Viewer -->
+    @if (datasetQueryResponse != null) {
+      <div class="mt-8 sm:rounded-2xl shadow-xl overflow-hidden">
+        <!-- Query Results Container -->
+        <div class="bg-white/60 backdrop-blur-xl">
+          <!-- Header -->
+          <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
+            <div class="flex flex-col gap-2 sm:flex-row items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
                   </svg>
                 </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-semibold text-red-800 mb-3">Query Error</h3>
-                  <div class="space-y-2">
-                    <div class="flex items-center gap-2">
-                      <span class="text-sm font-medium text-red-700">Error Code:</span>
-                      <span class="px-2 py-1 bg-red-100 text-red-800 text-sm font-mono rounded">
-                    {{ datasetQueryResponse.errorCode }}
-                  </span>
-                    </div>
-                    <div class="flex items-start gap-2">
-                      <span class="text-sm font-medium text-red-700 mt-0.5">{{ 'datasetQuery.descriptionLabel' | translate }}</span>
-                      <span class="text-sm text-red-600 leading-relaxed">
-                    {{ datasetQueryResponse.errorDescription }}
-                  </span>
-                    </div>
-                  </div>
-                </div>
+                <h1
+                  class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                  {{ 'datasetQuery.retrievedDataset' | translate }}
+                </h1>
+              </div>
+              <div class="flex items-center gap-2 px-3 py-1 bg-gray-100/50 rounded-full">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <small class="text-xs font-medium text-gray-600">
+                  ID: {{ datasetQueryResponse.requestId }}
+                </small>
               </div>
             </div>
-          } @else {
-            <!-- Success State -->
-            <div class="space-y-6">
-              <div class="flex flex-row justify-between">
-                <div class="flex items-center gap-3">
+          </div>
+
+          <!-- Content -->
+          <div class="p-6">
+            @if (datasetQueryResponse.errorCode != null || datasetQueryResponse.errorDescription != null) {
+              <!-- Error State -->
+              <div class="bg-red-50/80 border border-red-200/50 rounded-xl p-6">
+                <div class="flex items-start gap-3">
                   <div class="flex-shrink-0">
-                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2"/>
                     </svg>
                   </div>
-                  <h2 class="text-lg font-semibold text-gray-800">Retrieved Dataset</h2>
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-red-800 mb-3">Query Error</h3>
+                    <div class="space-y-2">
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-red-700">Error Code:</span>
+                        <span class="px-2 py-1 bg-red-100 text-red-800 text-sm font-mono rounded">
+                      {{ datasetQueryResponse.errorCode }}
+                    </span>
+                      </div>
+                      <div class="flex items-start gap-2">
+                        <span class="text-sm font-medium text-red-700 mt-0.5">{{ 'datasetQuery.descriptionLabel' | translate }}</span>
+                        <span class="text-sm text-red-600 leading-relaxed">
+                      {{ datasetQueryResponse.errorDescription }}
+                    </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <button (click)="openDialog()"
-                        class="group relative px-2 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
-                  <span class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         class="w-5 h-5">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    <span>{{ 'datasetQuery.followUp' | translate }}</span>
-                  </span>
-                </button>
               </div>
-            </div>
-            <div class="w-full min-h-48 p-6 bg-gray-50/80 border border-gray-200/50 rounded-xl backdrop-blur-sm overflow-x-auto mt-6">
-              @if(parsedXmlData) {
-                <app-xml-viewer [nodes]="parsedXmlData"></app-xml-viewer>
-              } @else {
-                <span class="text-gray-500">{{ 'datasetQuery.datasetContentPlaceholder' | translate }}</span>
-              }
-            </div>
-          }
+            } @else {
+              <!-- Success State -->
+              <div class="space-y-6">
+                <div class="flex flex-row justify-between items-center flex-wrap gap-4">
+                  <!-- Action Buttons Container -->
+                  <div class="flex items-center gap-2">
+                    <!-- Follow Up Button -->
+                    <button (click)="openDialog()"
+                            class="group relative px-2 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
+                      <span class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="w-5 h-5">
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>{{ 'datasetQuery.followUp' | translate }}</span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
         </div>
+
+        <!-- PDF Viewer Section -->
+        @if (pdfData) {
+          <div>
+            <app-pdfjs-viewer [pdfData]="pdfData" class="block"></app-pdfjs-viewer>
+          </div>
+        }
       </div>
     }
-
-    <!-- Subsets Selection -->
-    <details #subsetDetails class="bg-white/60 backdrop-blur-xl mt-8 sm:rounded-2xl shadow-xl overflow-hidden">
-      <summary
-        class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
-        <div>
-          <h2 class="text-lg font-semibold text-gray-800">
-            {{ 'datasetQuery.selectSubsets' | translate }}
-            <span class="text-sm text-red-600 font-semibold">*</span>
-          </h2>
-          <p class="text-sm text-gray-600 mt-1">{{ 'datasetQuery.selectAtLeastOneSubset' | translate }}</p>
-        </div>
-        <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none"
-             stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-        </svg>
-      </summary>
-
-      <div class="p-6">
-        <ul class="space-y-4">
-          @for (memberState of getAvailableSubsets(); track memberState.isoCode) {
-            <li class="border border-gray-200/50 rounded-xl overflow-hidden bg-white/40 backdrop-blur-sm">
-              <details class="group">
-                <summary
-                  class="flex items-center justify-between p-4 cursor-pointer hover:bg-indigo-50/50 transition-all duration-200">
-                  <div class="flex items-center gap-3">
-                    <div
-                      class="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-sm font-bold">
-                      {{ memberState.isoCode }}
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-800">
-                      {{ memberState.name }}
-                    </h3>
-                  </div>
-                  <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none"
-                       stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                  </svg>
-                </summary>
-
-                <div class="px-4 pb-4 pt-2 bg-gray-50/50 border-t border-gray-200/30">
-                  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    @for (subset of memberState.subsets; track $index) {
-                      <li>
-                        <label
-                          class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 transition-all duration-200 cursor-pointer group">
-                          <input
-                            type="checkbox"
-                            [value]="subset"
-                            (change)="onSubsetsChange(subset, $event)"
-                            class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
-                          >
-                          <span
-                            class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                          {{ subset }}
-                        </span>
-                        </label>
-                      </li>
-                    }
-                  </ul>
-                </div>
-              </details>
-            </li>
-          }
-        </ul>
-      </div>
-    </details>
   </div>
 </div>
 

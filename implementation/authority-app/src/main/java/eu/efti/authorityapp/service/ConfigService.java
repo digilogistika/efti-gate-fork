@@ -42,10 +42,4 @@ public class ConfigService {
     public boolean hasApiKey() {
         return authorityConfigRepository.hasConfig();
     }
-    
-    @Transactional
-    public void clearApiKey() {
-        log.info("Clearing API key from database");
-        authorityConfigRepository.deleteAll();
-    }
 }
