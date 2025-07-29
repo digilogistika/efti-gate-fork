@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import * as pdfjsLib from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
 @Component({
   selector: 'app-pdfjs-viewer',
@@ -12,7 +12,7 @@ export class Pdfjs implements OnChanges {
   @Input() pdfData: Blob | null = null;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.mjs';
+    GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.mjs';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -28,7 +28,7 @@ export class Pdfjs implements OnChanges {
     container.innerHTML = '';
 
     const pdfArrayBuffer = await pdfData.arrayBuffer();
-    const loadingTask = pdfjsLib.getDocument(pdfArrayBuffer);
+    const loadingTask = getDocument(pdfArrayBuffer);
     const pdf = await loadingTask.promise;
     const page = await pdf.getPage(1);
     const viewport = page.getViewport({ scale: 1.5 });
