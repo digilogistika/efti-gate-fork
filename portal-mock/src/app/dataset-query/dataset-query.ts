@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import {Location, NgClass} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {memberStateSubsets} from '../core/subsets';
 import {DatasetResponse} from '../core/types';
@@ -15,6 +15,7 @@ import { Pdfjs } from '../pdf-viewer/pdfjs';
     ReactiveFormsModule,
     TranslatePipe,
     Pdfjs,
+    NgClass,
   ],
   templateUrl: './dataset-query.html',
 })
@@ -33,6 +34,9 @@ export class DatasetQuery implements OnInit, OnDestroy {
   private langChangeSubscription!: Subscription;
   protected isUilEditMode: boolean = false;
   protected pdfData: Blob | null = null;
+
+  @ViewChild('subsetInfoDialog') subsetInfoDialog!: ElementRef<HTMLDialogElement>;
+  protected selectedSubsetInfo: any | null = null;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -188,5 +192,15 @@ export class DatasetQuery implements OnInit, OnDestroy {
 
   navigateBack() {
     this.location.back();
+  }
+
+  openSubsetInfoDialog(subset: any) {
+    this.selectedSubsetInfo = subset;
+    this.subsetInfoDialog.nativeElement.showModal();
+  }
+
+  closeSubsetInfoDialog() {
+    this.subsetInfoDialog.nativeElement.close();
+    this.selectedSubsetInfo = null;
   }
 }
