@@ -41,6 +41,10 @@ export const memberStateSubsets = [{
   'name': 'Estonia',
   'subsets': ['EE02', 'EE04', 'EE05a', 'EE05b', 'EE05c', 'EE05d']
 }, {
+  'isoCode': 'EU',
+  'name': 'Europe',
+  'subsets': ['EU01', 'EU02', 'EU03', 'EU05a', 'EU05b', 'EU05c', 'EU06']
+}, {
   'isoCode': 'FI',
   'name': 'Finland',
   'subsets': ['FI02', 'FI03a', 'FI03b']
