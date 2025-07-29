@@ -1,3 +1,29 @@
+# [0.8.0](https://github.com/digilogistika/efti-gate/compare/v0.7.5...v0.8.0) (2025-07-29)
+
+
+### Bug Fixes
+
+* Added missing canvas to constant ([b667aca](https://github.com/digilogistika/efti-gate/commit/b667aca56aa97b3f6138df235ed3a21be6938d42))
+* Added missing x11font package to Dockerfile ([e51b743](https://github.com/digilogistika/efti-gate/commit/e51b7434f827674bb236adb963569bfc72df1e33))
+* Adding dataset_report.jrxml to deploy directory ([6eadd2c](https://github.com/digilogistika/efti-gate/commit/6eadd2ccebd79a6d4cce834107387710092d68dd))
+* Adding dependency to fix eu-ee11 ([37e0a99](https://github.com/digilogistika/efti-gate/commit/37e0a99561b7db48797b2ebd079893e5b2c62eac))
+* Better padding for buttons and hiding subsetIds after rendering ([2235f77](https://github.com/digilogistika/efti-gate/commit/2235f772766af6ebc3b65f79990f16d0544475ab))
+* Change back from full to subsets ([1fc4bff](https://github.com/digilogistika/efti-gate/commit/1fc4bff14c64c750dfe2335e4f050db4a6bf4d69))
+* Cleaned up the template for pdfjs.ts ([a7a337b](https://github.com/digilogistika/efti-gate/commit/a7a337b80f8e7d4aa1c780b0ac593f0e18858dc6))
+* Reformatting pdf view, so it looks like it is in the container. ([281149c](https://github.com/digilogistika/efti-gate/commit/281149ca3f07b27817a19a08d9272cb977cae196))
+* Removing unnecessary enabling and disabling code. ([e691596](https://github.com/digilogistika/efti-gate/commit/e691596087925e13f7a779a4a7e69ac3fe11d734))
+* Removing unnecessary pdf endpoint. ([303d554](https://github.com/digilogistika/efti-gate/commit/303d5544a3c8679a4453bb5bc516e7457c52cad2))
+* Small style fix ([3f93828](https://github.com/digilogistika/efti-gate/commit/3f938289b2898f2c5e55ec96feddc79c5b0ee2f1))
+* Using only necessary components from pdfjs-dist ([023918e](https://github.com/digilogistika/efti-gate/commit/023918e77291a8e88cdd910e569f02eb216a9f3c))
+* Using tailwind ([205d49f](https://github.com/digilogistika/efti-gate/commit/205d49fccd74761acc9e45c09f4d6c7741295241))
+
+
+### Features
+
+* Data mapping of dates ([660d35c](https://github.com/digilogistika/efti-gate/commit/660d35c38ca251c9bc2e3c601718b11398a250b0))
+* Data mapping on generated pdf ([b0b0ae8](https://github.com/digilogistika/efti-gate/commit/b0b0ae853d1bd0c381b01fa0601840eb7a1b8c24))
+* Final data mapping ([d7df5f4](https://github.com/digilogistika/efti-gate/commit/d7df5f414a72234fa890ec4c926f66eaf711c60f))
+
 ## [0.7.5](https://github.com/digilogistika/efti-gate/compare/v0.7.4...v0.7.5) (2025-07-25)
 
 
