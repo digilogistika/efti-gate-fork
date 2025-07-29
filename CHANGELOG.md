@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/digilogistika/efti-gate/compare/v0.8.0...v0.9.0) (2025-07-29)
+
+
+### Features
+
+* Added EU subsets to authority app ([e87a525](https://github.com/digilogistika/efti-gate/commit/e87a5257a7be02f1a3d5eec8eb3ce840bea5bb5b))
+
 # [0.8.0](https://github.com/digilogistika/efti-gate/compare/v0.7.5...v0.8.0) (2025-07-29)
 
 
