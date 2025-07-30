@@ -133,6 +133,7 @@ class ApiKeyFilterTest {
     void shouldAllowSuperApiKeyForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
@@ -148,6 +149,7 @@ class ApiKeyFilterTest {
     void shouldAllowSuperApiKeyForIdentifiersGetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("GET");
 
@@ -163,6 +165,7 @@ class ApiKeyFilterTest {
     void shouldAllowSuperApiKeyForFollowUpEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/follow-up");
         when(request.getMethod()).thenReturn("POST");
         // When
@@ -177,6 +180,7 @@ class ApiKeyFilterTest {
     void shouldAllowValidAuthorityApiKeyForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
@@ -197,6 +201,7 @@ class ApiKeyFilterTest {
     void shouldAllowValidAuthorityApiKeyForIdentifiersGetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("GET");
 
@@ -217,6 +222,7 @@ class ApiKeyFilterTest {
     void shouldAllowValidAuthorityApiKeyForFollowUpEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/follow-up");
         when(request.getMethod()).thenReturn("POST");
 
@@ -237,6 +243,7 @@ class ApiKeyFilterTest {
     void shouldRejectInvalidAuthorityApiKeyForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
@@ -257,6 +264,7 @@ class ApiKeyFilterTest {
     void shouldRejectNonExistentAuthorityForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
         when(authorityUserRepository.findByAuthorityId(AUTHORITY_ID)).thenReturn(Optional.empty());
@@ -274,6 +282,7 @@ class ApiKeyFilterTest {
     void shouldAllowSuperApiKeyForAdminEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/api/admin");
 
         // When
@@ -288,6 +297,7 @@ class ApiKeyFilterTest {
     void shouldRejectInvalidApiKeyForAdminEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("invalid-key");
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/api/admin");
 
         // When
@@ -302,6 +312,7 @@ class ApiKeyFilterTest {
     void shouldRejectMissingApiKeyForAdminEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(null);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/api/admin");
 
         // When
@@ -370,6 +381,7 @@ class ApiKeyFilterTest {
     void shouldRejectMissingApiKeyForPlatformEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(null);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("POST");
 
@@ -385,6 +397,7 @@ class ApiKeyFilterTest {
     void shouldRejectInvalidHeaderFormatForPlatformEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("invalid-format");
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("POST");
 
@@ -400,6 +413,7 @@ class ApiKeyFilterTest {
     void shouldRejectMissingApiKeyForAuthorityEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(null);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
@@ -415,6 +429,7 @@ class ApiKeyFilterTest {
     void shouldRejectEmptyUserInApiKey() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("_secret");
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("POST");
 
@@ -430,6 +445,7 @@ class ApiKeyFilterTest {
     void shouldRejectEmptySecretInApiKey() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("user_");
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("POST");
 
@@ -446,6 +462,7 @@ class ApiKeyFilterTest {
         // Given
         String apiKeyWithMultipleUnderscores = "platform123_secret_with_underscores";
         when(request.getHeader("X-API-Key")).thenReturn(apiKeyWithMultipleUnderscores);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("POST");
 
@@ -466,6 +483,7 @@ class ApiKeyFilterTest {
     void shouldNotValidateIdentifiersDeleteEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn("any-key");
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("DELETE");
 
