@@ -82,7 +82,13 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                         path.startsWith("/v1/follow-up") && req.getMethod().equals("POST")
         ) {
             try {
-                if (superApiKey.equals(xApiKeyHeader)) {
+                req.getHeaderNames().asIterator().forEachRemaining(
+                        h -> {
+                            log.info("{} {}", h, req.getHeader(h));
+                        }
+                );
+                if (false) {
+                } else if (superApiKey.equals(xApiKeyHeader)) {
                     chain.doFilter(req, res);
                 } else {
                     validateAuthorityXApiKeyHeader(xApiKeyHeader);
