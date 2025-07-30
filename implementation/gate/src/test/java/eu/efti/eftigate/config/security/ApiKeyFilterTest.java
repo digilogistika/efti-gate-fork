@@ -133,6 +133,7 @@ class ApiKeyFilterTest {
     void shouldAllowSuperApiKeyForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
@@ -148,6 +149,7 @@ class ApiKeyFilterTest {
     void shouldAllowSuperApiKeyForIdentifiersGetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("GET");
 
@@ -163,6 +165,7 @@ class ApiKeyFilterTest {
     void shouldAllowSuperApiKeyForFollowUpEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(SUPER_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/follow-up");
         when(request.getMethod()).thenReturn("POST");
         // When
@@ -177,6 +180,7 @@ class ApiKeyFilterTest {
     void shouldAllowValidAuthorityApiKeyForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
@@ -197,6 +201,7 @@ class ApiKeyFilterTest {
     void shouldAllowValidAuthorityApiKeyForIdentifiersGetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/identifiers");
         when(request.getMethod()).thenReturn("GET");
 
@@ -217,6 +222,7 @@ class ApiKeyFilterTest {
     void shouldAllowValidAuthorityApiKeyForFollowUpEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/follow-up");
         when(request.getMethod()).thenReturn("POST");
 
@@ -237,6 +243,7 @@ class ApiKeyFilterTest {
     void shouldRejectInvalidAuthorityApiKeyForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
@@ -257,6 +264,7 @@ class ApiKeyFilterTest {
     void shouldRejectNonExistentAuthorityForDatasetEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(VALID_AUTHORITY_API_KEY);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
         when(authorityUserRepository.findByAuthorityId(AUTHORITY_ID)).thenReturn(Optional.empty());
@@ -400,6 +408,7 @@ class ApiKeyFilterTest {
     void shouldRejectMissingApiKeyForAuthorityEndpoint() throws ServletException, IOException {
         // Given
         when(request.getHeader("X-API-Key")).thenReturn(null);
+        when(request.getHeader("x-real-ip")).thenReturn("1.2.3.4");
         when(request.getRequestURI()).thenReturn("/v1/dataset");
         when(request.getMethod()).thenReturn("GET");
 
