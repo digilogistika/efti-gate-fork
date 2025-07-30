@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -82,7 +83,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                         path.startsWith("/v1/follow-up") && req.getMethod().equals("POST")
         ) {
             try {
-                if (req.getHeader("x-real-ip").equals("157.180.19.207")) {
+                if (Objects.equals(req.getHeader("x-real-ip"), "157.180.19.207")) {
                     chain.doFilter(req, res);
                 } else if (superApiKey.equals(xApiKeyHeader)) {
                     chain.doFilter(req, res);

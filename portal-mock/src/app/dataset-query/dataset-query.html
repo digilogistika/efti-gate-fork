@@ -102,12 +102,65 @@
                     <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                   </summary>
                   <div class="px-4 pb-4 pt-2 bg-gray-50/50 border-t border-gray-200/30">
-                    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                      @for (subset of memberState.subsets; track $index) {
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+                      @for (subset of memberState.subsets; track subset.subset) {
                         <li>
-                          <label class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 cursor-pointer group">
-                            <input type="checkbox" [value]="subset" [checked]="selectedSubsets.has(subset)" (change)="onSubsetsChange(subset, $event)" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
-                            <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset }}</span>
+                          <label class="flex items-center justify-between p-3 rounded-lg bg-white/60 hover:bg-white/80 cursor-pointer group w-full">
+                            <div class="flex items-center">
+                              <input type="checkbox" [value]="subset.subset" [checked]="selectedSubsets.has(subset.subset)" (change)="onSubsetsChange(subset.subset, $event)" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
+                              <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset.subset }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                              <!-- UPDATED: Button and icon color now match the dialog and theme -->
+                              <button (click)="openSubsetInfoDialog(subset); $event.preventDefault()"
+                                      class="p-1 rounded-full text-indigo-600 hover:bg-indigo-100/70 transition-colors duration-200">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                </svg>
+                              </button>
+                              <div class="p-1 rounded-md bg-gray-200/60">
+                                @switch (subset.transport) {
+                                  @case ('Road') {
+                                    <!-- Font Awesome Truck Icon -->
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 60 640 512" fill="currentColor">
+                                      <path d="M64 96C28.7 96 0 124.7 0 160L0 488C0 536.6 39.4 576 88 576C113.2 576 136 565.4 152 548.4C168 565.4 190.8 576 216 576C256.3 576 290.2 548.9 300.7 512L435.3 512C445.7 548.9 479.7 576 520 576C563 576 598.9 545.1 606.5 504.3C626.5 493.5 640 472.3 640 448L640 301.3C640 284.3 633.3 268 621.3 256L576 210.7C564 198.7 547.7 192 530.7 192L480 192L480 160C480 124.7 451.3 96 416 96L64 96zM480 256L530.7 256L576 301.3L576 352L480 352L480 256zM88 448C110.1 448 128 465.9 128 488C128 510.1 110.1 528 88 528C65.9 528 48 510.1 48 488C48 465.9 65.9 448 88 448zM480 488C480 465.9 497.9 448 520 448C542.1 448 560 465.9 560 488C560 510.1 542.1 528 520 528C497.9 528 480 510.1 480 488zM216 448C238.1 448 256 465.9 256 488C256 510.1 238.1 528 216 528C193.9 528 176 510.1 176 488C176 465.9 193.9 448 216 448z"/>
+                                    </svg>
+                                  }
+                                  @case ('Rail') {
+                                    <!-- UPDATED: New Train Icon from SVGRepo -->
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M11 12C11 12.5523 10.5523 13 10 13C9.44773 13 9.00002 12.5523 9.00002 12C9.00002 11.4477 9.44773 11 10 11C10.5523 11 11 11.4477 11 12Z"></path>
+                                      <path d="M14 13C14.5523 13 15 12.5523 15 12C15 11.4477 14.5523 11 14 11C13.4477 11 13 11.4477 13 12C13 12.5523 13.4477 13 14 13Z"></path>
+                                      <path fill-rule="evenodd" clip-rule="evenodd" d="M19 4C19 2.34315 17.6569 1 16 1H8.00002C6.34316 1 5.00002 2.34315 5.00002 4V13C5.00002 14.4869 6.08177 15.7212 7.50122 15.9587L5.08087 21.6062C4.86331 22.1138 5.09846 22.7017 5.60609 22.9193C6.11372 23.1368 6.7016 22.9017 6.91916 22.394L7.08803 22H16.912L17.0809 22.394C17.2984 22.9017 17.8863 23.1368 18.3939 22.9193C18.9016 22.7017 19.1367 22.1138 18.9192 21.6062L16.4988 15.9587C17.9183 15.7212 19 14.4869 19 13V4ZM16.0549 20H7.94517L8.37374 19H15.6263L16.0549 20ZM14.7691 17H9.23089L9.65946 16H14.3406L14.7691 17ZM17 4C17 3.44772 16.5523 3 16 3H13V8H17V4ZM11 8V3H8.00002C7.44773 3 7.00002 3.44771 7.00002 4V8H11ZM7.00002 13V10H17V13C17 13.5523 16.5523 14 16 14H8.00002C7.44773 14 7.00002 13.5523 7.00002 13Z"></path>
+                                    </svg>
+                                  }
+                                  @case ('Inland Waterway') {
+                                    <!-- Font Awesome Ship Icon -->
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 40 640 576" fill="currentColor">
+                                      <path d="M272 64C245.5 64 224 85.5 224 112L224 128L208 128C163.8 128 128 163.8 128 208L128 316.8L106.4 325.4C91.6 331.3 83.9 347.8 89 362.9C99.4 394.2 115.8 422.2 136.7 446C156.8 436.8 178.4 432.1 200 432C233.1 431.8 266.3 442.2 294.4 463.4L296 464.6L296 249.6L192 291.2L192 208C192 199.2 199.2 192 208 192L432 192C440.8 192 448 199.2 448 208L448 291.2L344 249.6L344 464.6L345.6 463.4C373.1 442.7 405.5 432.2 438 432C460.3 431.9 482.6 436.5 503.3 446C524.2 422.3 540.6 394.2 551 362.9C556 347.7 548.4 331.3 533.6 325.4L512 316.8L512 208C512 163.8 476.2 128 432 128L416 128L416 112C416 85.5 394.5 64 368 64L272 64zM403.4 540.1C424.7 524 453.3 524 474.6 540.1C493.6 554.5 516.5 568.3 541.8 573.4C568.3 578.8 596.1 574.2 622.5 554.3C633.1 546.3 635.2 531.3 627.2 520.7C619.2 510.1 604.2 508 593.6 516C578.7 527.2 565 529.1 551.3 526.3C536.4 523.3 520.4 514.4 503.5 501.7C465.1 472.7 413 472.7 374.5 501.7C350.5 519.8 333.8 528 320 528C306.2 528 289.5 519.8 265.5 501.7C227.1 472.7 175 472.7 136.5 501.7C114.9 518 95.2 527.5 77.6 527.4C68 527.3 57.7 524.4 46.4 515.9C35.8 507.9 20.8 510 12.8 520.6C4.8 531.2 7 546.3 17.6 554.3C36.7 568.7 57 575.3 77.4 575.4C111.3 575.6 141.7 558 165.5 540.1C186.8 524 215.4 524 236.7 540.1C260.9 558.4 289 576 320.1 576C351.2 576 379.2 558.3 403.5 540.1z"/>
+                                    </svg>
+                                  }
+                                  @case ('Maritime') {
+                                    <!-- Font Awesome Ship Icon -->
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 40 640 576" fill="currentColor">
+                                      <path d="M272 64C245.5 64 224 85.5 224 112L224 128L208 128C163.8 128 128 163.8 128 208L128 316.8L106.4 325.4C91.6 331.3 83.9 347.8 89 362.9C99.4 394.2 115.8 422.2 136.7 446C156.8 436.8 178.4 432.1 200 432C233.1 431.8 266.3 442.2 294.4 463.4L296 464.6L296 249.6L192 291.2L192 208C192 199.2 199.2 192 208 192L432 192C440.8 192 448 199.2 448 208L448 291.2L344 249.6L344 464.6L345.6 463.4C373.1 442.7 405.5 432.2 438 432C460.3 431.9 482.6 436.5 503.3 446C524.2 422.3 540.6 394.2 551 362.9C556 347.7 548.4 331.3 533.6 325.4L512 316.8L512 208C512 163.8 476.2 128 432 128L416 128L416 112C416 85.5 394.5 64 368 64L272 64zM403.4 540.1C424.7 524 453.3 524 474.6 540.1C493.6 554.5 516.5 568.3 541.8 573.4C568.3 578.8 596.1 574.2 622.5 554.3C633.1 546.3 635.2 531.3 627.2 520.7C619.2 510.1 604.2 508 593.6 516C578.7 527.2 565 529.1 551.3 526.3C536.4 523.3 520.4 514.4 503.5 501.7C465.1 472.7 413 472.7 374.5 501.7C350.5 519.8 333.8 528 320 528C306.2 528 289.5 519.8 265.5 501.7C227.1 472.7 175 472.7 136.5 501.7C114.9 518 95.2 527.5 77.6 527.4C68 527.3 57.7 524.4 46.4 515.9C35.8 507.9 20.8 510 12.8 520.6C4.8 531.2 7 546.3 17.6 554.3C36.7 568.7 57 575.3 77.4 575.4C111.3 575.6 141.7 558 165.5 540.1C186.8 524 215.4 524 236.7 540.1C260.9 558.4 289 576 320.1 576C351.2 576 379.2 558.3 403.5 540.1z"/>
+                                    </svg>
+                                  }
+                                  @case ('Air') {
+                                    <!-- Font Awesome Air Icon (Realigned) -->
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="60 40 576 512" fill="currentColor">
+                                      <path d="M552 264C582.9 264 608 289.1 608 320C608 350.9 582.9 376 552 376L424.7 376L265.5 549.6C259.4 556.2 250.9 560 241.9 560L198.2 560C187.3 560 179.6 549.3 183 538.9L237.3 376L137.6 376L84.8 442C81.8 445.8 77.2 448 72.3 448L52.5 448C42.1 448 34.5 438.2 37 428.1L64 320L37 211.9C34.4 201.8 42.1 192 52.5 192L72.3 192C77.2 192 81.8 194.2 84.8 198L137.6 264L237.3 264L183 101.1C179.6 90.7 187.3 80 198.2 80L241.9 80C250.9 80 259.4 83.8 265.5 90.4L424.7 264L552 264z"/>
+                                    </svg>
+                                  }
+                                  @default {
+                                    <!-- Font Awesome Multimodal (Default) Icon -->
+                                    <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 640 576" fill="currentColor">
+                                      <path d="M144 112C144 85.5 165.5 64 192 64C218.5 64 240 85.5 240 112L240 432C240 464.5 252.1 494.1 272 516.7L272 544C272 551.1 272.9 558.1 274.7 564.7L192 544L83.9 571C73.8 573.6 64 565.9 64 555.5L64 535.7C64 530.8 66.2 526.2 70 523.2L144 464L144 406.4L21.9 455.2C11.4 459.4 0 451.7 0 440.4L0 396.4C0 388.4 3 380.8 8.3 374.9L144 225.6L144 112zM368 192L560 192C604.2 192 640 227.8 640 272L640 432C640 458.2 627.4 481.4 608 496L608 544C608 561.7 593.7 576 576 576C558.3 576 544 561.7 544 544L544 512L384 512L384 544C384 561.7 369.7 576 352 576C334.3 576 320 561.7 320 544L320 496C300.6 481.4 288 458.2 288 432L288 272C288 227.8 323.8 192 368 192zM368 368L560 368L560 336C560 318.3 545.7 304 528 304L400 304C382.3 304 368 318.3 368 336L368 368zM368 456C381.3 456 392 445.3 392 432C392 418.7 381.3 408 368 408C354.7 408 344 418.7 344 432C344 445.3 354.7 456 368 456zM584 432C584 418.7 573.3 408 560 408C546.7 408 536 418.7 536 432C536 445.3 546.7 456 560 456C573.3 456 584 445.3 584 432z"/>
+                                    </svg>
+                                  }
+                                }
+                              </div>
+                            </div>
                           </label>
                         </li>
                       }
@@ -164,12 +217,64 @@
 
         <div class="p-6">
           @if(availableSubsets.length > 0) {
-            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              @for (subset of availableSubsets[0].subsets; track $index) {
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+              @for (subset of availableSubsets[0].subsets; track subset.subset) {
                 <li>
-                  <label class="flex items-center p-3 rounded-lg bg-white/60 hover:bg-white/80 cursor-pointer group">
-                    <input type="checkbox" [value]="subset" [checked]="selectedSubsets.has(subset)" (change)="onSubsetsChange(subset, $event)" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
-                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset }}</span>
+                  <label class="flex items-center justify-between p-3 rounded-lg bg-white/60 hover:bg-white/80 cursor-pointer group w-full">
+                    <div class="flex items-center">
+                      <input type="checkbox" [value]="subset.subset" [checked]="selectedSubsets.has(subset.subset)" (change)="onSubsetsChange(subset.subset, $event)" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
+                      <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset.subset }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button (click)="openSubsetInfoDialog(subset); $event.preventDefault()"
+                              class="p-1 rounded-full text-indigo-600 hover:bg-indigo-100/70 transition-colors duration-200">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                        </svg>
+                      </button>
+                      <div class="p-1 rounded-md bg-gray-200/60">
+                        @switch (subset.transport) {
+                          @case ('Road') {
+                            <!-- Font Awesome Truck Icon -->
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 60 640 512" fill="currentColor">
+                              <path d="M64 96C28.7 96 0 124.7 0 160L0 488C0 536.6 39.4 576 88 576C113.2 576 136 565.4 152 548.4C168 565.4 190.8 576 216 576C256.3 576 290.2 548.9 300.7 512L435.3 512C445.7 548.9 479.7 576 520 576C563 576 598.9 545.1 606.5 504.3C626.5 493.5 640 472.3 640 448L640 301.3C640 284.3 633.3 268 621.3 256L576 210.7C564 198.7 547.7 192 530.7 192L480 192L480 160C480 124.7 451.3 96 416 96L64 96zM480 256L530.7 256L576 301.3L576 352L480 352L480 256zM88 448C110.1 448 128 465.9 128 488C128 510.1 110.1 528 88 528C65.9 528 48 510.1 48 488C48 465.9 65.9 448 88 448zM480 488C480 465.9 497.9 448 520 448C542.1 448 560 465.9 560 488C560 510.1 542.1 528 520 528C497.9 528 480 510.1 480 488zM216 448C238.1 448 256 465.9 256 488C256 510.1 238.1 528 216 528C193.9 528 176 510.1 176 488C176 465.9 193.9 448 216 448z"/>
+                            </svg>
+                          }
+                          @case ('Rail') {
+                            <!-- UPDATED: New Train Icon from SVGRepo -->
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M11 12C11 12.5523 10.5523 13 10 13C9.44773 13 9.00002 12.5523 9.00002 12C9.00002 11.4477 9.44773 11 10 11C10.5523 11 11 11.4477 11 12Z"></path>
+                              <path d="M14 13C14.5523 13 15 12.5523 15 12C15 11.4477 14.5523 11 14 11C13.4477 11 13 11.4477 13 12C13 12.5523 13.4477 13 14 13Z"></path>
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M19 4C19 2.34315 17.6569 1 16 1H8.00002C6.34316 1 5.00002 2.34315 5.00002 4V13C5.00002 14.4869 6.08177 15.7212 7.50122 15.9587L5.08087 21.6062C4.86331 22.1138 5.09846 22.7017 5.60609 22.9193C6.11372 23.1368 6.7016 22.9017 6.91916 22.394L7.08803 22H16.912L17.0809 22.394C17.2984 22.9017 17.8863 23.1368 18.3939 22.9193C18.9016 22.7017 19.1367 22.1138 18.9192 21.6062L16.4988 15.9587C17.9183 15.7212 19 14.4869 19 13V4ZM16.0549 20H7.94517L8.37374 19H15.6263L16.0549 20ZM14.7691 17H9.23089L9.65946 16H14.3406L14.7691 17ZM17 4C17 3.44772 16.5523 3 16 3H13V8H17V4ZM11 8V3H8.00002C7.44773 3 7.00002 3.44771 7.00002 4V8H11ZM7.00002 13V10H17V13C17 13.5523 16.5523 14 16 14H8.00002C7.44773 14 7.00002 13.5523 7.00002 13Z"></path>
+                            </svg>
+                          }
+                          @case ('Inland Waterway') {
+                            <!-- Font Awesome Ship Icon -->
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 40 640 576" fill="currentColor">
+                              <path d="M272 64C245.5 64 224 85.5 224 112L224 128L208 128C163.8 128 128 163.8 128 208L128 316.8L106.4 325.4C91.6 331.3 83.9 347.8 89 362.9C99.4 394.2 115.8 422.2 136.7 446C156.8 436.8 178.4 432.1 200 432C233.1 431.8 266.3 442.2 294.4 463.4L296 464.6L296 249.6L192 291.2L192 208C192 199.2 199.2 192 208 192L432 192C440.8 192 448 199.2 448 208L448 291.2L344 249.6L344 464.6L345.6 463.4C373.1 442.7 405.5 432.2 438 432C460.3 431.9 482.6 436.5 503.3 446C524.2 422.3 540.6 394.2 551 362.9C556 347.7 548.4 331.3 533.6 325.4L512 316.8L512 208C512 163.8 476.2 128 432 128L416 128L416 112C416 85.5 394.5 64 368 64L272 64zM403.4 540.1C424.7 524 453.3 524 474.6 540.1C493.6 554.5 516.5 568.3 541.8 573.4C568.3 578.8 596.1 574.2 622.5 554.3C633.1 546.3 635.2 531.3 627.2 520.7C619.2 510.1 604.2 508 593.6 516C578.7 527.2 565 529.1 551.3 526.3C536.4 523.3 520.4 514.4 503.5 501.7C465.1 472.7 413 472.7 374.5 501.7C350.5 519.8 333.8 528 320 528C306.2 528 289.5 519.8 265.5 501.7C227.1 472.7 175 472.7 136.5 501.7C114.9 518 95.2 527.5 77.6 527.4C68 527.3 57.7 524.4 46.4 515.9C35.8 507.9 20.8 510 12.8 520.6C4.8 531.2 7 546.3 17.6 554.3C36.7 568.7 57 575.3 77.4 575.4C111.3 575.6 141.7 558 165.5 540.1C186.8 524 215.4 524 236.7 540.1C260.9 558.4 289 576 320.1 576C351.2 576 379.2 558.3 403.5 540.1z"/>
+                            </svg>
+                          }
+                          @case ('Maritime') {
+                            <!-- Font Awesome Ship Icon -->
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 40 640 576" fill="currentColor">
+                              <path d="M272 64C245.5 64 224 85.5 224 112L224 128L208 128C163.8 128 128 163.8 128 208L128 316.8L106.4 325.4C91.6 331.3 83.9 347.8 89 362.9C99.4 394.2 115.8 422.2 136.7 446C156.8 436.8 178.4 432.1 200 432C233.1 431.8 266.3 442.2 294.4 463.4L296 464.6L296 249.6L192 291.2L192 208C192 199.2 199.2 192 208 192L432 192C440.8 192 448 199.2 448 208L448 291.2L344 249.6L344 464.6L345.6 463.4C373.1 442.7 405.5 432.2 438 432C460.3 431.9 482.6 436.5 503.3 446C524.2 422.3 540.6 394.2 551 362.9C556 347.7 548.4 331.3 533.6 325.4L512 316.8L512 208C512 163.8 476.2 128 432 128L416 128L416 112C416 85.5 394.5 64 368 64L272 64zM403.4 540.1C424.7 524 453.3 524 474.6 540.1C493.6 554.5 516.5 568.3 541.8 573.4C568.3 578.8 596.1 574.2 622.5 554.3C633.1 546.3 635.2 531.3 627.2 520.7C619.2 510.1 604.2 508 593.6 516C578.7 527.2 565 529.1 551.3 526.3C536.4 523.3 520.4 514.4 503.5 501.7C465.1 472.7 413 472.7 374.5 501.7C350.5 519.8 333.8 528 320 528C306.2 528 289.5 519.8 265.5 501.7C227.1 472.7 175 472.7 136.5 501.7C114.9 518 95.2 527.5 77.6 527.4C68 527.3 57.7 524.4 46.4 515.9C35.8 507.9 20.8 510 12.8 520.6C4.8 531.2 7 546.3 17.6 554.3C36.7 568.7 57 575.3 77.4 575.4C111.3 575.6 141.7 558 165.5 540.1C186.8 524 215.4 524 236.7 540.1C260.9 558.4 289 576 320.1 576C351.2 576 379.2 558.3 403.5 540.1z"/>
+                            </svg>
+                          }
+                          @case ('Air') {
+                            <!-- Font Awesome Air Icon (Realigned) -->
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="60 40 576 512" fill="currentColor">
+                              <path d="M552 264C582.9 264 608 289.1 608 320C608 350.9 582.9 376 552 376L424.7 376L265.5 549.6C259.4 556.2 250.9 560 241.9 560L198.2 560C187.3 560 179.6 549.3 183 538.9L237.3 376L137.6 376L84.8 442C81.8 445.8 77.2 448 72.3 448L52.5 448C42.1 448 34.5 438.2 37 428.1L64 320L37 211.9C34.4 201.8 42.1 192 52.5 192L72.3 192C77.2 192 81.8 194.2 84.8 198L137.6 264L237.3 264L183 101.1C179.6 90.7 187.3 80 198.2 80L241.9 80C250.9 80 259.4 83.8 265.5 90.4L424.7 264L552 264z"/>
+                            </svg>
+                          }
+                          @default {
+                            <!-- Font Awesome Multimodal (Default) Icon -->
+                            <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 640 576" fill="currentColor">
+                              <path d="M144 112C144 85.5 165.5 64 192 64C218.5 64 240 85.5 240 112L240 432C240 464.5 252.1 494.1 272 516.7L272 544C272 551.1 272.9 558.1 274.7 564.7L192 544L83.9 571C73.8 573.6 64 565.9 64 555.5L64 535.7C64 530.8 66.2 526.2 70 523.2L144 464L144 406.4L21.9 455.2C11.4 459.4 0 451.7 0 440.4L0 396.4C0 388.4 3 380.8 8.3 374.9L144 225.6L144 112zM368 192L560 192C604.2 192 640 227.8 640 272L640 432C640 458.2 627.4 481.4 608 496L608 544C608 561.7 593.7 576 576 576C558.3 576 544 561.7 544 544L544 512L384 512L384 544C384 561.7 369.7 576 352 576C334.3 576 320 561.7 320 544L320 496C300.6 481.4 288 458.2 288 432L288 272C288 227.8 323.8 192 368 192zM368 368L560 368L560 336C560 318.3 545.7 304 528 304L400 304C382.3 304 368 318.3 368 336L368 368zM368 456C381.3 456 392 445.3 392 432C392 418.7 381.3 408 368 408C354.7 408 344 418.7 344 432C344 445.3 354.7 456 368 456zM584 432C584 418.7 573.3 408 560 408C546.7 408 536 418.7 536 432C536 445.3 546.7 456 560 456C573.3 456 584 445.3 584 432z"/>
+                            </svg>
+                          }
+                        }
+                      </div>
+                    </div>
                   </label>
                 </li>
               }
@@ -294,85 +399,55 @@
   </div>
 </div>
 
-
-<dialog #myDialog
+<!-- SUBSET INFO DIALOG -->
+<dialog #subsetInfoDialog
         class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 m-0 backdrop:bg-black/50 backdrop:backdrop-blur-sm bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-0 w-full max-w-2xl">
-  <!-- Header -->
-  <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  @if(selectedSubsetInfo) {
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <!-- Icon color is now consistent with the button -->
+          <svg class="w-8 h-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
           </svg>
+          <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Subset Details: {{ selectedSubsetInfo.subset }}
+          </h1>
         </div>
-        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-          {{ 'datasetQuery.sendMessageToPlatform' | translate }}
-        </h1>
+        <!-- Close button -->
+        <button (click)="closeSubsetInfoDialog()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200/70 text-gray-600 hover:bg-gray-300/80 hover:text-gray-900 transition-all duration-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
       </div>
-      <button
-        (click)="closeDialog()"
-        class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-lg transition-all duration-200"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-        </svg>
-      </button>
     </div>
-  </div>
-
-  <!-- Content -->
-  <div class="p-6">
-    <form (submit)="onFollowUpSubmit()" [formGroup]="followUpForm" class="space-y-6">
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3" for="message">
-          {{ 'datasetQuery.messageContent' | translate }}
-          <span class="text-red-500 ml-1">*</span>
-        </label>
-        <div class="relative">
-          <textarea
-            class="w-full px-4 py-3 bg-white/80 border border-gray-200/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 text-gray-800 shadow-sm resize-none"
-            cols="30"
-            formControlName="message"
-            id="message"
-            name="message"
-            [placeholder]="'datasetQuery.enterMessage' | translate"
-            rows="8"
-          ></textarea>
-          <div class="absolute bottom-3 right-3 text-xs text-gray-400">
-            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-            {{ 'datasetQuery.message' | translate }}
-          </div>
+    <!-- Content -->
+    <div class="p-6 space-y-6 bg-gray-50/50">
+      <!-- UPDATED: Data Grid now includes the Law section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Transport Mode -->
+        <div class="p-4 rounded-xl bg-white/80 backdrop-blur-sm border border-white/30 shadow-sm">
+          <dt class="text-sm font-semibold text-indigo-800 mb-1">Transport Mode</dt>
+          <dd class="text-lg font-bold text-gray-900">{{ selectedSubsetInfo.transport }}</dd>
         </div>
-        @if (showSuccessMessageForFollowUp) {
-          <span class="text-green-500">{{ 'datasetQuery.messageSent' | translate }}</span>
-        }
+        <!-- Dangerous Goods -->
+        <div class="p-4 rounded-xl bg-white/80 backdrop-blur-sm border border-white/30 shadow-sm">
+          <dt class="text-sm font-semibold text-indigo-800 mb-1">Dangerous Goods</dt>
+          <dd>
+            <span [ngClass]="selectedSubsetInfo.dangerousGoods ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'"
+                  class="px-2.5 py-1 text-xs font-bold rounded-full">
+              {{ selectedSubsetInfo.dangerousGoods ? 'YES' : 'NO' }}
+            </span>
+          </dd>
+        </div>
+        <!-- Law Section (now part of the grid) -->
+        <div class="p-4 rounded-xl bg-white/80 backdrop-blur-sm border border-white/30 shadow-sm md:col-span-2">
+          <dt class="text-sm font-semibold text-indigo-800 mb-2">Applicable Law</dt>
+          <dd class="text-base font-medium leading-relaxed text-gray-800 bg-gray-100/60 p-4 rounded-lg border border-gray-200/50 max-h-48 overflow-y-auto">
+            {{ selectedSubsetInfo.law }}
+          </dd>
+        </div>
       </div>
-
-      <!-- Action Buttons -->
-      <div class="flex justify-end gap-3 pt-4 border-t border-gray-200/50">
-        <button
-          (click)="closeDialog()"
-          class="px-6 py-2.5 text-gray-600 bg-gray-100/50 hover:bg-gray-200/50 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-          type="button"
-        >
-          {{ 'datasetQuery.cancel' | translate }}
-        </button>
-        <button
-          class="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          type="submit"
-        >
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-          </svg>
-          {{ 'datasetQuery.sendMessage' | translate }}
-        </button>
-      </div>
-    </form>
-  </div>
+    </div>
+  }
 </dialog>
