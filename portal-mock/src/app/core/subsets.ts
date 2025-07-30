@@ -385,7 +385,7 @@ export const memberStateSubsets = [
   },
   {
     "isoCode": "EU",
-    "name": "European Union",
+    "name": "Europe",
     "subsets": [
       {
         "subset": "EU01",
