@@ -1,3 +1,19 @@
+# [0.10.0](https://github.com/digilogistika/efti-gate/compare/v0.9.1...v0.10.0) (2025-07-30)
+
+
+### Bug Fixes
+
+* apikeyfilter change ([cc53586](https://github.com/digilogistika/efti-gate/commit/cc535862f4d7e39ec7df9615b7ecdb45a2f380d1))
+* Font changes ([62b87e4](https://github.com/digilogistika/efti-gate/commit/62b87e44508d7c2b93b4cd59b850b5a92bbbd786))
+
+
+### Features
+
+* Added better icons and color coding based off of the dangerous goods ([991d8fa](https://github.com/digilogistika/efti-gate/commit/991d8fa20f5f1c7048c1c6c09888bb1dc99e74c5))
+* Added buttons for info of each of the subset. Info button (displays everything) and a transport icon ([c14ac88](https://github.com/digilogistika/efti-gate/commit/c14ac8836cb7654062ebadb69cebdbeac8b8c361))
+* Making subset info view look nicer. ([5da9895](https://github.com/digilogistika/efti-gate/commit/5da98950aaa4acafbe152b567a8027f12258180a))
+* Updated laws, added EU laws, better icons for transport ([6187318](https://github.com/digilogistika/efti-gate/commit/618731804f06b611b95accd2cf831740733ce6cc))
+
 ## [0.9.1](https://github.com/digilogistika/efti-gate/compare/v0.9.0...v0.9.1) (2025-07-30)
 
 
