@@ -1,3 +1,13 @@
+## [0.9.1](https://github.com/digilogistika/efti-gate/compare/v0.9.0...v0.9.1) (2025-07-30)
+
+
+### Bug Fixes
+
+* added mTLS config to docker image ([fc504fc](https://github.com/digilogistika/efti-gate/commit/fc504fcd446a06fc556d626de3ca8e3160bedecb))
+* remove unnessesary stubbing in tests ([6a4ff27](https://github.com/digilogistika/efti-gate/commit/6a4ff2734f106ee7171960e1b54ff8b26f3b88f5))
+* x-real-ip quickfix for the xroad issue ([d693214](https://github.com/digilogistika/efti-gate/commit/d69321407b1a4ad8542b2816ea6479a9177b7a4e))
+* x-real-ip quickfix for the xroad issue ([e0b3e73](https://github.com/digilogistika/efti-gate/commit/e0b3e73bc37ea8715b36735809a4b325d6b63989))
+
 # [0.9.0](https://github.com/digilogistika/efti-gate/compare/v0.8.0...v0.9.0) (2025-07-29)
 
 
