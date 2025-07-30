@@ -1,111 +1,102 @@
-export const euSubsets = [
-  "EU1",
-  "EU2",
-  "EU3",
-  "EU5a",
-  "EU5b",
-  "EU5c",
-  "EU6",
-]
-
-export const memberStateSubsets = [{
-  "isoCode": "AT",
-  "name": "Austria",
-  "subsets": [
-    {
-      "subset": "AT02",
-      "law": "Federal Law Gazette No. 593/1995: §17 - Federal Act regarding the commercial transport of goods using motor vehicles (Güterbeförderungsgesetz 1995 – GütbefG)",
-      "transport": "Road",
-      "dangerousGoods": false
-    },
-    {
-      "subset": "AT03",
-      "law": "Federal Law Gazette II No. 399/1997: §3 - Ordinance of the Federal Minister for Science and Transport on the exemption of international combined transport from authorisations (Combined Transport Exemption Ordinance)",
-      "transport": "Combined",
-      "dangerousGoods": false
-    },
-    {
-      "subset": "AT04",
-      "law": "Federal Law Gazette II No. 132/2007: §3(1) and §3(2) - Ordinance of the Federal Minister for Transport, Innovation and Technology on the checklists to be carried during cabotage (Kabotagekontrollverordnung – KKV)",
-      "transport": "Road",
-      "dangerousGoods": false
-    },
-    {
-      "subset": "AT05",
-      "law": "Federal Law Gazette II No. 207/2016: §10(2) - Ordinance of the Federal Minister for Transport, Innovation and Technology on the granting of CEMT permits (CEMT-Genehmigungs-Vergabeverordnung – CEMT-VV)",
-      "transport": "Road",
-      "dangerousGoods": false
-    },
-    {
-      "subset": "AT06",
-      "law": "Federal Law Gazette II No. 395/2001: §3(1)(2)(c) - Ordinance of the Federal Minister for Transport, Innovation and Technology on restrictions for transport units carrying dangerous substances when driving in motorway tunnels",
-      "transport": "Road",
-      "dangerousGoods": true
-    },
-    {
-      "subset": "AT07",
-      "law": "Ordinance of the Tyrolean Regional Government No. 1413/1998: §4; and Ordinance of the Vorarlberg Regional Government No. 45/1998: §4 - Traffic restrictions on the transport of dangerous goods for the Arlberg Tunnel (S 16)",
-      "transport": "Road",
-      "dangerousGoods": true
-    },
-    {
-      "subset": "AT08",
-      "law": "Ordinance of the Tyrolean Regional Government No. 464/1999: §4; and Ordinance of the Salzburg Regional Government No. 68/1999: §4 - Traffic restrictions on the transport of dangerous goods for the Felbertauern tunnel",
-      "transport": "Road",
-      "dangerousGoods": true
-    },
-    {
-      "subset": "AT09",
-      "law": "Federal Law Gazette II No. 192/2017: §8 - Ordinance of the Federal Minister for Transport, Innovation and Technology on determining the Verified Gross Mass (VGM) of sea freight containers (VGM-V)",
-      "transport": "Maritime",
-      "dangerousGoods": false
-    },
-    {
-      "subset": "AT11",
-      "law": "Federal Law Gazette I No. 102/2002: §19(1) - Federal Act on sustainable waste management (Abfallwirtschaftsgesetz 2002 – AWG 2002)",
-      "transport": "Road",
-      "dangerousGoods": false
-    },
-    {
-      "subset": "AT12",
-      "law": "Federal Law Gazette No. 522/1973 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of Annex A of the Agreement concerning the International Carriage of Dangerous Goods by road (ADR)",
-      "transport": "Road",
-      "dangerousGoods": true
-    },
-    {
-      "subset": "AT13",
-      "law": "Federal Law Gazette II No. 203/2019: §5 and §7(3) - Ordinance of the Federal Minister for Transport, Innovation and Technology on the carriage of small quantities of dangerous goods by road (Gefahrgutbeförderungsverordnung Geringe Mengen – GGBV-GM)",
-      "transport": "Road",
-      "dangerousGoods": true
-    },
-    {
-      "subset": "AT14",
-      "law": "Federal Law Gazette No. 225/1985 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of the Regulation concerning the International Carriage of Dangerous Goods by Rail (RID), appearing as Appendix C to COTIF",
-      "transport": "Rail",
-      "dangerousGoods": true
-    },
-    {
-      "subset": "AT15",
-      "law": "Federal Law Gazette III No. 67/2008 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of the Regulations annexed to the European Agreement concerning the International Carriage of Dangerous Goods by Inland Waterways (ADN)",
-      "transport": "Inland Waterway",
-      "dangerousGoods": true
-    },
-    {
-      "subset": "AT16",
-      "law": "Federal Law Gazette III No. 59/2003: Article 3(4) - Agreement between the Federal Minister for Transport, Innovation and Technology of the Republic of Austria and the Ministry for Transport of the Republic of Slovenia on the carriage of dangerous goods through the Karawanks road tunnel",
-      "transport": "Road",
-      "dangerousGoods": true
-    }
-  ]
-},
+export const memberStateSubsets = [
+  {
+    "isoCode": "AT",
+    "name": "Austria",
+    "subsets": [
+      {
+        "subset": "AT02",
+        "law": "Federal Law Gazette II No. 399/1997: §3 - Ordinance of the Federal Minister for Science and Transport on the exemption of international combined transport from authorisations (Combined Transport Exemption Ordinance)",
+        "transport": "Combined",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "AT03",
+        "law": "Federal Law Gazette II No. 132/2007: §3(1) and §3(2) - Ordinance of the Federal Minister for Transport, Innovation and Technology on the checklists to be carried during cabotage (Kabotagekontrollverordnung – KKV)",
+        "transport": "Road",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "AT04",
+        "law": "Federal Law Gazette II No. 207/2016: §10(2) - Ordinance of the Federal Minister for Transport, Innovation and Technology on the granting of CEMT permits (CEMT-Genehmigungs-Vergabeverordnung – CEMT-VV)",
+        "transport": "Road",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "AT05",
+        "law": "Federal Law Gazette II No. 395/2001: §3(1)(2)(c) - Ordinance of the Federal Minister for Transport, Innovation and Technology on restrictions for transport units carrying dangerous substances when driving in motorway tunnels",
+        "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "AT06",
+        "law": "Ordinance of the Tyrolean Regional Government No. 1413/1998: §4; and Ordinance of the Vorarlberg Regional Government No. 45/1998: §4 - Traffic restrictions on the transport of dangerous goods for the Arlberg Tunnel (S 16)",
+        "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "AT07",
+        "law": "Ordinance of the Tyrolean Regional Government No. 464/1999: §4; and Ordinance of the Salzburg Regional Government No. 68/1999: §4 - Traffic restrictions on the transport of dangerous goods for the Felbertauern tunnel",
+        "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "AT08",
+        "law": "Federal Law Gazette No. 1027/1994: §2 - Ordinance on exemptions from the night-time driving bans for trips using combined transport",
+        "transport": "Combined",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "AT09",
+        "law": "Federal Law Gazette II No. 192/2017: §8 - Ordinance of the Federal Minister for Transport, Innovation and Technology on determining the Verified Gross Mass (VGM) of sea freight containers (VGM-V)",
+        "transport": "Maritime",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "AT11",
+        "law": "Federal Law Gazette No. 522/1973 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of Annex A of the Agreement concerning the International Carriage of Dangerous Goods by road (ADR)",
+        "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "AT12",
+        "law": "Federal Law Gazette II No. 203/2019: §5 and §7(3) - Ordinance of the Federal Minister for Transport, Innovation and Technology on the carriage of small quantities of dangerous goods by road (Gefahrgutbeförderungsverordnung Geringe Mengen – GGBV-GM)",
+        "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "AT13",
+        "law": "Federal Law Gazette No. 225/1985 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of the Regulation concerning the International Carriage of Dangerous Goods by Rail (RID), appearing as Appendix C to COTIF",
+        "transport": "Rail",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "AT14",
+        "law": "Federal Law Gazette III No. 67/2008 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of the Regulations annexed to the European Agreement concerning the International Carriage of Dangerous Goods by Inland Waterways (ADN)",
+        "transport": "Inland Waterway",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "AT15",
+        "law": "Federal Law Gazette I No. 44/2016: §21a (2) - Federal law enacting a law to combat wage and social dumping (LSD-BG)",
+        "transport": "Road",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "AT16",
+        "law": "Federal Law Gazette III No. 59/2003: Article 3(4) - Agreement between the Federal Minister for Transport, Innovation and Technology of the Republic of Austria and the Ministry for Transport of the Republic of Slovenia on the carriage of dangerous goods through the Karawanks road tunnel",
+        "transport": "Road",
+        "dangerousGoods": true
+      }
+    ]
+  },
   {
     "isoCode": "BE",
     "name": "Belgium",
     "subsets": [
       {
         "subset": "BE02",
-        "law": "Royal Decree of 2 November 2017 on the transport of dangerous goods by rail, excluding explosives and radioactive substances: Article 13 and Part 5, Chapter 5.4 of Annex III (RID)",
-        "transport": "Rail",
+        "law": "Royal Decree of 12 July 2016 on the transport of explosives by road and rail (ADR, RID)",
+        "transport": "Road, Rail",
         "dangerousGoods": true
       },
       {
@@ -128,7 +119,7 @@ export const memberStateSubsets = [{
       },
       {
         "subset": "BE05",
-        "law": "Decree of the Government of the Brussels-Capital Region of 22 September 2022 on the transport of dangerous goods by road and by inland waterway (ADR/ADN)",
+        "law": "Decree of the Government of the Brussels-Capital Region of 22 September 2022 on the transport of dangerous goods by road and by inland waterway (ADR, ADN)",
         "transport": "Road, Inland Waterway",
         "dangerousGoods": true
       },
@@ -170,19 +161,19 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "BG02",
-        "law": "Road Transport Act: Article 53(1), Article 91(1), Article 91(2) and Article 91(3)(1, 3, 5 and 8)",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "BG03",
         "law": "Ordinance No. 33 of 03/11/1999: Article 89(3)",
         "transport": "Road",
         "dangerousGoods": false
       },
       {
-        "subset": "BG04",
+        "subset": "BG03",
         "law": "Ordinance No. 11 of 31/10/2002: Article 19(1)(3)",
+        "transport": "Road",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "BG04",
+        "law": "Ordinance No. N-14 of 27/08/2009: Article 13(3) and Article 14(1)",
         "transport": "Road",
         "dangerousGoods": false
       },
@@ -236,13 +227,13 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "HR03",
-        "law": "Combined Freight Transport Act (Official Gazette no. 120/2016): Article 7, Points 1 and 2",
-        "transport": "Combined",
+        "law": "Law of road transport (Official Gazette no. 41/2018): Article 79, Article 80, Article 87(8) and Article 95(2)",
+        "transport": "Road",
         "dangerousGoods": false
       },
       {
         "subset": "HR04",
-        "law": "Law on sustainable waste management (Official Gazette no. 84/2021): Article 24(3), Article 24(8), in conjunction with Waste management ordinance (Official Gazette no. 106/2022), Article 7",
+        "law": "Ordinance on permits in the carriage of cargo (Official Gazette no. 57/2018): Article 9(3)",
         "transport": "Road",
         "dangerousGoods": false
       },
@@ -272,14 +263,14 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "CY02",
-        "law": "Road Transport of Dangerous Goods Law of 2004 as amended to date: Article 5(2) (ADR)",
-        "transport": "Road",
-        "dangerousGoods": true
+        "law": "Technical Safety Directive (TSD) No 1 – National Aviation Security Programme (NASP) Implementation Act (public version) of 6 June 2020: Chapter 6.3.2.6, points (a)-(g)",
+        "transport": "Air",
+        "dangerousGoods": false
       },
       {
         "subset": "CY03",
-        "law": "Technical Safety Directive (TSD) No 1 – National Aviation Security Programme (NASP) Implementation Act (public version) of 6 June 2020: Chapter 6.3.2.6, points (a)-(g)",
-        "transport": "Air",
+        "law": "Motor Vehicles and Road Traffic Law of 1972 as amended to date: Article 2(2D)(3)(e)",
+        "transport": "Road",
         "dangerousGoods": false
       }
     ]
@@ -290,15 +281,15 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "CZ02",
-        "law": "Act No. 111/1994 Coll. on Road Transport: Section 23(2)(a)",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "CZ03",
         "law": "Act No. 266/1994 Coll. (Railways Act): Article 63(2) (RID)",
         "transport": "Rail",
         "dangerousGoods": true
+      },
+      {
+        "subset": "CZ03",
+        "law": "Section 85a of Act No. 49/1997 Coll. on civil aviation and amending Act No. 455/1991 Coll., on trade licensing (Trade Licensing Act), as amended",
+        "transport": "Air",
+        "dangerousGoods": false
       },
       {
         "subset": "CZ04",
@@ -320,25 +311,25 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "DK02",
-        "law": "Executive Order no. 531 of 24 May 2018 on certain forms of combined freight transport: §7(1)",
-        "transport": "Combined",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "DK03",
         "law": "Law on control of compliance with EEC Regulation No 11/1960 (LBK No 119 of 21 February 1990): §2(1)",
         "transport": "Multi-modal",
         "dangerousGoods": false
       },
       {
-        "subset": "DK04",
+        "subset": "DK03",
         "law": "Executive Order no. 828 of 10 June 2017 on road transport of dangerous goods: §5(3), §17(1), §18(1) and §19(1)",
         "transport": "Road",
         "dangerousGoods": true
       },
       {
-        "subset": "DK05",
+        "subset": "DK04",
         "law": "Executive Order no. 601 of 23 June 2009 on rail transport of dangerous goods (RID)",
+        "transport": "Rail",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "DK05",
+        "law": "Executive Order no. 541 of 12 June 2012 on the use of RID in national transport and transport of dangerous goods in hand luggage, etc. (RID)",
         "transport": "Rail",
         "dangerousGoods": true
       },
@@ -356,14 +347,14 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "EE02",
-        "law": "Regulation 150/1996 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of Annex A of the Agreement concerning the International Carriage of Dangerous Goods by road (ADR)",
-        "transport": "Road",
+        "law": "Estonian Railways Act (57): Article 111 with regard to information requirements in accordance with Chapter 5.4 of Part 5 of the Regulation concerning the International Carriage of Dangerous Goods by Rail (RID), appearing as Appendix C to COTIF",
+        "transport": "Rail",
         "dangerousGoods": true
       },
       {
         "subset": "EE04",
-        "law": "Estonian Waste Act: Article 108 (1), Article 113 (1) and Article 115 (3)",
-        "transport": "Road",
+        "law": "Estonian Civil Aviation Security Programme: point 6.3.2.6",
+        "transport": "Air",
         "dangerousGoods": false
       },
       {
@@ -393,25 +384,73 @@ export const memberStateSubsets = [{
     ]
   },
   {
+    "isoCode": "EU",
+    "name": "European Union",
+    "subsets": [
+      {
+        "subset": "EU01",
+        "law": "Article 6(1) of EEC Council Regulation No 11",
+        "transport": "Road, Rail, Inland Waterway",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "EU02",
+        "law": "Article 3 of Council Directive 92/106/EEC",
+        "transport": "Combined",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "EU03",
+        "law": "Article 8(3) of Regulation (EC) No 1072/2009 of the European Parliament and of the Council",
+        "transport": "Road",
+        "dangerousGoods": false
+      },
+      {
+        "subset": "EU05a",
+        "law": "Section I.1 of Annex I to Directive 2008/68/EC of the European Parliament and of the Council",
+        "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "EU05b",
+        "law": "Section II.1 of Annex II to Directive 2008/68/EC of the European Parliament and of the Council",
+        "transport": "Rail",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "EU05c",
+        "law": "Section III.1 of Annex III to Directive 2008/68/EC of the European Parliament and of the Council",
+        "transport": "Inland Waterway",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "EU06",
+        "law": "Annex 6.3.2.6 (a), (b), (c), (d), (e), (f) and (g) of Commission Implementing Regulation (EU) 2015/1998",
+        "transport": "Air",
+        "dangerousGoods": false
+      }
+    ]
+  },
+  {
     "isoCode": "FI",
     "name": "Finland",
     "subsets": [
       {
         "subset": "FI02",
-        "law": "Road Transport Contract Act 345/1979: Section 9",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "FI03a",
         "law": "Act on Transport Services 320/2017: Section 24",
         "transport": "Multi-modal",
         "dangerousGoods": false
       },
       {
-        "subset": "FI03b",
+        "subset": "FI03a",
         "law": "Regulation on the Transport of Dangerous Goods by Road (ADR)",
         "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "FI03b",
+        "law": "Regulation on the Transport of Dangerous Goods by Rail (RID)",
+        "transport": "Rail",
         "dangerousGoods": true
       }
     ]
@@ -470,25 +509,25 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "DE02",
-        "law": "Regulation on Cross-Border Road Haulage and Cabotage of 28/12/2011: Article 17",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "DE03a",
         "law": "Road Haulage Act of 22/06/1998: Article 7(1)(3)",
         "transport": "Road",
         "dangerousGoods": false
       },
       {
-        "subset": "DE03b",
+        "subset": "DE03a",
         "law": "Ordinance on the Transport of Dangerous Goods by Road, Rail and Inland Waterways of 26/03/2021: §1(3) (ADR, RID, ADN)",
         "transport": "Road, Rail, Inland Waterway",
         "dangerousGoods": true
       },
       {
-        "subset": "DE03c",
+        "subset": "DE03b",
         "law": "Ordinance on the Transport of Dangerous Goods by Road, Rail and Inland Waterways of 26/03/2021: §35(2)",
+        "transport": "Road, Rail, Inland Waterway",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "DE03c",
+        "law": "Ordinance on Exemptions from the Regulations on the Transport of Dangerous Goods of 11/03/2019: Exemption 9, Exemption 18, Exemption 20, Exemption 21, Exemption 22, Exemption 24 and Exemption 28",
         "transport": "Road, Rail, Inland Waterway",
         "dangerousGoods": true
       },
@@ -506,39 +545,39 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "HU02",
-        "law": "Government Decree 261/2011. (XII. 7.): Paragraph 22",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "HU03",
         "law": "Government Decree 386/2021. (VI. 30.): Paragraph 3 (1) and Annex 1 (ADN)",
         "transport": "Inland Waterway",
         "dangerousGoods": true
       },
       {
-        "subset": "HU04",
+        "subset": "HU03",
         "law": "Government Decree 387/2021. (VI. 30.): Paragraph 3 (1) and Annex 1 (ADR)",
         "transport": "Road",
         "dangerousGoods": true
       },
       {
-        "subset": "HU05",
+        "subset": "HU04",
         "law": "Government Decree 388/2021. (VI. 30.): Paragraph 3 (1) and Annex 1 (RID)",
         "transport": "Rail",
         "dangerousGoods": true
       },
       {
-        "subset": "HU06",
+        "subset": "HU05",
         "law": "ITM Decree 39/2021. (VII. 30.): Annex 1(2) (ADR)",
         "transport": "Road",
         "dangerousGoods": true
       },
       {
-        "subset": "HU07",
+        "subset": "HU06",
         "law": "Government Decree 266/2003. (XII. 24.): Paragraph 3",
         "transport": "Combined",
         "dangerousGoods": false
+      },
+      {
+        "subset": "HU07",
+        "law": "Government Decree 313/2014 (XII. 12.): Annex 1",
+        "transport": "Air",
+        "dangerousGoods": true
       }
     ]
   },
@@ -548,26 +587,26 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "IE02",
-        "law": "S.I. No. 175/1975 - European Communities (Prohibition of Discrimination in Transport Rates and Conditions) Regulations, 1975",
-        "transport": "Multi-modal",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "IE03",
         "law": "S.I. No. 60/1994: Regulation 5 and Regulation 6 - European Communities (Combined Transport of Goods Between Member States) Regulations, 1994",
         "transport": "Combined",
         "dangerousGoods": false
       },
       {
-        "subset": "IE05",
-        "law": "S.I. No. 419/2007 - Waste Management (Shipments of Waste) Regulations 2007, as amended",
+        "subset": "IE03",
+        "law": "S.I. No. 698/2011: Regulation 3(1)(b) - European Union (International Road Haulage Market) Regulations 2011",
         "transport": "Road",
         "dangerousGoods": false
       },
       {
-        "subset": "IE06",
+        "subset": "IE05",
         "law": "S.I. No 349/2011: Regulation 57(g)(vii) (ADR) - European Communities (Carriage of Dangerous Goods by Road and Use of Transportable Pressure Equipment) Regulations, 2011, as amended",
         "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "IE06",
+        "law": "S.I. No 651/2010: Regulations 8(e) and 12(3)(b) (RID) - European Communities (Transport of Dangerous Goods by Rail) Regulations, 2010, as amended",
+        "transport": "Rail",
         "dangerousGoods": true
       },
       {
@@ -584,15 +623,15 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "IT02",
-        "law": "Decree of the Ministry of Transport and Navigation of 15 February 2001: Article 3(1)",
-        "transport": "Combined",
+        "law": "Law No. 298 of 6 June 1974, as amended: Article 46-bis (1-bis), Article 46-ter, (1) and (2)",
+        "transport": "Road",
         "dangerousGoods": false
       },
       {
         "subset": "IT03a",
-        "law": "Law No. 298 of 6 June 1974, as amended: Article 46-bis (1-bis), Article 46-ter, (1) and (2)",
+        "law": "Legislative Decree No 35 of 27 January 2010 (ADR)",
         "transport": "Road",
-        "dangerousGoods": false
+        "dangerousGoods": true
       },
       {
         "subset": "IT03b",
@@ -614,21 +653,21 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "LV02",
-        "law": "Law on Carriage by Road, 23.8.1995: Section 9",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "LV03",
         "law": "Cabinet Regulation No. 225, 29.4.2003: Points 3 and 4",
         "transport": "Combined",
         "dangerousGoods": false
       },
       {
-        "subset": "LV04",
+        "subset": "LV03",
         "law": "Law on Carriage by Rail, 21.12.2000: Section 24(1) and Section 25(1)",
         "transport": "Rail",
         "dangerousGoods": false
+      },
+      {
+        "subset": "LV04",
+        "law": "Cabinet Regulation No. 226 (RID)",
+        "transport": "Rail",
+        "dangerousGoods": true
       },
       {
         "subset": "LV05",
@@ -644,7 +683,7 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "LT02",
-        "law": "Code of the Inland Waterway Transport: Article 26(2), Article 40, Article 42, (3) and (4) and Article 47(4)",
+        "law": "Rules of Carriage of Goods by Inland Waterways (Order No 269): Points 36, 37, 41, 44, 45, 52, 54, 80, 110, 111, 117, 124, 125 and 128",
         "transport": "Inland Waterway",
         "dangerousGoods": false
       },
@@ -680,39 +719,39 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "LU02",
-        "law": "Grand-Ducal Regulation of 13 January 1966 on the carriage of goods by road: Article 3",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "LU03",
         "law": "Ministerial Regulation of 8 April 1968 on carriage document numbering procedures: Article 1",
         "transport": "Road",
         "dangerousGoods": false
       },
       {
-        "subset": "LU04",
+        "subset": "LU03",
         "law": "Grand-Ducal Regulation of 19 April 2012 implementing and ratifying Regulation (EC) No 1072/2009: Article 6",
         "transport": "Road",
         "dangerousGoods": false
       },
       {
-        "subset": "LU05",
+        "subset": "LU04",
         "law": "Grand Ducal Decree of 6 February 2009 publishing the European Agreement concerning the International Carriage of Dangerous Goods by Road (ADR): Article 1",
         "transport": "Road",
         "dangerousGoods": true
       },
       {
-        "subset": "LU06",
+        "subset": "LU05",
         "law": "Law of 13 March 2007 adopting the European Agreement concerning the International Carriage of Dangerous Goods by Inland Waterways (ADN): Article 1",
         "transport": "Inland Waterway",
         "dangerousGoods": true
       },
       {
-        "subset": "LU07",
+        "subset": "LU06",
         "law": "Grand Ducal Decree of 6 February 2009 publishing the Regulation concerning the International Carriage of Dangerous Goods by Rail (RID): Article 1",
         "transport": "Rail",
         "dangerousGoods": true
+      },
+      {
+        "subset": "LU07",
+        "law": "Grand-Ducal Regulation of 27 February 2011 laying down the conditions for the approval of regulated agents and known consignors... (Aviation Security)",
+        "transport": "Air",
+        "dangerousGoods": false
       }
     ]
   },
@@ -740,21 +779,21 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "NL02",
-        "law": "Decree of 26 October 1983, establishing regulations for the prevention of collision or propulsion on the public waters in the Kingdom, which are open to navigation (ADN)",
-        "transport": "Inland Waterway",
-        "dangerousGoods": true
-      },
-      {
-        "subset": "NL03a",
         "law": "Decree of 15 September 1994, implementing the Police Regulations for the navigation of the Rhine (ADN)",
         "transport": "Inland Waterway",
         "dangerousGoods": true
       },
       {
-        "subset": "NL03b",
+        "subset": "NL03a",
         "law": "Regulation for road transport of goods (Stcrt. 2009, 75), enabling compliance checks with Article 2.13 of Road Transport Act (Stb. 2008, 492): Article 15 (1) and Article 15 (5) (b) (2)",
         "transport": "Road",
         "dangerousGoods": false
+      },
+      {
+        "subset": "NL03b",
+        "law": "Regulation for the transport of dangerous goods by road (ADR)",
+        "transport": "Road",
+        "dangerousGoods": true
       },
       {
         "subset": "NL04",
@@ -782,7 +821,7 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "PL01b",
-        "law": "Act of 6 September 2001 on road transport: Article 4(22)(j), Article 4(22)(x), Article 87(1)(3)",
+        "law": "Act of 6 September 2001 on road transport: Article 4(22)(e)",
         "transport": "Road",
         "dangerousGoods": false
       },
@@ -848,13 +887,13 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "RO02a",
-        "law": "Convention on the Contract for the International Carriage of Goods by Road (CMR), ratified by Decree No 451/1972: Article 6(1)",
-        "transport": "Road",
+        "law": "Ordinance No 88/1999: Article 3, Points 1 and 2",
+        "transport": "Combined",
         "dangerousGoods": false
       },
       {
         "subset": "RO02b",
-        "law": "Ordinance No 88/1999: Article 3, Points 1 and 2",
+        "law": "Ordinance No 88/1999: Article 5",
         "transport": "Combined",
         "dangerousGoods": false
       },
@@ -902,26 +941,26 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "SK02",
-        "law": "Decree No. 274/2002 Coll.: §9, with reference to the aircraft operator’s obligation to submit a Cargo Manifest on entry into the territory of Slovak Republic",
-        "transport": "Air",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "SK03",
         "law": "Decision of the Ministry of Transport and Construction of the Slovak Republic No. 08204/2016/C410-SCLVD/04511: Article 6.6.1 (Aviation Security)",
         "transport": "Air",
         "dangerousGoods": false
       },
       {
-        "subset": "SK04",
+        "subset": "SK03",
         "law": "Notification of the Ministry of Foreign Affairs of the Slovak Republic No. 331/2010 Coll.: §5c(1) (ADN)",
         "transport": "Inland Waterway",
         "dangerousGoods": true
       },
       {
-        "subset": "SK05",
+        "subset": "SK04",
         "law": "Act No 56/2012 Coll.: §34(2) (ADR)",
         "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "SK05",
+        "law": "Act No 514/2009 Coll.: §23(2) and §23(3) (RID)",
+        "transport": "Rail",
         "dangerousGoods": true
       }
     ]
@@ -932,26 +971,26 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "SI02",
-        "law": "Road Transport Contracts Act (UL RS Nos 126/03, 102/07 and 49/11 – ZPCP-2C): Article 41",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "SI03",
         "law": "Decree on combined transport (UL RS Nos 4/01 and 49/13): Article 8",
         "transport": "Combined",
         "dangerousGoods": false
       },
       {
-        "subset": "SI05",
+        "subset": "SI03",
         "law": "Road Transport Act (UL RS Nos 6/16): Article 109(1)",
         "transport": "Road",
         "dangerousGoods": false
       },
       {
-        "subset": "SI06",
+        "subset": "SI05",
         "law": "Transport of Dangerous Goods Act (UL RS No 33/06): Article 3 (ADR, RID)",
         "transport": "Road, Rail",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "SI06",
+        "law": "Agreement between the Ministry of Transport of the Republic of Slovenia and the Federal Minister for Transport, Innovation and Technology of the Republic of Austria on the transport of dangerous goods by road Karavanka tunnel: Article 3(4)",
+        "transport": "Road",
         "dangerousGoods": true
       }
     ]
@@ -962,26 +1001,26 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "ES02",
-        "law": "Order FOM/2861/2012 of 13 December: Article 1 and Article 3(1)",
-        "transport": "Road",
-        "dangerousGoods": false
-      },
-      {
-        "subset": "ES03",
         "law": "Order of 30 September 1993 laying down special rules for certain types of combined transport of goods between Member States of the EEC: Article 5",
         "transport": "Combined",
         "dangerousGoods": false
       },
       {
-        "subset": "ES04",
+        "subset": "ES03",
         "law": "Resolution of 21 January 2021 of the Secretariat-General for Transport and Mobility: Annex. Chapter 6. Point 6.3.2.6",
         "transport": "Air",
         "dangerousGoods": false
       },
       {
-        "subset": "ES05",
+        "subset": "ES04",
         "law": "Royal Decree 97/2014 (ADR)",
         "transport": "Road",
+        "dangerousGoods": true
+      },
+      {
+        "subset": "ES05",
+        "law": "Royal Decree 412/2001 (RID)",
+        "transport": "Rail",
         "dangerousGoods": true
       }
     ]
@@ -992,27 +1031,27 @@ export const memberStateSubsets = [{
     "subsets": [
       {
         "subset": "SE02",
-        "law": "Regulations of the Swedish Civil Contingencies Agency (MSBFS 2022:3): Annex S Chapter 11.1, Chapter 16.4, Sections 18.1.2-18.1.4 (ADR-S)",
-        "transport": "Road",
-        "dangerousGoods": true
-      },
-      {
-        "subset": "SE03",
         "law": "Regulations of the Swedish Civil Contingencies Agency (MSBFS 2022:4): Annex S Chapter 16.4 (RID-S)",
         "transport": "Rail",
         "dangerousGoods": true
       },
       {
-        "subset": "SE04",
+        "subset": "SE03",
         "law": "Waste Ordinance (2020:614): Chapter 6 §19",
         "transport": "Road",
         "dangerousGoods": false
       },
       {
-        "subset": "SE05",
+        "subset": "SE04",
         "law": "Swedish Transport Agency’s Regulations (TSFS 2020:80) on aviation security: Chapter 17 §4",
         "transport": "Air",
         "dangerousGoods": false
+      },
+      {
+        "subset": "SE05",
+        "law": "Swedish Transport Agency’s Regulations and General Guidelines (TSFS 2019:39): §3",
+        "transport": "Maritime",
+        "dangerousGoods": true
       },
       {
         "subset": "SE06",
@@ -1023,4 +1062,3 @@ export const memberStateSubsets = [{
     ]
   }
 ]
-
