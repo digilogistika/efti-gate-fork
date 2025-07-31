@@ -203,4 +203,10 @@ export class DatasetQuery implements OnInit, OnDestroy {
     this.subsetInfoDialog.nativeElement.close();
     this.selectedSubsetInfo = null;
   }
+
+  onDialogClick(event: MouseEvent) {
+    if (event.target === this.subsetInfoDialog.nativeElement) {
+      this.closeSubsetInfoDialog();
+    }
+  }
 }
