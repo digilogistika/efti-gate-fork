@@ -1,3 +1,10 @@
+## [0.10.1](https://github.com/digilogistika/efti-gate/compare/v0.10.0...v0.10.1) (2025-07-31)
+
+
+### Bug Fixes
+
+* Added back dialog for the follow up button which got deleted acc… ([#214](https://github.com/digilogistika/efti-gate/issues/214)) ([9c7274c](https://github.com/digilogistika/efti-gate/commit/9c7274c9c350017af994a9c0f26bb5d4c28aea92))
+
 # [0.10.0](https://github.com/digilogistika/efti-gate/compare/v0.9.1...v0.10.0) (2025-07-30)
 
 
