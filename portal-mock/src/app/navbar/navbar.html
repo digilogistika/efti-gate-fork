@@ -1,4 +1,4 @@
-<nav class="bg-white/70 backdrop-blur-xl shadow-lg border-b border-white/20 sticky top-0 z-50">
+<nav [ngClass]="navbarBgClass" class="backdrop-blur-xl shadow-lg border-b border-white/20 sticky top-0 z-50 transition-colors duration-500">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo Section -->
@@ -14,18 +14,51 @@
           >
         </div>
 
-        <!-- Additional Logos - Hidden on mobile -->
-        <div class="hidden sm:flex items-center space-x-3">
-          <!-- The EFTI4EU and EU Cofunding logos have been removed from this section -->
-          <div>
+        <!-- Additional & National Logos - Hidden on mobile -->
+        <div class="hidden sm:flex items-center space-x-4">
+          <div class="flex-shrink-0">
             <img
-              alt="Pikker logo"
-              height="60"
-              ngSrc="/PIKKER.svg"
+              alt="eFTI4EU logo"
+              height="50"
+              ngSrc="/eFTI4EU.png"
+              width="80"
+              class="transition-transform duration-300 hover:scale-105"
+            >
+          </div>
+          <div class="flex-shrink-0">
+            <img
+              alt="EU cofunding logo"
+              height="50"
+              ngSrc="/EU_COFUNDING.png"
               width="120"
               class="transition-transform duration-300 hover:scale-105"
             >
           </div>
+          <!-- Dynamic National Logos -->
+          @if (flagPath) {
+            <div class="flex items-center flex-shrink-0">
+              <img
+                [ngSrc]="flagPath"
+                [alt]="currentLanguage + ' flag'"
+                height="30"
+                width="45"
+                class="rounded-md shadow-md transition-transform duration-300 hover:scale-110"
+                [ngClass]="{'object-cover': currentLanguage === 'lv'}"
+              >
+            </div>
+          }
+          @if (policeLogoPath) {
+            <div class="flex items-center flex-shrink-0">
+              <img
+                [ngSrc]="policeLogoPath"
+                [alt]="currentLanguage + ' police logo'"
+                height="50"
+                width="50"
+                class="transition-transform duration-300 hover:scale-110 object-contain h-12 w-auto"
+                [ngClass]="{'!h-10': currentLanguage === 'et'}"
+              >
+            </div>
+          }
         </div>
       </div>
 

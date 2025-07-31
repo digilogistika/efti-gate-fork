@@ -2,17 +2,48 @@ import {Component, HostListener} from '@angular/core';
 import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {AuthService} from '../auth/auth.service';
 import {filter} from 'rxjs';
-import {NgOptimizedImage, UpperCasePipe} from '@angular/common';
+import {NgClass, NgOptimizedImage, UpperCasePipe} from '@angular/common';
 import {TranslatePipe, TranslateService, LangChangeEvent} from '@ngx-translate/core';
+
+interface LanguageAssetConfig {
+  navbarClass: string;
+  flagPath: string;
+  policeLogoPath: string;
+}
+
+const LANGUAGE_ASSETS: { [key: string]: LanguageAssetConfig } = {
+  'et': {
+    navbarClass: 'bg-blue-100/70',
+    flagPath: '/Flag_of_Estonia.svg.png',
+    policeLogoPath: '/Estonian_Police.png'
+  },
+  'pl': {
+    navbarClass: 'bg-red-100/70',
+    flagPath: '/Flag_of_Poland.svg.png',
+    policeLogoPath: '/Badge_of_Polish_Police.png'
+  },
+  'lv': {
+    navbarClass: 'bg-red-100/70',
+    flagPath: '/Flag_of_Latvia.svg.png',
+    policeLogoPath: '/Latvia_Police.png'
+  },
+  'lt': {
+    navbarClass: 'bg-green-100/70',
+    flagPath: '/Flag_of_Lithuania.svg.png',
+    policeLogoPath: '/Logo_of_the_Police_of_Lithuania.svg.png'
+  }
+};
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
   imports: [
     RouterLink,
     NgOptimizedImage,
     TranslatePipe,
     RouterLinkActive,
-    UpperCasePipe
+    UpperCasePipe,
+    NgClass
   ],
   templateUrl: './navbar.html'
 })
@@ -25,6 +56,11 @@ export class Navbar {
   private readonly adminSequence = ['a', 'd', 'm', 'i', 'n'];
   public currentLanguage: string;
 
+  // Properties to hold the current state
+  protected navbarBgClass: string = 'bg-white/70';
+  protected flagPath: string | null = null;
+  protected policeLogoPath: string | null = null;
+
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
@@ -36,12 +72,30 @@ export class Navbar {
     ).subscribe(() => {
       this.updateAuthStatus();
     });
+
     this.currentLanguage = this.translate.currentLang;
+    this.updateVisualsForLanguage(this.currentLanguage);
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.currentLanguage = event.lang;
+      this.updateVisualsForLanguage(this.currentLanguage);
     });
   }
   protected readonly localStorage = localStorage;
+
+  private updateVisualsForLanguage(lang: string): void {
+    const assets = LANGUAGE_ASSETS[lang];
+    if (assets) {
+      this.navbarBgClass = assets.navbarClass;
+      this.flagPath = assets.flagPath;
+      this.policeLogoPath = assets.policeLogoPath;
+    } else {
+      // Default state for English or any other language
+      this.navbarBgClass = 'bg-white/70';
+      this.flagPath = null;
+      this.policeLogoPath = null;
+    }
+  }
 
   updateAuthStatus(): void {
     this.authService.isAuthenticatedUser().subscribe({
