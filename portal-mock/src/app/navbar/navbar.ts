@@ -13,22 +13,22 @@ interface LanguageAssetConfig {
 
 const LANGUAGE_ASSETS: { [key: string]: LanguageAssetConfig } = {
   'et': {
-    navbarClass: 'bg-blue-100/70',
+    navbarClass: 'bg-blue-500/80',
     flagPath: '/Flag_of_Estonia.svg.png',
     policeLogoPath: '/Estonian_Police.png'
   },
   'pl': {
-    navbarClass: 'bg-red-100/70',
+    navbarClass: 'bg-red-600/80',
     flagPath: '/Flag_of_Poland.svg.png',
     policeLogoPath: '/Badge_of_Polish_Police.png'
   },
   'lv': {
-    navbarClass: 'bg-red-100/70',
+    navbarClass: 'bg-red-800/70',
     flagPath: '/Flag_of_Latvia.svg.png',
     policeLogoPath: '/Latvia_Police.png'
   },
   'lt': {
-    navbarClass: 'bg-green-100/70',
+    navbarClass: 'bg-green-900/80',
     flagPath: '/Flag_of_Lithuania.svg.png',
     policeLogoPath: '/Logo_of_the_Police_of_Lithuania.svg.png'
   }
@@ -56,10 +56,18 @@ export class Navbar {
   private readonly adminSequence = ['a', 'd', 'm', 'i', 'n'];
   public currentLanguage: string;
 
-  // Properties to hold the current state
+  // Dynamic state for visuals
   protected navbarBgClass: string = 'bg-white/70';
   protected flagPath: string | null = null;
   protected policeLogoPath: string | null = null;
+
+  // Dynamic classes for navbar elements
+  protected navLinkClass: string = '';
+  protected navLinkActiveClass: string = '';
+  protected logoutBtnClass: string = '';
+  protected langBtnClass: string = '';
+  protected langBtnIconClass: string = '';
+  protected mobileBurgerClass: string = '';
 
   constructor(
     private readonly authService: AuthService,
@@ -73,7 +81,7 @@ export class Navbar {
       this.updateAuthStatus();
     });
 
-    this.currentLanguage = this.translate.currentLang;
+    this.currentLanguage = this.translate.currentLang || 'en';
     this.updateVisualsForLanguage(this.currentLanguage);
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -85,15 +93,30 @@ export class Navbar {
 
   private updateVisualsForLanguage(lang: string): void {
     const assets = LANGUAGE_ASSETS[lang];
+    const baseLinkLayout = 'flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-lg';
+
     if (assets) {
+      // THEMED styles for Estonian, Latvian, etc.
       this.navbarBgClass = assets.navbarClass;
       this.flagPath = assets.flagPath;
       this.policeLogoPath = assets.policeLogoPath;
+      this.navLinkClass = `${baseLinkLayout} text-white hover:bg-white/20`;
+      this.navLinkActiveClass = 'bg-white/25 shadow-md';
+      this.logoutBtnClass = `${baseLinkLayout} text-white hover:bg-red-500/75`;
+      this.langBtnClass = 'flex items-center px-3 py-2 rounded-full text-sm font-medium text-white bg-black/10 hover:bg-white/20 transition-all duration-300 group';
+      this.langBtnIconClass = 'w-5 h-5 mr-2 text-white transition-all duration-300';
+      this.mobileBurgerClass = 'inline-flex items-center justify-center p-2 rounded-full text-white hover:bg-white/20 transition-all duration-300';
     } else {
-      // Default state for English or any other language
+      // DEFAULT styles for English
       this.navbarBgClass = 'bg-white/70';
       this.flagPath = null;
       this.policeLogoPath = null;
+      this.navLinkClass = `${baseLinkLayout} text-gray-700 hover:bg-white/80 hover:text-indigo-600`;
+      this.navLinkActiveClass = 'bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-700';
+      this.logoutBtnClass = `${baseLinkLayout} text-gray-700 hover:bg-red-50/80 hover:text-red-600`;
+      this.langBtnClass = 'flex items-center px-3 py-2 rounded-full text-sm font-medium text-gray-700 bg-white/80 hover:bg-indigo-50/80 hover:text-indigo-600 transition-all duration-300 group';
+      this.langBtnIconClass = 'w-5 h-5 mr-2 text-gray-700 group-hover:text-indigo-600 transition-all duration-300';
+      this.mobileBurgerClass = 'inline-flex items-center justify-center p-2 rounded-full text-gray-700 hover:text-indigo-600 hover:bg-white/80 transition-all duration-300';
     }
   }
 
