@@ -1,9 +1,7 @@
 <app-navbar></app-navbar>
 
-<router-outlet>
+<main class="flex-grow">
+  <router-outlet></router-outlet>
+</main>
 
-</router-outlet>
-
-<span class="absolute text-sm text-gray-500">
-  Project version: {{ version }}
-</span>
+<app-footer [version]="version"></app-footer>

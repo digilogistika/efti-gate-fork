@@ -1,0 +1,59 @@
+<footer class="bg-white/70 backdrop-blur-xl shadow-inner mt-auto">
+  <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <!-- Logo Section -->
+    <div class="flex justify-center items-center space-x-6">
+      <!-- Main Logo -->
+      <div class="flex-shrink-0">
+        <img
+          alt="DLK logo"
+          height="50"
+          ngSrc="/DLK.png"
+          width="100"
+          class="transition-transform duration-300 hover:scale-105"
+        >
+      </div>
+
+      <!-- Additional Logos -->
+      <div class="flex items-center space-x-4">
+        <div>
+          <img
+            alt="eFTI4EU logo"
+            height="40"
+            ngSrc="/eFTI4EU.png"
+            width="70"
+            class="transition-transform duration-300 hover:scale-105"
+          >
+        </div>
+        <div>
+          <img
+            alt="EU cofunding logo"
+            height="40"
+            ngSrc="/EU_COFUNDING.png"
+            width="110"
+            class="transition-transform duration-300 hover:scale-105"
+          >
+        </div>
+        <div>
+          <img
+            alt="Pikker logo"
+            height="50"
+            ngSrc="/PIKKER.svg"
+            width="110"
+            class="transition-transform duration-300 hover:scale-105"
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright and Version Info -->
+    <div class="mt-6 text-center text-sm text-gray-500">
+      <p>
+        © 2025 DLK. All rights reserved.
+        @if (version) {
+          <span class="mx-2">|</span>
+          <span>Project version: {{ version }}</span>
+        }
+      </p>
+    </div>
+  </div>
+</footer>
