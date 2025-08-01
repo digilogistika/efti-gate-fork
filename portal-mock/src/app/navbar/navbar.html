@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo Section -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-4 flex-shrink-0">
         <!-- Main Logo -->
         <div class="flex-shrink-0">
           <img
@@ -62,10 +62,10 @@
         </div>
       </div>
 
-      <!-- Desktop Navigation -->
+      <!-- Desktop Navigation & Actions -->
       <div class="flex items-center space-x-2">
         @if (isAuthenticated || isAdminSecretActivated) {
-          <div class="hidden md:flex items-center space-x-2">
+          <div class="hidden lg:flex items-center space-x-2">
             @if (isAuthenticated) {
               <a
                 routerLink="identifiers-search"
@@ -157,7 +157,7 @@
         </div>
 
         <!-- Mobile Menu Button -->
-        <div class="md:hidden flex items-center">
+        <div class="lg:hidden flex items-center">
           <button
             (click)="burgerMenuToggle()"
             aria-label="Toggle menu"
@@ -173,7 +173,7 @@
 
     <!-- Mobile Menu -->
     @if (burgerMenuOpen) {
-      <div class="md:hidden bg-white/90 backdrop-blur-xl border-t border-white/20">
+      <div class="lg:hidden bg-white/90 backdrop-blur-xl border-t border-white/20">
         <div class="px-4 py-3 space-y-2">
           @if (isAuthenticated) {
             <a
