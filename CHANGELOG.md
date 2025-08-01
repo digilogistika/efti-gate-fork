@@ -1,3 +1,19 @@
+# [0.11.0](https://github.com/digilogistika/efti-gate/compare/v0.10.1...v0.11.0) (2025-08-01)
+
+
+### Bug Fixes
+
+* Fixing burger menu displaying the logos ([a1864e8](https://github.com/digilogistika/efti-gate/commit/a1864e8a5d228b21431a14909d57595aae6d20ff))
+* Making navbar colors darker, changing button text to white ([95fc8d2](https://github.com/digilogistika/efti-gate/commit/95fc8d22fee7c8540c1be5058c1ba3fa82b559a1))
+* Navbar shrinking overlapping bug fix. ([3b7fc83](https://github.com/digilogistika/efti-gate/commit/3b7fc835bbe5b6bd9c53a778acd221b9c3f7364b))
+* Removed glitching shadow from the language box ([fa8f9b1](https://github.com/digilogistika/efti-gate/commit/fa8f9b1c5028ed606423745067621af4f2180601))
+
+
+### Features
+
+* Adding footer ([3fb33d8](https://github.com/digilogistika/efti-gate/commit/3fb33d80630aac7aada5d99181b1035b6f2bf7ad))
+* Upgrading navbar to display country flag and police badge. Navbar color changes depending on the country ([549af78](https://github.com/digilogistika/efti-gate/commit/549af7886f154ca03f63b598a7c8c7b5846e26ed))
+
 ## [0.10.1](https://github.com/digilogistika/efti-gate/compare/v0.10.0...v0.10.1) (2025-07-31)
 
 
