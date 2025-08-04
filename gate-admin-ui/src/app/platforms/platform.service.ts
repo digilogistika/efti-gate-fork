@@ -10,6 +10,7 @@ import { ApiKeyResponse } from "../authentication/api-key-response.model";
 })
 export class PlatformService {
   registerUrl = environment.apiUrl.registerPlatform;
+  deleteUrl = environment.apiUrl.deletePlatform;
 
   private readonly http = inject(HttpClient);
 
@@ -18,6 +19,13 @@ export class PlatformService {
   ): Observable<HttpResponse<ApiKeyResponse>> {
     return this.http.post<ApiKeyResponse>(this.registerUrl, platform, {
       observe: "response",
+    });
+  }
+
+  deletePlatform(platformId: string): Observable<HttpResponse<Text>> {
+    return this.http.delete<Text>(this.deleteUrl + "/" + platformId, {
+      observe: "response",
+      responseType: "text" as "json",
     });
   }
 }
