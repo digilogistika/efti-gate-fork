@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<consignment xmlns="http://efti.eu/v1/consignment/common">
+
+    <!-- A logistic service charge applicable to this supply chain consignment, such as freight or insurance charges. -->
+    <applicableServiceCharge>
+        <appliedAmount currencyId="EUR">250.00</appliedAmount>
+        <calculationBasisPrice>
+            <basisQuantity>1</basisQuantity>
+            <categoryTypeCode>S</categoryTypeCode>
+            <unitAmount currencyId="EUR">16.42</unitAmount>
+        </calculationBasisPrice>
+        <id>FRC</id>
+        <payingPartyRoleCode>CN</payingPartyRoleCode>
+        <paymentArrangementCode>PPD</paymentArrangementCode>
+    </applicableServiceCharge>
+
+    <!-- Any document associated with this consignment, such as a certificate of origin, despatch note or dangerous goods note. -->
+    <associatedDocument>
+        <id>PL-789</id>
+        <typeCode>PL</typeCode>
+    </associatedDocument>
+
+    <!-- A trade party associated with this consignment. -->
+    <associatedParty>
+        <name>Customs Broker Inc.</name>
+        <postalAddress>
+            <cityName>Rotterdam</cityName>
+            <countryCode>NL</countryCode>
+            <postcode>3011AB</postcode>
+            <streetName>Havenstraat 5</streetName>
+        </postalAddress>
+    </associatedParty>
+
+    <!-- The monetary value of the Cash On Delivery (COD) amount to be collected by the carrier upon delivery of this supply chain consignment. -->
+    <cODAmount currencyId="EUR">150.00</cODAmount>
+
+    <!-- Cargo insurance instructions for this supply chain consignment. -->
+    <cargoInsuranceInstructions>Insure for a total value of 50000 EUR</cargoInsuranceInstructions>
+
+    <!-- The carrier party for this supply chain consignment. -->
+    <carrier>
+        <name>ColliCare Logistics BV</name>
+        <postalAddress>
+            <cityName>Groningen</cityName>
+            <countryCode>NL</countryCode>
+            <postcode>9744TS</postcode>
+            <streetName>Manchesterweg 101</streetName>
+        </postalAddress>
+    </carrier>
+
+    <!-- The consignment carrier acceptance date/time. -->
+    <carrierAcceptanceDateTime formatId="205">202707081834+0000</carrierAcceptanceDateTime>
+
+    <!-- The location where this consignment will be, or has been, accepted by the carrier. -->
+    <carrierAcceptanceLocation>
+        <name>Amsterdam</name>
+        <postalAddress>
+            <countryCode>NL</countryCode>
+        </postalAddress>
+    </carrierAcceptanceLocation>
+
+    <!-- A connecting carrier party for this supply chain consignment. -->
+    <connectingCarrier>
+        <name>Subcontractor Logistics GmbH</name>
+        <postalAddress>
+            <cityName>Hamburg</cityName>
+            <countryCode>DE</countryCode>
+            <postcode>20095</postcode>
+            <streetName>Industriestrasse 10</streetName>
+        </postalAddress>
+    </connectingCarrier>
+
+    <!-- The consignee party for this supply chain consignment. -->
+    <consignee>
+        <name>ColliCare Logistics AS</name>
+        <postalAddress>
+            <cityName>Kløfta</cityName>
+            <countryCode>NO</countryCode>
+            <postcode>2040</postcode>
+            <streetName>Dyrskuevegen 46</streetName>
+        </postalAddress>
+    </consignee>
+
+    <!-- The location at which this supply chain consignment will be or has been received by the consignee. -->
+    <consigneeReceiptLocation>
+        <name>Oslo Terminal</name>
+        <postalAddress>
+            <cityName>Oslo</cityName>
+            <countryCode>NO</countryCode>
+            <postcode>0155</postcode>
+            <streetName>Terminalveien 1</streetName>
+        </postalAddress>
+    </consigneeReceiptLocation>
+
+    <!-- The consignor party for this supply chain consignment. -->
+    <consignor>
+        <name>123Candy BV</name>
+        <postalAddress>
+            <cityName>Amsterdam</cityName>
+            <countryCode>NL</countryCode>
+            <postcode>1234AB</postcode>
+            <streetName>Suikerlaan 12</streetName>
+        </postalAddress>
+    </consignor>
+
+    <!-- Border clearance instructions provided by the consignor for this supply chain consignment. -->
+    <consignorProvidedBorderClearanceInstructions>
+        <description>Handle with care. All customs documents are attached.</description>
+    </consignorProvidedBorderClearanceInstructions>
+
+    <!-- Information, expressed as text, provided by the consignor for this supply chain consignment. -->
+    <consignorProvidedInformationText>Ref: 012345678</consignorProvidedInformationText>
+
+    <!-- Information related to contract terms and conditions, expressed as text, for this supply chain consignment. -->
+    <contractTermsText>Goods must be stored between 15-20 degrees Celsius.</contractTermsText>
+
+    <!-- The monetary value of this supply chain consignment as declared by the shipper or his agent for the purpose of varying the carrier's level of liability from that provided in the contract of carriage, in case of loss or damage to goods or delayed delivery. -->
+    <declaredValueForCarriageAmount currencyId="EUR">45000.00</declaredValueForCarriageAmount>
+
+    <!-- The delivery event for this supply chain consignment. -->
+    <deliveryEvent>
+        <actualOccurrenceDateTime formatId="102">20220826</actualOccurrenceDateTime>
+        <occurrenceLocation>
+            <name>Kløfta</name>
+            <postalAddress>
+                <countryCode>NO</countryCode>
+            </postalAddress>
+        </occurrenceLocation>
+    </deliveryEvent>
+
+    <!-- The delivery information, expressed as text, for this supply chain consignment. -->
+    <deliveryInformation>Taillift needed for delivery.</deliveryInformation>
+
+    <!-- The freight forwarder party for this supply chain consignment. -->
+    <freightForwarder>
+        <name>Global Freight Solutions</name>
+        <postalAddress>
+            <cityName>Antwerp</cityName>
+            <countryCode>BE</countryCode>
+            <postcode>2000</postcode>
+            <streetName>Dokweg 1</streetName>
+        </postalAddress>
+    </freightForwarder>
+
+    <!-- A measure of the gross volume, normally calculated by multiplying the maximum length, width and height of this supply chain consignment. -->
+    <grossVolume unitId="MTQ">15.216</grossVolume>
+
+    <!-- A measure of the gross weight (mass) of this supply chain consignment which includes the weight of packaging but which excludes the weight of any transport equipment. -->
+    <grossWeight unitId="KGM">1049.60</grossWeight>
+
+    <!-- A consignment item included in this supply chain consignment. -->
+    <includedConsignmentItem>
+        <dimensions>
+            <description>Dimensions 120 x 80 x 190</description>
+        </dimensions>
+    </includedConsignmentItem>
+
+    <!-- Information, expressed as text, for this supply chain consignment. -->
+    <information>One carton slightly damaged upon receipt, contents appear intact.</information>
+
+    <!-- A result of a logistics risk analysis calculation specified for this supply chain consignment. -->
+    <logisticsRiskAnalysisResult>
+        <consignmentRiskRelatedCode>lol</consignmentRiskRelatedCode>
+        <description>Low risk of damage based on physical inspection.</description>
+        <levelCode>LO</levelCode>
+        <screeningMethodCode>PHS</screeningMethodCode>
+    </logisticsRiskAnalysisResult>
+
+    <!-- A main carriage logistics transport movement for this supply chain consignment. -->
+    <mainCarriageTransportMovement>
+        <dangerousGoodsIndicator>true</dangerousGoodsIndicator>
+        <modeCode>4</modeCode>
+        <usedTransportMeans>
+            <id schemeAgencyId="UN">AAS501</id>
+            <registrationCountry>
+                <code>EE</code>
+            </registrationCountry>
+        </usedTransportMeans>
+    </mainCarriageTransportMovement>
+
+    <!-- Transport cargo details of this supply chain consignment sufficient to identify its nature for customs, statistical or transport purposes. -->
+    <natureIdentificationCargo>
+        <identificationText>Packaged Confectionery / Foodstuffs</identificationText>
+    </natureIdentificationCargo>
+
+    <!-- A measure of the net weight (mass) of this consignment which excludes the weight of packaging of this supply chain consignment and that of any transport equipment. -->
+    <netWeight unitId="KGM">1000.00</netWeight>
+
+    <!-- Transportation waste material notified for this supply chain consignment. -->
+    <notifiedWasteMaterial>
+        <id>WASTE-001</id>
+    </notifiedWasteMaterial>
+
+    <!-- The number of packages within this supply chain consignment. -->
+    <numberOfPackages>10</numberOfPackages>
+
+    <!-- An on-carriage logistics transport movement for this supply chain consignment. -->
+    <onCarriageTransportMovement>
+        <modeCode>3</modeCode>
+    </onCarriageTransportMovement>
+
+    <!-- The code specifying the payment arrangements for this supply chain consignment. -->
+    <paymentArrangementCode>PPD</paymentArrangementCode>
+
+    <!-- A pre-carriage logistics transport movement for this supply chain consignment. -->
+    <preCarriageTransportMovement>
+        <modeCode>3</modeCode>
+    </preCarriageTransportMovement>
+
+    <!-- A cross-border regulatory procedure applicable to this supply chain consignment. -->
+    <regulatoryProcedure>
+        <exportCustomsOfficeLocation>
+            <id>NLRTMA</id>
+        </exportCustomsOfficeLocation>
+        <importCustomsOfficeLocation>
+            <id>NOOSL</id>
+        </importCustomsOfficeLocation>
+    </regulatoryProcedure>
+
+    <!-- A logistics transport movement specified for this supply chain consignment. -->
+    <specifiedTransportMovement>
+        <modeCode>1</modeCode>
+    </specifiedTransportMovement>
+
+    <!-- The referenced transport contract document for this supply chain consignment, such as an airwaybill or a seawaybill. -->
+    <transportContractDocument>
+        <id>AWB-123-45678901</id>
+    </transportContractDocument>
+
+    <!-- A number of pieces of transport equipment, such as containers or similar unit load devices, in this supply chain consignment. -->
+    <transportEquipmentQuantity>2</transportEquipmentQuantity>
+
+    <!-- An event occurring during the transport of this supply chain consignment. -->
+    <transportEvent>
+        <estimatedOccurrenceDateTime formatId="102">20220825</estimatedOccurrenceDateTime>
+        <occurrenceLocation>
+            <name>Hamburg Port</name>
+        </occurrenceLocation>
+    </transportEvent>
+
+    <!-- Transport packages for this supply chain consignment. -->
+    <transportPackage>
+        <itemQuantity>102</itemQuantity>
+        <typeCode>CT</typeCode>
+        <typeText>Cartons on Pallets</typeText>
+    </transportPackage>
+
+    <transportPackage>
+        <itemQuantity>123</itemQuantity>
+        <typeCode>CT</typeCode>
+        <typeText>Cartons on BEANS</typeText>
+    </transportPackage>
+    <!-- A transport service for this supply chain consignment. -->
+    <transportService>
+        <description>Loading Meter: 3.20 LDM</description>
+    </transportService>
+
+    <!-- A transshipment location for this supply chain consignment. -->
+    <transshipmentLocation>
+        <name>Hamburg Port</name>
+        <postalAddress>
+            <cityName>Hamburg</cityName>
+            <countryCode>DE</countryCode>
+            <postcode>21129</postcode>
+            <streetName>Am Hafen</streetName>
+        </postalAddress>
+    </transshipmentLocation>
+
+    <!-- The indication of whether or not transshipment is permitted for this supply chain consignment. -->
+    <transshipmentPermittedIndicator>true</transshipmentPermittedIndicator>
+
+    <!-- Logistics transport equipment utilized for this supply chain consignment. -->
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">MMG947</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>0</sequenceNumber>
+    </usedTransportEquipment>
+
+    <usedTransportEquipment>
+        <id schemeAgencyId="UN">EOP443</id>
+        <registrationCountry>
+            <code>EE</code>
+        </registrationCountry>
+        <sequenceNumber>1</sequenceNumber>
+    </usedTransportEquipment>
+
+</consignment>
