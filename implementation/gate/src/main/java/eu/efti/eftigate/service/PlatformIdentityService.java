@@ -8,6 +8,7 @@ import eu.efti.eftigate.entity.PlatformHeaderEntity;
 import eu.efti.eftigate.mapper.MapperUtils;
 import eu.efti.eftigate.repository.PlatformHeaderRepository;
 import eu.efti.eftigate.repository.PlatformRepository;
+import eu.efti.identifiersregistry.service.IdentifiersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ import java.util.List;
 public class PlatformIdentityService {
     private final PlatformRepository platformRepository;
     private final PlatformHeaderRepository platformHeaderRepository;
+    private final IdentifiersService identifiersService;
     private final MapperUtils mapperUtils;
     private final PasswordEncoder passwordEncoder;
     private final SecureRandom secureRandom = new SecureRandom();
@@ -63,6 +65,12 @@ public class PlatformIdentityService {
         PlatformEntity platformEntity = platformRepository.findByPlatformId(platformId);
 
         if (platformEntity != null) {
+            identifiersService.deleteByPlatformId(platformId);
+            List<PlatformHeaderEntity> platformHeaders = platformHeaderRepository.findAllByPlatform(platformEntity);
+            if (!platformHeaders.isEmpty()) {
+                platformHeaders.forEach(platformHeaderRepository::delete);
+                log.info("Deleted {} headers associated with platform {}", platformHeaders.size(), platformId);
+            }
             platformRepository.delete(platformEntity);
             log.info("platform {} deleted successfully", platformId);
             return String.format("platform %s deleted successfully", platformId);

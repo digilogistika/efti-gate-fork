@@ -42,6 +42,8 @@ public interface IdentifiersRepository extends JpaRepository<Consignment, Long>,
     @Query(value = "SELECT c FROM Consignment c where c.gateId = :gate and c.datasetId = :uuid and c.platformId = :platform")
     Optional<Consignment> findByUil(final String gate, final String uuid, final String platform);
 
+    void deleteAllByPlatformId(String platformId);
+
     default List<Consignment> searchByCriteria(final SearchWithIdentifiersRequestDto request) {
         final Set<Consignment> results = new HashSet<>();
         List<String> identifierTypes = request.getIdentifierType();

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface PlatformHeaderRepository extends Repository<PlatformHeaderEntity, Long> {
     List<PlatformHeaderEntity> findAllByPlatform(PlatformEntity platformEntity);
+    void delete(PlatformHeaderEntity platformHeaderEntity);
 }
