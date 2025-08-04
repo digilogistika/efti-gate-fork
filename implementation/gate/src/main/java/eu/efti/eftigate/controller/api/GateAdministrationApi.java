@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Tag(name = "Gate administration api", description = "API for gate's administrator.")
 @RequestMapping("/api/admin")
@@ -54,6 +53,17 @@ public interface GateAdministrationApi {
     );
 
     @Operation(
+            summary = "Delete authority.",
+            description = "Delete authority from the authority's database"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Authority successfully deleted."),
+            @ApiResponse(responseCode = "404", description = "Authority does not exist."),
+    })
+    @DeleteMapping("/authority/delete/{authorityId}")
+    ResponseEntity<String> deleteAuthority(@PathVariable String authorityId);
+
+    @Operation(
             summary = "Register a new platform to the system",
             description = "Add a new platform with its endpoint information to the system. The platform will be registered and a response will be returned with the API key that can be used by the platform."
     )
@@ -66,6 +76,17 @@ public interface GateAdministrationApi {
     ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
             @RequestBody @Validated PlatformRegistrationRequestDto platformRegistrationRequestDto
     );
+
+    @Operation(
+            summary = "Delete platform.",
+            description = "Delete platform from the platform's database"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Platform successfully deleted."),
+            @ApiResponse(responseCode = "404", description = "Platform does not exist."),
+    })
+    @DeleteMapping("/platform/delete/{platformId}")
+    ResponseEntity<String> deletePlatform(@PathVariable String platformId);
 
     @Operation(
             summary = "Get system metadata.",

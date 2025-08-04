@@ -46,4 +46,18 @@ public class AuthorityIdentityService {
         responseDto.setApiKey(authorityUserRegistrationRequestDto.getAuthorityId() + "_" + secret);
         return responseDto;
     }
+
+    public String deleteAuthority(final String authorityId) {
+        log.info("Attempting to delete authority with ID: {}", authorityId);
+
+        final AuthorityUserEntity authorityUser = this.authorityUserRepository.findByAuthorityId(authorityId)
+                .orElseThrow(() -> {
+                    log.warn("Authority with ID {} does not exist", authorityId);
+                    return new RuntimeException("Authority not found with id: " + authorityId);
+                });
+
+        this.authorityUserRepository.delete(authorityUser);
+        log.info("Successfully deleted authority with ID: {}", authorityId);
+        return "Authority with ID " + authorityId + " was deleted successfully.";
+    }
 }

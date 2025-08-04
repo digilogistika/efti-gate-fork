@@ -18,7 +18,7 @@ import java.util.List;
 public class GateAdministrationController implements GateAdministrationApi {
     private final GateAdministrationService gateAdministrationService;
     private final AuthorityIdentityService authorityIdentityService;
-    private PlatformIdentityService platformIdentityService;
+    private final PlatformIdentityService platformIdentityService;
 
     @Override
     public ResponseEntity<String> registerGate(GateDto gateDto) {
@@ -41,11 +41,23 @@ public class GateAdministrationController implements GateAdministrationApi {
     }
 
     @Override
+    public ResponseEntity<String> deleteAuthority(String authorityId) {
+        log.info("DELETE on /api/admin/authority/delete with id: {}", authorityId);
+        return ResponseEntity.ok(authorityIdentityService.deleteAuthority(authorityId));
+    }
+
+    @Override
     public ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
             PlatformRegistrationRequestDto platformRegistrationRequestDto) {
         log.info("POST on /api/admin/platform/register");
         PlatformRegistrationResponseDto platformRegistrationResponseDto = platformIdentityService.registerPlatform(platformRegistrationRequestDto);
         return ResponseEntity.ok(platformRegistrationResponseDto);
+    }
+
+    @Override
+    public ResponseEntity<String> deletePlatform(String platformId) {
+        log.info("DELETE on /api/admin/platform/delete with id: {}", platformId);
+        return ResponseEntity.ok(platformIdentityService.deletePlatform(platformId));
     }
 
     @Override

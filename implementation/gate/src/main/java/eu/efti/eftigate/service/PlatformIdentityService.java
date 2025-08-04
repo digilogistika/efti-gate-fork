@@ -17,7 +17,6 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -58,6 +57,19 @@ public class PlatformIdentityService {
         PlatformRegistrationResponseDto responseDto = new PlatformRegistrationResponseDto();
         responseDto.setApiKey(platformRegistrationRequestDto.getPlatformId() + "_" + secret);
         return responseDto;
+    }
+
+    public String deletePlatform(String platformId) {
+        PlatformEntity platformEntity = platformRepository.findByPlatformId(platformId);
+
+        if (platformEntity != null) {
+            platformRepository.delete(platformEntity);
+            log.info("platform {} deleted successfully", platformId);
+            return String.format("platform %s deleted successfully", platformId);
+        } else {
+            log.warn("platform {} does not exist", platformId);
+            throw new RuntimeException("platform " + platformId + " does not exist");
+        }
     }
 
     public List<PlatformHeaderDto> getPlatformRequestHeaders(String platformId) {
