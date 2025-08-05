@@ -72,4 +72,10 @@ public class IdentifiersService {
     public List<ConsignmentDto> search(final SearchWithIdentifiersRequestDto identifiersRequestDto) {
         return mapper.entityToDto(this.identifiersRepository.searchByCriteria(identifiersRequestDto));
     }
+
+    @Transactional("identifiersTransactionManager")
+    public void deleteByPlatformId(final String platformId) {
+        log.info("Deleting all identifiers for platformId {}", platformId);
+        identifiersRepository.deleteAllByPlatformId(platformId);
+    }
 }

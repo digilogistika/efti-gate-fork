@@ -5,9 +5,11 @@ import eu.efti.eftigate.dto.PlatformRegistrationRequestDto;
 import eu.efti.eftigate.dto.PlatformRegistrationResponseDto;
 import eu.efti.eftigate.entity.PlatformEntity;
 import eu.efti.eftigate.entity.PlatformHeaderEntity;
+import eu.efti.eftigate.exception.PlatformNotFoundException;
 import eu.efti.eftigate.mapper.MapperUtils;
 import eu.efti.eftigate.repository.PlatformHeaderRepository;
 import eu.efti.eftigate.repository.PlatformRepository;
+import eu.efti.identifiersregistry.service.IdentifiersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,13 +19,13 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PlatformIdentityService {
     private final PlatformRepository platformRepository;
     private final PlatformHeaderRepository platformHeaderRepository;
+    private final IdentifiersService identifiersService;
     private final MapperUtils mapperUtils;
     private final PasswordEncoder passwordEncoder;
     private final SecureRandom secureRandom = new SecureRandom();
@@ -58,6 +60,25 @@ public class PlatformIdentityService {
         PlatformRegistrationResponseDto responseDto = new PlatformRegistrationResponseDto();
         responseDto.setApiKey(platformRegistrationRequestDto.getPlatformId() + "_" + secret);
         return responseDto;
+    }
+
+    public String deletePlatform(String platformId) {
+        PlatformEntity platformEntity = platformRepository.findByPlatformId(platformId);
+
+        if (platformEntity != null) {
+            identifiersService.deleteByPlatformId(platformId);
+            List<PlatformHeaderEntity> platformHeaders = platformHeaderRepository.findAllByPlatform(platformEntity);
+            if (!platformHeaders.isEmpty()) {
+                platformHeaders.forEach(platformHeaderRepository::delete);
+                log.info("Deleted {} headers associated with platform {}", platformHeaders.size(), platformId);
+            }
+            platformRepository.delete(platformEntity);
+            log.info("platform {} deleted successfully", platformId);
+            return String.format("platform %s deleted successfully", platformId);
+        } else {
+            log.warn("platform {} does not exist", platformId);
+            throw new PlatformNotFoundException("platform " + platformId + " does not exist");
+        }
     }
 
     public List<PlatformHeaderDto> getPlatformRequestHeaders(String platformId) {

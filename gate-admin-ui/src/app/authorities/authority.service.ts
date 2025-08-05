@@ -10,12 +10,19 @@ import { Authority } from "./authority.model";
 })
 export class AuthorityService {
   registerUrl = environment.apiUrl.registerAuthority;
-
+  deleteUrl = environment.apiUrl.deleteAuthority;
   private readonly http = inject(HttpClient);
 
   register(authority: Authority): Observable<HttpResponse<ApiKeyResponse>> {
     return this.http.post<ApiKeyResponse>(this.registerUrl, authority, {
       observe: "response",
+    });
+  }
+
+  deleteAuthority(authorityId: string): Observable<HttpResponse<Text>> {
+    return this.http.delete<Text>(this.deleteUrl + "/" + authorityId, {
+      observe: "response",
+      responseType: "text" as "json",
     });
   }
 }

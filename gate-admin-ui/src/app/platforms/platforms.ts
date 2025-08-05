@@ -130,6 +130,30 @@ export class Platforms implements OnInit, OnDestroy {
       });
   }
 
+  deletePlatform(platformId: string): void {
+    if (!confirm(`Are you sure you want to delete platform: ${platformId}? This action cannot be undone.`)) {
+      return;
+    }
+
+    this.platformService.deletePlatform(platformId).pipe(
+      catchError(error => {
+        if (error.status === 404) {
+          this.notificationService.showError("Platform not found. It may have already been deleted.");
+        } else {
+          this.notificationService.showError("An unexpected error occurred while deleting the platform.");
+        }
+        console.error(error);
+        return of(null);
+      })
+    ).subscribe((res) => {
+      if (res?.status === 200) {
+        this.notificationService.showSuccess(`Platform '${platformId}' deleted successfully.`);
+        this.fetchData();
+        this.searchControl.reset();
+      }
+    });
+  }
+
   uploadNewPlatform() {
     this.apiKeyResponse = undefined;
   }
