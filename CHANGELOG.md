@@ -1,3 +1,17 @@
+# [0.12.0](https://github.com/digilogistika/efti-gate/compare/v0.11.0...v0.12.0) (2025-08-05)
+
+
+### Bug Fixes
+
+* Adding custom exceptions for clarity ([60b23db](https://github.com/digilogistika/efti-gate/commit/60b23dbae355a511922d33f6287cce6ad3cacbba))
+* Deleting platform deletes associated identifiers and headers ([b3bd45f](https://github.com/digilogistika/efti-gate/commit/b3bd45f9d0dbc081af2165c732ae332e55890fda))
+
+
+### Features
+
+* Adding delete functionality and upgrading repositories to JpaRepositories ([b53b14c](https://github.com/digilogistika/efti-gate/commit/b53b14cca12e2ade4e54bd86f7cd3185efe02463))
+* Adding delete functionality to frontend. ([12de39c](https://github.com/digilogistika/efti-gate/commit/12de39c794afee99c31ebd44e19a0b819c101762))
+
 # [0.11.0](https://github.com/digilogistika/efti-gate/compare/v0.10.1...v0.11.0) (2025-08-01)
 
 
