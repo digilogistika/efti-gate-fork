@@ -5,6 +5,7 @@ import eu.efti.eftigate.dto.PlatformRegistrationRequestDto;
 import eu.efti.eftigate.dto.PlatformRegistrationResponseDto;
 import eu.efti.eftigate.entity.PlatformEntity;
 import eu.efti.eftigate.entity.PlatformHeaderEntity;
+import eu.efti.eftigate.exception.PlatformNotFoundException;
 import eu.efti.eftigate.mapper.MapperUtils;
 import eu.efti.eftigate.repository.PlatformHeaderRepository;
 import eu.efti.eftigate.repository.PlatformRepository;
@@ -76,7 +77,7 @@ public class PlatformIdentityService {
             return String.format("platform %s deleted successfully", platformId);
         } else {
             log.warn("platform {} does not exist", platformId);
-            throw new RuntimeException("platform " + platformId + " does not exist");
+            throw new PlatformNotFoundException("platform " + platformId + " does not exist");
         }
     }
 

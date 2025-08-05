@@ -3,6 +3,7 @@ package eu.efti.eftigate.service;
 import eu.efti.eftigate.dto.AuthorityUserRegistrationRequestDto;
 import eu.efti.eftigate.dto.AuthorityUserRegistrationResponseDto;
 import eu.efti.eftigate.entity.AuthorityUserEntity;
+import eu.efti.eftigate.exception.AuthorityNotFoundException;
 import eu.efti.eftigate.exception.AuthorityUserAlreadyExistsException;
 import eu.efti.eftigate.repository.AuthorityUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class AuthorityIdentityService {
         final AuthorityUserEntity authorityUser = this.authorityUserRepository.findByAuthorityId(authorityId)
                 .orElseThrow(() -> {
                     log.warn("Authority with ID {} does not exist", authorityId);
-                    return new RuntimeException("Authority not found with id: " + authorityId);
+                    return new AuthorityNotFoundException("Authority not found with id: " + authorityId);
                 });
 
         this.authorityUserRepository.delete(authorityUser);
