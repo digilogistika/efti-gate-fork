@@ -23,8 +23,9 @@ jobs:
             cd efti-gate
             echo "Pulling updates from github"
             git checkout ${{ github.ref_name }}
-            git restore .
-            git pull
+            git fetch origin
+            echo "Hard resetting local branch to match remote"
+            git reset --hard origin/${{ github.ref_name }}
             cd deploy 
             echo "Shutting down current gate applications"
             docker compose --profile platform --profile proxy down
