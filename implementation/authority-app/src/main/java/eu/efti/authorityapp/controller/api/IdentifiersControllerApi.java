@@ -22,16 +22,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@Tag(name = "Identifiers query", description = "Interface to search for identifiers")
+@Tag(name = "For Authorities", description = "Endpoint used by Authorities to query and retrieve data from the Gate.")
 @RequestMapping("/api/v1")
 public interface IdentifiersControllerApi {
 
-    @Operation(summary = "Requesting identifiers from the gate", description = "Send a query to retrieve identifiers matching to the search criteria.")
+    @Operation(summary = "[For Authorities] Query for Identifiers",
+            description = "Sends a query to the Gate to find data based on transport identifiers and other filter criteria.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
+            @ApiResponse(responseCode = "200", description = "Successful query. The response body contains the list of matching identifiers.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = IdentifiersResponseDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Unauthorized. The API key is missing or invalid.", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden. The API key is valid but does not have permission to access this resource.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error. An error occurred either in the Authority App or in the downstream Gate.", content = @Content)
     })
     @GetMapping("/identifiers/{identifier}")
     ResponseEntity<IdentifiersResponseDto> getIdentifiers(

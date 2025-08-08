@@ -17,22 +17,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Tag(name = "Platform API controller", description = "Contains information about endpoints that are used by eFTI Platforms to communicate with the gate. Platform developers need to call these endpoints")
+@Tag(name = "[For Platforms]", description = "Endpoints used by Platforms to send data to the Gate. Platform developers need to call these endpoints")
 public interface PlatformApiControllerApi {
 
 
-    @Operation(summary = "Upload Identifiers endpoint", description = "This endpoint is intended for the eFTI platforms that are integrated into the Gate. This endpoint must be called, with the correct identifiers data, once the platform want to upload some data into the gate about a consignment.")
+    @Operation(summary = "[For Platforms] Upload Identifiers",
+            description = "This endpoint is intended for Platforms to upload consignment identifiers to the Gate. The Gate validates and synchronously saves this data to its local identifiers registry, making it available for queries from authorities.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Accepted"),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                    @Content(
-                            mediaType = "application/problem+xml",
-                            schema = @Schema(implementation = ProblemDetail.class)
-                    )
+            @ApiResponse(responseCode = "200", description = "OK. The identifiers were successfully validated and saved in the Gate's registry."),
+            @ApiResponse(responseCode = "400", description = "Bad Request. The request body is malformed or fails XML schema validation.", content = {
+                    @Content(mediaType = "application/problem+xml", schema = @Schema(implementation = ProblemDetail.class))
             }),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "401", description = "Unauthorized. The X-API-Key is missing, invalid, or does not correspond to a known platform.", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden. The client is not allowed to access this endpoint.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error. An unexpected error occurred on the server.", content = @Content)
     })
     @RequestMapping(
             method = RequestMethod.POST,
