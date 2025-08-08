@@ -36,7 +36,8 @@
     "messageSent": "Message was sent successfully",
     "cancel": "Cancel",
     "sendMessage": "Send Message",
-    "errorFetchingDataset": "Error fetching dataset. Please try again."
+    "errorFetchingDataset": "Error fetching dataset. Please try again.",
+    "cmrDisclaimer": "Note: This is a representation of an eFTI dataset in the CMR format, not a formal e-CMR document."
   },
   "identifiersResult": {
     "results": "Results",

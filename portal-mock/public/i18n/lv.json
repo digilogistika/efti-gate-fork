@@ -36,7 +36,8 @@
     "messageSent": "Ziņojums tika veiksmīgi nosūtīts",
     "cancel": "Atcelt",
     "sendMessage": "Sūtīt ziņojumu",
-    "errorFetchingDataset": "Kļūda, ielādējot datu kopu. Lūdzu, mēģiniet vēlreiz."
+    "errorFetchingDataset": "Kļūda, ielādējot datu kopu. Lūdzu, mēģiniet vēlreiz.",
+    "cmrDisclaimer": "Piezīme: šis ir eFTI datu kopas attēlojums CMR formātā, nevis oficiāls e-CMR dokuments."
   },
   "identifiersResult": {
     "results": "Rezultāti",
