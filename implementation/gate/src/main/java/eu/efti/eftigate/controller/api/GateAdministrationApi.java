@@ -12,85 +12,63 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-@Tag(name = "Gate administration api", description = "API for gate's administrator.")
+@Tag(name = "[For Admins]", description = "API for management of the Gate's configuration database. Requires a super-user API key.")
 @RequestMapping("/api/admin")
 public interface GateAdministrationApi {
 
-    @Operation(
-            summary = "Add new gate.",
-            description = "Add new gate to gate's database."
-    )
+    @Operation(summary = "[For Admins] Register Gate", description = "Adds a new gate to the Gate's local configuration.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Gate successfully added."),
-            @ApiResponse(responseCode = "409", description = "Gate already exists."),
+            @ApiResponse(responseCode = "409", description = "Conflict. A gate with the same ID already exists."),
     })
     @PostMapping("/gate/register")
     ResponseEntity<String> registerGate(@RequestBody @Validated GateDto gateDto);
 
-    @Operation(
-            summary = "Delete gate.",
-            description = "Delete gate from the gate's database"
-    )
+    @Operation(summary = "[For Admins] Delete Gate", description = "Deletes a gate from the Gate's local configuration.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Gate successfully deleted."),
-            @ApiResponse(responseCode = "404", description = "Gate does not exist."),
+            @ApiResponse(responseCode = "404", description = "Not Found. The specified gate does not exist."),
     })
     @DeleteMapping("/gate/delete/{gateId}")
     ResponseEntity<String> deleteGate(@PathVariable String gateId);
 
-    @Operation(
-            summary = "Register an authority to the system",
-            description = "User will be registered and a response will be returned with the API key that can be used by the authority."
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "authority registered successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthorityUserRegistrationResponseDto.class))),
-            }
-    )
+    @Operation(summary = "[For Admins] Register Authority", description = "Registers a new authority in the Gate's local configuration and generates an API key.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Authority registered successfully. The response contains the generated API key.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthorityUserRegistrationResponseDto.class))),
+    })
     @PostMapping(value = "/authority/register")
     ResponseEntity<AuthorityUserRegistrationResponseDto> registerAuthority(
             @RequestBody @Validated AuthorityUserRegistrationRequestDto authorityUserRegistrationRequestDto
     );
 
-    @Operation(
-            summary = "Delete authority.",
-            description = "Delete authority from the authority's database"
-    )
+    @Operation(summary = "[For Admins] Delete Authority", description = "Deletes an authority from the Gate's local configuration.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Authority successfully deleted."),
-            @ApiResponse(responseCode = "404", description = "Authority does not exist."),
+            @ApiResponse(responseCode = "404", description = "Not Found. The specified authority does not exist."),
     })
     @DeleteMapping("/authority/delete/{authorityId}")
     ResponseEntity<String> deleteAuthority(@PathVariable String authorityId);
 
-    @Operation(
-            summary = "Register a new platform to the system",
-            description = "Add a new platform with its endpoint information to the system. The platform will be registered and a response will be returned with the API key that can be used by the platform."
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Platform registered successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlatformRegistrationResponseDto.class))),
-            }
-    )
+    @Operation(summary = "[For Admins] Register Platform", description = "Registers a new platform in the Gate's local configuration and generates an API key.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Platform registered successfully. The response contains the generated API key.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlatformRegistrationResponseDto.class))),
+    })
     @PostMapping(value = "/platform/register")
     ResponseEntity<PlatformRegistrationResponseDto> registerPlatform(
             @RequestBody @Validated PlatformRegistrationRequestDto platformRegistrationRequestDto
     );
 
-    @Operation(
-            summary = "Delete platform.",
-            description = "Delete platform from the platform's database"
-    )
+    @Operation(summary = "[For Admins] Delete Platform", description = "Deletes a platform from the Gate's local configuration.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Platform successfully deleted."),
-            @ApiResponse(responseCode = "404", description = "Platform does not exist."),
+            @ApiResponse(responseCode = "404", description = "Not Found. The specified platform does not exist."),
     })
     @DeleteMapping("/platform/delete/{platformId}")
     ResponseEntity<String> deletePlatform(@PathVariable String platformId);
 
-    @Operation(
-            summary = "Get system metadata.",
-            description = "Retrieves lists of all registered gate IDs, platform IDs, and authority names.")
+    @Operation(summary = "[For Admins] Get System Metadata", description = "Retrieves lists of all registered gates, platforms, and authorities from the Gate's local configuration.")
     @GetMapping("/metadata")
     ResponseEntity<MetaDataDto> getMetadata();
 }

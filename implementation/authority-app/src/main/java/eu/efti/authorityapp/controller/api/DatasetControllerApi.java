@@ -20,16 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 
-@Tag(name = "UIL query", description = "Interface to manage dataset request")
+@Tag(name = "[For Authorities]", description = "Endpoint for authority users, proxied through the Authority App.")
 @RequestMapping("/api/v1")
 public interface DatasetControllerApi {
 
-    @Operation(summary = "Requesting dataset from the gate", description = "Send a query to get dataset from the platform through the gate.")
+    @Operation(summary = "[For Authorities] Request a Dataset with PDF",
+            description = "Forwards a request to the Gate to retrieve a full dataset. This app then enhances the response by generating a human-readable PDF from the raw XML data and embedding it in the response.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
+            @ApiResponse(responseCode = "200", description = "OK. The dataset was retrieved and the response includes the raw data plus an embedded, base64-encoded PDF.",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DatasetDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Unauthorized. The API key is missing or invalid.", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden. The client is not allowed to access this resource.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error. An error occurred while fetching data from the Gate or generating the PDF.", content = @Content)
     })
     @GetMapping("/dataset/{gateId}/{platformId}/{datasetId}")
     ResponseEntity<DatasetDto> getDataset(

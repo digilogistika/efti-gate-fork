@@ -22,16 +22,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@Tag(name = "Identifiers query", description = "Interface to search for identifiers")
+@Tag(name = "[For Authorities]", description = "Endpoints used by Authorities to query and retrieve data from the Gate.")
 @RequestMapping("/v1")
 public interface IdentifiersControllerApi {
 
-    @Operation(summary = "Requesting identifiers from the gate", description = "Send a query to retrieve identifiers matching to the search criteria.")
+    @Operation(summary = "[For Authorities] Query for Identifiers",
+            description = "Initiates a search across the eFTI network. The Gate sends requests to the specified Gates and waits for all responses to be collected (or for a timeout to occur) before returning a result.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
+            @ApiResponse(responseCode = "200", description = "Successful query. The response body contains a consolidated list of results from all queried Gates.",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = IdentifiersResponseDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Unauthorized. The X-API-Key is missing, invalid, or does not correspond to a known authority.", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden. The client is not allowed to access this endpoint.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error. An unexpected error occurred during the search process.", content = @Content)
     })
     @GetMapping("/identifiers/{identifier}")
     ResponseEntity<IdentifiersResponseDto> getIdentifiers(

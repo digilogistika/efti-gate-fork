@@ -16,16 +16,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "UIL query", description = "Interface to manage dataset request")
+@Tag(name = "[For Authorities]", description = "Endpoint used by Authorities to query and retrieve data from the Gate.")
 @RequestMapping("/v1")
 public interface DatasetControllerApi {
 
-    @Operation(summary = "Requesting dataset from the gate", description = "Send a query to get dataset from the platform through the gate.")
+    @Operation(summary = "[For Authorities] Request a Dataset (UIL)",
+            description = "Initiates a request to retrieve a full dataset from a specific Platform. The Gate sends the request and waits for the platform to respond with the data before returning it to the client.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
+            @ApiResponse(responseCode = "200", description = "OK. The dataset was successfully retrieved from the Platform and is returned in the response body.",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DatasetDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Unauthorized. The X-API-Key is missing or invalid.", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden. The client is not allowed to access this endpoint.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error. An error occurred while fetching the data from the platform.", content = @Content)
     })
     @GetMapping("/dataset/{gateId}/{platformId}/{datasetId}")
     ResponseEntity<DatasetDto> getDataset(

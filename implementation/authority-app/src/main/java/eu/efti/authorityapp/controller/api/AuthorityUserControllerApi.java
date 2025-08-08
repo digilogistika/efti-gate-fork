@@ -12,24 +12,41 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Authority user", description = "Authority user creation and verification")
+@Tag(name = "[For Admins]", description = "Endpoints for managing authority users.")
+@Tag(name = "[Public]", description = "Endpoints for public operations like user authentication.")
+@RequestMapping("/api")
 public interface AuthorityUserControllerApi {
 
-    @Operation(summary = "Create Authority User", description = "Admin can create authority user.")
+    @Tag(name = "[For Admins]")
+    @Operation(summary = "[For Admins] Create Authority User", description = "Allows an administrator to create a new authority user in the system.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "409", description = "Some information already exists on the system", content = @Content(
-                    schema = @Schema(implementation = ExceptionResponseDto.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema()))
+            @ApiResponse(responseCode = "200", description = "OK. The user was created successfully."),
+            @ApiResponse(responseCode = "409", description = "Conflict. A user with the provided details already exists.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponseDto.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error.", content = @Content)
     })
-    @PostMapping("/admin/authority-user")
+    @PostMapping("/admin/authority-user/create")
     ResponseEntity<Void> createAuthorityUser(final @RequestBody AuthorityUserDto authorityUserDto);
 
-    @Operation(summary = "Verify Authority User", description = "Authority user verifies themselves.")
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "400", description = "Some information is invalid",
-            content = @Content(schema = @Schema(implementation = ExceptionResponseDto.class)))
-    @PostMapping("/public/control/authority-user/verify")
+    @Tag(name = "[Public]")
+    @Operation(summary = "[Public] Verify Authority User", description = "Verifies a user's credentials and returns a JWT if successful. This token is used for authenticating subsequent actions.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK. Verification successful, JWT is returned.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtDto.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request. The provided user information is invalid or incorrect.",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponseDto.class)))
+    })
+    @PostMapping("/public/authority-user/verify")
     ResponseEntity<JwtDto> verifyAuthorityUser(final @RequestBody AuthorityUserDto authorityUserDto);
+
+    @Tag(name = "[Public]")
+    @Operation(summary = "[Public] Validate JWT", description = "Validates an existing JWT to confirm its authenticity and check if it has expired.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK. The JWT is valid."),
+            @ApiResponse(responseCode = "400", description = "Bad Request. The provided JWT is invalid or expired.", content = @Content)
+    })
+    @PostMapping("/public/authority-user/validate")
+    ResponseEntity<Void> validateAuthorityUser(final @RequestBody String jwt);
 }
