@@ -289,7 +289,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="9cb65690-1b9f-4e6c-9e98-58378a21dddc" x="70" y="30" width="208" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{carrierAcceptanceDateTime}]]></expression>
+                    <expression><![CDATA[$P{carrierAcceptanceDateTime} != null ? $P{carrierAcceptanceDateTime} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -297,7 +297,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="6e7d45d0-dc4a-420b-b66b-711b6a45c849" x="70" y="45" width="208" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{logisticsTimeOfDepartureDateTime}]]></expression>
+                    <expression><![CDATA[$P{logisticsTimeOfDepartureDateTime} != null ? $P{logisticsTimeOfDepartureDateTime} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -898,7 +898,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="3cb2846e-05cc-486c-af54-7b2be9229aa0" x="0" y="15" width="278" height="30" blankWhenNull="true">
-                    <expression><![CDATA[$P{associatedDocumentTypeCode} + " - " + $P{associatedDocumentId}]]></expression>
+                    <expression><![CDATA[$P{associatedDocumentTypeCode} != "N/A" ? $P{associatedDocumentTypeCode} + " - " + $P{associatedDocumentId} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <rightPen lineWidth="0.5"/>
@@ -1035,7 +1035,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="448c226f-be44-4a61-8b0f-1d8072b7dda3" x="110" y="0" width="55" height="20" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA[$P{customChargeCarriageValue}]]></expression>
+                    <expression><![CDATA[$P{customChargeCarriageValue} != null ? $P{customChargeCarriageValue} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1074,7 +1074,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="b1f7f2b6-70f8-4d29-b42b-c8ba56a0b1ba" x="110" y="20" width="55" height="20" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA[$P{customChargeSupplementaryValue}]]></expression>
+                    <expression><![CDATA[$P{customChargeSupplementaryValue} != null ? $P{customChargeSupplementaryValue} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1113,7 +1113,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="e4d9d2d1-66d0-4cc0-bed4-91f19f5ccd38" x="110" y="40" width="55" height="20" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA[$P{customChargeCustomsDutiesValue}]]></expression>
+                    <expression><![CDATA[$P{customChargeCustomsDutiesValue} != null ? $P{customChargeCustomsDutiesValue} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1152,7 +1152,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="8ea6f735-3547-4856-8cd0-bc1aef38da9d" x="110" y="60" width="55" height="20" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA[$P{customChargeOtherValue}]]></expression>
+                    <expression><![CDATA[$P{customChargeOtherValue} != null ? $P{customChargeOtherValue} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1178,7 +1178,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="0884fbd3-5d94-4181-9459-1f0400414252" x="165" y="60" width="55" height="20" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
-                    <expression><![CDATA[$P{customChargeOtherCurrency}]]></expression>
+                    <expression><![CDATA[$P{customChargeOtherCurrency} != null ? $P{customChargeOtherCurrency} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1234,7 +1234,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="ccea7f4a-75e1-4d17-a142-6d8ee2664c61" x="0" y="61" width="275" height="34" blankWhenNull="true">
-                    <expression><![CDATA[$P{codAmount} + " " + $P{codAmountCurrency}]]></expression>
+                    <expression><![CDATA[$P{codAmount} != null ? $P{codAmount} + " " + $P{codAmountCurrency} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -1298,7 +1298,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="bd8e9280-14ab-4d4f-864a-c2de53e917d9" x="390" y="0" width="162" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{deliveryEventDateTime}]]></expression>
+                    <expression><![CDATA[$P{deliveryEventDateTime} != null ? $P{deliveryEventDateTime} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -1417,7 +1417,7 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="332c6c74-882c-4e51-87fe-d8135d272ac7" x="30" y="15" width="246" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{consigneeSignatureDate}]]></expression>
+                    <expression><![CDATA[$P{consigneeSignatureDate} != null ? $P{consigneeSignatureDate} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -1449,7 +1449,8 @@
                     </box>
                 </element>
                 <element kind="textField" uuid="a19d401f-9c5e-4e22-9550-5d8559848aa7" x="138" y="30" width="138" height="80" blankWhenNull="true">
-                    <expression><![CDATA[$P{consigneeReservationsObservations}]]></expression>
+<!--                    $P{consigneeReservationsObservations}-->
+                    <expression><![CDATA[]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 </element>
