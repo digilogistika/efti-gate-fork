@@ -57,7 +57,7 @@ public class PdfGenerationService {
 
     // Helper to prevent "null" strings in the PDF
     private String toStr(Object obj) {
-        return Objects.toString(obj, "N/A");
+        return Objects.toString(obj, null);
     }
 
     public byte[] generatePdf(
@@ -88,66 +88,66 @@ public class PdfGenerationService {
             // Box 1: Consignor
             TradeParty consignor = sc.getConsignor();
             TradeAddress consignorAddress = (consignor != null) ? consignor.getPostalAddress() : null;
-            parameters.put("consignorCompanyName", toStr((consignor != null && consignor.getName() != null && !consignor.getName().isEmpty()) ? consignor.getName().get(0) : "N/A"));
-            parameters.put("consignorStreet", toStr((consignorAddress != null && consignorAddress.getStreetName() != null && !consignorAddress.getStreetName().isEmpty()) ? consignorAddress.getStreetName().get(0) : "N/A"));
-            parameters.put("consignorCity", toStr((consignorAddress != null && consignorAddress.getCityName() != null && !consignorAddress.getCityName().isEmpty()) ? consignorAddress.getCityName().get(0) : "N/A"));
-            parameters.put("consignorPostCode", toStr((consignorAddress != null && consignorAddress.getPostcode() != null && !consignorAddress.getPostcode().isEmpty()) ? consignorAddress.getPostcode().get(0) : "N/A"));
-            parameters.put("consignorCountryCode", toStr((consignorAddress != null && consignorAddress.getCountryCode() != null) ? consignorAddress.getCountryCode().value() : "N/A"));
-            parameters.put("consignorPersonName", "N/A");
+            parameters.put("consignorCompanyName", toStr((consignor != null && consignor.getName() != null && !consignor.getName().isEmpty()) ? consignor.getName().get(0) : null));
+            parameters.put("consignorStreet", toStr((consignorAddress != null && consignorAddress.getStreetName() != null && !consignorAddress.getStreetName().isEmpty()) ? consignorAddress.getStreetName().get(0) : null));
+            parameters.put("consignorCity", toStr((consignorAddress != null && consignorAddress.getCityName() != null && !consignorAddress.getCityName().isEmpty()) ? consignorAddress.getCityName().get(0) : null));
+            parameters.put("consignorPostCode", toStr((consignorAddress != null && consignorAddress.getPostcode() != null && !consignorAddress.getPostcode().isEmpty()) ? consignorAddress.getPostcode().get(0) : null));
+            parameters.put("consignorCountryCode", toStr((consignorAddress != null && consignorAddress.getCountryCode() != null) ? consignorAddress.getCountryCode().value() : null));
+            parameters.put("consignorPersonName", null);
 
             // Box 2: Consignee
             TradeParty consignee = sc.getConsignee();
             TradeAddress consigneeAddress = (consignee != null) ? consignee.getPostalAddress() : null;
-            parameters.put("consigneeCompanyName", toStr((consignee != null && consignee.getName() != null && !consignee.getName().isEmpty()) ? consignee.getName().get(0) : "N/A"));
-            parameters.put("consigneeStreet", toStr((consigneeAddress != null && consigneeAddress.getStreetName() != null && !consigneeAddress.getStreetName().isEmpty()) ? consigneeAddress.getStreetName().get(0) : "N/A"));
-            parameters.put("consigneeCity", toStr((consigneeAddress != null && consigneeAddress.getCityName() != null && !consigneeAddress.getCityName().isEmpty()) ? consigneeAddress.getCityName().get(0) : "N/A"));
-            parameters.put("consigneePostcode", toStr((consigneeAddress != null && consigneeAddress.getPostcode() != null && !consigneeAddress.getPostcode().isEmpty()) ? consigneeAddress.getPostcode().get(0) : "N/A"));
-            parameters.put("consigneeCountryCode", toStr((consigneeAddress != null && consigneeAddress.getCountryCode() != null) ? consigneeAddress.getCountryCode().value() : "N/A"));
-            parameters.put("consigneePersonName", "N/A");
+            parameters.put("consigneeCompanyName", toStr((consignee != null && consignee.getName() != null && !consignee.getName().isEmpty()) ? consignee.getName().get(0) : null));
+            parameters.put("consigneeStreet", toStr((consigneeAddress != null && consigneeAddress.getStreetName() != null && !consigneeAddress.getStreetName().isEmpty()) ? consigneeAddress.getStreetName().get(0) : null));
+            parameters.put("consigneeCity", toStr((consigneeAddress != null && consigneeAddress.getCityName() != null && !consigneeAddress.getCityName().isEmpty()) ? consigneeAddress.getCityName().get(0) : null));
+            parameters.put("consigneePostcode", toStr((consigneeAddress != null && consigneeAddress.getPostcode() != null && !consigneeAddress.getPostcode().isEmpty()) ? consigneeAddress.getPostcode().get(0) : null));
+            parameters.put("consigneeCountryCode", toStr((consigneeAddress != null && consigneeAddress.getCountryCode() != null) ? consigneeAddress.getCountryCode().value() : null));
+            parameters.put("consigneePersonName", null);
 
             // Box 3: Taking over the Goods
-            parameters.put("carrierAcceptanceLocationName", toStr((sc.getCarrierAcceptanceLocation() != null && sc.getCarrierAcceptanceLocation().getName() != null && !sc.getCarrierAcceptanceLocation().getName().isEmpty()) ? sc.getCarrierAcceptanceLocation().getName().get(0) : "N/A"));
+            parameters.put("carrierAcceptanceLocationName", toStr((sc.getCarrierAcceptanceLocation() != null && sc.getCarrierAcceptanceLocation().getName() != null && !sc.getCarrierAcceptanceLocation().getName().isEmpty()) ? sc.getCarrierAcceptanceLocation().getName().get(0) : null));
             parameters.put("carrierAcceptanceDateTime", fromDateTime(sc.getCarrierAcceptanceDateTime()));
             parameters.put("logisticsTimeOfDepartureDateTime", null);
 
             // Box 4: Delivery of the Goods
-            parameters.put("consigneeReceiptLocationName", toStr((sc.getConsigneeReceiptLocation() != null && sc.getConsigneeReceiptLocation().getName() != null) ? sc.getConsigneeReceiptLocation().getName().get(0) : "N/A"));
-            parameters.put("deliveryOfTheGoodsOpeningHours", "N/A");
+            parameters.put("consigneeReceiptLocationName", toStr((sc.getConsigneeReceiptLocation() != null && sc.getConsigneeReceiptLocation().getName() != null) ? sc.getConsigneeReceiptLocation().getName().get(0) : null));
+            parameters.put("deliveryOfTheGoodsOpeningHours", null);
 
             // Box 5: Consignor's instructions
             String instructions = (sc.getConsignorProvidedBorderClearanceInstructions() != null && !sc.getConsignorProvidedBorderClearanceInstructions().isEmpty() && sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription() != null)
-                    ? sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription().get(0) : "N/A";
-            parameters.put("consignorProvidedBorderClearanceInstructions", toStr(instructions));
+                    ? toStr(sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription().get(0)) : null;
+            parameters.put("consignorProvidedBorderClearanceInstructions", instructions);
 
             // Box 6: Carrier
             TradeParty carrier = sc.getCarrier();
             TradeAddress carrierAddress = (carrier != null) ? carrier.getPostalAddress() : null;
-            parameters.put("carrierCompanyName", toStr((carrier != null && carrier.getName() != null && !carrier.getName().isEmpty()) ? carrier.getName().get(0) : "N/A"));
-            parameters.put("carrierStreet", toStr((carrierAddress != null && carrierAddress.getStreetName() != null && !carrierAddress.getStreetName().isEmpty()) ? carrierAddress.getStreetName().get(0) : "N/A"));
-            parameters.put("carrierCity", toStr((carrierAddress != null && carrierAddress.getCityName() != null && !carrierAddress.getCityName().isEmpty()) ? carrierAddress.getCityName().get(0) : "N/A"));
-            parameters.put("carrierPostcode", toStr((carrierAddress != null && carrierAddress.getPostcode() != null && !carrierAddress.getPostcode().isEmpty()) ? carrierAddress.getPostcode().get(0) : "N/A"));
-            parameters.put("carrierCountryCode", toStr((carrierAddress != null && carrierAddress.getCountryCode() != null) ? carrierAddress.getCountryCode().value() : "N/A"));
-            parameters.put("carrierPersonName", "N/A");
+            parameters.put("carrierCompanyName", toStr((carrier != null && carrier.getName() != null && !carrier.getName().isEmpty()) ? carrier.getName().get(0) : null));
+            parameters.put("carrierStreet", toStr((carrierAddress != null && carrierAddress.getStreetName() != null && !carrierAddress.getStreetName().isEmpty()) ? carrierAddress.getStreetName().get(0) : null));
+            parameters.put("carrierCity", toStr((carrierAddress != null && carrierAddress.getCityName() != null && !carrierAddress.getCityName().isEmpty()) ? carrierAddress.getCityName().get(0) : null));
+            parameters.put("carrierPostcode", toStr((carrierAddress != null && carrierAddress.getPostcode() != null && !carrierAddress.getPostcode().isEmpty()) ? carrierAddress.getPostcode().get(0) : null));
+            parameters.put("carrierCountryCode", toStr((carrierAddress != null && carrierAddress.getCountryCode() != null) ? carrierAddress.getCountryCode().value() : null));
+            parameters.put("carrierPersonName", null);
 
             String transportMeansId = (sc.getMainCarriageTransportMovement() != null && !sc.getMainCarriageTransportMovement().isEmpty() && sc.getMainCarriageTransportMovement().get(0).getUsedTransportMeans() != null)
-                    ? sc.getMainCarriageTransportMovement().get(0).getUsedTransportMeans().getId().getValue() : "N/A";
+                    ? sc.getMainCarriageTransportMovement().get(0).getUsedTransportMeans().getId().getValue() : null;
             parameters.put("mainCarriageTransportMeansId", toStr(transportMeansId));
 
             // Box 7: Connecting Carriers
             TradeParty connectingCarrier = (sc.getConnectingCarrier() != null && !sc.getConnectingCarrier().isEmpty()) ? sc.getConnectingCarrier().get(0) : null;
             TradeAddress connectingCarrierAddress = (connectingCarrier != null) ? connectingCarrier.getPostalAddress() : null;
-            parameters.put("connectingCarrierCompanyName", toStr((connectingCarrier != null && connectingCarrier.getName() != null && !connectingCarrier.getName().isEmpty()) ? connectingCarrier.getName().get(0) : "N/A"));
-            parameters.put("connectingCarrierStreet", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getStreetName() != null && !connectingCarrierAddress.getStreetName().isEmpty()) ? connectingCarrierAddress.getStreetName().get(0) : "N/A"));
-            parameters.put("connectingCarrierCity", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCityName() != null && !connectingCarrierAddress.getCityName().isEmpty()) ? connectingCarrierAddress.getCityName().get(0) : "N/A"));
-            parameters.put("connectingCarrierPostcode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getPostcode() != null && !connectingCarrierAddress.getPostcode().isEmpty()) ? connectingCarrierAddress.getPostcode().get(0) : "N/A"));
-            parameters.put("connectingCarrierCountryCode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCountryCode() != null) ? connectingCarrierAddress.getCountryCode().value() : "N/A"));
-            parameters.put("connectingCarrierPersonName", "N/A");
+            parameters.put("connectingCarrierCompanyName", toStr((connectingCarrier != null && connectingCarrier.getName() != null && !connectingCarrier.getName().isEmpty()) ? connectingCarrier.getName().get(0) : null));
+            parameters.put("connectingCarrierStreet", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getStreetName() != null && !connectingCarrierAddress.getStreetName().isEmpty()) ? connectingCarrierAddress.getStreetName().get(0) : null));
+            parameters.put("connectingCarrierCity", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCityName() != null && !connectingCarrierAddress.getCityName().isEmpty()) ? connectingCarrierAddress.getCityName().get(0) : null));
+            parameters.put("connectingCarrierPostcode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getPostcode() != null && !connectingCarrierAddress.getPostcode().isEmpty()) ? connectingCarrierAddress.getPostcode().get(0) : null));
+            parameters.put("connectingCarrierCountryCode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCountryCode() != null) ? connectingCarrierAddress.getCountryCode().value() : null));
+            parameters.put("connectingCarrierPersonName", null);
 
             // Box 10-15
             final List<Map<String, Object>> items = new ArrayList<>();
             List<LogisticsPackage> packages = sc.getTransportPackage() != null ? sc.getTransportPackage() : new ArrayList<>();
 
-            String natureOfGoodsText = "N/A";
+            String natureOfGoodsText = null;
             if (sc.getNatureIdentificationCargo() != null && sc.getNatureIdentificationCargo().getIdentificationText() != null && !sc.getNatureIdentificationCargo().getIdentificationText().isEmpty()) {
                 natureOfGoodsText = String.valueOf(sc.getNatureIdentificationCargo().getIdentificationText().get(0).getValue());
             }
@@ -173,49 +173,47 @@ public class PdfGenerationService {
             }
             parameters.put("items", new JRBeanCollectionDataSource(items));
 
-            String info = (sc.getInformation() != null && !sc.getInformation().isEmpty()) ? String.join(", ", sc.getInformation()) : "N/A";
-            parameters.put("information", toStr(info));
+            String info = (sc.getInformation() != null && !sc.getInformation().isEmpty()) ? String.join(", ", sc.getInformation()) : null;
+            parameters.put("information", info);
 
             ReferencedDocument doc = (sc.getAssociatedDocument() != null && !sc.getAssociatedDocument().isEmpty()) ? sc.getAssociatedDocument().get(0) : null;
-            String associatedDocId = (doc != null && doc.getId() != null) ? doc.getId().getValue() : "N/A";
-            String associatedDocType = (doc != null && doc.getTypeCode() != null) ? doc.getTypeCode() : "N/A";
+            String associatedDocId = (doc != null && doc.getId() != null) ? doc.getId().getValue() : null;
+            String associatedDocType = (doc != null && doc.getTypeCode() != null) ? doc.getTypeCode() : null;
             parameters.put("associatedDocumentId", toStr(associatedDocId));
             parameters.put("associatedDocumentTypeCode", toStr(associatedDocType));
 
-            String contractTerms = (sc.getContractTermsText() != null && !sc.getContractTermsText().isEmpty()) ? String.join(", ", sc.getContractTermsText()) : "N/A";
+            String contractTerms = (sc.getContractTermsText() != null && !sc.getContractTermsText().isEmpty()) ? String.join(", ", sc.getContractTermsText()) : null;
             parameters.put("contractTermsText", toStr(contractTerms));
 
             parameters.put("customChargeCarriageValue", null);
-            parameters.put("customChargeCarriagePayer", "N/A");
-            parameters.put("customChargeCarriageCurrency", "N/A");
+            parameters.put("customChargeCarriagePayer", null);
+            parameters.put("customChargeCarriageCurrency", null);
             parameters.put("customChargeSupplementaryValue", null);
-            parameters.put("customChargeSupplementaryCurrency", "N/A");
-            parameters.put("customChargeSupplementaryPayer", "N/A");
+            parameters.put("customChargeSupplementaryCurrency", null);
+            parameters.put("customChargeSupplementaryPayer", null);
             parameters.put("customChargeCustomsDutiesValue", null);
-            parameters.put("customChargeCustomsDutiesCurrency", "N/A");
-            parameters.put("customChargeCustomsDutiesPayer", "N/A");
+            parameters.put("customChargeCustomsDutiesCurrency", null);
+            parameters.put("customChargeCustomsDutiesPayer", null);
             parameters.put("customChargeOtherValue", null);
-            parameters.put("customChargeOtherCurrency", "N/A");
-            parameters.put("customChargeOtherPayer", "N/A");
+            parameters.put("customChargeOtherCurrency", null);
+            parameters.put("customChargeOtherPayer", null);
 
             parameters.put("deliveryInformation", toStr(sc.getDeliveryInformation()));
             parameters.put("codAmount", sc.getCODAmount() != null ? sc.getCODAmount().getValue().floatValue() : null);
-            parameters.put("codAmountCurrency", toStr(sc.getCODAmount() != null ? sc.getCODAmount().getCurrencyId().toString() : "N/A"));
+            parameters.put("codAmountCurrency", toStr(sc.getCODAmount() != null ? sc.getCODAmount().getCurrencyId().toString() : null));
 
-            String transportContractId = (sc.getTransportContractDocument() != null && sc.getTransportContractDocument().getId() != null) ? sc.getTransportContractDocument().getId().getValue() : "N/A";
+            String transportContractId = (sc.getTransportContractDocument() != null && sc.getTransportContractDocument().getId() != null) ? sc.getTransportContractDocument().getId().getValue() : null;
             parameters.put("transportContractDocumentId", toStr(transportContractId));
 
             parameters.put("deliveryEventDateTime", (sc.getDeliveryEvent() != null) ? fromDateTime(sc.getDeliveryEvent().getActualOccurrenceDateTime()) : null);
-            parameters.put("consignorSealText", "N/A");
-            parameters.put("carrierSealText", "N/A");
-            parameters.put("consigneeSealText", "N/A");
-            parameters.put("consigneeReservationsObservations", "N/A");
+            parameters.put("consignorSealText", null);
+            parameters.put("carrierSealText", null);
+            parameters.put("consigneeSealText", null);
+            parameters.put("consigneeReservationsObservations", null);
             parameters.put("consigneeSignatureImage", null);
-            parameters.put("deliveryEventLocationName", toStr((sc.getDeliveryEvent() != null && sc.getDeliveryEvent().getOccurrenceLocation() != null) ? sc.getDeliveryEvent().getOccurrenceLocation().getName().get(0) : "N/A"));
+            parameters.put("deliveryEventLocationName", toStr((sc.getDeliveryEvent() != null && sc.getDeliveryEvent().getOccurrenceLocation() != null) ? sc.getDeliveryEvent().getOccurrenceLocation().getName().get(0) : null));
             parameters.put("consigneeSignatureDate", (sc.getDeliveryEvent() != null) ? fromDateTime(sc.getDeliveryEvent().getActualOccurrenceDateTime()) : null);
-            parameters.put("nonContractualCarrierRemarks", "N/A");
-            parameters.put("EN_InternationalNationalTransport", "N/A");
-            parameters.put("DE_InternationalNationalTransport", "N/A");
+            parameters.put("nonContractualCarrierRemarks", null);
             parameters.put("consigneeTimeOfDeparture", null);
 
             log.info("Populated report parameters successfully.");
