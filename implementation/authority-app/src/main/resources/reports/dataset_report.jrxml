@@ -1,4 +1,4 @@
-<jasperReport name="Blank_A4_1" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail"
+<jasperReport name="Blank_A4_1" language="java" pageWidth="595" pageHeight="687" whenNoDataType="AllSectionsNoDetail"
               columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
               uuid="5644cb2a-585a-48bf-b6de-e267ac2a4811" ignorePagination="true">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
@@ -102,7 +102,7 @@
     <parameter name="nonContractualCarrierRemarks" class="java.lang.String"/>
     <query language="sql"><![CDATA[]]></query>
     <detail>
-        <band height="766" splitType="Stretch">
+        <band height="647" splitType="Stretch">
             <element kind="frame" uuid="e6ca57bd-bf42-490d-bcc3-ffa5a03f0dd5" x="0" y="0" width="278" height="85" removeLineWhenBlank="true">
                 <printWhenExpression><![CDATA[($P{consignorCompanyName} != null) || ($P{consignorStreet} != null)]]></printWhenExpression>
             <element kind="frame" uuid="e6ca57bd-bf42-490d-bcc3-ffa5a03f0dd7" x="0" y="0" width="278" height="85">
