@@ -532,7 +532,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="dff87ebd-f678-4c23-895d-6a49f7071997" stretchType="ElementGroupHeight" x="0" y="240" width="554" height="25">
+            <element kind="frame" uuid="dff87ebd-f678-4c23-895d-6a49f7071997" stretchType="ElementGroupHeight" x="0" y="240" width="554" height="25" removeLineWhenBlank="true">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <printWhenExpression><![CDATA[$P{items} != null && $P{items}.getRecordCount() > 0]]></printWhenExpression>
                 <element kind="component" uuid="c6186f87-8311-455e-a057-62c69df2fcf7" stretchType="ElementGroupHeight" x="0" y="0" width="553" height="25">
@@ -698,7 +698,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="a9b8c7d6-e5f4-a3b2-c1d0-e9f8a7b6c5d4" x="0" y="240" width="555" height="150" positionType="Float">
+            <element kind="frame" uuid="a9b8c7d6-e5f4-a3b2-c1d0-e9f8a7b6c5d4" x="0" y="265" width="555" height="150" positionType="Float">
                 <element kind="frame" uuid="d54a34d4-8832-4b24-849a-0b5d340d4ff1" stretchType="ElementGroupHeight" x="0" y="0" width="554" height="45">
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.layout"/>
@@ -754,7 +754,7 @@
                         </box>
                     </element>
                     <element kind="textField" uuid="ccea7f4a-75e1-4d17-a142-6d8ee2664c61" x="0" y="15" width="278" height="30" blankWhenNull="true" vTextAlign="Middle">
-                        <expression><![CDATA[$P{codAmount} != null ? $P{codAmount} + " " + $P{codAmountCurrency} : null]]></expression>
+                        <expression><![CDATA[$P{codAmount} != null ? $P{codAmount} + " " + $P{codAmountCurrency} : "N/A"]]></expression>
                         <box leftPadding="5"/>
                     </element>
                 </element>
