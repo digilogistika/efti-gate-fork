@@ -260,7 +260,7 @@
                         <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="aa8cf8fc-a17d-47c2-ad40-c2d6814967c7" x="30" y="15" width="247" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="aa8cf8fc-a17d-47c2-ad40-c2d6814967c7" x="35" y="15" width="242" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{carrierAcceptanceLocationName}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -268,15 +268,15 @@
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="9cb65690-1b9f-4e6c-9e98-58378a21dddc" x="30" y="30" width="247" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{carrierAcceptanceDateTime}]]></expression>
+                <element kind="textField" uuid="9cb65690-1b9f-4e6c-9e98-58378a21dddc" x="35" y="30" width="242" height="15" blankWhenNull="true" vTextAlign="Middle">
+                    <expression><![CDATA[$P{carrierAcceptanceDateTime} != null ? $P{carrierAcceptanceDateTime} : "N/A"]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="109addac-4846-4f5e-b0d3-4567f69a0448" x="0" y="15" width="30" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="109addac-4846-4f5e-b0d3-4567f69a0448" x="0" y="15" width="35" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Place:]]></text>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -284,7 +284,7 @@
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="1b8bea39-c803-4a2c-abb5-2c09dc11d799" x="0" y="30" width="30" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="1b8bea39-c803-4a2c-abb5-2c09dc11d799" x="0" y="30" width="35" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Arrival:]]></text>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -310,11 +310,11 @@
                         <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
-                <element kind="staticText" uuid="6214c0cd-cd8c-4bdf-aa75-dbcbc212b4ed" x="0" y="15" width="30" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="6214c0cd-cd8c-4bdf-aa75-dbcbc212b4ed" x="0" y="15" width="35" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Place:]]></text>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="02d140f4-7ed8-495b-9eb1-70d139a82081" x="30" y="15" width="247" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="02d140f4-7ed8-495b-9eb1-70d139a82081" x="35" y="15" width="242" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{consigneeReceiptLocationName}]]></expression>
                     <box leftPadding="5"/>
                 </element>
@@ -718,7 +718,7 @@
                         </box>
                     </element>
                     <element kind="textField" uuid="3cb2846e-05cc-486c-af54-7b2be9229aa0" x="0" y="15" width="278" height="30" blankWhenNull="true">
-                        <expression><![CDATA[$P{associatedDocumentTypeCode} != null ? $P{associatedDocumentTypeCode} + " - " + $P{associatedDocumentId} : null]]></expression>
+                        <expression><![CDATA[$P{associatedDocumentTypeCode} != "N/A" ? $P{associatedDocumentTypeCode} + " - " + $P{associatedDocumentId} : "N/A"]]></expression>
                         <box leftPadding="5">
                             <rightPen lineWidth="0.5"/>
                         </box>
@@ -820,7 +820,7 @@
                         <box leftPadding="5"/>
                     </element>
                     <element kind="textField" uuid="bd8e9280-14ab-4d4f-864a-c2de53e917d9" x="390" y="0" width="162" height="15" blankWhenNull="true" vTextAlign="Middle">
-                        <expression><![CDATA[$P{deliveryEventDateTime}]]></expression>
+                        <expression><![CDATA[$P{deliveryEventDateTime} != null ? $P{deliveryEventDateTime} : "N/A"]]></expression>
                         <box leftPadding="5"/>
                     </element>
                     <box>
@@ -875,7 +875,7 @@
                         </box>
                     </element>
                     <element kind="textField" uuid="332c6c74-882c-4e51-87fe-d8135d272ac7" x="30" y="30" width="246" height="15" blankWhenNull="true" vTextAlign="Middle">
-                        <expression><![CDATA[$P{consigneeSignatureDate} != null ? new java.text.SimpleDateFormat("MM/dd/yy, hh:mm a").format($P{consigneeSignatureDate}) : null]]></expression>
+                        <expression><![CDATA[$P{consigneeSignatureDate} != null ? new java.text.SimpleDateFormat("MM/dd/yy, hh:mm a").format($P{consigneeSignatureDate}) : "N/A"]]></expression>
                         <box leftPadding="5">
                             <pen lineWidth="0.5"/>
                             <topPen lineWidth="0.5"/>
