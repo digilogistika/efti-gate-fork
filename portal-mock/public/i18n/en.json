@@ -36,7 +36,8 @@
     "messageSent": "Message was sent successfully",
     "cancel": "Cancel",
     "sendMessage": "Send Message",
-    "errorFetchingDataset": "Error fetching dataset. Please try again."
+    "errorFetchingDataset": "Error fetching dataset. Please try again.",
+    "cmrDisclaimer": "Note: Data presented in CMR format, not as an official e-CMR."
   },
   "identifiersResult": {
     "results": "Results",

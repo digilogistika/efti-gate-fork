@@ -36,7 +36,8 @@
     "messageSent": "Wiadomość została wysłana pomyślnie",
     "cancel": "Anuluj",
     "sendMessage": "Wyślij wiadomość",
-    "errorFetchingDataset": "Błąd podczas pobierania zbioru danych. Proszę spróbować ponownie."
+    "errorFetchingDataset": "Błąd podczas pobierania zbioru danych. Proszę spróbować ponownie.",
+    "cmrDisclaimer": "Uwaga: Dane są w formacie CMR, a nie jako oficjalny e-CMR."
   },
   "identifiersResult": {
     "results": "Wyniki",
