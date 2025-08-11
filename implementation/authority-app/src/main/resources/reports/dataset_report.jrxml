@@ -30,8 +30,6 @@
         </box>
     </style>
     <dataset name="ItemDataSource" uuid="ea5f1c49-1075-4b6b-8854-dc1e997509a1">
-        <field name="logisticsShippingMarksMarking" class="java.lang.String"/>
-        <field name="logisticsShippingMarksCustomBarcode" class="java.lang.String"/>
         <field name="logisticsPackageItemQuantity" class="java.lang.Integer"/>
         <field name="logisticsPackageType" class="java.lang.String"/>
         <field name="transportCargoIdentification" class="java.lang.String"/>
@@ -104,7 +102,6 @@
     <detail>
         <band height="647" splitType="Stretch">
             <element kind="frame" uuid="e6ca57bd-bf42-490d-bcc3-ffa5a03f0dd5" x="0" y="0" width="278" height="85" removeLineWhenBlank="true">
-                <printWhenExpression><![CDATA[($P{consignorCompanyName} != null) || ($P{consignorStreet} != null)]]></printWhenExpression>
             <element kind="frame" uuid="e6ca57bd-bf42-490d-bcc3-ffa5a03f0dd7" x="0" y="0" width="278" height="85">
                 <box>
                     <topPen lineWidth="0.5"/>
@@ -184,8 +181,7 @@
                 </box>
             </element>
             </element>
-            <element kind="frame" uuid="5a527e9a-a432-459d-855f-b50e2773b8c4" x="0" y="85" width="278" height="85" removeLineWhenBlank="true" positionType="Float">
-                <printWhenExpression><![CDATA[($P{consigneeCompanyName} != null && !$P{consigneeCompanyName}.isEmpty()) || ($P{consigneeStreet} != null && !$P{consigneeStreet}.isEmpty())]]></printWhenExpression>
+            <element kind="frame" uuid="5a527e9a-a432-459d-855f-b50e2773b8c4" x="0" y="85" width="278" height="85" positionType="Float">
             <element kind="frame" uuid="5a527e9a-a432-459d-855f-b50e2773b8c5" x="0" y="0" width="278" height="85">
                 <box>
                     <topPen lineWidth="0.5"/>
@@ -276,8 +272,7 @@
                 </box>
             </element>
             </element>
-            <element kind="frame" uuid="47c2075a-c941-4725-9872-36f87d9299a2" x="0" y="170" width="278" height="60" removeLineWhenBlank="true" positionType="Float">
-                <printWhenExpression><![CDATA[($P{carrierAcceptanceLocationName} != null && !$P{carrierAcceptanceLocationName}.isEmpty()) || $P{carrierAcceptanceDateTime} != null]]></printWhenExpression>
+            <element kind="frame" uuid="47c2075a-c941-4725-9872-36f87d9299a2" x="0" y="170" width="278" height="60" positionType="Float">
                 <box>
                     <topPen lineWidth="0.5"/>
                     <leftPen lineWidth="0.5"/>
@@ -351,8 +346,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="9921d5e5-7a16-4e8d-a997-2773b9e79956" x="0" y="230" width="278" height="45" removeLineWhenBlank="true" positionType="Float">
-                <printWhenExpression><![CDATA[($P{consigneeReceiptLocationName} != null && !$P{consigneeReceiptLocationName}.isEmpty()) || ($P{deliveryOfTheGoodsOpeningHours} != null && !$P{deliveryOfTheGoodsOpeningHours}.isEmpty())]]></printWhenExpression>
+            <element kind="frame" uuid="9921d5e5-7a16-4e8d-a997-2773b9e79956" x="0" y="230" width="278" height="45" positionType="Float">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="49af6437-d028-465b-9ff2-e4b89e2f2002" x="0" y="0" width="278" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Delivery of the Goods]]></text>
@@ -405,8 +399,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="016a5ed6-0d40-4d95-a151-d70568b8d6e5" x="278" y="0" width="277" height="100" removeLineWhenBlank="true" positionType="Float">
-                <printWhenExpression><![CDATA[($P{carrierCompanyName} != null && !$P{carrierCompanyName}.isEmpty()) || ($P{mainCarriageTransportMeansId} != null && !$P{mainCarriageTransportMeansId}.isEmpty())]]></printWhenExpression>
+            <element kind="frame" uuid="016a5ed6-0d40-4d95-a151-d70568b8d6e5" x="278" y="0" width="277" height="100" positionType="Float">
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -502,8 +495,7 @@
                     <rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="frame" uuid="9953306b-6dea-4152-bcbb-1080e19cbd96" x="0" y="275" width="278" height="55" removeLineWhenBlank="true" positionType="Float">
-                <printWhenExpression><![CDATA[$P{consignorProvidedBorderClearanceInstructions} != null]]></printWhenExpression>
+            <element kind="frame" uuid="9953306b-6dea-4152-bcbb-1080e19cbd96" x="0" y="275" width="278" height="55" positionType="Float">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="e8add47f-111b-471d-abdb-5a48c164dc3d" x="0" y="0" width="278" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Consignor's instructions]]></text>
@@ -530,8 +522,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="3768af86-cdbd-4c8c-8c5b-d100c28449b5" x="278" y="100" width="277" height="85" removeLineWhenBlank="true" positionType="Float">
-                <printWhenExpression><![CDATA[$P{connectingCarrierCompanyName} != null && !$P{connectingCarrierCompanyName}.isEmpty()]]></printWhenExpression>
+            <element kind="frame" uuid="3768af86-cdbd-4c8c-8c5b-d100c28449b5" x="278" y="100" width="277" height="85" positionType="Float">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <element kind="staticText" uuid="cd9bcf8f-5fb0-4ef5-aed3-836cbf967605" x="0" y="0" width="277" height="15" bold="true" vTextAlign="Middle">
@@ -619,8 +610,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="bdf8e4d9-6b52-4e39-8aa0-f6e2b5b892bd" x="278" y="100" width="277" height="60" removeLineWhenBlank="true" positionType="Float">
-                <printWhenExpression><![CDATA[$P{information} != null]]></printWhenExpression>
+            <element kind="frame" uuid="bdf8e4d9-6b52-4e39-8aa0-f6e2b5b892bd" x="278" y="185" width="277" height="60" positionType="Float">
                 <element kind="staticText" uuid="da487386-86da-495b-a51c-41a35d0fe657" x="0" y="0" width="277" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Carrier's reservations and observations]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -656,66 +646,11 @@
                         <datasetRun uuid="18ec338d-b828-428a-b30d-98efb2bcc63f" subDataset="ItemDataSource">
                             <dataSourceExpression><![CDATA[$P{items}]]></dataSourceExpression>
                         </datasetRun>
-                        <column kind="single" uuid="6c97d905-8e15-4933-94a1-eedf9fea8d1a" width="79">
+                        <column kind="single" uuid="cfa94bdd-adf4-4067-86f0-448b738386ef" width="110">
                             <columnHeader height="25" rowSpan="1" style="Table_CH">
-                                <element kind="staticText" uuid="ffb94fe8-8903-4cc9-896d-be89b1996384" x="0" y="0" width="79" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
-                                    <text><![CDATA[Marks ]]></text>
-                                    <box leftPadding="5">
-                                        <bottomPen lineWidth="0.0"/>
-                                    </box>
-                                </element>
-                                <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                                <box style="Table_CH">
-                                    <topPen lineWidth="0.0"/>
-                                    <bottomPen lineWidth="0.0"/>
-                                </box>
-                            </columnHeader>
-                            <detailCell height="25" style="Table_TD">
-                                <element kind="textField" uuid="8eeef79c-9491-4773-a3f8-010f8f89052d" x="0" y="0" width="79" height="25" hTextAlign="Left" vTextAlign="Middle">
-                                    <expression><![CDATA[$F{logisticsShippingMarksMarking}]]></expression>
-                                    <box leftPadding="5"/>
-                                </element>
-                                <box style="Table_TD">
-                                    <topPen lineWidth="0.0"/>
-                                    <bottomPen lineWidth="0.0"/>
-                                </box>
-                            </detailCell>
-                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-                        </column>
-                        <column kind="single" uuid="43f86023-53c9-4112-bdce-334b9cd7f1bb" width="80">
-                            <columnHeader height="25" rowSpan="1" style="Table_CH">
-                                <element kind="staticText" uuid="887dd1ab-3c7a-47eb-833c-7c7c16aec0a3" x="0" y="0" width="80" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
-                                    <text><![CDATA[Barcodes]]></text>
-                                    <box leftPadding="5">
-                                        <bottomPen lineWidth="0.0"/>
-                                    </box>
-                                </element>
-                                <box style="Table_CH">
-                                    <topPen lineWidth="0.0"/>
-                                    <leftPen lineWidth="0.0"/>
-                                    <bottomPen lineWidth="0.0"/>
-                                    <rightPen lineWidth="0.0"/>
-                                </box>
-                            </columnHeader>
-                            <detailCell height="25" style="Table_TD">
-                                <element kind="textField" uuid="54af84bb-0739-40b8-b727-911c3c133890" x="0" y="0" width="80" height="25" hTextAlign="Left" vTextAlign="Middle">
-                                    <expression><![CDATA[$F{logisticsShippingMarksCustomBarcode}]]></expression>
-                                    <box leftPadding="5"/>
-                                </element>
-                                <box style="Table_TD">
-                                    <topPen lineWidth="0.0"/>
-                                    <leftPen lineWidth="0.0"/>
-                                    <bottomPen lineWidth="0.0"/>
-                                    <rightPen lineWidth="0.0"/>
-                                </box>
-                            </detailCell>
-                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-                        </column>
-                        <column kind="single" uuid="cfa94bdd-adf4-4067-86f0-448b738386ef" width="79">
-                            <columnHeader height="25" rowSpan="1" style="Table_CH">
-                                <element kind="staticText" uuid="b65e458c-676c-4f6a-9ef6-8514c141a34d" x="0" y="0" width="79" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="staticText" uuid="b65e458c-676c-4f6a-9ef6-8514c141a34d" x="0" y="0" width="110" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
                                     <text><![CDATA[Number of packages]]></text>
-                                    <box leftPadding="5">
+                                    <box topPadding="4" leftPadding="5" bottomPadding="0" rightPadding="0">
                                         <bottomPen lineWidth="0.0"/>
                                     </box>
                                 </element>
@@ -727,7 +662,7 @@
                                 </box>
                             </columnHeader>
                             <detailCell height="25" style="Table_TD">
-                                <element kind="textField" uuid="d9d25023-5f57-4aa1-8f27-c41a6bf1c4d2" x="0" y="0" width="79" height="25" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="textField" uuid="d9d25023-5f57-4aa1-8f27-c41a6bf1c4d2" x="0" y="0" width="110" height="25" hTextAlign="Left" vTextAlign="Middle">
                                     <expression><![CDATA[$F{logisticsPackageItemQuantity}]]></expression>
                                     <box leftPadding="5"/>
                                 </element>
@@ -738,11 +673,11 @@
                                     <rightPen lineWidth="0.0"/>
                                 </box>
                             </detailCell>
-                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
                         </column>
-                        <column kind="single" uuid="edcfbb8d-e490-47a5-8ebb-22234d054e1a" width="80">
+                        <column kind="single" uuid="edcfbb8d-e490-47a5-8ebb-22234d054e1a" width="111">
                             <columnHeader height="25" rowSpan="1" style="Table_CH">
-                                <element kind="staticText" uuid="4f623a72-ad37-46d3-a0b0-6c6c5bcafe41" x="0" y="0" width="80" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="staticText" uuid="4f623a72-ad37-46d3-a0b0-6c6c5bcafe41" x="0" y="0" width="111" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
                                     <text><![CDATA[Method of packing]]></text>
                                     <box leftPadding="5">
                                         <bottomPen lineWidth="0.0"/>
@@ -750,28 +685,28 @@
                                 </element>
                                 <box style="Table_CH">
                                     <topPen lineWidth="0.0"/>
-                                    <leftPen lineWidth="0.0"/>
+                                    <leftPen lineWidth="0.5"/>
                                     <bottomPen lineWidth="0.0"/>
                                     <rightPen lineWidth="0.0"/>
                                 </box>
                             </columnHeader>
                             <detailCell height="25" style="Table_TD">
-                                <element kind="textField" uuid="62cb4be8-c258-4ff1-9ccf-9aead9963f6e" x="0" y="0" width="80" height="25" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="textField" uuid="62cb4be8-c258-4ff1-9ccf-9aead9963f6e" x="0" y="0" width="111" height="25" hTextAlign="Left" vTextAlign="Middle">
                                     <expression><![CDATA[$F{logisticsPackageType}]]></expression>
                                     <box leftPadding="5"/>
                                 </element>
                                 <box style="Table_TD">
                                     <topPen lineWidth="0.0"/>
-                                    <leftPen lineWidth="0.0"/>
+                                    <leftPen lineWidth="0.5"/>
                                     <bottomPen lineWidth="0.0"/>
                                     <rightPen lineWidth="0.0"/>
                                 </box>
                             </detailCell>
-                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
                         </column>
-                        <column kind="single" uuid="cebee8f9-2a4c-4c36-9405-06fc5e0ac448" width="79">
+                        <column kind="single" uuid="cebee8f9-2a4c-4c36-9405-06fc5e0ac448" width="111">
                             <columnHeader height="25" rowSpan="1" style="Table_CH">
-                                <element kind="staticText" uuid="1b102ff7-4e82-47f4-9575-8bd88b04e31a" x="0" y="0" width="79" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="staticText" uuid="1b102ff7-4e82-47f4-9575-8bd88b04e31a" x="0" y="0" width="111" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
                                     <text><![CDATA[Nature of goods]]></text>
                                     <box leftPadding="5">
                                         <bottomPen lineWidth="0.0"/>
@@ -785,7 +720,7 @@
                                 </box>
                             </columnHeader>
                             <detailCell height="25" style="Table_TD">
-                                <element kind="textField" uuid="1e0d32e1-cec7-49b5-8f88-32f8c1b96ca3" x="0" y="0" width="79" height="25" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="textField" uuid="1e0d32e1-cec7-49b5-8f88-32f8c1b96ca3" x="0" y="0" width="111" height="25" hTextAlign="Left" vTextAlign="Middle">
                                     <expression><![CDATA[$F{transportCargoIdentification}]]></expression>
                                     <box leftPadding="5"/>
                                 </element>
@@ -796,13 +731,13 @@
                                     <rightPen lineWidth="0.0"/>
                                 </box>
                             </detailCell>
-                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
                         </column>
-                        <column kind="single" uuid="c8960b57-c452-4112-82c8-281990587900" width="79">
+                        <column kind="single" uuid="c8960b57-c452-4112-82c8-281990587900" width="111">
                             <columnHeader height="25" rowSpan="1" style="Table_CH">
-                                <element kind="staticText" uuid="ec99de10-313f-4ddc-be1b-a7e3e55edbb5" x="0" y="0" width="79" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="staticText" uuid="ec99de10-313f-4ddc-be1b-a7e3e55edbb5" x="0" y="0" width="111" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
                                     <text><![CDATA[Gross weight in kg]]></text>
-                                    <box leftPadding="5">
+                                    <box topPadding="4" leftPadding="5" bottomPadding="0" rightPadding="0">
                                         <bottomPen lineWidth="0.0"/>
                                     </box>
                                 </element>
@@ -814,7 +749,7 @@
                                 </box>
                             </columnHeader>
                             <detailCell height="25" style="Table_TD">
-                                <element kind="textField" uuid="58a2be86-5b15-460f-8f17-bd0443efadf6" x="0" y="0" width="79" height="25" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="textField" uuid="58a2be86-5b15-460f-8f17-bd0443efadf6" x="0" y="0" width="111" height="25" hTextAlign="Left" vTextAlign="Middle">
                                     <expression><![CDATA[$F{supplyChainConsignmentItemGrossWeight}]]></expression>
                                     <box leftPadding="5"/>
                                 </element>
@@ -825,11 +760,11 @@
                                     <rightPen lineWidth="0.0"/>
                                 </box>
                             </detailCell>
-                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
                         </column>
-                        <column kind="single" uuid="d5c8ae00-79b4-4195-9d59-6cdafddf2935" width="79">
+                        <column kind="single" uuid="d5c8ae00-79b4-4195-9d59-6cdafddf2935" width="110">
                             <columnHeader height="25" rowSpan="1" style="Table_CH">
-                                <element kind="staticText" uuid="4ac54587-56aa-40f6-a6c8-50710c441834" x="0" y="0" width="79" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="staticText" uuid="4ac54587-56aa-40f6-a6c8-50710c441834" x="0" y="0" width="110" height="25" fontSize="8.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
                                     <text><![CDATA[Volume in m³]]></text>
                                     <box leftPadding="5">
                                         <bottomPen lineWidth="0.0"/>
@@ -842,7 +777,7 @@
                                 </box>
                             </columnHeader>
                             <detailCell height="25" style="Table_TD">
-                                <element kind="textField" uuid="60aa7b89-8201-4862-9112-82b09a855883" x="0" y="0" width="79" height="25" hTextAlign="Left" vTextAlign="Middle">
+                                <element kind="textField" uuid="60aa7b89-8201-4862-9112-82b09a855883" x="0" y="0" width="110" height="25" hTextAlign="Left" vTextAlign="Middle">
                                     <expression><![CDATA[$F{supplyChainConsignmentItemGrossVolume}]]></expression>
                                     <box leftPadding="5"/>
                                 </element>
@@ -852,7 +787,7 @@
                                     <bottomPen lineWidth="0.0"/>
                                 </box>
                             </detailCell>
-                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+                            <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
                         </column>
                     </component>
                     <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
@@ -995,9 +930,9 @@
             <!-- Row 4 Left: N/A Box -->
             <element kind="frame" uuid="1ce2519a-3b79-4072-b49a-e11b788de101" positionType="Float" stretchType="ElementGroupHeight" x="0" y="602" width="278" height="45">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                <element kind="textField" uuid="d811fbf3-35f4-4676-be72-478bb66256fa" x="0" y="0" width="278" height="45" blankWhenNull="true" fontSize="9.0">
+                <element kind="textField" uuid="d811fbf3-35f4-4676-be72-478bb66256fa" x="0" y="0" width="278" height="45" blankWhenNull="true" fontSize="9.0" vTextAlign="Middle">
                     <expression><![CDATA["*N/A: Not given with this query"]]></expression>
-                    <box topPadding="10" leftPadding="5"/>
+                    <box leftPadding="5"/>
                 </element>
                 <box>
                     <pen lineWidth="0.5"/>
