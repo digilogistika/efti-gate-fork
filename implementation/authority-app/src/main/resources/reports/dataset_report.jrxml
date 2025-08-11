@@ -281,7 +281,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="9cb65690-1b9f-4e6c-9e98-58378a21dddc" x="70" y="30" width="207" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{carrierAcceptanceDateTime} != null ? $P{carrierAcceptanceDateTime} : null]]></expression>
+                    <expression><![CDATA[$P{carrierAcceptanceDateTime}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -289,7 +289,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="6e7d45d0-dc4a-420b-b66b-711b6a45c849" x="70" y="45" width="207" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{logisticsTimeOfDepartureDateTime} != null ? $P{logisticsTimeOfDepartureDateTime} : null]]></expression>
+                    <expression><![CDATA[$P{logisticsTimeOfDepartureDateTime}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -868,7 +868,7 @@
                     <box leftPadding="5"/>
                 </element>
                 <element kind="textField" uuid="bd8e9280-14ab-4d4f-864a-c2de53e917d9" x="390" y="0" width="162" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{deliveryEventDateTime} != null ? $P{deliveryEventDateTime} : null]]></expression>
+                    <expression><![CDATA[$P{deliveryEventDateTime}]]></expression>
                     <box leftPadding="5"/>
                 </element>
                 <box>
