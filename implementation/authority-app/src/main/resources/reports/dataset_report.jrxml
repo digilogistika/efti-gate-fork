@@ -81,9 +81,8 @@
     <parameter name="consigneeSignatureDate" class="java.util.Date"/>
     <query language="sql"><![CDATA[]]></query>
     <detail>
-        <band height="585" splitType="Stretch">
-            <element kind="frame" uuid="e6ca57bd-bf42-490d-bcc3-ffa5a03f0dd5" x="0" y="0" width="278" height="85" removeLineWhenBlank="true">
-            <element kind="frame" uuid="e6ca57bd-bf42-490d-bcc3-ffa5a03f0dd7" x="0" y="0" width="278" height="85">
+        <band height="540" splitType="Stretch">
+            <element kind="frame" uuid="e6ca57bd-bf42-490d-bcc3-ffa5a03f0dd5" x="0" y="0" width="278" height="70">
                 <box>
                     <topPen lineWidth="0.5"/>
                     <leftPen lineWidth="0.5"/>
@@ -94,10 +93,10 @@
                     <text><![CDATA[Consignor (name, address, country)]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="5c408579-91cf-4d33-b278-365cfc413afb" x="0" y="15" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
@@ -108,48 +107,41 @@
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="69c8b762-42dc-4501-926e-bbd5643ce20b" x="0" y="30" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{consignorPersonName}]]></expression>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                    <box leftPadding="5">
-                        <bottomPen lineWidth="0.0"/>
-                    </box>
-                </element>
-                <element kind="textField" uuid="34de5190-4456-40e9-abf7-1bd0b84c0f35" x="0" y="45" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="34de5190-4456-40e9-abf7-1bd0b84c0f35" x="0" y="30" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{consignorStreet}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="f4eee314-abd7-4e0b-a223-22014f337551" x="0" y="70" width="92" height="15" blankWhenNull="true">
+                <element kind="textField" uuid="f4eee314-abd7-4e0b-a223-22014f337551" x="0" y="55" width="92" height="15" blankWhenNull="true">
                     <expression><![CDATA[$P{consignorPostCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="bc45b72a-1de9-4b11-ba4d-edaa91cce507" x="0" y="60" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="bc45b72a-1de9-4b11-ba4d-edaa91cce507" x="0" y="45" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Postcode:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="85f2f8c3-5caf-4ca2-986d-12d2a3c8a066" x="92" y="60" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="85f2f8c3-5caf-4ca2-986d-12d2a3c8a066" x="92" y="45" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[City:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="ada317d4-5b58-497c-a8d1-eab9fce7c47e" x="92" y="70" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="ada317d4-5b58-497c-a8d1-eab9fce7c47e" x="92" y="55" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{consignorCity}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="3690a9b9-c1fd-4cb8-8ba3-93e72b1b282e" x="186" y="70" width="92" height="15" blankWhenNull="true">
+                <element kind="textField" uuid="3690a9b9-c1fd-4cb8-8ba3-93e72b1b282e" x="186" y="55" width="92" height="15" blankWhenNull="true">
                     <expression><![CDATA[$P{consignorCountryCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="765aace5-402a-4bee-8462-974a428f8647" x="186" y="60" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="765aace5-402a-4bee-8462-974a428f8647" x="186" y="45" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Country:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5"/>
@@ -161,9 +153,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            </element>
-            <element kind="frame" uuid="5a527e9a-a432-459d-855f-b50e2773b8c4" x="0" y="85" width="278" height="85">
-            <element kind="frame" uuid="5a527e9a-a432-459d-855f-b50e2773b8c5" x="0" y="0" width="278" height="85">
+            <element kind="frame" uuid="5a527e9a-a432-459d-855f-b50e2773b8c4" x="0" y="70" width="278" height="70">
                 <box>
                     <topPen lineWidth="0.5"/>
                     <leftPen lineWidth="0.5"/>
@@ -174,10 +164,10 @@
                     <text><![CDATA[Consignee (name, address, country)]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="e598628c-136c-42ce-b6ce-69f7dc6fdf86" x="0" y="15" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
@@ -188,33 +178,26 @@
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="18852b9b-8759-462c-991e-a2a3f21ab025" x="0" y="30" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{consigneePersonName}]]></expression>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                    <box leftPadding="5">
-                        <bottomPen lineWidth="0.0"/>
-                    </box>
-                </element>
-                <element kind="textField" uuid="c168bc70-ee77-4311-b091-d2ff5b33c773" x="0" y="45" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="c168bc70-ee77-4311-b091-d2ff5b33c773" x="0" y="30" width="278" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{consigneeStreet}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="dd119f80-3115-471b-bfc5-8d0c215f4d6d" x="0" y="70" width="92" height="15" blankWhenNull="true">
+                <element kind="textField" uuid="dd119f80-3115-471b-bfc5-8d0c215f4d6d" x="0" y="55" width="92" height="15" blankWhenNull="true">
                     <expression><![CDATA[$P{consigneePostcode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="4917e29d-8175-4ba8-9574-d27ba1b92b18" x="0" y="60" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="4917e29d-8175-4ba8-9574-d27ba1b92b18" x="0" y="45" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Postcode:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="f4fdc7f9-b529-4b4e-9341-2cb793626f04" x="92" y="60" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="f4fdc7f9-b529-4b4e-9341-2cb793626f04" x="92" y="45" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[City:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -222,14 +205,14 @@
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="9276fb31-594b-4ae3-9182-0cf0b58c6596" x="92" y="70" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="9276fb31-594b-4ae3-9182-0cf0b58c6596" x="92" y="55" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{consigneeCity}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="14a5c263-47b7-4557-b381-7f11c4dced3b" x="186" y="70" width="92" height="15" blankWhenNull="true">
+                <element kind="textField" uuid="14a5c263-47b7-4557-b381-7f11c4dced3b" x="186" y="55" width="92" height="15" blankWhenNull="true">
                     <expression><![CDATA[$P{consigneeCountryCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -237,7 +220,7 @@
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="5a0ec591-dd85-46ad-922a-48bf59d03c91" x="186" y="60" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="5a0ec591-dd85-46ad-922a-48bf59d03c91" x="186" y="45" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Country:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -252,8 +235,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            </element>
-            <element kind="frame" uuid="47c2075a-c941-4725-9872-36f87d9299a2" x="0" y="170" width="278" height="60">
+            <element kind="frame" uuid="47c2075a-c941-4725-9872-36f87d9299a2" x="0" y="140" width="278" height="45">
                 <box>
                     <topPen lineWidth="0.5"/>
                     <leftPen lineWidth="0.5"/>
@@ -266,10 +248,10 @@
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="aa8cf8fc-a17d-47c2-ad40-c2d6814967c7" x="70" y="15" width="207" height="15" blankWhenNull="true" vTextAlign="Middle">
@@ -288,14 +270,6 @@
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="6e7d45d0-dc4a-420b-b66b-711b6a45c849" x="70" y="45" width="207" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{logisticsTimeOfDepartureDateTime}]]></expression>
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
-                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                    <box leftPadding="5"/>
-                </element>
                 <element kind="staticText" uuid="109addac-4846-4f5e-b0d3-4567f69a0448" x="0" y="15" width="70" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Place:]]></text>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -312,14 +286,6 @@
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="3814a4c0-0b03-4607-8eec-7269420307cc" x="0" y="45" width="70" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[Departure:]]></text>
-                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
-                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                    <property name="com.jaspersoft.stfudio.unit.height" value="px"/>
-                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
-                    <box leftPadding="5"/>
-                </element>
                 <box>
                     <topPen lineWidth="0.5"/>
                     <leftPen lineWidth="0.5"/>
@@ -327,15 +293,15 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="9921d5e5-7a16-4e8d-a997-2773b9e79956" x="278" y="185" width="277" height="45">
+            <element kind="frame" uuid="9921d5e5-7a16-4e8d-a997-2773b9e79956" x="278" y="155" width="277" height="30">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="49af6437-d028-465b-9ff2-e4b89e2f2002" x="0" y="0" width="277" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Delivery of the Goods]]></text>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="02d140f4-7ed8-495b-9eb1-70d139a82081" x="70" y="15" width="207" height="15" blankWhenNull="true" vTextAlign="Middle">
@@ -346,14 +312,6 @@
                     <text><![CDATA[Place:]]></text>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="c6696c9e-f15f-452e-a4d6-24583e9d67a2" x="0" y="30" width="70" height="15" fontSize="8.0" bold="true" vTextAlign="Middle">
-                    <text><![CDATA[Opening Hours:]]></text>
-                    <box leftPadding="5"/>
-                </element>
-                <element kind="textField" uuid="a8a57452-1d3a-4a4b-8e36-7bdc1618d2b8" x="70" y="30" width="207" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{deliveryOfTheGoodsOpeningHours}]]></expression>
-                    <box leftPadding="5"/>
-                </element>
                 <box>
                     <topPen lineWidth="0.5"/>
                     <leftPen lineWidth="0.5"/>
@@ -361,7 +319,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="016a5ed6-0d40-4d95-a151-d70568b8d6e5" x="278" y="0" width="277" height="100">
+            <element kind="frame" uuid="016a5ed6-0d40-4d95-a151-d70568b8d6e5" x="278" y="0" width="277" height="85">
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <property name="com.jaspersoft.studio.unit.x" value="px"/>
                 <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -373,10 +331,10 @@
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="45387c8e-f30f-4b43-8746-f329edbf59af" x="0" y="15" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
@@ -387,40 +345,33 @@
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="10e59f6d-d8fa-4c92-b4a9-962709bd577f" x="0" y="30" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{carrierPersonName}]]></expression>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                    <box leftPadding="5">
-                        <bottomPen lineWidth="0.0"/>
-                    </box>
-                </element>
-                <element kind="textField" uuid="27a73123-e959-475a-888b-de49f21da647" x="0" y="45" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="27a73123-e959-475a-888b-de49f21da647" x="0" y="30" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{carrierStreet}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="staticText" uuid="8a1aafe7-c3c7-4391-93b3-e89897264fcc" x="0" y="60" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="8a1aafe7-c3c7-4391-93b3-e89897264fcc" x="0" y="45" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Postcode:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="5eec8b09-30f6-424f-a9ce-12cbe3b48a2b" x="0" y="70" width="92" height="15" blankWhenNull="true">
+                <element kind="textField" uuid="5eec8b09-30f6-424f-a9ce-12cbe3b48a2b" x="0" y="55" width="92" height="15" blankWhenNull="true">
                     <expression><![CDATA[$P{carrierPostcode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="29f2b03f-ae48-4d5f-a295-5d6be1f6460a" x="92" y="70" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="29f2b03f-ae48-4d5f-a295-5d6be1f6460a" x="92" y="55" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{carrierCity}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="2752fa5a-00d0-43bc-b9c7-54e0db197d3a" x="92" y="60" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="2752fa5a-00d0-43bc-b9c7-54e0db197d3a" x="92" y="45" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[City:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -428,7 +379,7 @@
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="76f46f04-83de-4628-b3af-6df7a4e9a928" x="186" y="60" width="91" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="76f46f04-83de-4628-b3af-6df7a4e9a928" x="186" y="45" width="91" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Country:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -436,7 +387,7 @@
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="1cb10645-46c7-41c5-949a-69a2ceea272e" x="186" y="70" width="91" height="15" blankWhenNull="true">
+                <element kind="textField" uuid="1cb10645-46c7-41c5-949a-69a2ceea272e" x="186" y="55" width="91" height="15" blankWhenNull="true">
                     <expression><![CDATA[$P{carrierCountryCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -444,7 +395,7 @@
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="01f467a3-4811-4d79-87c7-f130f33b8918" x="0" y="85" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="01f467a3-4811-4d79-87c7-f130f33b8918" x="0" y="70" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{mainCarriageTransportMeansId}]]></expression>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -457,15 +408,15 @@
                     <rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
                 </box>
             </element>
-            <element kind="frame" uuid="9953306b-6dea-4152-bcbb-1080e19cbd96" x="0" y="230" width="278" height="55">
+            <element kind="frame" uuid="9953306b-6dea-4152-bcbb-1080e19cbd96" x="0" y="185" width="278" height="55">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="e8add47f-111b-471d-abdb-5a48c164dc3d" x="0" y="0" width="278" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Consignor's instructions]]></text>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="9bc2fe4e-f098-47ef-a4ee-b836e414c89b" x="0" y="15" width="278" height="40" blankWhenNull="true">
@@ -479,7 +430,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="3768af86-cdbd-4c8c-8c5b-d100c28449b5" x="278" y="100" width="277" height="85">
+            <element kind="frame" uuid="3768af86-cdbd-4c8c-8c5b-d100c28449b5" x="278" y="85" width="277" height="70">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                 <element kind="staticText" uuid="cd9bcf8f-5fb0-4ef5-aed3-836cbf967605" x="0" y="0" width="277" height="15" bold="true" vTextAlign="Middle">
@@ -489,10 +440,10 @@
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="30dfb198-f45e-4367-82af-cdabe0da224c" x="0" y="15" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
@@ -503,27 +454,20 @@
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="textField" uuid="ae461f45-2a6c-448a-823d-1d3c927b57df" x="0" y="30" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
-                    <expression><![CDATA[$P{connectingCarrierPersonName}]]></expression>
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                    <box leftPadding="5">
-                        <bottomPen lineWidth="0.0"/>
-                    </box>
-                </element>
-                <element kind="textField" uuid="f2cb4176-ba2d-4472-ac60-19e9f10ba4b9" x="0" y="45" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="f2cb4176-ba2d-4472-ac60-19e9f10ba4b9" x="0" y="30" width="277" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{connectingCarrierStreet}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box leftPadding="5">
                         <bottomPen lineWidth="0.0"/>
                     </box>
                 </element>
-                <element kind="staticText" uuid="683ad326-3303-4b39-b4c1-cff1c1cb02f0" x="0" y="60" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="683ad326-3303-4b39-b4c1-cff1c1cb02f0" x="0" y="45" width="92" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Postcode:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="cfa4d232-5e68-471f-b894-d55a3af1adc3" x="92" y="60" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="cfa4d232-5e68-471f-b894-d55a3af1adc3" x="92" y="45" width="94" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[City:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -531,7 +475,7 @@
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="staticText" uuid="f7388263-7ecf-42dc-8447-ad5a0bb50800" x="186" y="60" width="91" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
+                <element kind="staticText" uuid="f7388263-7ecf-42dc-8447-ad5a0bb50800" x="186" y="45" width="91" height="10" fontSize="6.0" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Country:]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -539,7 +483,7 @@
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="ced1ca8c-26ef-4266-b651-abd656913292" x="186" y="70" width="91" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="ced1ca8c-26ef-4266-b651-abd656913292" x="186" y="55" width="91" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{connectingCarrierCountryCode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -547,14 +491,14 @@
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="1541b95a-5cf4-40b3-959b-967cefc2d957" x="92" y="70" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="1541b95a-5cf4-40b3-959b-967cefc2d957" x="92" y="55" width="94" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{connectingCarrierCity}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box leftPadding="5"/>
                 </element>
-                <element kind="textField" uuid="d9b807dd-95aa-4deb-97b4-2c5803b5d94e" x="0" y="70" width="92" height="15" blankWhenNull="true" vTextAlign="Middle">
+                <element kind="textField" uuid="d9b807dd-95aa-4deb-97b4-2c5803b5d94e" x="0" y="55" width="92" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{connectingCarrierPostcode}]]></expression>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -567,14 +511,14 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="bdf8e4d9-6b52-4e39-8aa0-f6e2b5b892bd" x="278" y="230" width="277" height="55">
+            <element kind="frame" uuid="bdf8e4d9-6b52-4e39-8aa0-f6e2b5b892bd" x="278" y="185" width="277" height="55">
                 <element kind="staticText" uuid="da487386-86da-495b-a51c-41a35d0fe657" x="0" y="0" width="277" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Carrier's reservations and observations]]></text>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="73e0708c-02c5-40df-95b2-686aa40133ba" x="0" y="15" width="277" height="40" blankWhenNull="true">
@@ -588,7 +532,7 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="dff87ebd-f678-4c23-895d-6a49f7071997" stretchType="ElementGroupHeight" x="0" y="285" width="554" height="150">
+            <element kind="frame" uuid="dff87ebd-f678-4c23-895d-6a49f7071997" stretchType="ElementGroupHeight" x="0" y="240" width="554" height="150">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="component" uuid="c6186f87-8311-455e-a057-62c69df2fcf7" stretchType="ElementGroupHeight" x="0" y="0" width="553" height="150">
                     <component kind="table" whenNoDataType="AllSectionsNoDetail">
@@ -753,16 +697,16 @@
                     <rightPen lineWidth="0.5"/>
                 </box>
             </element>
-            <element kind="frame" uuid="d54a34d4-8832-4b24-849a-0b5d340d4ff1" stretchType="ElementGroupHeight" x="0" y="435" width="554" height="45">
+            <element kind="frame" uuid="d54a34d4-8832-4b24-849a-0b5d340d4ff1" stretchType="ElementGroupHeight" x="0" y="390" width="554" height="45">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <property name="com.jaspersoft.studio.layout"/>
                 <element kind="staticText" uuid="d097a138-02d9-4722-8ba9-ef6119719208" x="0" y="0" width="278" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Documents handed to the carrier by the consignor]]></text>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="3cb2846e-05cc-486c-af54-7b2be9229aa0" x="0" y="15" width="278" height="30" blankWhenNull="true">
@@ -774,10 +718,10 @@
                 <element kind="staticText" uuid="5902bb14-3e55-4521-94bc-98c820159817" x="278" y="0" width="276" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Special agreements between consignor and carrier]]></text>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="f0d9e74f-3001-4235-9ed1-4327dfdd7ddc" x="278" y="15" width="275" height="28" blankWhenNull="true">
@@ -795,16 +739,16 @@
             </element>
 
             <!-- Row 2 (NEW): Cash on Delivery (Left) and Other Particulars (Right) -->
-            <element kind="frame" uuid="4dc029cf-75f1-4ae8-8b93-cba0c62e3261" stretchType="ElementGroupHeight" x="0" y="480" width="278" height="45">
+            <element kind="frame" uuid="4dc029cf-75f1-4ae8-8b93-cba0c62e3261" stretchType="ElementGroupHeight" x="0" y="435" width="278" height="45">
                 <box>
                     <pen lineWidth="0.5"/>
                 </box>
                 <element kind="staticText" uuid="e9d10e2c-b2ea-4802-88a6-ee017ff5920d" x="0" y="0" width="278" height="15" bold="true">
                     <text><![CDATA[Cash on delivery]]></text>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="ccea7f4a-75e1-4d17-a142-6d8ee2664c61" x="0" y="15" width="278" height="30" blankWhenNull="true" vTextAlign="Middle">
@@ -812,16 +756,16 @@
                     <box leftPadding="5"/>
                 </element>
             </element>
-            <element kind="frame" uuid="a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d" stretchType="ElementGroupHeight" x="278" y="480" width="276" height="45">
+            <element kind="frame" uuid="a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d" stretchType="ElementGroupHeight" x="278" y="435" width="276" height="45">
                 <box>
                     <pen lineWidth="0.5"/>
                 </box>
                 <element kind="staticText" uuid="ea38703c-a45e-4b91-8ad5-33887a3661e0" x="0" y="0" width="276" height="15" bold="true">
                     <text><![CDATA[Other useful particulars]]></text>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="2bbe08eb-27a7-4208-aaa2-451fe16fe942" x="0" y="15" width="276" height="30" blankWhenNull="true" vTextAlign="Middle">
@@ -833,16 +777,16 @@
             </element>
 
             <!-- Row 3: Established -->
-            <element kind="frame" uuid="3106f5ad-da7d-45d0-b143-b52e715ef85d" stretchType="ElementGroupHeight" x="0" y="525" width="554" height="15">
+            <element kind="frame" uuid="3106f5ad-da7d-45d0-b143-b52e715ef85d" stretchType="ElementGroupHeight" x="0" y="480" width="554" height="15">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="staticText" uuid="e17ca7f8-6708-40a8-bd77-e331709abf1b" x="0" y="0" width="110" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Established]]></text>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
-                        <topPen lineWidth="0.25"/>
-                        <leftPen lineWidth="0.25"/>
-                        <bottomPen lineWidth="0.25"/>
-                        <rightPen lineWidth="0.25"/>
+                        <topPen lineWidth="0.5"/>
+                        <leftPen lineWidth="0.5"/>
+                        <bottomPen lineWidth="0.5"/>
+                        <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="staticText" uuid="6a3d23f5-e38a-4330-88bf-be096589ddee" x="110" y="0" width="30" height="15" hTextAlign="Center">
@@ -850,7 +794,7 @@
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box>
-                        <pen lineWidth="0.25"/>
+                        <pen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="staticText" uuid="3fe0517a-d107-41a7-a148-8949f64d28f5" x="360" y="0" width="30" height="15" hTextAlign="Center">
@@ -860,7 +804,7 @@
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.width" value="px"/>
                     <box>
-                        <pen lineWidth="0.25"/>
+                        <pen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="894c3a99-1f32-4e8e-8f5e-a893f32d671a" x="140" y="0" width="220" height="15" blankWhenNull="true" vTextAlign="Middle">
@@ -877,7 +821,7 @@
             </element>
 
             <!-- Row 4 Left: N/A Box -->
-            <element kind="frame" uuid="1ce2519a-3b79-4072-b49a-e11b788de101" stretchType="ElementGroupHeight" x="0" y="540" width="278" height="45">
+            <element kind="frame" uuid="1ce2519a-3b79-4072-b49a-e11b788de101" stretchType="ElementGroupHeight" x="0" y="495" width="278" height="45">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <element kind="textField" uuid="d811fbf3-35f4-4676-be72-478bb66256fa" x="0" y="0" width="278" height="45" blankWhenNull="true" fontSize="9.0" vTextAlign="Middle">
                     <expression><![CDATA["*N/A: Not given with this query"]]></expression>
@@ -889,7 +833,7 @@
             </element>
 
             <!-- Row 4 Right: Goods Received Box -->
-            <element kind="frame" uuid="384f651e-2009-4069-b49d-4c7ae7fe069e" stretchType="ElementGroupHeight" x="278" y="540" width="276" height="45">
+            <element kind="frame" uuid="384f651e-2009-4069-b49d-4c7ae7fe069e" stretchType="ElementGroupHeight" x="278" y="495" width="276" height="45">
                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 <box>
                     <pen lineWidth="0.5"/>
@@ -897,21 +841,21 @@
                 <element kind="staticText" uuid="b8a150ec-7ca7-42ec-afe6-8b067fadaa91" x="0" y="0" width="276" height="15" bold="true" vTextAlign="Middle">
                     <text><![CDATA[Goods received]]></text>
                     <box leftPadding="5">
-                        <pen lineWidth="0.25"/>
+                        <pen lineWidth="0.5"/>
                         <bottomPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="staticText" uuid="d8184f77-26fc-47d3-afa7-3503c6805b24" x="0" y="15" width="30" height="15" hTextAlign="Center" vTextAlign="Middle">
                     <text><![CDATA[In]]></text>
                     <box>
-                        <pen lineWidth="0.25"/>
+                        <pen lineWidth="0.5"/>
                         <rightPen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="staticText" uuid="05e57c19-df6e-4b00-ae3f-a3bc78f30b5e" x="0" y="30" width="30" height="15" hTextAlign="Center" vTextAlign="Middle">
                     <text><![CDATA[On]]></text>
                     <box>
-                        <pen lineWidth="0.25"/>
+                        <pen lineWidth="0.5"/>
                         <topPen lineWidth="0.5"/>
                         <rightPen lineWidth="0.5"/>
                     </box>
@@ -919,13 +863,13 @@
                 <element kind="textField" uuid="35409fc2-d24d-4a22-a239-cf81b7abaf91" x="30" y="15" width="246" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{deliveryEventLocationName}]]></expression>
                     <box leftPadding="5">
-                        <pen lineWidth="0.25"/>
+                        <pen lineWidth="0.5"/>
                     </box>
                 </element>
                 <element kind="textField" uuid="332c6c74-882c-4e51-87fe-d8135d272ac7" x="30" y="30" width="246" height="15" blankWhenNull="true" vTextAlign="Middle">
                     <expression><![CDATA[$P{consigneeSignatureDate} != null ? new java.text.SimpleDateFormat("MM/dd/yy, hh:mm a").format($P{consigneeSignatureDate}) : null]]></expression>
                     <box leftPadding="5">
-                        <pen lineWidth="0.25"/>
+                        <pen lineWidth="0.5"/>
                         <topPen lineWidth="0.5"/>
                     </box>
                 </element>
