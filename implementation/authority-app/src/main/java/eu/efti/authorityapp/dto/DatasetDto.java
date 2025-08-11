@@ -2,6 +2,7 @@ package eu.efti.authorityapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.efti.commons.enums.StatusEnum;
+import eu.efti.v1.consignment.common.SupplyChainConsignment;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,5 @@ public class DatasetDto {
     private String errorDescription;
     private byte[] data;
     private byte[] pdfData;
+    private SupplyChainConsignment eftiData;
 }

@@ -1,5 +1,6 @@
 package eu.efti.authorityapp.service;
 
+import eu.efti.authorityapp.dto.PdfGenerationResult;
 import eu.efti.v1.consignment.common.LogisticsPackage;
 import eu.efti.v1.consignment.common.SupplyChainConsignment;
 import jakarta.xml.bind.JAXBContext;
@@ -72,7 +73,7 @@ public class PdfGenerationService {
         }
     }
 
-    public byte[] generatePdf(
+    public PdfGenerationResult generatePdf(
             final String requestId,
             final byte[] xmlData) {
 
@@ -176,8 +177,8 @@ public class PdfGenerationService {
             final byte[] pdfBytes = JasperRunManager.runReportToPdf(jasperReport, parameters, new JREmptyDataSource());
             log.info("Report filled and exported to PDF successfully.");
 
-            return pdfBytes;
-
+            return new PdfGenerationResult(pdfBytes, sc);
+            
         } catch (final Exception e) {
             log.error("CRITICAL ERROR during PDF generation for request ID: {}", requestId, e);
             throw new RuntimeException("Failed to generate PDF report", e);

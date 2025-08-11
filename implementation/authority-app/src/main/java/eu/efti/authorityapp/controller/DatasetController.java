@@ -3,6 +3,7 @@ package eu.efti.authorityapp.controller;
 import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.DatasetControllerApi;
 import eu.efti.authorityapp.dto.DatasetDto;
+import eu.efti.authorityapp.dto.PdfGenerationResult;
 import eu.efti.authorityapp.service.ConfigService;
 import eu.efti.authorityapp.service.PdfGenerationService;
 import lombok.AllArgsConstructor;
@@ -66,10 +67,12 @@ public class DatasetController implements DatasetControllerApi {
 
             try {
                 log.info("Generating PDF for request ID: {}", datasetDto.getRequestId());
-                final byte[] pdfBytes = pdfGenerationService.generatePdf(
+                final PdfGenerationResult pdfResult = pdfGenerationService.generatePdf(
                         datasetDto.getRequestId(),
                         datasetDto.getData());
-                datasetDto.setPdfData(pdfBytes);
+
+                datasetDto.setPdfData(pdfResult.pdfBytes());
+                datasetDto.setEftiData(pdfResult.consignment());
                 log.info("Successfully generated and embedded PDF into the response.");
             } catch (final Exception e) {
                 log.error("PDF generation failed for datasetId: {}. Returning data without PDF.", datasetId, e);
