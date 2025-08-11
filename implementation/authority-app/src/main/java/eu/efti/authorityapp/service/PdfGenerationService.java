@@ -140,7 +140,7 @@ public class PdfGenerationService {
             final String natureOfGoodsText = getSafely(() -> sc.getNatureIdentificationCargo().getIdentificationText().get(0).getValue());
             final List<LogisticsPackage> packages = Optional.ofNullable(sc.getTransportPackage()).orElse(Collections.emptyList());
 
-            final List<Map<String, Object>> items = packages.stream().map(pkg -> {
+            final List<Map<String, Object>> items = packages.stream().limit(6).map(pkg -> {
                 Map<String, Object> item = new HashMap<>();
                 String packageType = "N/A";
                 if (getSafely(() -> pkg.getTypeText().get(0)) != null) {
