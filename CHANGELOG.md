@@ -1,3 +1,26 @@
+## [0.12.1](https://github.com/digilogistika/efti-gate/compare/v0.12.0...v0.12.1) (2025-08-11)
+
+
+### Bug Fixes
+
+* Adding disclaimer that pdf is not eCMR but eFTI dataset. PDF has description of N/A ([4ee5265](https://github.com/digilogistika/efti-gate/commit/4ee5265cab53247ad025cccd3e472765e9904c22))
+* Adding N/A to all empty fields ([25bcdbb](https://github.com/digilogistika/efti-gate/commit/25bcdbbdc897952e11ae28cd02e3b7e1b711c748))
+* Made disclaimer bigger and shorter ([4664290](https://github.com/digilogistika/efti-gate/commit/46642908648a7bf234d5e05a4bb4a5ffc257c78d))
+* Making boxes display only and always N/A if the data is missing ([cb42042](https://github.com/digilogistika/efti-gate/commit/cb42042a67e2b5768c155c35bb1dd66d1ccb4834))
+* Making pdf boxes appear and disapear depending if they have data ([38337fc](https://github.com/digilogistika/efti-gate/commit/38337fc72f073c2b189cb244f5bb76e933129589))
+* Making pdf even shorter. ([7c80682](https://github.com/digilogistika/efti-gate/commit/7c80682214670abee07b29f55fd922ccd5dcb439))
+* Making pdf shorter ([beab7c7](https://github.com/digilogistika/efti-gate/commit/beab7c73a698dc78da3c1bb4791d7c75b790c679))
+* Making pdf shorter ([786dd05](https://github.com/digilogistika/efti-gate/commit/786dd05562bb8630a317d50cdaa1e38f0ca1c043))
+* Making sizing dynamic depending on the items. ([3800543](https://github.com/digilogistika/efti-gate/commit/3800543eec861ec4e20c8ced7506632c08572e8b))
+* Removing floating functions, since they dont work well enough. ([9e78bd5](https://github.com/digilogistika/efti-gate/commit/9e78bd55056cf7024e7805eab4839e21cd6178f4))
+* Removing numbers and unnecessary boxes ([58f846a](https://github.com/digilogistika/efti-gate/commit/58f846a966611ddedb2cb16697e1dbbab6c9f4cb))
+* Removing unnecessary boxes ([1afd7c6](https://github.com/digilogistika/efti-gate/commit/1afd7c6ec5b7866d7e40d2db95821eb834338cb6))
+* Removing unnecessary parameters ([a31990f](https://github.com/digilogistika/efti-gate/commit/a31990fcd1e74f8531ed7ad845634aced8e9322d))
+* Removing unnecessary parameters, cleaning up code ([1aabd0e](https://github.com/digilogistika/efti-gate/commit/1aabd0e6d9fa3c4e3602a092e1c2eca5062f0a56))
+* Shortening pdf and removing unnecessary boxes ([9faf2da](https://github.com/digilogistika/efti-gate/commit/9faf2daa8fcaa7b02fec456db87d8cef1f2c8fbc))
+* Sizing dynamically works for the items list ([6dd8a01](https://github.com/digilogistika/efti-gate/commit/6dd8a01f85b5e55dd774423060a32c9967e299ac))
+* Trying to get box mapping right on pdf ([c13591f](https://github.com/digilogistika/efti-gate/commit/c13591f621615b5032b9f388ef7846759b7f6b55))
+
 # [0.12.0](https://github.com/digilogistika/efti-gate/compare/v0.11.0...v0.12.0) (2025-08-05)
 
 
