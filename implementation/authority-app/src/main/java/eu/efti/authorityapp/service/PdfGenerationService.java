@@ -93,7 +93,6 @@ public class PdfGenerationService {
             parameters.put("consignorCity", toStr((consignorAddress != null && consignorAddress.getCityName() != null && !consignorAddress.getCityName().isEmpty()) ? consignorAddress.getCityName().get(0) : null));
             parameters.put("consignorPostCode", toStr((consignorAddress != null && consignorAddress.getPostcode() != null && !consignorAddress.getPostcode().isEmpty()) ? consignorAddress.getPostcode().get(0) : null));
             parameters.put("consignorCountryCode", toStr((consignorAddress != null && consignorAddress.getCountryCode() != null) ? consignorAddress.getCountryCode().value() : null));
-            parameters.put("consignorPersonName", null);
 
             // Box 2: Consignee
             TradeParty consignee = sc.getConsignee();
@@ -103,16 +102,13 @@ public class PdfGenerationService {
             parameters.put("consigneeCity", toStr((consigneeAddress != null && consigneeAddress.getCityName() != null && !consigneeAddress.getCityName().isEmpty()) ? consigneeAddress.getCityName().get(0) : null));
             parameters.put("consigneePostcode", toStr((consigneeAddress != null && consigneeAddress.getPostcode() != null && !consigneeAddress.getPostcode().isEmpty()) ? consigneeAddress.getPostcode().get(0) : null));
             parameters.put("consigneeCountryCode", toStr((consigneeAddress != null && consigneeAddress.getCountryCode() != null) ? consigneeAddress.getCountryCode().value() : null));
-            parameters.put("consigneePersonName", null);
 
             // Box 3: Taking over the Goods
             parameters.put("carrierAcceptanceLocationName", toStr((sc.getCarrierAcceptanceLocation() != null && sc.getCarrierAcceptanceLocation().getName() != null && !sc.getCarrierAcceptanceLocation().getName().isEmpty()) ? sc.getCarrierAcceptanceLocation().getName().get(0) : null));
             parameters.put("carrierAcceptanceDateTime", fromDateTime(sc.getCarrierAcceptanceDateTime()));
-            parameters.put("logisticsTimeOfDepartureDateTime", null);
 
             // Box 4: Delivery of the Goods
             parameters.put("consigneeReceiptLocationName", toStr((sc.getConsigneeReceiptLocation() != null && sc.getConsigneeReceiptLocation().getName() != null) ? sc.getConsigneeReceiptLocation().getName().get(0) : null));
-            parameters.put("deliveryOfTheGoodsOpeningHours", null);
 
             // Box 5: Consignor's instructions
             String instructions = (sc.getConsignorProvidedBorderClearanceInstructions() != null && !sc.getConsignorProvidedBorderClearanceInstructions().isEmpty() && sc.getConsignorProvidedBorderClearanceInstructions().get(0).getDescription() != null)
@@ -127,7 +123,6 @@ public class PdfGenerationService {
             parameters.put("carrierCity", toStr((carrierAddress != null && carrierAddress.getCityName() != null && !carrierAddress.getCityName().isEmpty()) ? carrierAddress.getCityName().get(0) : null));
             parameters.put("carrierPostcode", toStr((carrierAddress != null && carrierAddress.getPostcode() != null && !carrierAddress.getPostcode().isEmpty()) ? carrierAddress.getPostcode().get(0) : null));
             parameters.put("carrierCountryCode", toStr((carrierAddress != null && carrierAddress.getCountryCode() != null) ? carrierAddress.getCountryCode().value() : null));
-            parameters.put("carrierPersonName", null);
 
             String transportMeansId = (sc.getMainCarriageTransportMovement() != null && !sc.getMainCarriageTransportMovement().isEmpty() && sc.getMainCarriageTransportMovement().get(0).getUsedTransportMeans() != null)
                     ? sc.getMainCarriageTransportMovement().get(0).getUsedTransportMeans().getId().getValue() : null;
@@ -141,7 +136,6 @@ public class PdfGenerationService {
             parameters.put("connectingCarrierCity", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCityName() != null && !connectingCarrierAddress.getCityName().isEmpty()) ? connectingCarrierAddress.getCityName().get(0) : null));
             parameters.put("connectingCarrierPostcode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getPostcode() != null && !connectingCarrierAddress.getPostcode().isEmpty()) ? connectingCarrierAddress.getPostcode().get(0) : null));
             parameters.put("connectingCarrierCountryCode", toStr((connectingCarrierAddress != null && connectingCarrierAddress.getCountryCode() != null) ? connectingCarrierAddress.getCountryCode().value() : null));
-            parameters.put("connectingCarrierPersonName", null);
 
             // Box 10-15
             final List<Map<String, Object>> items = new ArrayList<>();
@@ -166,8 +160,6 @@ public class PdfGenerationService {
                     item.put("transportCargoIdentification", natureOfGoodsText);
                     item.put("supplyChainConsignmentItemGrossWeight", (sc.getGrossWeight() != null && !sc.getGrossWeight().isEmpty() && sc.getGrossWeight().get(0).getValue() != null) ? sc.getGrossWeight().get(0).getValue().floatValue() : null);
                     item.put("supplyChainConsignmentItemGrossVolume", (sc.getGrossVolume() != null && !sc.getGrossVolume().isEmpty() && sc.getGrossVolume().get(0).getValue() != null) ? sc.getGrossVolume().get(0).getValue().floatValue() : null);
-                    item.put("logisticsShippingMarksMarking", "N/A");
-                    item.put("logisticsShippingMarksCustomBarcode", "N/A");
                     items.add(item);
                 }
             }
@@ -185,19 +177,6 @@ public class PdfGenerationService {
             String contractTerms = (sc.getContractTermsText() != null && !sc.getContractTermsText().isEmpty()) ? String.join(", ", sc.getContractTermsText()) : null;
             parameters.put("contractTermsText", toStr(contractTerms));
 
-            parameters.put("customChargeCarriageValue", null);
-            parameters.put("customChargeCarriagePayer", null);
-            parameters.put("customChargeCarriageCurrency", null);
-            parameters.put("customChargeSupplementaryValue", null);
-            parameters.put("customChargeSupplementaryCurrency", null);
-            parameters.put("customChargeSupplementaryPayer", null);
-            parameters.put("customChargeCustomsDutiesValue", null);
-            parameters.put("customChargeCustomsDutiesCurrency", null);
-            parameters.put("customChargeCustomsDutiesPayer", null);
-            parameters.put("customChargeOtherValue", null);
-            parameters.put("customChargeOtherCurrency", null);
-            parameters.put("customChargeOtherPayer", null);
-
             parameters.put("deliveryInformation", toStr(sc.getDeliveryInformation()));
             parameters.put("codAmount", sc.getCODAmount() != null ? sc.getCODAmount().getValue().floatValue() : null);
             parameters.put("codAmountCurrency", toStr(sc.getCODAmount() != null ? sc.getCODAmount().getCurrencyId().toString() : null));
@@ -206,15 +185,8 @@ public class PdfGenerationService {
             parameters.put("transportContractDocumentId", toStr(transportContractId));
 
             parameters.put("deliveryEventDateTime", (sc.getDeliveryEvent() != null) ? fromDateTime(sc.getDeliveryEvent().getActualOccurrenceDateTime()) : null);
-            parameters.put("consignorSealText", null);
-            parameters.put("carrierSealText", null);
-            parameters.put("consigneeSealText", null);
-            parameters.put("consigneeReservationsObservations", null);
-            parameters.put("consigneeSignatureImage", null);
             parameters.put("deliveryEventLocationName", toStr((sc.getDeliveryEvent() != null && sc.getDeliveryEvent().getOccurrenceLocation() != null) ? sc.getDeliveryEvent().getOccurrenceLocation().getName().get(0) : null));
             parameters.put("consigneeSignatureDate", (sc.getDeliveryEvent() != null) ? fromDateTime(sc.getDeliveryEvent().getActualOccurrenceDateTime()) : null);
-            parameters.put("nonContractualCarrierRemarks", null);
-            parameters.put("consigneeTimeOfDeparture", null);
 
             log.info("Populated report parameters successfully.");
 
