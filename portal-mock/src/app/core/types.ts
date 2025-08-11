@@ -156,11 +156,6 @@ export interface TransportEvent {
   occurrenceLocation?: LogisticsLocation;
 }
 
-// =================================================================
-//
-// Fully Defined Interfaces (Previously marked as TODO)
-//
-// =================================================================
 
 /**
  * Mirrors the eu.efti.v1.consignment.common.TradePrice Java class.
