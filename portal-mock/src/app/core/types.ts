@@ -107,20 +107,57 @@ export interface LocalizedString {
 //
 // =================================================================
 
+export interface PostalAddress {
+  streetName?: string[];
+  additionalStreetName?: string[];
+  buildingNumber?: string[];
+  cityName?: string[];
+  postcode?: string[];
+  countrySubDivisionName?: string[];
+  countryCode?: { value?: string };
+}
+
+export interface GeographicalCoordinates {
+  latitude?: Measure;
+  longitude?: Measure;
+}
+
+export interface DefinedContactDetails {
+  personName?: string[];
+  telephone?: { completeNumber?: string }[];
+  emailAddress?: { completeNumber?: string }[];
+}
+
 export interface TradeParty {
   id?: Identifier;
   name?: string[];
-  postalAddress?: {
-    streetName?: string[];
-    cityName?: string[];
-    postcode?: string[];
-    countryCode?: { value?: string };
-  };
+  postalAddress?: PostalAddress;
+  roleCode?: string[];
+  definedContactDetails?: DefinedContactDetails[];
 }
 
 export interface LogisticsLocation {
   id?: Identifier;
   name?: string[];
+  geographicalCoordinates?: GeographicalCoordinates;
+  postalAddress?: PostalAddress;
+}
+
+export interface AttachedBinaryFile {
+  id?: Identifier;
+  includedBinaryObject?: string; // Base64 encoded
+}
+
+export interface AssociatedDocument {
+  id?: Identifier;
+  uRI?: Identifier;
+  typeCode?: string[];
+  subtypeCode?: string[];
+  referenceTypeCode?: string[];
+  issuer?: TradeParty;
+  issueLocation?: LogisticsLocation;
+  formattedIssueDateTime?: DateTime;
+  attachedBinaryFile?: AttachedBinaryFile;
 }
 
 export interface ReferencedDocument {
@@ -139,22 +176,32 @@ export interface LogisticsPackage {
   typeCode?: string[];
 }
 
+export interface UsedTransportMeans {
+  id?: Identifier;
+  typeCode?: string;
+  name?: string[];
+  registrationCountry?: TradeCountry;
+}
+
 export interface LogisticsTransportMovement {
-  id?: Identifier; // <-- ADD THIS LINE
+  id?: Identifier;
   stageCode?: string;
-  usedTransportMeans?: {
-    id?: Identifier;
-    typeCode?: string;
-  };
+  modeCode?: string[];
+  usedTransportMeans?: UsedTransportMeans;
+  departureEvent?: TransportEvent;
+  arrivalEvent?: TransportEvent;
 }
 
 export interface TransportCargo {
   identificationText?: { value: string }[];
+  typeCode?: string[];
 }
 
 export interface TransportEvent {
   actualOccurrenceDateTime?: DateTime;
+  estimatedOccurrenceDateTime?: DateTime;
   occurrenceLocation?: LogisticsLocation;
+  typeCode?: string[];
 }
 
 
@@ -280,7 +327,7 @@ export interface LogisticsSeal {
  */
 export interface AssociatedTransportEquipment {
   affixedSeal?: LogisticsSeal[];
-  categoryCode?: string[]; // Assuming TransportEquipmentCategoryCode maps to string
+  categoryCode?: string[];
   goodsItemUnitQuantity?: number[];
   grossGoodsVolumeMeasure?: Measure[];
   grossGoodsWeightMeasure?: Measure[];
@@ -292,7 +339,7 @@ export interface AssociatedTransportEquipment {
   reportableQuantity?: number[];
   sequenceNumber?: number;
   stowagePositionID?: Identifier;
-  usedCapacityCode?: string;
+  usedCapacityCode?: string[];
   verifiedGrossWeight?: Measure[];
   weightVerificationMethodCode?: string[];
   weightVerifierParty?: TradeParty[];
@@ -302,7 +349,7 @@ export interface AssociatedTransportEquipment {
  * Mirrors the eu.efti.v1.consignment.common.TradeCountry Java class.
  */
 export interface TradeCountry {
-  code?: string; // Assuming CountryCode enum maps to string
+  code?: string;
 }
 
 /**
@@ -448,9 +495,9 @@ export interface LogisticsTransportEquipment {
  */
 export interface SupplyChainConsignment {
   applicableServiceCharge?: LogisticsServiceCharge[];
-  associatedDocument?: ReferencedDocument[];
+  associatedDocument?: AssociatedDocument[];
   associatedParty?: TradeParty[];
-  codAmount?: Amount;
+  cODAmount?: Amount;
   cargoInsuranceInstructions?: string[];
   carrier?: TradeParty;
   carrierAcceptanceDateTime?: DateTime;
@@ -459,13 +506,11 @@ export interface SupplyChainConsignment {
   consignee?: TradeParty;
   consigneeReceiptLocation?: LogisticsLocation;
   consignor?: TradeParty;
-  consignorProvidedBorderClearanceInstructions?: TransportInstructions[];
   consignorProvidedInformationText?: string[];
   contractTermsText?: string[];
   dangerousGoods?: TransportDangerousGoods;
   declaredValueForCarriageAmount?: Amount;
   deliveryEvent?: TransportEvent;
-  deliveryInformation?: string;
   freightForwarder?: TradeParty;
   grossVolume?: Measure[];
   grossWeight?: Measure[];
