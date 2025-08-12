@@ -234,6 +234,9 @@
         <usedTransportMeans>
             <id schemeAgencyId="IMO">9462335</id>
             <name>MSC Lirica</name>
+                <registrationCountry>
+                    <code>EE</code>
+                </registrationCountry>
             <typeCode>SHIP</typeCode>
         </usedTransportMeans>
     </mainCarriageTransportMovement>
@@ -365,8 +368,9 @@
             <roleCode>OWN</roleCode>
         </ownerParty>
         <registrationCountry>
-            <code>CH</code>
+            <code>EE</code>
         </registrationCountry>
+        <sequenceNumber>1</sequenceNumber>
         <sizeTypeCode>20GP</sizeTypeCode>
     </usedTransportEquipment>
 </consignment>
