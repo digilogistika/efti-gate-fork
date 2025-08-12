@@ -301,25 +301,22 @@
       </details>
     }
 
-    <!-- Query Results and PDF Viewer -->
+    <!-- Query Results Section -->
     @if (datasetQueryResponse != null) {
-      <div class="mt-8 sm:rounded-2xl shadow-xl overflow-hidden">
-        <!-- Query Results Container -->
-        <div class="bg-white/60 backdrop-blur-xl">
+      <div class="mt-8 space-y-8">
+
+        <!-- Main Result Container (Info, Actions, and PDF) -->
+        <div class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden">
           <!-- Header -->
           <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 border-b border-white/20">
             <div class="flex flex-col gap-2 sm:flex-row items-center justify-between">
               <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
                   </svg>
                 </div>
-                <h1
-                  class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   {{ 'datasetQuery.retrievedDataset' | translate }}
                 </h1>
               </div>
@@ -332,7 +329,7 @@
             </div>
           </div>
 
-          <!-- Content -->
+          <!-- Content (Actions / Errors) -->
           <div class="p-6">
             @if (datasetQueryResponse.errorCode != null || datasetQueryResponse.errorDescription != null) {
               <!-- Error State -->
@@ -340,8 +337,7 @@
                 <div class="flex items-start gap-3">
                   <div class="flex-shrink-0">
                     <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2"/>
+                      <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
                     </svg>
                   </div>
                   <div class="flex-1">
@@ -365,21 +361,17 @@
               </div>
             } @else {
               <!-- Success State -->
-              <div class="space-y-6">
               <div class="flex flex-row justify-between items-center flex-wrap gap-4">
                 <!-- Action Buttons Container -->
                 <div class="flex items-center gap-2">
                   <!-- Follow Up Button -->
-                  <button (click)="openDialog()"
-                          class="group relative px-2 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
-                    <span class="flex items-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                           class="w-5 h-5">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                      </svg>
-                      <span>{{ 'datasetQuery.followUp' | translate }}</span>
-                    </span>
+                  <button (click)="openDialog()" class="group relative px-2 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 disabled:hover:scale-100">
+                <span class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>{{ 'datasetQuery.followUp' | translate }}</span>
+                </span>
                   </button>
                 </div>
                 <!-- CMR Disclaimer -->
@@ -389,16 +381,35 @@
                   </p>
                 </div>
               </div>
-            </div>
             }
           </div>
+
+          <!-- PDF Viewer Section (Reverted to be inside the main container) -->
+          @if (pdfData) {
+            <div class="border-t border-white/20">
+              <app-pdfjs-viewer [pdfData]="pdfData" class="block"></app-pdfjs-viewer>
+            </div>
+          }
         </div>
 
-        <!-- PDF Viewer Section -->
-        @if (pdfData) {
-          <div>
-            <app-pdfjs-viewer [pdfData]="pdfData" class="block"></app-pdfjs-viewer>
-          </div>
+        <!-- Collapsible Structured Data -->
+        @if (datasetQueryResponse.eftiData && !datasetQueryResponse.errorCode) {
+          <details class="bg-white/60 backdrop-blur-xl sm:rounded-2xl shadow-xl overflow-hidden group">
+            <summary class="flex items-center justify-between p-4 cursor-pointer bg-gradient-to-r from-indigo-500/10 to-purple-500/10 px-6 py-4 transition-all duration-200">
+              <div class="flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                </svg>
+                <h2 class="text-lg font-semibold text-gray-800">
+                  View Structured eFTI Data
+                </h2>
+              </div>
+              <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="border-t border-white/20">
+              <app-efti-data-viewer [eftiData]="datasetQueryResponse.eftiData"></app-efti-data-viewer>
+            </div>
+          </details>
         }
       </div>
     }

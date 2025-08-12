@@ -140,6 +140,7 @@ export interface LogisticsPackage {
 }
 
 export interface LogisticsTransportMovement {
+  id?: Identifier; // <-- ADD THIS LINE
   stageCode?: string;
   usedTransportMeans?: {
     id?: Identifier;
