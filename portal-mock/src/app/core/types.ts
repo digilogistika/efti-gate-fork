@@ -165,10 +165,6 @@ export interface ReferencedDocument {
   typeCode?: string;
 }
 
-export interface TransportInstructions {
-  description?: string[];
-}
-
 export interface LogisticsPackage {
   id?: Identifier;
   itemQuantity?: number;
