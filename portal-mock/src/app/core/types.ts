@@ -20,7 +20,7 @@ export interface DatasetResponse {
   errorDescription: string;
   data: string;
   pdfData?: string;
-  eftiData?: SupplyChainConsignment[];
+  eftiData?: SupplyChainConsignment;
 }
 
 // =================================================================
