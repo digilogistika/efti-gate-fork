@@ -5,29 +5,84 @@
     <!-- Card for Participants -->
     <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
       <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Participants</h3>
+
+      <!-- Consignor -->
       @if (eftiData.consignor) {
         <div class="mt-4 first:mt-0">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Consignor</h4>
+          <h4 class="text-base font-semibold text-gray-600 mb-2">Consignor <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignor.roleCode?.[0] || 'CNS' }}</span></h4>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignor.name?.[0] || 'N/A' }}</p>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignor.id?.value || 'N/A' }} ({{ eftiData.consignor.id?.schemeId || 'N/A' }})</p>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignor) }}</p>
+          @for(contact of eftiData.consignor.definedContactDetails; track $index) {
+            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+            </div>
+          }
         </div>
       }
+
+      <!-- Consignee -->
       @if (eftiData.consignee) {
-        <div class="mt-4 first:mt-0">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Consignee</h4>
+        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+          <h4 class="text-base font-semibold text-gray-600 mb-2">Consignee <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignee.roleCode?.[0] || 'CNE' }}</span></h4>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignee.name?.[0] || 'N/A' }}</p>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignee.id?.value || 'N/A' }} ({{ eftiData.consignee.id?.schemeId || 'N/A' }})</p>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignee) }}</p>
+          @for(contact of eftiData.consignee.definedContactDetails; track $index) {
+            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+            </div>
+          }
         </div>
       }
+
+      <!-- Carrier -->
       @if (eftiData.carrier) {
-        <div class="mt-4 first:mt-0">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Carrier</h4>
+        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+          <h4 class="text-base font-semibold text-gray-600 mb-2">Carrier <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.carrier.roleCode?.[0] || 'CAR' }}</span></h4>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.carrier.name?.[0] || 'N/A' }}</p>
           <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.carrier.id?.value || 'N/A' }} ({{ eftiData.carrier.id?.schemeId || 'N/A' }})</p>
+          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.carrier) }}</p>
+          @for(contact of eftiData.carrier.definedContactDetails; track $index) {
+            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+            </div>
+          }
         </div>
       }
+
+      <!-- Freight Forwarder -->
+      @if (eftiData.freightForwarder) {
+        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+          <h4 class="text-base font-semibold text-gray-600 mb-2">Freight Forwarder <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.freightForwarder.roleCode?.[0] || 'FWD' }}</span></h4>
+          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.freightForwarder.name?.[0] || 'N/A' }}</p>
+          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.freightForwarder.id?.value || 'N/A' }} ({{ eftiData.freightForwarder.id?.schemeId || 'N/A' }})</p>
+          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.freightForwarder) }}</p>
+          @for(contact of eftiData.freightForwarder.definedContactDetails; track $index) {
+            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Other Associated Parties -->
+      @for(party of eftiData.associatedParty; track party.id?.value) {
+        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+          <h4 class="text-base font-semibold text-gray-600 mb-2">Associated Party <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ party.roleCode?.[0] || 'N/A' }}</span></h4>
+          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ party.name?.[0] || 'N/A' }}</p>
+          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ party.id?.value || 'N/A' }} ({{ party.id?.schemeId || 'N/A' }})</p>
+        </div>
+      }
+
     </div>
 
     <!-- Card for Journey Details -->
