@@ -2,9 +2,11 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   Amount,
+  LogisticsTransportEquipment,
   Measure,
   PostalAddress,
   SupplyChainConsignment,
+  SupplyChainConsignmentItem,
   TradeParty
 } from '../core/types';
 
@@ -55,5 +57,12 @@ export class EftiDataViewerComponent {
       return 'N/A';
     }
     return `${amount.value.toFixed(2)} ${amount.currencyId || ''}`.trim();
+  }
+
+  protected isItemAssociatedWithEquipment(item: SupplyChainConsignmentItem, equip: LogisticsTransportEquipment): boolean {
+    if (!item.associatedTransportEquipment || !equip.id?.value) {
+      return false;
+    }
+    return item.associatedTransportEquipment.some(assoc => assoc.id?.value === equip.id?.value);
   }
 }
