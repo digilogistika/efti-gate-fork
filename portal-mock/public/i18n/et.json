@@ -36,7 +36,8 @@
     "messageSent": "Sõnum saadeti edukalt",
     "cancel": "Tühista",
     "sendMessage": "Saada sõnum",
-    "errorFetchingDataset": "Viga andmestiku laadimisel. Palun proovi uuesti."
+    "errorFetchingDataset": "Viga andmestiku laadimisel. Palun proovi uuesti.",
+    "cmrDisclaimer": "Märkus: Andmed on CMR-vormingus, mitte ametliku e-CMR-ina."
   },
   "identifiersResult": {
     "results": "Tulemused",
