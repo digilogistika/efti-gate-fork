@@ -98,7 +98,7 @@ export interface Identifier {
 
 export interface LocalizedString {
   value?: string;
-  languageID?: string;
+  languageId?: string;
 }
 
 // =================================================================
@@ -109,12 +109,14 @@ export interface LocalizedString {
 
 export interface PostalAddress {
   streetName?: string[];
-  additionalStreetName?: string[];
-  buildingNumber?: string[];
+  additionalStreetName?: string;
+  buildingNumber?: string;
   cityName?: string[];
   postcode?: string[];
   countrySubDivisionName?: string[];
-  countryCode?: { value?: string };
+  countryCode?: string;
+  departmentName?: string;
+  postOfficeBox?: string;
 }
 
 export interface GeographicalCoordinates {
@@ -124,8 +126,9 @@ export interface GeographicalCoordinates {
 
 export interface DefinedContactDetails {
   personName?: string[];
-  telephone?: { completeNumber?: string }[];
-  emailAddress?: { completeNumber?: string };
+  telephone?: { completeNumber?: string; uri?: string }[];
+  emailAddress?: { completeNumber?: string; uri?: string };
+  fax?: any[];
 }
 
 export interface TradeParty {
@@ -134,6 +137,14 @@ export interface TradeParty {
   postalAddress?: PostalAddress;
   roleCode?: string[];
   definedContactDetails?: DefinedContactDetails[];
+  agreedContract?: any[];
+  applicableLicence?: any[];
+  authoritativeSignatoryPerson?: any[];
+  confirmedDocumentAuthentication?: any[];
+  ownedCreditorFinancialAccount?: any;
+  representativePerson?: any;
+  specifiedContactPerson?: any[];
+  taxRegistration?: any[];
 }
 
 export interface LogisticsLocation {
@@ -145,24 +156,35 @@ export interface LogisticsLocation {
 
 export interface AttachedBinaryFile {
   id?: Identifier;
-  includedBinaryObject?: string; // Base64 encoded
+  includedBinaryObject?: string[]; // Base64 encoded
 }
 
 export interface AssociatedDocument {
   id?: Identifier;
   uri?: Identifier;
-  typeCode?: string[];
+  typeCode?: string;
   subtypeCode?: string[];
-  referenceTypeCode?: string[];
+  referenceTypeCode?: string;
   issuer?: TradeParty;
   issueLocation?: LogisticsLocation;
   formattedIssueDateTime?: DateTime;
   attachedBinaryFile?: AttachedBinaryFile[];
+  attachedBinaryObject?: any[];
+  contractualClause?: any[];
 }
 
 export interface ReferencedDocument {
   id?: Identifier;
+  uri?: Identifier;
   typeCode?: string;
+  attachedBinaryFile?: any[];
+  attachedBinaryObject?: any[];
+  contractualClause?: any[];
+  formattedIssueDateTime?: DateTime;
+  issueLocation?: LogisticsLocation;
+  issuer?: TradeParty;
+  referenceTypeCode?: string;
+  subtypeCode?: any[];
 }
 
 export interface LogisticsPackage {
@@ -175,69 +197,73 @@ export interface LogisticsPackage {
 export interface UsedTransportMeans {
   id?: Identifier;
   typeCode?: string;
-  name?: string[];
+  name?: string;
   registrationCountry?: TradeCountry;
+  attachedOperationalEquipment?: any[];
+  owner?: any;
+  specifiedSpatialDimension?: any[];
 }
 
 export interface LogisticsTransportMovement {
   id?: Identifier;
   stageCode?: string;
-  modeCode?: string[];
+  modeCode?: string;
   usedTransportMeans?: UsedTransportMeans;
-  departureEvent?: TransportEvent;
-  arrivalEvent?: TransportEvent;
+  departureEvent?: TransportEvent[];
+  arrivalEvent?: TransportEvent[];
+  borderCrossingEvent?: any[];
+  callEvent?: any[];
+  dangerousGoodsIndicator?: boolean;
+  event?: any[];
+  itineraryRoute?: any[];
+  loadingEvent?: any[];
+  master?: any;
+  sequenceNumber?: any[];
+  unloadingEvent?: any[];
 }
 
 export interface TransportCargo {
-  identificationText?: { value: string }[];
-  typeCode?: string[];
+  identificationText?: LocalizedString[];
+  typeCode?: string;
+  operationalCategoryCode?: any;
+  statisticalClassificationCode?: any;
 }
 
 export interface TransportEvent {
   actualOccurrenceDateTime?: DateTime;
   estimatedOccurrenceDateTime?: DateTime;
   occurrenceLocation?: LogisticsLocation;
-  typeCode?: string[];
+  typeCode?: string;
+  additionalSecurityMeasures?: any[];
+  certifyingParty?: any[];
+  relatedObservation?: any[];
+  requestedOccurrenceDateTime?: DateTime;
+  scheduledOccurrenceDateTime?: DateTime;
+  scheduledOccurrencePeriod?: any;
 }
 
-
-/**
- * Mirrors the eu.efti.v1.consignment.common.TradePrice Java class.
- */
 export interface TradePrice {
   basisQuantity?: number;
   categoryTypeCode?: string;
   unitAmount?: Amount[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.ExemptionCalculation Java class.
- */
 export interface ExemptionCalculation {
   hazardCategoryCode?: string[];
   reportableQuantity?: number[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.RegulatoryExemption Java class.
- */
 export interface RegulatoryExemption {
   id?: Identifier;
   reportableExemptionCalculation?: ExemptionCalculation[];
   typeCode?: string[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.Measurement Java class.
- */
 export interface Measurement {
   conditionMeasure?: Measure[];
   typeCode?: string[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.SpecifiedFuel Java class.
- */
 export interface SpecifiedFuel {
   typeCode?: string;
   volumeMeasure?: Measure[];
@@ -245,17 +271,11 @@ export interface SpecifiedFuel {
   workingPressureMeasure?: Measure[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.SpecifiedRadioactiveIsotope Java class.
- */
 export interface SpecifiedRadioactiveIsotope {
   activityLevelMeasure?: Measure[];
   name?: LocalizedString[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.RadioactiveMaterial Java class.
- */
 export interface RadioactiveMaterial {
   applicableRadioactiveIsotope?: SpecifiedRadioactiveIsotope[];
   fissileCriticalitySafetyIndexNumber?: number;
@@ -263,16 +283,10 @@ export interface RadioactiveMaterial {
   specialFormInformation?: LocalizedString[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.CalibratedMeasurement Java class.
- */
 export interface CalibratedMeasurement {
   valueMeasure?: Measure;
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.SpecifiedCondition Java class.
- */
 export interface SpecifiedCondition {
   actionCode?: string[];
   actionDateTime?: DateTime[];
@@ -283,44 +297,29 @@ export interface SpecifiedCondition {
   valueMeasure?: Measure[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.Note Java class.
- */
 export interface Note {
   contentText?: LocalizedString[];
   subjectCode?: string[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.ReferencedLogisticsTransportEquipment Java class.
- */
 export interface ReferencedLogisticsTransportEquipment {
   id?: Identifier;
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.SpatialDimension Java class.
- */
 export interface SpatialDimension {
-  description?: string[];
+  description?: any[];
   height?: Measure;
   length?: Measure;
   width?: Measure;
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.LogisticsSeal Java class.
- */
 export interface LogisticsSeal {
-  conditionCode?: string[];
+  conditionCode?: any[];
   id?: Identifier;
   issuingParty?: TradeParty;
   sealingPartyRoleCode?: string;
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.AssociatedTransportEquipment Java class.
- */
 export interface AssociatedTransportEquipment {
   affixedSeal?: LogisticsSeal[];
   categoryCode?: string[];
@@ -332,26 +331,19 @@ export interface AssociatedTransportEquipment {
   loadedDangerousGoods?: TransportDangerousGoods[];
   netGoodsVolumeMeasure?: Measure[];
   netGoodsWeightMeasure?: Measure[];
-  reportableQuantity?: number[];
+  reportableQuantity?: any[];
   sequenceNumber?: number;
   stowagePositionID?: Identifier;
-  usedCapacityCode?: string[];
+  usedCapacityCode?: string;
   verifiedGrossWeight?: Measure[];
   weightVerificationMethodCode?: string[];
   weightVerifierParty?: TradeParty[];
 }
 
-/**
- * Mirrors the eu.efti.v1.consignment.common.TradeCountry Java class.
- */
 export interface TradeCountry {
   code?: string;
 }
 
-/**
- * Represents charges for logistics services.
- * Mirrors the eu.efti.v1.consignment.common.LogisticsServiceCharge Java class.
- */
 export interface LogisticsServiceCharge {
   appliedAmount?: Amount[];
   calculationBasisCode?: string;
@@ -361,10 +353,6 @@ export interface LogisticsServiceCharge {
   paymentArrangementCode?: string;
 }
 
-/**
- * Represents information about the transport of dangerous goods.
- * Mirrors the eu.efti.v1.consignment.common.TransportDangerousGoods Java class.
- */
 export interface TransportDangerousGoods {
   applicableRegulatoryExemption?: RegulatoryExemption[];
   controlTemperature?: Measurement;
@@ -380,7 +368,7 @@ export interface TransportDangerousGoods {
   includedFuel?: SpecifiedFuel[];
   information?: LocalizedString[];
   labelTypeCode?: string[];
-  limitedQuantityCode?: string[];
+  limitedQuantityCode?: string;
   meltingPointTemperatureMeasure?: Measure[];
   netWeight?: Measure;
   packagingDangerLevelCode?: string;
@@ -399,10 +387,6 @@ export interface TransportDangerousGoods {
   undgid?: string;
 }
 
-/**
- * Defines an item within a supply chain consignment.
- * Mirrors the eu.efti.v1.consignment.common.SupplyChainConsignmentItem Java class.
- */
 export interface SupplyChainConsignmentItem {
   associatedTransportEquipment?: ReferencedLogisticsTransportEquipment[];
   dimensions?: SpatialDimension;
@@ -411,10 +395,6 @@ export interface SupplyChainConsignmentItem {
   transportDangerousGoods?: TransportDangerousGoods[];
 }
 
-/**
- * Holds the results of a logistics risk analysis.
- * Mirrors the eu.efti.v1.consignment.common.LogisticsRiskAnalysisResult Java class.
- */
 export interface LogisticsRiskAnalysisResult {
   consignmentRiskRelatedCode?: string[];
   description?: LocalizedString[];
@@ -424,19 +404,11 @@ export interface LogisticsRiskAnalysisResult {
   securityExemptionCode?: string[];
 }
 
-/**
- * Represents waste material being transported.
- * Mirrors the eu.efti.v1.consignment.common.TransportationWasteMaterial Java class.
- */
 export interface TransportationWasteMaterial {
   id?: Identifier;
   weight?: Measure[];
 }
 
-/**
- * Details procedures for crossing borders, such as customs.
- * Mirrors the eu.efti.v1.consignment.common.CrossBorderRegulatoryProcedure Java class.
- */
 export interface CrossBorderRegulatoryProcedure {
   exportCustomsOfficeLocation?: LogisticsLocation;
   importCustomsOfficeLocation?: LogisticsLocation;
@@ -444,19 +416,11 @@ export interface CrossBorderRegulatoryProcedure {
   typeCode?: string[];
 }
 
-/**
- * Describes a specific service related to the transport.
- * Mirrors the eu.efti.v1.consignment.common.TransportService Java class.
- */
 export interface TransportService {
   conditionTypeCode?: string[];
   description?: string;
 }
 
-/**
- * Provides details about the transport equipment used (e.g., containers).
- * Mirrors the eu.efti.v1.consignment.common.LogisticsTransportEquipment Java class.
- */
 export interface LogisticsTransportEquipment {
   affixedSeal?: LogisticsSeal[];
   carriedTransportEquipment?: AssociatedTransportEquipment[];
@@ -472,7 +436,7 @@ export interface LogisticsTransportEquipment {
   operatingParty?: TradeParty;
   ownerParty?: TradeParty[];
   registrationCountry?: TradeCountry;
-  reportableQuantity?: number[];
+  reportableQuantity?: any[];
   sealQuantity?: number;
   sequenceNumber?: number;
   sizeTypeCode?: string;
@@ -485,10 +449,6 @@ export interface LogisticsTransportEquipment {
 //
 // =================================================================
 
-/**
- * Main eFTI Data Set Type.
- * Mirrors the eu.efti.v1.consignment.common.SupplyChainConsignment Java class.
- */
 export interface SupplyChainConsignment {
   applicableServiceCharge?: LogisticsServiceCharge[];
   associatedDocument?: AssociatedDocument[];
@@ -503,15 +463,17 @@ export interface SupplyChainConsignment {
   consigneeReceiptLocation?: LogisticsLocation;
   consignor?: TradeParty;
   consignorProvidedInformationText?: string[];
+  consignorProvidedBorderClearanceInstructions?: any[];
   contractTermsText?: string[];
   dangerousGoods?: TransportDangerousGoods;
   declaredValueForCarriageAmount?: Amount;
   deliveryEvent?: TransportEvent;
+  deliveryInformation?: any;
   freightForwarder?: TradeParty;
   grossVolume?: Measure[];
   grossWeight?: Measure[];
   includedConsignmentItem?: SupplyChainConsignmentItem[];
-  information?: string[];
+  information?: any[];
   logisticsRiskAnalysisResult?: LogisticsRiskAnalysisResult[];
   mainCarriageTransportMovement?: LogisticsTransportMovement[];
   natureIdentificationCargo?: TransportCargo;
