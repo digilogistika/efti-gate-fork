@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Location, NgClass, DatePipe} from '@angular/common';
+import {Location, NgClass} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {memberStateSubsets} from '../core/subsets';
-import {DatasetResponse, TradeParty} from '../core/types';
+import {DatasetResponse} from '../core/types';
 import {HttpClient} from '@angular/common/http';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
@@ -94,7 +94,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
         next: (v) => {
           this.isLoading = false;
           this.datasetQueryResponse = v;
-
           if (this.subsetDetails) {
             this.subsetDetails.nativeElement.open = false;
           }

@@ -93,7 +93,7 @@ export interface Measure {
 
 export interface Identifier {
   value?: string;
-  schemeId?: string;
+  schemeAgencyId?: string;
 }
 
 export interface LocalizedString {
@@ -125,7 +125,7 @@ export interface GeographicalCoordinates {
 export interface DefinedContactDetails {
   personName?: string[];
   telephone?: { completeNumber?: string }[];
-  emailAddress?: { completeNumber?: string }[];
+  emailAddress?: { completeNumber?: string };
 }
 
 export interface TradeParty {
@@ -150,14 +150,14 @@ export interface AttachedBinaryFile {
 
 export interface AssociatedDocument {
   id?: Identifier;
-  uRI?: Identifier;
+  uri?: Identifier;
   typeCode?: string[];
   subtypeCode?: string[];
   referenceTypeCode?: string[];
   issuer?: TradeParty;
   issueLocation?: LogisticsLocation;
   formattedIssueDateTime?: DateTime;
-  attachedBinaryFile?: AttachedBinaryFile;
+  attachedBinaryFile?: AttachedBinaryFile[];
 }
 
 export interface ReferencedDocument {

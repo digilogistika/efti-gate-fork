@@ -1,175 +1,161 @@
 <!-- Main container renders only if eftiData is available -->
 @if (eftiData) {
-  <div class="flex flex-col gap-6 p-4 bg-gray-50">
+    <div class="flex flex-col gap-6 p-4 bg-gray-50">
 
-    <!-- Card for Participants -->
-    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Participants</h3>
+        <!-- Card for Participants -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Participants</h3>
 
-      <!-- Consignor -->
-      @if (eftiData.consignor) {
-        <div class="mt-4 first:mt-0">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Consignor <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignor.roleCode?.[0] || 'CNS' }}</span></h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignor.name?.[0] || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignor.id?.value || 'N/A' }} ({{ eftiData.consignor.id?.schemeId || 'N/A' }})</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignor) }}</p>
-          @for(contact of eftiData.consignor.definedContactDetails; track $index) {
-            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+            <!-- Consignor -->
+            @if (eftiData.consignor) {
+                <div class="mt-4 first:mt-0">
+                    <h4 class="text-base font-semibold text-gray-600 mb-2">Consignor <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignor.roleCode?.[0] || 'CNS' }}</span></h4>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignor.name?.[0] || 'N/A' }}</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignor.id?.value || 'N/A' }} ({{ eftiData.consignor.id?.schemeAgencyId || 'N/A' }})</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignor) }}</p>
+                    @for(contact of eftiData.consignor.definedContactDetails; track $index) {
+                        <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.completeNumber || 'N/A' }}</p>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- Consignee -->
+            @if (eftiData.consignee) {
+                <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+                    <h4 class="text-base font-semibold text-gray-600 mb-2">Consignee <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignee.roleCode?.[0] || 'CNE' }}</span></h4>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignee.name?.[0] || 'N/A' }}</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignee.id?.value || 'N/A' }} ({{ eftiData.consignee.id?.schemeAgencyId || 'N/A' }})</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignee) }}</p>
+                    @for(contact of eftiData.consignee.definedContactDetails; track $index) {
+                        <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.completeNumber || 'N/A' }}</p>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- Carrier -->
+            @if (eftiData.carrier) {
+                <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+                    <h4 class="text-base font-semibold text-gray-600 mb-2">Carrier <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.carrier.roleCode?.[0] || 'CAR' }}</span></h4>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.carrier.name?.[0] || 'N/A' }}</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.carrier.id?.value || 'N/A' }} ({{ eftiData.carrier.id?.schemeAgencyId || 'N/A' }})</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.carrier) }}</p>
+                </div>
+            }
+        </div>
+
+        <!-- Card for Documents & References -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Documents & References</h3>
+            @if(eftiData.transportContractDocument) {
+                <div class="mt-4 first:mt-0">
+                    <h4 class="text-base font-semibold text-gray-600 mb-2">Transport Contract Document ({{ eftiData.transportContractDocument.typeCode || 'N/A' }})</h4>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.transportContractDocument.id?.value || 'N/A' }}</p>
+                </div>
+            }
+            @for(doc of eftiData.associatedDocument; track doc.id?.value) {
+                <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+                    <h4 class="text-base font-semibold text-gray-600 mb-2">Associated Document: {{ doc.referenceTypeCode || 'N/A' }} ({{doc.typeCode?.[0] || 'N/A'}}: {{doc.subtypeCode?.[0] || 'N/A'}})</h4>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ doc.id?.value || 'N/A' }}</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Issue Date:</strong> {{ doc.formattedIssueDateTime?.value || 'N/A' }}</p>
+                    @if (doc.uri?.value) {
+                        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Document URI: </strong>
+                            <a [href]="doc.uri?.value" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">{{ doc.uri?.value }}</a>
+                        </p>
+                    }
+                    @if (doc.attachedBinaryFile) {
+                        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Attached File ID:</strong> {{ doc.attachedBinaryFile[0].id?.value || 'N/A' }}</p>
+                    }
+
+                    @if (doc.issuer) {
+                        <div class="mt-3 pt-3 pl-4 border-l border-gray-200">
+                            <h5 class="text-sm font-semibold text-gray-800 mb-1">Issuer</h5>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ doc.issuer.name?.[0] || 'N/A' }} ({{doc.issuer.id?.schemeAgencyId || 'N/A'}}: {{doc.issuer.id?.value || 'N/A'}})</p>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(doc.issuer) }}</p>
+                        </div>
+                    }
+                    @if (doc.issueLocation) {
+                        <div class="mt-3 pt-3 pl-4 border-l border-gray-200">
+                            <h5 class="text-sm font-semibold text-gray-800 mb-1">Issue Location</h5>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ doc.issueLocation.name?.[0] || 'N/A' }} (ID: {{doc.issueLocation.id?.value || 'N/A'}})</p>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatPostalAddress(doc.issueLocation.postalAddress) }}</p>
+                            @if (doc.issueLocation.geographicalCoordinates) {
+                                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Coordinates:</strong> Lat: {{ doc.issueLocation.geographicalCoordinates.latitude?.value || 'N/A' }}, Lon: {{ doc.issueLocation.geographicalCoordinates.longitude?.value || 'N/A' }}</p>
+                            }
+                        </div>
+                    }
+                </div>
+            } @empty {
+                @if(!eftiData.transportContractDocument) {
+                    <p class="italic text-gray-500 mt-2">No document information provided.</p>
+                }
+            }
+        </div>
+
+        <!-- Card for Journey Details -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Journey Details</h3>
+            <div class="mt-4 first:mt-0">
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Place of Taking Over:</strong> {{ eftiData.carrierAcceptanceLocation?.name?.[0] || 'N/A' }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Place of Delivery:</strong> {{ eftiData.consigneeReceiptLocation?.name?.[0] || 'N/A' }}</p>
             </div>
-          }
+            @for(movement of eftiData.mainCarriageTransportMovement; track movement.id?.value) {
+                <div class="mt-4 first:mt-0">
+                    <h4 class="text-base font-semibold text-gray-600 mb-2">Main Carriage Movement</h4>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ movement.id?.value }}</p>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Mode:</strong> {{ movement.modeCode }} | <strong>Vessel/Vehicle:</strong> {{ movement.usedTransportMeans?.name?.[0] }}</p>
+                </div>
+            }
         </div>
-      }
 
-      <!-- Consignee -->
-      @if (eftiData.consignee) {
-        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Consignee <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignee.roleCode?.[0] || 'CNE' }}</span></h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignee.name?.[0] || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignee.id?.value || 'N/A' }} ({{ eftiData.consignee.id?.schemeId || 'N/A' }})</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignee) }}</p>
-          @for(contact of eftiData.consignee.definedContactDetails; track $index) {
-            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+        <!-- Card for Goods & Cargo -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Goods & Cargo</h3>
+            <div class="mt-4 first:mt-0">
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Nature of Cargo:</strong> {{ eftiData.natureIdentificationCargo?.identificationText?.[0]?.value || 'N/A' }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Total Packages:</strong> {{ eftiData.numberOfPackages || 'N/A' }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Gross Weight:</strong> {{ formatMeasureArray(eftiData.grossWeight) }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Net Weight:</strong> {{ formatMeasureArray(eftiData.netWeight) }}</p>
             </div>
-          }
+            @if(eftiData.dangerousGoods) {
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
+                    <h4 class="text-base font-semibold text-red-700 mb-2">Dangerous Goods Details</h4>
+                    <p class="text-sm text-red-900"><strong class="font-medium">UN DG ID:</strong> {{ eftiData.dangerousGoods.undgid || 'N/A' }}</p>
+                    <p class="text-sm text-red-900"><strong class="font-medium">Shipping Name:</strong>  {{ eftiData.dangerousGoods.properShippingName?.[0]?.value || 'N/A' }}</p>
+                </div>
+            }
         </div>
-      }
 
-      <!-- Carrier -->
-      @if (eftiData.carrier) {
-        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Carrier <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.carrier.roleCode?.[0] || 'CAR' }}</span></h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.carrier.name?.[0] || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.carrier.id?.value || 'N/A' }} ({{ eftiData.carrier.id?.schemeId || 'N/A' }})</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.carrier) }}</p>
-          @for(contact of eftiData.carrier.definedContactDetails; track $index) {
-            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
-            </div>
-          }
+        <!-- Card for Transport Equipment -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Transport Equipment ({{ eftiData.usedTransportEquipment?.length || 0 }})</h3>
+            @for(equip of eftiData.usedTransportEquipment; track equip.id?.value) {
+                <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+                    <h4 class="text-base font-semibold text-gray-600 mb-2">Equipment: {{ equip.id?.value || 'N/A' }}</h4>
+                    <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Category:</strong> {{ equip.categoryCode || 'N/A' }}</p>
+                    @for(carried of equip.carriedTransportEquipment; track carried.id?.value) {
+                        <div class="mt-3 pt-3 pl-3 border-t border-dashed border-gray-300">
+                            <h5 class="text-sm font-semibold text-gray-800 mb-1">Carried Equipment: {{ carried.id?.value }}</h5>
+                            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Verified Gross Weight:</strong> {{ formatMeasureArray(carried.verifiedGrossWeight) }}</p>
+                        </div>
+                    }
+                </div>
+            } @empty {
+                <p class="italic text-gray-500 mt-2">No transport equipment details provided.</p>
+            }
         </div>
-      }
-
-      <!-- Freight Forwarder -->
-      @if (eftiData.freightForwarder) {
-        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Freight Forwarder <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.freightForwarder.roleCode?.[0] || 'FWD' }}</span></h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.freightForwarder.name?.[0] || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.freightForwarder.id?.value || 'N/A' }} ({{ eftiData.freightForwarder.id?.schemeId || 'N/A' }})</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.freightForwarder) }}</p>
-          @for(contact of eftiData.freightForwarder.definedContactDetails; track $index) {
-            <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.[0]?.completeNumber || 'N/A' }}</p>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
-            </div>
-          }
-        </div>
-      }
-
-      <!-- Other Associated Parties -->
-      @for(party of eftiData.associatedParty; track party.id?.value) {
-        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Associated Party <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ party.roleCode?.[0] || 'N/A' }}</span></h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ party.name?.[0] || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ party.id?.value || 'N/A' }} ({{ party.id?.schemeId || 'N/A' }})</p>
-        </div>
-      }
 
     </div>
-
-    <!-- Card for Journey Details -->
-    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Journey Details</h3>
-      <div class="mt-4 first:mt-0">
-        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Place of Taking Over:</strong> {{ eftiData.carrierAcceptanceLocation?.name?.[0] || 'N/A' }}</p>
-        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Place of Delivery:</strong> {{ eftiData.consigneeReceiptLocation?.name?.[0] || 'N/A' }}</p>
-      </div>
-      @for(movement of eftiData.mainCarriageTransportMovement; track movement.id?.value) {
-        <div class="mt-4 first:mt-0">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Main Carriage Movement</h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ movement.id?.value }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Mode:</strong> {{ movement.modeCode }} | <strong>Vessel/Vehicle:</strong> {{ movement.usedTransportMeans?.name?.[0] }}</p>
-        </div>
-      }
-    </div>
-
-    <!-- Card for Goods & Cargo -->
-    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Goods & Cargo</h3>
-      <div class="mt-4 first:mt-0">
-        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Nature of Cargo:</strong> {{ eftiData.natureIdentificationCargo?.identificationText?.[0]?.value || 'N/A' }}</p>
-        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Total Packages:</strong> {{ eftiData.numberOfPackages || 'N/A' }}</p>
-        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Gross Weight:</strong> {{ formatMeasureArray(eftiData.grossWeight) }}</p>
-        <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Net Weight:</strong> {{ formatMeasureArray(eftiData.netWeight) }}</p>
-      </div>
-      @if(eftiData.dangerousGoods) {
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
-          <h4 class="text-base font-semibold text-red-700 mb-2">Dangerous Goods Details</h4>
-          <p class="text-sm text-red-900"><strong class="font-medium">UN DG ID:</strong> {{ eftiData.dangerousGoods.undgid || 'N/A' }}</p>
-          <p class="text-sm text-red-900"><strong class="font-medium">Shipping Name:</strong>  {{ eftiData.dangerousGoods.properShippingName?.[0]?.value || 'N/A' }}</p>
-        </div>
-      }
-    </div>
-
-    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Documents & References</h3>
-      @if(eftiData.transportContractDocument) {
-        <div class="mt-4 first:mt-0">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Transport Contract Document</h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.transportContractDocument.id?.value || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Type:</strong> {{ eftiData.transportContractDocument.typeCode || 'N/A' }}</p>
-        </div>
-      }
-      @for(doc of eftiData.associatedDocument; track doc.id?.value) {
-        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Associated Document: {{ doc.referenceTypeCode || 'N/A' }}</h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ doc.id?.value || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Issuer:</strong> {{ doc.issuer?.name?.[0] || 'N/A' }}</p>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Issue Date:</strong> {{ doc.formattedIssueDateTime?.value || 'N/A' }}</p>
-          @if(doc.uRI?.value) {
-            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Link:</strong>
-              <a [href]="doc.uRI?.value" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">{{ doc.uRI?.value }}</a>
-            </p>
-          }
-        </div>
-      } @empty {
-        @if(!eftiData.transportContractDocument) {
-          <p class="italic text-gray-500 mt-2">No document information provided.</p>
-        }
-      }
-    </div>
-
-    <!-- Card for Transport Equipment -->
-    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Transport Equipment ({{ eftiData.usedTransportEquipment?.length || 0 }})</h3>
-      @for(equip of eftiData.usedTransportEquipment; track equip.id?.value) {
-        <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
-          <h4 class="text-base font-semibold text-gray-600 mb-2">Equipment: {{ equip.id?.value || 'N/A' }}</h4>
-          <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Category:</strong> {{ equip.categoryCode || 'N/A' }}</p>
-          @for(carried of equip.carriedTransportEquipment; track carried.id?.value) {
-            <div class="mt-3 pt-3 pl-3 border-t border-dashed border-gray-300">
-              <h5 class="text-sm font-semibold text-gray-800 mb-1">Carried Equipment: {{ carried.id?.value }}</h5>
-              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Verified Gross Weight:</strong> {{ formatMeasureArray(carried.verifiedGrossWeight) }}</p>
-            </div>
-          }
-        </div>
-      } @empty {
-        <p class="italic text-gray-500 mt-2">No transport equipment details provided.</p>
-      }
-    </div>
-
-  </div>
 } @else {
-  <!-- Message shown if no data is available -->
-  <div class="p-6 text-center text-gray-500">
-    <p>eFTI data is not available or is loading.</p>
-  </div>
+    <!-- Message shown if no data is available -->
+    <div class="p-6 text-center text-gray-500">
+        <p>eFTI data is not available or is loading.</p>
+    </div>
 }

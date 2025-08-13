@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   Measure,
+  PostalAddress,
   SupplyChainConsignment,
   TradeParty
 } from '../core/types';
@@ -15,20 +16,25 @@ import {
 export class EftiDataViewerComponent {
   @Input() eftiData: SupplyChainConsignment | undefined | null;
 
-  protected formatAddress(party: TradeParty | undefined | null): string {
-    if (!party?.postalAddress) {
+  protected formatPostalAddress(pa: PostalAddress | undefined | null): string {
+    if (!pa) {
       return 'N/A';
     }
-    const pa = party.postalAddress;
     const addressParts = [
-      pa.buildingNumber?.[0],
+      pa.buildingNumber,
       pa.streetName?.[0],
+      pa.additionalStreetName?.[0],
       pa.cityName?.[0],
       pa.postcode?.[0],
-      pa.countryCode?.value
+      pa.countrySubDivisionName?.[0],
+      pa.countryCode
     ];
     const formatted = addressParts.filter(p => p).join(', ');
     return formatted || 'N/A';
+  }
+
+  protected formatAddress(party: TradeParty | undefined | null): string {
+    return this.formatPostalAddress(party?.postalAddress);
   }
 
   protected formatMeasure(measure: Measure | undefined | null): string {
