@@ -86,8 +86,8 @@ export class DatasetQuery implements OnInit, OnDestroy {
     this.isLoading = true;
 
     const formValues = this.datasetQueryForm.getRawValue();
-    const identifiersQuery = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}?subsets=full`;
-    // const identifiersQuery = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}?subsets=${Array.from(formValues.subsetIds).join(',')}`;
+    // const identifiersQuery = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}?subsets=full`;
+    const identifiersQuery = `/api/v1/dataset/${formValues.gateId}/${formValues.platformId}/${formValues.datasetId}?subsets=${Array.from(formValues.subsetIds).join(',')}`;
 
     this.http.get<DatasetResponse>(identifiersQuery)
       .subscribe({
