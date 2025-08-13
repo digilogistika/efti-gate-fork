@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  Amount,
   Measure,
   PostalAddress,
   SupplyChainConsignment,
@@ -41,11 +42,18 @@ export class EftiDataViewerComponent {
     if (!measure || measure.value === undefined || measure.value === null) {
       return 'N/A';
     }
-    return `${measure.value} ${measure.unitCode || ''}`.trim();
+    return `${measure.value} ${measure.unitId || ''}`.trim();
   }
 
   protected formatMeasureArray(measures: Measure[] | undefined | null): string {
     if (!measures || measures.length === 0) return 'N/A';
     return measures.map(m => this.formatMeasure(m)).join('; ');
+  }
+
+  protected formatAmount(amount: Amount | undefined | null): string {
+    if (!amount || amount.value === undefined || amount.value === null) {
+      return 'N/A';
+    }
+    return `${amount.value.toFixed(2)} ${amount.currencyId || ''}`.trim();
   }
 }

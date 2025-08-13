@@ -2,6 +2,32 @@
 @if (eftiData) {
     <div class="flex flex-col gap-6 p-4 bg-gray-50">
 
+        <!-- Card for Consignment Overview -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Consignment Overview</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                <div><strong class="font-medium text-gray-900">Payment Arrangement:</strong><p class="text-gray-700">{{ eftiData.paymentArrangementCode || 'N/A' }}</p></div>
+                <div><strong class="font-medium text-gray-900">COD Amount:</strong><p class="text-gray-700">{{ formatAmount(eftiData.codamount) }}</p></div>
+                <div><strong class="font-medium text-gray-900">Declared Value:</strong><p class="text-gray-700">{{ formatAmount(eftiData.declaredValueForCarriageAmount) }}</p></div>
+                <div><strong class="font-medium text-gray-900">Contract Terms:</strong><p class="text-gray-700">{{ eftiData.contractTermsText?.[0] || 'N/A' }}</p></div>
+                <div><strong class="font-medium text-gray-900">Insurance Instructions:</strong><p class="text-gray-700">{{ eftiData.cargoInsuranceInstructions?.[0] || 'N/A' }}</p></div>
+                <div><strong class="font-medium text-gray-900">Consignor Notes:</strong><p class="text-gray-700">{{ eftiData.consignorProvidedInformationText?.[0] || 'N/A' }}</p></div>
+                <div><strong class="font-medium text-gray-900">Nature of Cargo:</strong><p class="text-gray-700">{{ eftiData.natureIdentificationCargo?.identificationText?.[0]?.value || 'N/A' }} ({{ eftiData.natureIdentificationCargo?.typeCode || 'N/A' }})</p></div>
+                <div><strong class="font-medium text-gray-900">Gross Weight:</strong><p class="text-gray-700">{{ formatMeasureArray(eftiData.grossWeight) }}</p></div>
+                <div><strong class="font-medium text-gray-900">Net Weight:</strong><p class="text-gray-700">{{ formatMeasureArray(eftiData.netWeight) }}</p></div>
+                <div><strong class="font-medium text-gray-900">Gross Volume:</strong><p class="text-gray-700">{{ formatMeasureArray(eftiData.grossVolume) }}</p></div>
+                <div><strong class="font-medium text-gray-900">Number of Packages:</strong><p class="text-gray-700">{{ eftiData.numberOfPackages || 'N/A' }}</p></div>
+                <div><strong class="font-medium text-gray-900">Transport Equipment Qty:</strong><p class="text-gray-700">{{ eftiData.transportEquipmentQuantity?.[0] || 'N/A' }}</p></div>
+                <div><strong class="font-medium text-gray-900">Transshipment:</strong>
+                    <p class="text-gray-700">
+                        @if (eftiData.transshipmentPermittedIndicator === true) { Yes }
+                        @else if (eftiData.transshipmentPermittedIndicator === false) { No }
+                        @else { N/A }
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <!-- Card for Participants -->
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
             <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Participants</h3>

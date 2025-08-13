@@ -88,7 +88,7 @@ export interface DateTime {
 
 export interface Measure {
   value?: number;
-  unitCode?: string;
+  unitId?: string;
 }
 
 export interface Identifier {
@@ -493,7 +493,7 @@ export interface SupplyChainConsignment {
   applicableServiceCharge?: LogisticsServiceCharge[];
   associatedDocument?: AssociatedDocument[];
   associatedParty?: TradeParty[];
-  cODAmount?: Amount;
+  codamount?: Amount;
   cargoInsuranceInstructions?: string[];
   carrier?: TradeParty;
   carrierAcceptanceDateTime?: DateTime;
