@@ -1,3 +1,10 @@
+## [0.12.2](https://github.com/digilogistika/efti-gate/compare/v0.12.1...v0.12.2) (2025-08-13)
+
+
+### Bug Fixes
+
+* Updating jre version, so local deployment would work ([2e6f0fa](https://github.com/digilogistika/efti-gate/commit/2e6f0fa20b6bcb3ac6a4cec6ddfcfeb938b280a5))
+
 ## [0.12.1](https://github.com/digilogistika/efti-gate/compare/v0.12.0...v0.12.1) (2025-08-11)
 
 
