@@ -2,8 +2,8 @@ package eu.efti.authorityapp.controller;
 
 import eu.efti.authorityapp.config.GateProperties;
 import eu.efti.authorityapp.controller.api.DatasetControllerApi;
+import eu.efti.authorityapp.dto.DataGenerationResult;
 import eu.efti.authorityapp.dto.DatasetDto;
-import eu.efti.authorityapp.dto.PdfGenerationResult;
 import eu.efti.authorityapp.service.ConfigService;
 import eu.efti.authorityapp.service.DataProcessingService;
 import lombok.AllArgsConstructor;
@@ -67,7 +67,7 @@ public class DatasetController implements DatasetControllerApi {
 
             try {
                 log.info("Generating PDF for request ID: {}", datasetDto.getRequestId());
-                final PdfGenerationResult pdfResult = dataProcessingService.generatePdf(
+                final DataGenerationResult pdfResult = dataProcessingService.generateData(
                         datasetDto.getRequestId(),
                         datasetDto.getData());
 
