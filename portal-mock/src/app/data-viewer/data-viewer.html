@@ -128,7 +128,7 @@
           <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
             <h4 class="text-base font-semibold text-gray-600 mb-2">Associated Document: {{ doc.referenceTypeCode || 'N/A' }} ({{doc.typeCode?.[0] || 'N/A'}}: {{doc.subtypeCode?.[0] || 'N/A'}})</h4>
             <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ doc.id?.value || 'N/A' }}</p>
-            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Issue Date:</strong> {{ doc.formattedIssueDateTime?.value || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Issue Date:</strong> {{ formatDateTime(doc.formattedIssueDateTime?.value) }}</p>
             @if (doc.uri?.value) {
               <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Document URI: </strong>
                 <a [href]="doc.uri?.value" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">{{ doc.uri?.value }}</a>
@@ -172,7 +172,7 @@
             <div>
               <strong class="font-medium text-gray-900">Carrier Acceptance Location:</strong>
               <p class="text-gray-700">{{ eftiData.carrierAcceptanceLocation.name?.[0] || 'N/A' }} ({{ eftiData.carrierAcceptanceLocation.id?.schemeAgencyId || 'ID' }}: {{ eftiData.carrierAcceptanceLocation.id?.value || 'N/A' }})</p>
-              <p class="text-gray-700"><strong class="font-medium">Date/Time:</strong> {{ eftiData.carrierAcceptanceDateTime?.value || 'N/A' }}</p>
+              <p class="text-gray-700"><strong class="font-medium">Date/Time:</strong> {{ formatDateTime(eftiData.carrierAcceptanceDateTime?.value) }}</p>
             </div>
           }
           @if(eftiData.consigneeReceiptLocation) {
@@ -184,7 +184,7 @@
           @if(eftiData.deliveryEvent) {
             <div>
               <strong class="font-medium text-gray-900">Final Delivery Event:</strong>
-              <p class="text-gray-700">{{ eftiData.deliveryEvent.actualOccurrenceDateTime?.value || 'N/A' }} at {{ eftiData.deliveryEvent.occurrenceLocation?.name?.[0] || 'N/A' }} </p>
+              <p class="text-gray-700">{{ formatDateTime(eftiData.deliveryEvent.actualOccurrenceDateTime?.value) }} at {{ eftiData.deliveryEvent.occurrenceLocation?.name?.[0] || 'N/A' }} </p>
             </div>
           }
           @if (eftiData.transshipmentLocation && eftiData.transshipmentLocation.length > 0) {
@@ -225,14 +225,14 @@
                 <div class="mt-3 pt-3 border-t border-dashed">
                   <p class="text-sm text-gray-700"><strong class="font-medium">Departure:</strong> {{ departure.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ departure.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ departure.occurrenceLocation?.id?.value || 'N/A' }})</p>
                   <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ departure.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ departure.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
-                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ departure.estimatedOccurrenceDateTime?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(departure.estimatedOccurrenceDateTime?.value) }}</p>
                 </div>
               }
               @if(movement.arrivalEvent?.[0]; as arrival) {
                 <div class="mt-3 pt-3 border-t border-dashed">
                   <p class="text-sm text-gray-700"><strong class="font-medium">Arrival:</strong> {{ arrival.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ arrival.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ arrival.occurrenceLocation?.id?.value || 'N/A' }})</p>
                   <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ arrival.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ arrival.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
-                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ arrival.estimatedOccurrenceDateTime?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(arrival.estimatedOccurrenceDateTime?.value) }}</p>
                 </div>
               }
             </div>
@@ -251,14 +251,14 @@
                 <div class="mt-3 pt-3 border-t border-dashed">
                   <p class="text-sm text-gray-700"><strong class="font-medium">Departure:</strong> {{ departure.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ departure.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ departure.occurrenceLocation?.id?.value || 'N/A' }})</p>
                   <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ departure.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ departure.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
-                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ departure.estimatedOccurrenceDateTime?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(departure.estimatedOccurrenceDateTime?.value) }}</p>
                 </div>
               }
               @if(movement.arrivalEvent?.[0]; as arrival) {
                 <div class="mt-3 pt-3 border-t border-dashed">
                   <p class="text-sm text-gray-700"><strong class="font-medium">Arrival:</strong> {{ arrival.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ arrival.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ arrival.occurrenceLocation?.id?.value || 'N/A' }})</p>
                   <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ arrival.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ arrival.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
-                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ arrival.estimatedOccurrenceDateTime?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(arrival.estimatedOccurrenceDateTime?.value) }}</p>
                 </div>
               }
             </div>
@@ -276,14 +276,14 @@
                 <div class="mt-3 pt-3 border-t border-dashed">
                   <p class="text-sm text-gray-700"><strong class="font-medium">Departure:</strong> {{ departure.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ departure.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ departure.occurrenceLocation?.id?.value || 'N/A' }})</p>
                   <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ departure.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ departure.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
-                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ departure.estimatedOccurrenceDateTime?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(departure.estimatedOccurrenceDateTime?.value) }}</p>
                 </div>
               }
               @if(movement.arrivalEvent?.[0]; as arrival) {
                 <div class="mt-3 pt-3 border-t border-dashed">
                   <p class="text-sm text-gray-700"><strong class="font-medium">Arrival:</strong> {{ arrival.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ arrival.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ arrival.occurrenceLocation?.id?.value || 'N/A' }})</p>
                   <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ arrival.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ arrival.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
-                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ arrival.estimatedOccurrenceDateTime?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(arrival.estimatedOccurrenceDateTime?.value) }}</p>
                 </div>
               }
             </div>

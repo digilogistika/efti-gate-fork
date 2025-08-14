@@ -127,6 +127,20 @@ export class EftiDataViewerComponent {
     return `${amount.value.toFixed(2)} ${amount.currencyId || ''}`.trim();
   }
 
+  protected formatDateTime(dateTimeString: string | undefined | null): string {
+    if (!dateTimeString) {
+      return 'N/A';
+    }
+
+    const year = dateTimeString.substring(0, 4);
+    const month = dateTimeString.substring(4, 6);
+    const day = dateTimeString.substring(6, 8);
+    const hour = dateTimeString.substring(8, 10);
+    const minute = dateTimeString.substring(10, 12);
+
+    return `${year}-${month}-${day} ${hour}:${minute}`;
+  }
+
   protected isItemAssociatedWithEquipment(item: SupplyChainConsignmentItem, equip: LogisticsTransportEquipment): boolean {
     if (!item.associatedTransportEquipment || !equip.id?.value) {
       return false;
