@@ -37,7 +37,8 @@
     "cancel": "Tühista",
     "sendMessage": "Saada sõnum",
     "errorFetchingDataset": "Viga andmestiku laadimisel. Palun proovi uuesti.",
-    "cmrDisclaimer": "Märkus: Andmed on CMR-vormingus, mitte ametliku e-CMR-ina."
+    "cmrDisclaimer": "Märkus: Andmed on CMR-vormingus, mitte ametliku e-CMR-ina.",
+    "viewStructuredData": "Vaata struktureeritud eFTI andmeid"
   },
   "identifiersResult": {
     "results": "Tulemused",

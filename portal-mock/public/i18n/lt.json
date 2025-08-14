@@ -37,7 +37,8 @@
     "cancel": "Atšaukti",
     "sendMessage": "Siųsti pranešimą",
     "errorFetchingDataset": "Klaida gaunant duomenų rinkinį. Bandykite dar kartą.",
-    "cmrDisclaimer": "Pastaba: Duomenys pateikti CMR formatu, ne kaip oficialus e-CMR."
+    "cmrDisclaimer": "Pastaba: Duomenys pateikti CMR formatu, ne kaip oficialus e-CMR.",
+    "viewStructuredData": "Peržiūrėti struktūrizuotus eFTI duomenis"
   },
   "identifiersResult": {
     "results": "Rezultatai",
