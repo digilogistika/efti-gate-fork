@@ -171,14 +171,14 @@
           @if(eftiData.carrierAcceptanceLocation) {
             <div>
               <strong class="font-medium text-gray-900">Carrier Acceptance Location:</strong>
-              <p class="text-gray-700">{{ eftiData.carrierAcceptanceLocation?.name?.[0] || 'N/A' }} ({{ eftiData.carrierAcceptanceLocation?.id?.schemeAgencyId || 'ID' }}: {{ eftiData.carrierAcceptanceLocation?.id?.value || 'N/A' }})</p>
+              <p class="text-gray-700">{{ eftiData.carrierAcceptanceLocation.name?.[0] || 'N/A' }} ({{ eftiData.carrierAcceptanceLocation.id?.schemeAgencyId || 'ID' }}: {{ eftiData.carrierAcceptanceLocation.id?.value || 'N/A' }})</p>
               <p class="text-gray-700"><strong class="font-medium">Date/Time:</strong> {{ eftiData.carrierAcceptanceDateTime?.value || 'N/A' }}</p>
             </div>
           }
           @if(eftiData.consigneeReceiptLocation) {
             <div>
               <strong class="font-medium text-gray-900">Consignee Receipt Location:</strong>
-              <p class="text-gray-700">{{ eftiData.consigneeReceiptLocation?.name?.[0] || 'N/A' }} ({{ eftiData.consigneeReceiptLocation?.id?.schemeAgencyId || 'ID' }}: {{ eftiData.consigneeReceiptLocation?.id?.value || 'N/A' }})</p>
+              <p class="text-gray-700">{{ eftiData.consigneeReceiptLocation.name?.[0] || 'N/A' }} ({{ eftiData.consigneeReceiptLocation.id?.schemeAgencyId || 'ID' }}: {{ eftiData.consigneeReceiptLocation.id?.value || 'N/A' }})</p>
             </div>
           }
           @if(eftiData.deliveryEvent) {
