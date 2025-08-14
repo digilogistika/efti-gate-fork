@@ -134,7 +134,7 @@
                 <a [href]="doc.uri?.value" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">{{ doc.uri?.value }}</a>
               </p>
             }
-            @if (doc.attachedBinaryFile) {
+            @if (doc.attachedBinaryFile && doc.attachedBinaryFile.length > 0) {
               <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Attached File ID:</strong> {{ doc.attachedBinaryFile[0].id?.value || 'N/A' }}</p>
             }
 
