@@ -37,7 +37,8 @@
     "cancel": "Anuluj",
     "sendMessage": "Wyślij wiadomość",
     "errorFetchingDataset": "Błąd podczas pobierania zbioru danych. Proszę spróbować ponownie.",
-    "cmrDisclaimer": "Uwaga: Dane są w formacie CMR, a nie jako oficjalny e-CMR."
+    "cmrDisclaimer": "Uwaga: Dane są w formacie CMR, a nie jako oficjalny e-CMR.",
+    "viewStructuredData": "Zobacz ustrukturyzowane dane eFTI"
   },
   "identifiersResult": {
     "results": "Wyniki",

@@ -37,7 +37,8 @@
     "cancel": "Cancel",
     "sendMessage": "Send Message",
     "errorFetchingDataset": "Error fetching dataset. Please try again.",
-    "cmrDisclaimer": "Note: Data presented in CMR format, not as an official e-CMR."
+    "cmrDisclaimer": "Note: Data presented in CMR format, not as an official e-CMR.",
+    "viewStructuredData": "View Structured eFTI Data"
   },
   "identifiersResult": {
     "results": "Results",

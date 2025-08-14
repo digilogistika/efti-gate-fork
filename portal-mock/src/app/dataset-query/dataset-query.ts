@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
 import { Pdfjs } from '../pdf-viewer/pdfjs';
+import { EftiDataViewerComponent } from '../data-viewer/data-viewer';
 
 @Component({
   selector: 'app-dataset-query',
@@ -16,12 +17,15 @@ import { Pdfjs } from '../pdf-viewer/pdfjs';
     TranslatePipe,
     Pdfjs,
     NgClass,
+    EftiDataViewerComponent
   ],
   templateUrl: './dataset-query.html',
 })
 export class DatasetQuery implements OnInit, OnDestroy {
   @ViewChild('myDialog') dialog!: ElementRef<HTMLDialogElement>;
-  @ViewChild('subsetDetails') subsetDetails!: ElementRef<HTMLDetailsElement>
+  @ViewChild('subsetDetails') subsetDetails!: ElementRef<HTMLDetailsElement>;
+  @ViewChild('subsetInfoDialog') subsetInfoDialog!: ElementRef<HTMLDialogElement>;
+
   protected datasetQueryForm: FormGroup;
   protected readonly selectedSubsets = new Set<string>();
   protected isLoading: boolean = false;
@@ -34,8 +38,6 @@ export class DatasetQuery implements OnInit, OnDestroy {
   private langChangeSubscription!: Subscription;
   protected isUilEditMode: boolean = false;
   protected pdfData: Blob | null = null;
-
-  @ViewChild('subsetInfoDialog') subsetInfoDialog!: ElementRef<HTMLDialogElement>;
   protected selectedSubsetInfo: any | null = null;
 
   constructor(
@@ -63,7 +65,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.filterSubsetsByLanguage();
-    this.langChangeSubscription = this.translate.onLangChange.subscribe((_event: any) => {
+    this.langChangeSubscription = this.translate.onLangChange.subscribe(() => {
       this.filterSubsetsByLanguage();
     });
   }
@@ -91,12 +93,11 @@ export class DatasetQuery implements OnInit, OnDestroy {
         next: (v) => {
           this.isLoading = false;
           this.datasetQueryResponse = v;
-
           if (this.subsetDetails) {
             this.subsetDetails.nativeElement.open = false;
           }
 
-          if (v.errorCode || !v.data) {
+          if (v.errorCode || !v.eftiData) {
             this.datasetQueryErrorMessage = v.errorDescription || this.translate.instant('datasetQuery.errorFetchingDataset');
             return;
           }
@@ -104,9 +105,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
           if (v.pdfData) {
             fetch(`data:application/pdf;base64,${v.pdfData}`)
               .then(res => res.blob())
-              .then(blob => {
-                this.pdfData = blob;
-              })
+              .then(blob => { this.pdfData = blob; })
               .catch(e => {
                 console.error('Error decoding Base64 PDF data:', e);
                 this.datasetQueryErrorMessage = this.translate.instant('datasetQuery.errorDecodingPdf');
@@ -155,7 +154,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
 
   onSubsetsChange(subset: string, event: any) {
     if (event.target.checked) {
-      this.selectedSubsets.add(subset)
+      this.selectedSubsets.add(subset);
     } else {
       this.selectedSubsets.delete(subset);
     }
@@ -184,9 +183,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
     }).subscribe(() => {
       this.followUpForm.reset();
       this.showSuccessMessageForFollowUp = true;
-      setTimeout(() => {
-        this.showSuccessMessageForFollowUp = false;
-      }, 2000);
+      setTimeout(() => { this.showSuccessMessageForFollowUp = false; }, 2000);
     });
   }
 

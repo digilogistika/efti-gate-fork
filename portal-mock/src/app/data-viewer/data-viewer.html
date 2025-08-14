@@ -1,0 +1,456 @@
+@if (eftiData) {
+  <div class="p-6 bg-white">
+
+    <!-- Section for Consignment Overview -->
+    <div class="mt-6 pt-6 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Consignment Overview</h3>
+      @if (hasConsignmentOverviewData()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          <div><strong class="font-medium text-gray-900">Payment Arrangement:</strong><p class="text-gray-700">{{ eftiData.paymentArrangementCode || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">COD Amount:</strong><p class="text-gray-700">{{ formatAmount(eftiData.codamount) }}</p></div>
+          <div><strong class="font-medium text-gray-900">Declared Value:</strong><p class="text-gray-700">{{ formatAmount(eftiData.declaredValueForCarriageAmount) }}</p></div>
+          <div><strong class="font-medium text-gray-900">Contract Terms:</strong><p class="text-gray-700">{{ eftiData.contractTermsText?.[0] || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Insurance Instructions:</strong><p class="text-gray-700">{{ eftiData.cargoInsuranceInstructions?.[0] || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Consignor Notes:</strong><p class="text-gray-700">{{ eftiData.consignorProvidedInformationText?.[0] || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Nature of Cargo:</strong><p class="text-gray-700">{{ eftiData.natureIdentificationCargo?.identificationText?.[0]?.value || 'N/A' }} ({{ eftiData.natureIdentificationCargo?.typeCode || 'N/A' }})</p></div>
+          <div><strong class="font-medium text-gray-900">Gross Weight:</strong><p class="text-gray-700">{{ formatMeasureArray(eftiData.grossWeight) }}</p></div>
+          <div><strong class="font-medium text-gray-900">Net Weight:</strong><p class="text-gray-700">{{ formatMeasureArray(eftiData.netWeight) }}</p></div>
+          <div><strong class="font-medium text-gray-900">Gross Volume:</strong><p class="text-gray-700">{{ formatMeasureArray(eftiData.grossVolume) }}</p></div>
+          <div><strong class="font-medium text-gray-900">Number of Packages:</strong><p class="text-gray-700">{{ eftiData.numberOfPackages ?? 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Transport Equipment Qty:</strong><p class="text-gray-700">{{ eftiData.transportEquipmentQuantity?.[0] || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Transshipment:</strong>
+            <p class="text-gray-700">
+              @if (eftiData.transshipmentPermittedIndicator === true) { Yes }
+              @else if (eftiData.transshipmentPermittedIndicator === false) { No }
+              @else { N/A }
+            </p>
+          </div>
+        </div>
+      } @else {
+        <p class="italic text-gray-500 mt-2">No consignment overview information provided.</p>
+      }
+    </div>
+
+    <!-- Section for Participants -->
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Participants</h3>
+      @if(hasParticipantsData()) {
+        <!-- Consignor -->
+        @if (eftiData.consignor) {
+          <div class="mt-4 first:mt-0">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Consignor <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignor.roleCode?.[0] || 'CNS' }}</span></h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignor.name?.[0] || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignor.id?.value || 'N/A' }} ({{ eftiData.consignor.id?.schemeAgencyId || 'N/A' }})</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignor) }}</p>
+            @for(contact of eftiData.consignor.definedContactDetails; track $index) {
+              <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.completeNumber || 'N/A' }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Consignee -->
+        @if (eftiData.consignee) {
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Consignee <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.consignee.roleCode?.[0] || 'CNE' }}</span></h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.consignee.name?.[0] || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.consignee.id?.value || 'N/A' }} ({{ eftiData.consignee.id?.schemeAgencyId || 'N/A' }})</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.consignee) }}</p>
+            @for(contact of eftiData.consignee.definedContactDetails; track $index) {
+              <div class="mt-2 pt-2 border-t border-dashed border-gray-200">
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Contact:</strong> {{ contact.personName?.[0] || 'N/A' }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Email:</strong> {{ contact.emailAddress?.completeNumber || 'N/A' }}</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Phone:</strong> {{ contact.telephone?.[0]?.completeNumber || 'N/A' }}</p>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Carrier -->
+        @if (eftiData.carrier) {
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Carrier <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.carrier.roleCode?.[0] || 'CAR' }}</span></h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.carrier.name?.[0] || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.carrier.id?.value || 'N/A' }} ({{ eftiData.carrier.id?.schemeAgencyId || 'N/A' }})</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.carrier) }}</p>
+          </div>
+        }
+
+        <!-- Connecting Carrier -->
+        @for(party of eftiData.connectingCarrier; track party.id?.value) {
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Connecting Carrier <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ party.roleCode?.[0] || 'N/A' }}</span></h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ party.name?.[0] || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ party.id?.value || 'N/A' }} ({{ party.id?.schemeAgencyId || 'N/A' }})</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(party) }}</p>
+          </div>
+        }
+
+        <!-- Freight Forwarder -->
+        @if (eftiData.freightForwarder) {
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Freight Forwarder <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ eftiData.freightForwarder.roleCode?.[0] || 'N/A' }}</span></h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ eftiData.freightForwarder.name?.[0] || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.freightForwarder.id?.value || 'N/A' }} ({{ eftiData.freightForwarder.id?.schemeAgencyId || 'N/A' }})</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(eftiData.freightForwarder) }}</p>
+          </div>
+        }
+
+        <!-- Associated Party -->
+        @for(party of eftiData.associatedParty; track party.id?.value) {
+          <div class="mt-4 pt-4 border-t border-gray-200">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Associated Party <span class="text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ party.roleCode?.[0] || 'N/A' }}</span></h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ party.name?.[0] || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ party.id?.value || 'N/A' }} ({{ party.id?.schemeAgencyId || 'N/A' }})</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(party) }}</p>
+          </div>
+        }
+      } @else {
+        <p class="italic text-gray-500 mt-2">No participant information provided.</p>
+      }
+    </div>
+
+    <!-- Section for Documents & References -->
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Documents & References</h3>
+      @if(hasDocumentsData()) {
+        @if(eftiData.transportContractDocument) {
+          <div class="mt-4 first:mt-0">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Transport Contract Document ({{ eftiData.transportContractDocument.typeCode || 'N/A' }})</h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ eftiData.transportContractDocument.id?.value || 'N/A' }}</p>
+          </div>
+        }
+        @for(doc of eftiData.associatedDocument; track doc.id?.value) {
+          <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Associated Document: {{ doc.referenceTypeCode || 'N/A' }} ({{doc.typeCode?.[0] || 'N/A'}}: {{doc.subtypeCode?.[0] || 'N/A'}})</h4>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">ID:</strong> {{ doc.id?.value || 'N/A' }}</p>
+            <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Issue Date:</strong> {{ formatDateTime(doc.formattedIssueDateTime?.value) }}</p>
+            @if (doc.uri?.value) {
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Document URI: </strong>
+                <a [href]="doc.uri?.value" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">{{ doc.uri?.value }}</a>
+              </p>
+            }
+            @if (doc.attachedBinaryFile && doc.attachedBinaryFile.length > 0) {
+              <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Attached File ID:</strong> {{ doc.attachedBinaryFile[0].id?.value || 'N/A' }}</p>
+            }
+
+            @if (doc.issuer) {
+              <div class="mt-3 pt-3 pl-4 border-l border-gray-200">
+                <h5 class="text-sm font-semibold text-gray-800 mb-1">Issuer</h5>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ doc.issuer.name?.[0] || 'N/A' }} ({{doc.issuer.id?.schemeAgencyId || 'N/A'}}: {{doc.issuer.id?.value || 'N/A'}})</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatAddress(doc.issuer) }}</p>
+              </div>
+            }
+            @if (doc.issueLocation) {
+              <div class="mt-3 pt-3 pl-4 border-l border-gray-200">
+                <h5 class="text-sm font-semibold text-gray-800 mb-1">Issue Location</h5>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Name:</strong> {{ doc.issueLocation.name?.[0] || 'N/A' }} (ID: {{doc.issueLocation.id?.value || 'N/A'}})</p>
+                <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Address:</strong> {{ formatPostalAddress(doc.issueLocation.postalAddress) }}</p>
+                @if (doc.issueLocation.geographicalCoordinates) {
+                  <p class="text-sm text-gray-700"><strong class="font-medium text-gray-900">Coordinates:</strong> Lat: {{ doc.issueLocation.geographicalCoordinates.latitude?.value || 'N/A' }}, Lon: {{ doc.issueLocation.geographicalCoordinates.longitude?.value || 'N/A' }}</p>
+                }
+              </div>
+            }
+          </div>
+        }
+      } @else {
+        <p class="italic text-gray-500 mt-2">No document information provided.</p>
+      }
+    </div>
+
+    <!-- Section for Journey Details -->
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Transport Movements</h3>
+      @if(hasJourneyDetailsData()) {
+        <!-- Key Locations & Events -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-6">
+          @if(eftiData.carrierAcceptanceLocation) {
+            <div>
+              <strong class="font-medium text-gray-900">Carrier Acceptance Location:</strong>
+              <p class="text-gray-700">{{ eftiData.carrierAcceptanceLocation.name?.[0] || 'N/A' }} ({{ eftiData.carrierAcceptanceLocation.id?.schemeAgencyId || 'ID' }}: {{ eftiData.carrierAcceptanceLocation.id?.value || 'N/A' }})</p>
+              <p class="text-gray-700"><strong class="font-medium">Date/Time:</strong> {{ formatDateTime(eftiData.carrierAcceptanceDateTime?.value) }}</p>
+            </div>
+          }
+          @if(eftiData.consigneeReceiptLocation) {
+            <div>
+              <strong class="font-medium text-gray-900">Consignee Receipt Location:</strong>
+              <p class="text-gray-700">{{ eftiData.consigneeReceiptLocation.name?.[0] || 'N/A' }} ({{ eftiData.consigneeReceiptLocation.id?.schemeAgencyId || 'ID' }}: {{ eftiData.consigneeReceiptLocation.id?.value || 'N/A' }})</p>
+            </div>
+          }
+          @if(eftiData.deliveryEvent) {
+            <div>
+              <strong class="font-medium text-gray-900">Final Delivery Event:</strong>
+              <p class="text-gray-700">{{ formatDateTime(eftiData.deliveryEvent.actualOccurrenceDateTime?.value) }} at {{ eftiData.deliveryEvent.occurrenceLocation?.name?.[0] || 'N/A' }} </p>
+            </div>
+          }
+          @if (eftiData.transshipmentLocation && eftiData.transshipmentLocation.length > 0) {
+            <div>
+              <strong class="font-medium text-gray-900">Transshipment Location:</strong>
+              @for(loc of eftiData.transshipmentLocation; track $index) {
+                <p class="text-gray-700">{{ loc.name?.[0] || 'N/A' }} ({{ loc.id?.schemeAgencyId || 'ID' }}: {{ loc.id?.value || 'N/A' }})</p>
+              }
+            </div>
+          }
+          @for(proc of eftiData.regulatoryProcedure; track $index) {
+            @if(proc.exportCustomsOfficeLocation) {
+              <div>
+                <strong class="font-medium text-gray-900">Customs Export Office:</strong>
+                <p class="text-gray-700">{{ proc.exportCustomsOfficeLocation.name?.[0] || 'N/A' }} ({{ proc.exportCustomsOfficeLocation.id?.schemeAgencyId || 'ID' }}: {{ proc.exportCustomsOfficeLocation.id?.value || 'N/A' }})</p>
+              </div>
+            }
+            @if(proc.importCustomsOfficeLocation) {
+              <div>
+                <strong class="font-medium text-gray-900">Customs Import Office:</strong>
+                <p class="text-gray-700">{{ proc.importCustomsOfficeLocation.name?.[0] || 'N/A' }} ({{ proc.importCustomsOfficeLocation.id?.schemeAgencyId || 'ID' }}: {{ proc.importCustomsOfficeLocation.id?.value || 'N/A' }})</p>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Transport Movements -->
+        <div class="flex flex-col gap-4">
+          @for(movement of eftiData.preCarriageTransportMovement; track movement.id?.value) {
+            <div class="p-4 border border-gray-200 rounded-lg bg-gray-50/50">
+              <h4 class="text-base font-semibold text-gray-700 mb-2">Pre-Carriage</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                <div><strong class="font-medium text-gray-900">Trip No:</strong><span class="text-gray-700 ml-1">{{ movement.id?.value || 'N/A' }}</span></div>
+                <div><strong class="font-medium text-gray-900">Transport Mode:</strong><span class="text-gray-700 ml-1">{{ movement.modeCode || 'N/A' }}</span></div>
+                <div><strong class="font-medium text-gray-900">Vehicle:</strong><span class="text-gray-700 ml-1">{{ movement.usedTransportMeans?.name || 'N/A' }} ({{ movement.usedTransportMeans?.id?.value || 'N/A' }})</span></div>
+              </div>
+              @if(movement.departureEvent?.[0]; as departure) {
+                <div class="mt-3 pt-3 border-t border-dashed">
+                  <p class="text-sm text-gray-700"><strong class="font-medium">Departure:</strong> {{ departure.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ departure.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ departure.occurrenceLocation?.id?.value || 'N/A' }})</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ departure.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ departure.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(departure.estimatedOccurrenceDateTime?.value) }}</p>
+                </div>
+              }
+              @if(movement.arrivalEvent?.[0]; as arrival) {
+                <div class="mt-3 pt-3 border-t border-dashed">
+                  <p class="text-sm text-gray-700"><strong class="font-medium">Arrival:</strong> {{ arrival.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ arrival.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ arrival.occurrenceLocation?.id?.value || 'N/A' }})</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ arrival.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ arrival.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(arrival.estimatedOccurrenceDateTime?.value) }}</p>
+                </div>
+              }
+            </div>
+          }
+
+          @for(movement of eftiData.mainCarriageTransportMovement; track movement.id?.value) {
+            <div class="p-4 border border-gray-200 rounded-lg bg-gray-50/50">
+              <h4 class="text-base font-semibold text-gray-700 mb-2">Main Carriage</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                <div><strong class="font-medium text-gray-900">Voyage No:</strong><span class="text-gray-700 ml-1">{{ movement.id?.value || 'N/A' }}</span></div>
+                <div><strong class="font-medium text-gray-900">Transport Mode:</strong><span class="text-gray-700 ml-1">{{ movement.modeCode || 'N/A' }}</span></div>
+                <div><strong class="font-medium text-gray-900">Vessel:</strong><span class="text-gray-700 ml-1">{{ movement.usedTransportMeans?.name || 'N/A' }} ({{ movement.usedTransportMeans?.id?.schemeAgencyId }}: {{ movement.usedTransportMeans?.id?.value || 'N/A' }})</span></div>
+                <div><strong class="font-medium text-gray-900">Registration Country:</strong><span class="text-gray-700 ml-1">{{ movement.usedTransportMeans?.registrationCountry?.code || 'N/A' }}</span></div>
+              </div>
+              @if(movement.departureEvent?.[0]; as departure) {
+                <div class="mt-3 pt-3 border-t border-dashed">
+                  <p class="text-sm text-gray-700"><strong class="font-medium">Departure:</strong> {{ departure.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ departure.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ departure.occurrenceLocation?.id?.value || 'N/A' }})</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ departure.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ departure.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(departure.estimatedOccurrenceDateTime?.value) }}</p>
+                </div>
+              }
+              @if(movement.arrivalEvent?.[0]; as arrival) {
+                <div class="mt-3 pt-3 border-t border-dashed">
+                  <p class="text-sm text-gray-700"><strong class="font-medium">Arrival:</strong> {{ arrival.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ arrival.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ arrival.occurrenceLocation?.id?.value || 'N/A' }})</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ arrival.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ arrival.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(arrival.estimatedOccurrenceDateTime?.value) }}</p>
+                </div>
+              }
+            </div>
+          }
+
+          @for(movement of eftiData.onCarriageTransportMovement; track movement.id?.value) {
+            <div class="p-4 border border-gray-200 rounded-lg bg-gray-50/50">
+              <h4 class="text-base font-semibold text-gray-700 mb-2">On-Carriage</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                <div><strong class="font-medium text-gray-900">Trip No:</strong><span class="text-gray-700 ml-1">{{ movement.id?.value || 'N/A' }}</span></div>
+                <div><strong class="font-medium text-gray-900">Transport Mode:</strong><span class="text-gray-700 ml-1">{{ movement.modeCode || 'N/A' }}</span></div>
+                <div><strong class="font-medium text-gray-900">Vehicle:</strong><span class="text-gray-700 ml-1">{{ movement.usedTransportMeans?.name || 'N/A' }} ({{ movement.usedTransportMeans?.id?.value || 'N/A' }})</span></div>
+              </div>
+              @if(movement.departureEvent?.[0]; as departure) {
+                <div class="mt-3 pt-3 border-t border-dashed">
+                  <p class="text-sm text-gray-700"><strong class="font-medium">Departure:</strong> {{ departure.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ departure.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ departure.occurrenceLocation?.id?.value || 'N/A' }})</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ departure.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ departure.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(departure.estimatedOccurrenceDateTime?.value) }}</p>
+                </div>
+              }
+              @if(movement.arrivalEvent?.[0]; as arrival) {
+                <div class="mt-3 pt-3 border-t border-dashed">
+                  <p class="text-sm text-gray-700"><strong class="font-medium">Arrival:</strong> {{ arrival.occurrenceLocation?.name?.[0] || 'N/A' }} ({{ arrival.occurrenceLocation?.id?.schemeAgencyId || 'ID' }}: {{ arrival.occurrenceLocation?.id?.value || 'N/A' }})</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Coordinates:</strong> Lat: {{ arrival.occurrenceLocation?.geographicalCoordinates?.latitude?.value || 'N/A' }}, Lon: {{ arrival.occurrenceLocation?.geographicalCoordinates?.longitude?.value || 'N/A' }}</p>
+                  <p class="text-sm text-gray-700 pl-4"><strong class="font-medium">Estimated Time:</strong> {{ formatDateTime(arrival.estimatedOccurrenceDateTime?.value) }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="italic text-gray-500 mt-2">No journey detail information provided.</p>
+      }
+    </div>
+
+    <!-- Section for Service Charges -->
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Service Charges</h3>
+      @if(hasServiceChargesData()) {
+        @for(charge of eftiData.applicableServiceCharge; track charge.id; let i = $index) {
+          <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Service Charge {{ i + 1 }} (ID: {{ charge.id || 'N/A' }})</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <strong class="font-medium text-gray-900">Amount:</strong>
+                <p class="text-gray-700">
+                  <span>{{ formatAmount(charge.appliedAmount?.[0]) }}</span>
+                  @if (charge.calculationBasisPrice?.basisQuantity) {
+                    <span class="ml-1">({{ charge.calculationBasisPrice?.basisQuantity }} {{ charge.calculationBasisPrice?.basisQuantity === 1 ? 'unit' : 'units' }})</span>
+                  }
+                </p>
+              </div>
+              @if (charge.calculationBasisCode === 'PER_UNIT') {
+                <div>
+                  <strong class="font-medium text-gray-900">Basis:</strong>
+                  <p class="text-gray-700">
+                    <span>Per Unit</span>
+                    @if (charge.calculationBasisPrice?.unitAmount?.[0]) {
+                      <span class="ml-1">{{ formatAmount(charge.calculationBasisPrice?.unitAmount?.[0]) }}</span>
+                    }
+                  </p>
+                </div>
+              }
+              <div><strong class="font-medium text-gray-900">Category:</strong><p class="text-gray-700">{{ charge.calculationBasisPrice?.categoryTypeCode || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Payment:</strong><p class="text-gray-700">{{ charge.paymentArrangementCode || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Paying Party:</strong><p class="text-gray-700">{{ charge.payingPartyRoleCode || 'N/A' }}</p></div>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="italic text-gray-500 mt-2">No service charge information provided.</p>
+      }
+    </div>
+
+    <!-- Section for Dangerous Goods -->
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Dangerous Goods</h3>
+      @if (hasDangerousGoodsData()) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div><strong class="font-medium text-gray-900">UN ID:</strong><p class="text-gray-700">{{ eftiData.dangerousGoods?.undgid || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Proper Shipping Name:</strong><p class="text-gray-700">{{ eftiData.dangerousGoods?.properShippingName?.[0]?.value || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Technical Name:</strong><p class="text-gray-700">{{ eftiData.dangerousGoods?.technicalName?.[0]?.value || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Hazard Class ({{ eftiData.dangerousGoods?.hazardClassificationID?.schemeAgencyId || 'N/A' }}):</strong><p class="text-gray-700">{{ eftiData.dangerousGoods?.hazardClassificationID?.value || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Packaging Group:</strong><p class="text-gray-700">{{ eftiData.dangerousGoods?.packagingDangerLevelCode || 'N/A' }}</p></div>
+          <div><strong class="font-medium text-gray-900">Gross Weight:</strong><p class="text-gray-700">{{ formatMeasure(eftiData.dangerousGoods?.grossWeight) }}</p></div>
+          <div><strong class="font-medium text-gray-900">Tunnel Restriction Code:</strong><p class="text-gray-700">{{ eftiData.dangerousGoods?.tunnelRestrictionCode || 'N/A' }}</p></div>
+          @if(eftiData.dangerousGoods?.information?.[0]?.value) {
+            <div class="md:col-span-2"><strong class="font-medium text-gray-900">Additional Information:</strong><p class="text-gray-700">{{ eftiData.dangerousGoods?.information?.[0]?.value }}</p></div>
+          }
+        </div>
+      } @else {
+        <p class="italic text-gray-500 mt-2">No dangerous goods information provided.</p>
+      }
+    </div>
+
+    <!-- Section for Transport Equipment Details -->
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Transport Equipment Details</h3>
+      @if (hasTransportEquipmentData()) {
+        @for(equip of eftiData.usedTransportEquipment; track equip.id?.value; let i = $index) {
+          <div class="mt-4 pt-4 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+            <h4 class="text-base font-semibold text-gray-600 mb-2">Container {{ i + 1 }}</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div><strong class="font-medium text-gray-900">ID ({{ equip.id?.schemeAgencyId || 'ID' }}):</strong><p class="text-gray-700">{{ equip.id?.value || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Sequence Number:</strong><p class="text-gray-700">{{ equip.sequenceNumber || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Size/Type:</strong><p class="text-gray-700">{{ equip.sizeTypeCode || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Status:</strong><p class="text-gray-700">{{ equip.fullEmptyCode || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Gross Volume:</strong><p class="text-gray-700">{{ formatMeasure(equip.grossVolume) }}</p></div>
+              <div><strong class="font-medium text-gray-900">Seal Number:</strong><p class="text-gray-700">{{ equip.affixedSeal?.[0]?.id?.value || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Sealed by:</strong><p class="text-gray-700">{{ equip.affixedSeal?.[0]?.sealingPartyRoleCode || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Operating Party:</strong><p class="text-gray-700">{{ equip.operatingParty?.name?.[0] || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Owner:</strong><p class="text-gray-700">{{ equip.ownerParty?.[0]?.name?.[0] || 'N/A' }}</p></div>
+              <div><strong class="font-medium text-gray-900">Registration Country:</strong><p class="text-gray-700">{{ equip.registrationCountry?.code || 'N/A' }}</p></div>
+            </div>
+
+            @for(carried of equip.carriedTransportEquipment; track carried.id?.value) {
+              <div class="mt-4 pt-4 pl-4 border-t border-dashed border-gray-200">
+                <h5 class="text-sm font-semibold text-gray-800 mb-2">Goods Carried within Container {{ i + 1 }}</h5>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div><strong class="font-medium text-gray-900">Total Item Quantity:</strong><p class="text-gray-700">{{ carried.goodsItemUnitQuantity?.[0] || 'N/A' }} Goods Units</p></div>
+                  <div><strong class="font-medium text-gray-900">Gross Weight:</strong><p class="text-gray-700">{{ formatMeasureArray(carried.grossGoodsWeightMeasure) }}</p></div>
+                  <div><strong class="font-medium text-gray-900">Net Weight:</strong><p class="text-gray-700">{{ formatMeasureArray(carried.netGoodsWeightMeasure) }}</p></div>
+                  <div><strong class="font-medium text-gray-900">Verified Gross Weight:</strong><p class="text-gray-700">{{ formatMeasureArray(carried.verifiedGrossWeight) }}</p></div>
+                  <div><strong class="font-medium text-gray-900">Verification Method:</strong><p class="text-gray-700">{{ carried.weightVerificationMethodCode?.[0] || 'N/A' }}</p></div>
+                  <div><strong class="font-medium text-gray-900">Verifier:</strong><p class="text-gray-700">{{ carried.weightVerifierParty?.[0]?.name?.[0] || 'N/A' }}</p></div>
+                </div>
+              </div>
+
+              @for(dg of carried.loadedDangerousGoods; track $index) {
+                <div class="mt-3 pt-3 border-t border-dashed border-red-200 bg-red-50 p-3 rounded-md">
+                  <h6 class="text-sm font-semibold text-red-800 mb-2">Loaded Dangerous Goods</h6>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                    <div><strong class="font-medium text-red-900">UN ID:</strong><p class="text-red-700">{{ dg.undgid || 'N/A' }}</p></div>
+                    <div><strong class="font-medium text-red-900">Proper Shipping Name:</strong><p class="text-red-700">{{ dg.properShippingName?.[0]?.value || 'N/A' }}</p></div>
+                    <div><strong class="font-medium text-red-900">Hazard Class ({{ dg.hazardClassificationID?.schemeAgencyId || 'N/A' }}):</strong><p class="text-red-700">{{ dg.hazardClassificationID?.value || 'N/A' }}</p></div>
+                    <div><strong class="font-medium text-red-900">Packaging Group:</strong><p class="text-red-700">{{ dg.packagingDangerLevelCode || 'N/A' }}</p></div>
+                  </div>
+                </div>
+              }
+            }
+
+            @for(item of eftiData.includedConsignmentItem; track $index) {
+              @if (isItemAssociatedWithEquipment(item, equip)) {
+                <div class="mt-4 pt-4 pl-4 border-t border-dashed border-gray-200">
+                  <h5 class="text-sm font-semibold text-gray-800 mb-2">Consignment Item Details</h5>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div><strong class="font-medium text-gray-900">Quantity:</strong><p class="text-gray-700">{{ item.goodsUnitQuantity?.[0] || 'N/A' }} Goods Units</p></div>
+                    <div><strong class="font-medium text-gray-900">Total Gross Volume:</strong><p class="text-gray-700">{{ formatMeasureArray(item.grossVolume) }}</p></div>
+                    @if(item.dimensions) {
+                      <div class="md:col-span-2">
+                        <strong class="font-medium text-gray-900">Dimensions (per unit):</strong>
+                        <p class="text-gray-700">{{ item.dimensions.length?.value || 'N/A' }}m (L) x {{ item.dimensions.width?.value || 'N/A' }}m (W) x {{ item.dimensions.height?.value || 'N/A' }}m (H)</p>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        }
+      } @else {
+        <p class="italic text-gray-500 mt-2">No transport equipment details provided.</p>
+      }
+    </div>
+
+    <!-- Section for Logistics and Security -->
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-3 border-b border-gray-200">Logistics and Security</h3>
+      @if (hasLogisticsAndSecurityData()) {
+        @for(result of eftiData.logisticsRiskAnalysisResult; track $index) {
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm mt-4 first:mt-0">
+            <div>
+              <strong class="font-medium text-gray-900">Risk Analysis:</strong>
+              <p class="text-gray-700">{{ result.description?.[0]?.value || 'N/A' }} (Code: {{ result.consignmentRiskRelatedCode?.[0] || 'N/A' }})</p>
+            </div>
+            <div>
+              <strong class="font-medium text-gray-900">Screening Method:</strong>
+              <p class="text-gray-700">{{ result.screeningMethodCode?.[0] || 'N/A' }}</p>
+            </div>
+            <div>
+              <strong class="font-medium text-gray-900">Security Exemption:</strong>
+              <p class="text-gray-700">Code {{ result.securityExemptionCode?.[0] || 'N/A' }}</p>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="italic text-gray-500 mt-2">No logistics and security information provided.</p>
+      }
+    </div>
+
+  </div>
+} @else {
+  <div class="p-6 text-center text-gray-500">
+    <p>eFTI data is not available or is loading.</p>
+  </div>
+}
