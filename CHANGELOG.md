@@ -1,3 +1,40 @@
+# [0.13.0](https://github.com/digilogistika/efti-gate/compare/v0.12.2...v0.13.0) (2025-08-14)
+
+
+### Bug Fixes
+
+* Error querying LV02 with real dataset fixed ([c03221b](https://github.com/digilogistika/efti-gate/commit/c03221b4bdb3819cefafa14bb7b25a380a6e3cbe))
+* Got testdata working to send via postman ([213bc98](https://github.com/digilogistika/efti-gate/commit/213bc98aae60481eb0589e64796036785eb87689))
+* jre 21 ([b0009f3](https://github.com/digilogistika/efti-gate/commit/b0009f3bbed338830147b3a48b8b98d0c3454f61))
+* Making the data view hide unnecessary elements better. ([bb09343](https://github.com/digilogistika/efti-gate/commit/bb0934360df4936adcf0c8524437981bb62107ca))
+* Making the data view more flat. ([6e99ec5](https://github.com/digilogistika/efti-gate/commit/6e99ec56b7bea02609cbd19e26b2ba8cea4f4fd0))
+* Making types based off of example xml ([be32cfc](https://github.com/digilogistika/efti-gate/commit/be32cfccc8a9bd37f1174cb2abf6d5c326782584))
+* Null warnings removed ([aa7417f](https://github.com/digilogistika/efti-gate/commit/aa7417f1378a336da4f5367a4ef59a7814266e7b))
+* Query subsets not full ([8ec1de8](https://github.com/digilogistika/efti-gate/commit/8ec1de83c126f072ad06f14c4a1401fbc5f5d001))
+* Remove ([acfca5c](https://github.com/digilogistika/efti-gate/commit/acfca5c751a6742c317b57a5acfc01897078d4bf))
+* Renaming methods that make more sense ([8663d13](https://github.com/digilogistika/efti-gate/commit/8663d130e466437e5b928a173ded6b7ea5ea68b0))
+* Renaming pdf generation service to data processing service. Fixing background dynamic color changing based off of the length ([62898cd](https://github.com/digilogistika/efti-gate/commit/62898cdb3f63230bd959c1319eeaf82d4ccb3526))
+* Simplier view of the data. Added more types.ts stuff and making frontend display all data. ([8642589](https://github.com/digilogistika/efti-gate/commit/8642589bc7c7612d7f3f7ca62820c6a98de270b4))
+
+
+### Features
+
+* Added all object types that are correlated to SupplyChainConsignment ([f1a6c79](https://github.com/digilogistika/efti-gate/commit/f1a6c7919ca0362f1a9842020733270f09d4b17f))
+* Added last elements to the alternative view. ([e6e7ddd](https://github.com/digilogistika/efti-gate/commit/e6e7ddd4d9663d292532ed830082efea3c1b60fb))
+* Adding consignment overview to data ([ae4d5dd](https://github.com/digilogistika/efti-gate/commit/ae4d5dd24b0aad957b19a52017b0be64d6371d5b))
+* Adding more document info ([36c3ae7](https://github.com/digilogistika/efti-gate/commit/36c3ae715f27e3c6370710157ffa6760e5132364))
+* Adding more participant info and participants ([8c5782d](https://github.com/digilogistika/efti-gate/commit/8c5782d0809a7978414ff09f10c45f3ac3e4a877))
+* Adding real data to testdata ([499eb34](https://github.com/digilogistika/efti-gate/commit/499eb341a754a886a2064555015da8d97ad98eeb))
+* Adding SupplyChainConsignment all objects to types.ts. ([bdbad3f](https://github.com/digilogistika/efti-gate/commit/bdbad3f253393f4e166e6649b98307d26e282d16))
+* Adding SupplyChainConsignment all objects to types.ts. ([2f605f4](https://github.com/digilogistika/efti-gate/commit/2f605f4368a57adf167c833d39603356945ab090))
+* Adding translations to the alternative view button ([f27871b](https://github.com/digilogistika/efti-gate/commit/f27871ba49849ef4dc1ac5927c663e68f506cb9a))
+* Date is more readable ([8bbb9f3](https://github.com/digilogistika/efti-gate/commit/8bbb9f3c1951195db5cc7a860d1e43460e209628))
+* Giving backend normal subset data to display alternative view in frontend ([7bdd94d](https://github.com/digilogistika/efti-gate/commit/7bdd94d1ca4e534f59d9429b4e73fb5428281813))
+* Making the view alternative view button look the same as the retrieved dataset ([56b6833](https://github.com/digilogistika/efti-gate/commit/56b68336a0f396187ecfccb5d1fd808ac02d8f09))
+* Participants and documents data is mapped correctly. ([9963600](https://github.com/digilogistika/efti-gate/commit/9963600d1559f59dd94a9c5216b8d7f55bfc2d92))
+* Prototype alternative view for dataset view ([b68ba26](https://github.com/digilogistika/efti-gate/commit/b68ba26afd0e0b897889230a45d07b61e9618c8c))
+* Removed docstring from types.ts. Making it match to the testdata json. ([47d616c](https://github.com/digilogistika/efti-gate/commit/47d616c86e20ad45b01ad286faa146a99b3474c0))
+
 ## [0.12.2](https://github.com/digilogistika/efti-gate/compare/v0.12.1...v0.12.2) (2025-08-13)
 
 
