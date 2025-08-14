@@ -5,7 +5,7 @@ import eu.efti.authorityapp.controller.api.DatasetControllerApi;
 import eu.efti.authorityapp.dto.DatasetDto;
 import eu.efti.authorityapp.dto.PdfGenerationResult;
 import eu.efti.authorityapp.service.ConfigService;
-import eu.efti.authorityapp.service.PdfGenerationService;
+import eu.efti.authorityapp.service.DataProcessingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -24,7 +24,7 @@ public class DatasetController implements DatasetControllerApi {
     private final GateProperties gateProperties;
     private final RestTemplate restTemplate;
     private final ConfigService configService;
-    private final PdfGenerationService pdfGenerationService;
+    private final DataProcessingService dataProcessingService;
 
     @Override
     @GetMapping("/dataset/{gateId}/{platformId}/{datasetId}")
@@ -67,7 +67,7 @@ public class DatasetController implements DatasetControllerApi {
 
             try {
                 log.info("Generating PDF for request ID: {}", datasetDto.getRequestId());
-                final PdfGenerationResult pdfResult = pdfGenerationService.generatePdf(
+                final PdfGenerationResult pdfResult = dataProcessingService.generatePdf(
                         datasetDto.getRequestId(),
                         datasetDto.getData());
 

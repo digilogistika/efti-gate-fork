@@ -173,7 +173,7 @@
                 @if(eftiData.deliveryEvent) {
                     <div>
                         <strong class="font-medium text-gray-900">Final Delivery Event:</strong>
-                        <p class="text-gray-700">{{ eftiData.deliveryEvent?.actualOccurrenceDateTime?.value || 'N/A' }} at {{ eftiData.deliveryEvent?.occurrenceLocation?.name?.[0] || 'N/A' }} </p>
+                        <p class="text-gray-700">{{ eftiData.deliveryEvent.actualOccurrenceDateTime?.value || 'N/A' }} at {{ eftiData.deliveryEvent.occurrenceLocation?.name?.[0] || 'N/A' }} </p>
                     </div>
                 }
                 @if (eftiData.transshipmentLocation && eftiData.transshipmentLocation.length > 0) {

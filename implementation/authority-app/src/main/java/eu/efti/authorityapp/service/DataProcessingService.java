@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class PdfGenerationService {
+public class DataProcessingService {
 
     private Date fromDateTime(eu.efti.v1.types.DateTime dateTime) {
         if (dateTime == null || StringUtils.isBlank(dateTime.getValue())) {

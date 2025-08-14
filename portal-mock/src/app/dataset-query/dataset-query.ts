@@ -92,6 +92,7 @@ export class DatasetQuery implements OnInit, OnDestroy {
     this.http.get<DatasetResponse>(identifiersQuery)
       .subscribe({
         next: (v) => {
+          console.log(v.eftiData);
           this.isLoading = false;
           this.datasetQueryResponse = v;
           if (this.subsetDetails) {
