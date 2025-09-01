@@ -1,3 +1,10 @@
+# [0.14.0](https://github.com/digilogistika/efti-gate/compare/v0.13.0...v0.14.0) (2025-09-01)
+
+
+### Features
+
+* efti dataset viewer for the authority application ([883bed3](https://github.com/digilogistika/efti-gate/commit/883bed3da12c8a65faa91060dc85eda5a1d7e749))
+
 # [0.13.0](https://github.com/digilogistika/efti-gate/compare/v0.12.2...v0.13.0) (2025-08-14)
 
 
