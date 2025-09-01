@@ -111,7 +111,6 @@
                               <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">{{ subset.subset }}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                              <!-- UPDATED: Button and icon color now match the dialog and theme -->
                               <button (click)="openSubsetInfoDialog(subset); $event.preventDefault()"
                                       class="p-1 rounded-full text-indigo-600 hover:bg-indigo-100/70 transition-colors duration-200 cursor-pointer">
                                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -127,7 +126,7 @@
                                     </svg>
                                   }
                                   @case ('Rail') {
-                                    <!-- UPDATED: New Train Icon from SVGRepo -->
+                                    <!-- Train Icon from SVGRepo -->
                                     <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                       <path d="M11 12C11 12.5523 10.5523 13 10 13C9.44773 13 9.00002 12.5523 9.00002 12C9.00002 11.4477 9.44773 11 10 11C10.5523 11 11 11.4477 11 12Z"></path>
                                       <path d="M14 13C14.5523 13 15 12.5523 15 12C15 11.4477 14.5523 11 14 11C13.4477 11 13 11.4477 13 12C13 12.5523 13.4477 13 14 13Z"></path>
@@ -147,13 +146,13 @@
                                     </svg>
                                   }
                                   @case ('Air') {
-                                    <!-- Font Awesome Air Icon (Realigned) -->
+                                    <!-- Font Awesome Air Icon -->
                                     <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="60 40 576 512" fill="currentColor">
                                       <path d="M552 264C582.9 264 608 289.1 608 320C608 350.9 582.9 376 552 376L424.7 376L265.5 549.6C259.4 556.2 250.9 560 241.9 560L198.2 560C187.3 560 179.6 549.3 183 538.9L237.3 376L137.6 376L84.8 442C81.8 445.8 77.2 448 72.3 448L52.5 448C42.1 448 34.5 438.2 37 428.1L64 320L37 211.9C34.4 201.8 42.1 192 52.5 192L72.3 192C77.2 192 81.8 194.2 84.8 198L137.6 264L237.3 264L183 101.1C179.6 90.7 187.3 80 198.2 80L241.9 80C250.9 80 259.4 83.8 265.5 90.4L424.7 264L552 264z"/>
                                     </svg>
                                   }
                                   @default {
-                                    <!-- Font Awesome Multimodal (Default) Icon -->
+                                    <!-- Font Awesome Multimodal Icon -->
                                     <svg [ngClass]="{ 'text-red-600': subset.dangerousGoods, 'text-green-600': !subset.dangerousGoods }" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 640 576" fill="currentColor">
                                       <path d="M144 112C144 85.5 165.5 64 192 64C218.5 64 240 85.5 240 112L240 432C240 464.5 252.1 494.1 272 516.7L272 544C272 551.1 272.9 558.1 274.7 564.7L192 544L83.9 571C73.8 573.6 64 565.9 64 555.5L64 535.7C64 530.8 66.2 526.2 70 523.2L144 464L144 406.4L21.9 455.2C11.4 459.4 0 451.7 0 440.4L0 396.4C0 388.4 3 380.8 8.3 374.9L144 225.6L144 112zM368 192L560 192C604.2 192 640 227.8 640 272L640 432C640 458.2 627.4 481.4 608 496L608 544C608 561.7 593.7 576 576 576C558.3 576 544 561.7 544 544L544 512L384 512L384 544C384 561.7 369.7 576 352 576C334.3 576 320 561.7 320 544L320 496C300.6 481.4 288 458.2 288 432L288 272C288 227.8 323.8 192 368 192zM368 368L560 368L560 336C560 318.3 545.7 304 528 304L400 304C382.3 304 368 318.3 368 336L368 368zM368 456C381.3 456 392 445.3 392 432C392 418.7 381.3 408 368 408C354.7 408 344 418.7 344 432C344 445.3 354.7 456 368 456zM584 432C584 418.7 573.3 408 560 408C546.7 408 536 418.7 536 432C536 445.3 546.7 456 560 456C573.3 456 584 445.3 584 432z"/>
                                     </svg>
@@ -409,7 +408,7 @@
             <svg class="w-5 h-5 text-gray-500 transition-transform duration-200 group-open:rotate-180 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </summary>
           <div class="border-t border-white/20">
-            <app-efti-data-viewer [eftiData]="datasetQueryResponse.eftiData"></app-efti-data-viewer>
+            <app-data-viewer [eftiData]="datasetQueryResponse.eftiData"></app-data-viewer>
           </div>
         </details>
         }

@@ -1,0 +1,45 @@
+<div class="p-4 border border-gray-200 rounded-lg bg-gray-50/50">
+    <h5 class="text-base font-semibold text-gray-700 mb-2">{{ title }}</h5>
+
+    <!-- Main Movement Details -->
+    <div class="divide-y divide-gray-200">
+        <app-display-field label="Trip No" [value]="movement.id"></app-display-field>
+        <app-display-field label="Sequence" [value]="movement.sequenceNumber"></app-display-field>
+        <app-display-field label="Transport Mode" [value]="movement.modeCode"></app-display-field>
+        <app-display-field label="Vehicle" [value]="movement.usedTransportMeans?.name"></app-display-field>
+        <app-display-field label="Vehicle ID" [value]="movement.usedTransportMeans?.id"></app-display-field>
+        <app-display-field label="Vehicle Type" [value]="movement.usedTransportMeans?.typeCode"></app-display-field>
+        <app-display-field label="Registration Country" [value]="movement.usedTransportMeans?.registrationCountry"></app-display-field>
+        <app-display-field label="Master" [value]="movement.master"></app-display-field>
+        <app-display-field label="Dangerous Goods" [value]="movement.dangerousGoodsIndicator"></app-display-field>
+        <app-display-field label="Owner" [value]="movement.usedTransportMeans?.owner"></app-display-field>
+        <app-display-field label="Route" [value]="movement.itineraryRoute"></app-display-field>
+        <app-display-field label="Dimensions" [value]="movement.usedTransportMeans?.specifiedSpatialDimension"></app-display-field>
+        <app-display-field label="Attached Equipment" [value]="movement.usedTransportMeans?.attachedOperationalEquipment"></app-display-field>
+    </div>
+
+    <!-- Detailed Transport Events -->
+    <div class="mt-3 pt-3 border-t border-dashed">
+        <h6 class="text-sm font-semibold text-gray-800 mb-2">Events</h6>
+        @if (allEvents.length === 0) {
+            <p class="italic text-gray-500 text-sm">No specific events recorded for this movement.</p>
+        } @else {
+            @for (item of allEvents; track $index) {
+                <div class="mt-3 pt-3 border-t border-gray-200 first:mt-0 first:pt-0 first:border-none">
+                    <h5 class="text-sm font-semibold text-gray-600 mb-2">{{ item.type }} Event</h5>
+                    <div class="divide-y divide-gray-200">
+                        <app-display-field label="Location" [value]="item.event.occurrenceLocation"></app-display-field>
+                        <app-display-field label="Actual Time" [value]="item.event.actualOccurrenceDateTime"></app-display-field>
+                        <app-display-field label="Estimated Time" [value]="item.event.estimatedOccurrenceDateTime"></app-display-field>
+                        <app-display-field label="Requested Time" [value]="item.event.requestedOccurrenceDateTime"></app-display-field>
+                        <app-display-field label="Scheduled Time" [value]="item.event.scheduledOccurrenceDateTime"></app-display-field>
+                        <app-display-field label="Scheduled Period" [value]="item.event.scheduledOccurrencePeriod"></app-display-field>
+                        <app-display-field label="Certifying Party" [value]="item.event.certifyingParty"></app-display-field>
+                        <app-display-field label="Observations" [value]="item.event.relatedObservation"></app-display-field>
+                        <app-display-field label="Security Measures" [value]="item.event.additionalSecurityMeasures"></app-display-field>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -8,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
 import { Pdfjs } from '../pdf-viewer/pdfjs';
-import { EftiDataViewerComponent } from '../data-viewer/data-viewer';
+import { DataViewerComponent } from '../data-viewer/data-viewer';
 
 @Component({
   selector: 'app-dataset-query',
@@ -17,7 +17,7 @@ import { EftiDataViewerComponent } from '../data-viewer/data-viewer';
     TranslatePipe,
     Pdfjs,
     NgClass,
-    EftiDataViewerComponent
+    DataViewerComponent
   ],
   templateUrl: './dataset-query.html',
 })

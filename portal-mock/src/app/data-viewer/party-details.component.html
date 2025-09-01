@@ -1,0 +1,35 @@
+<div class="mt-4 pt-4 pb-4 border-t border-gray-200 first:mt-0">
+  <h4 class="text-base font-semibold text-gray-600 mb-2">
+    {{ title }}
+    @if (party.roleCode?.length) {
+      <span class="ml-2 text-xs font-normal bg-gray-100 text-gray-800 px-2 py-1 rounded-full align-middle">
+                {{ party.roleCode?.join(', ') }}
+            </span>
+    }
+  </h4>
+  <div class="divide-y divide-gray-200">
+    <app-display-field label="Name" [value]="party.name"></app-display-field>
+    <app-display-field label="ID" [value]="party.id"></app-display-field>
+    <app-display-field label="Address" [value]="party.postalAddress"></app-display-field>
+    <app-display-field label="Tax ID" [value]="party.taxRegistration"></app-display-field>
+    <app-display-field label="Representative" [value]="party.representativePerson"></app-display-field>
+    <app-display-field label="Signatory" [value]="party.authoritativeSignatoryPerson"></app-display-field>
+    <app-display-field label="Specified Contacts" [value]="party.specifiedContactPerson"></app-display-field>
+    <app-display-field label="Financial Account" [value]="party.ownedCreditorFinancialAccount"></app-display-field>
+    <app-display-field label="Licences" [value]="party.applicableLicence"></app-display-field>
+    <app-display-field label="Contracts" [value]="party.agreedContract"></app-display-field>
+    <app-display-field label="Authentications" [value]="party.confirmedDocumentAuthentication"></app-display-field>
+  </div>
+
+  @for(contact of party.definedContactDetails; track $index) {
+    <div class="mt-3 pt-3 border-t border-dashed border-gray-200">
+      <h5 class="text-sm font-semibold text-gray-800 mb-1">Contact Details</h5>
+      <div class="divide-y divide-gray-200">
+        <app-display-field label="Person Name" [value]="contact.personName"></app-display-field>
+        <app-display-field label="Email" [value]="contact.emailAddress"></app-display-field>
+        <app-display-field label="Phone" [value]="contact.telephone"></app-display-field>
+        <app-display-field label="Fax" [value]="contact.fax"></app-display-field>
+      </div>
+    </div>
+  }
+</div>
